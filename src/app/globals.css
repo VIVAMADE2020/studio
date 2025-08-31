@@ -4,19 +4,19 @@
 
 @layer base {
   :root {
-    --background: 27 100% 97%; /* #FFF8F0 - floral-white */
-    --foreground: 256 26% 27%; /* #392F5A - space-cadet */
+    --background: 27 100% 97%; /* #fff8f0 */
+    --foreground: 256 26% 27%; /* #392f5a */
     --card: 27 100% 97%;
     --card-foreground: 256 26% 27%;
     --popover: 27 100% 97%;
     --popover-foreground: 256 26% 27%;
-    --primary: 256 26% 27%; /* #392F5A - space-cadet */
+    --primary: 256 26% 27%; /* #392f5a */
     --primary-foreground: 0 0% 98%;
-    --secondary: 44 87% 70%; /* #F4D06F - jasmine */
+    --secondary: 44 87% 70%; /* #f4d06f */
     --secondary-foreground: 256 26% 27%;
-    --muted: 172 45% 85%; /* #9DD9D2 - tiffany-blue */
+    --muted: 172 45% 85%; /* #9dd9d2 */
     --muted-foreground: 256 26% 37%;
-    --accent: 30 100% 53%; /* #FF8811 - ut-orange */
+    --accent: 30 100% 53%; /* #ff8811 */
     --accent-foreground: 27 100% 97%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -34,8 +34,8 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-    --background: 256 26% 27%; /* #392F5A - space-cadet */
-    --foreground: 27 100% 97%; /* #FFF8F0 - floral-white */
+    --background: 256 26% 27%; /* #392f5a */
+    --foreground: 27 100% 97%; /* #fff8f0 */
     --card: 256 26% 27%;
     --card-foreground: 27 100% 97%;
     --popover: 256 26% 27%;
