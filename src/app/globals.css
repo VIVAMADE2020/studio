@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    --background: 348 100% 99%; /* snow */
-    --foreground: 180 5% 8%; /* night */
-    --card: 348 100% 99%; /* snow */
-    --card-foreground: 180 5% 8%; /* night */
-    --popover: 348 100% 99%; /* snow */
-    --popover-foreground: 180 5% 8%; /* night */
-    --primary: 171 50% 40%; /* persian-green */
-    --primary-foreground: 348 100% 99%; /* snow */
-    --secondary: 75 5% 16%; /* jet */
-    --secondary-foreground: 348 100% 99%; /* snow */
-    --muted: 170 64% 89%; /* lighter tiffany-blue */
-    --muted-foreground: 180 5% 28%; /* darker night */
-    --accent: 170 64% 69%; /* tiffany-blue */
-    --accent-foreground: 180 5% 8%; /* night */
+    --background: 240 100% 99%; /* ghost-white */
+    --foreground: 0 0% 11%; /* eerie-black */
+    --card: 240 100% 99%; /* ghost-white */
+    --card-foreground: 0 0% 11%; /* eerie-black */
+    --popover: 240 100% 99%; /* ghost-white */
+    --popover-foreground: 0 0% 11%; /* eerie-black */
+    --primary: 0 0% 11%; /* eerie-black */
+    --primary-foreground: 240 100% 99%; /* ghost-white */
+    --secondary: 210 13% 94%; /* antiflash-white */
+    --secondary-foreground: 0 0% 11%; /* eerie-black */
+    --muted: 96 7% 86%; /* platinum */
+    --muted-foreground: 0 0% 31%;
+    --accent: 52 17% 91%; /* alabaster */
+    --accent-foreground: 0 0% 11%; /* eerie-black */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 170 64% 85%;
-    --input: 170 64% 90%;
-    --ring: 171 50% 40%; /* persian-green */
+    --border: 96 7% 86%; /* platinum */
+    --input: 96 7% 88%; 
+    --ring: 0 0% 11%; /* eerie-black */
     --radius: 0.5rem;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -34,25 +34,25 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-    --background: 180 5% 8%; /* night */
-    --foreground: 348 100% 99%; /* snow */
-    --card: 180 5% 8%; /* night */
-    --card-foreground: 348 100% 99%; /* snow */
-    --popover: 180 5% 8%; /* night */
-    --popover-foreground: 348 100% 99%; /* snow */
-    --primary: 170 64% 69%; /* tiffany-blue */
-    --primary-foreground: 180 5% 8%; /* night */
-    --secondary: 75 5% 16%; /* jet */
-    --secondary-foreground: 348 100% 99%; /* snow */
-    --muted: 75 5% 22%; /* lighter jet */
-    --muted-foreground: 348 100% 89%; /* darker snow */
-    --accent: 171 50% 40%; /* persian-green */
-    --accent-foreground: 348 100% 99%; /* snow */
+    --background: 0 0% 11%; /* eerie-black */
+    --foreground: 240 100% 99%; /* ghost-white */
+    --card: 0 0% 11%; /* eerie-black */
+    --card-foreground: 240 100% 99%; /* ghost-white */
+    --popover: 0 0% 11%; /* eerie-black */
+    --popover-foreground: 240 100% 99%; /* ghost-white */
+    --primary: 240 100% 99%; /* ghost-white */
+    --primary-foreground: 0 0% 11%; /* eerie-black */
+    --secondary: 0 0% 15%; 
+    --secondary-foreground: 240 100% 99%; /* ghost-white */
+    --muted: 0 0% 20%; 
+    --muted-foreground: 96 7% 80%;
+    --accent: 0 0% 25%;
+    --accent-foreground: 240 100% 99%; /* ghost-white */
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
-    --border: 75 5% 26%;
-    --input: 75 5% 26%;
-    --ring: 170 64% 69%; /* tiffany-blue */
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 240 100% 99%; /* ghost-white */
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
