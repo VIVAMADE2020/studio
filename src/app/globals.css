@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    --background: 38 68% 81%; /* wheat */
-    --foreground: 202 77% 7%; /* rich-black */
-    --card: 38 68% 85%; /* slightly lighter wheat */
-    --card-foreground: 202 77% 7%;
-    --popover: 38 68% 85%;
-    --popover-foreground: 202 77% 7%;
-    --primary: 175 41% 16%; /* dark-slate-gray */
-    --primary-foreground: 38 68% 81%; /* wheat */
-    --secondary: 38 68% 75%; /* darker wheat */
-    --secondary-foreground: 175 41% 16%; /* dark-slate-gray */
-    --muted: 38 68% 78%;
-    --muted-foreground: 175 41% 26%;
-    --accent: 22 100% 38%; /* mahogany */
-    --accent-foreground: 38 68% 81%; /* wheat */
+    --background: 348 100% 99%; /* snow */
+    --foreground: 180 5% 8%; /* night */
+    --card: 348 100% 99%; /* snow */
+    --card-foreground: 180 5% 8%; /* night */
+    --popover: 348 100% 99%; /* snow */
+    --popover-foreground: 180 5% 8%; /* night */
+    --primary: 171 50% 40%; /* persian-green */
+    --primary-foreground: 348 100% 99%; /* snow */
+    --secondary: 75 5% 16%; /* jet */
+    --secondary-foreground: 348 100% 99%; /* snow */
+    --muted: 170 64% 89%; /* lighter tiffany-blue */
+    --muted-foreground: 180 5% 28%; /* darker night */
+    --accent: 170 64% 69%; /* tiffany-blue */
+    --accent-foreground: 180 5% 8%; /* night */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 38 68% 71%;
-    --input: 38 68% 73%;
-    --ring: 22 100% 38%; /* mahogany */
+    --border: 170 64% 85%;
+    --input: 170 64% 90%;
+    --ring: 171 50% 40%; /* persian-green */
     --radius: 0.5rem;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -34,25 +34,25 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-    --background: 202 77% 7%; /* rich-black */
-    --foreground: 38 68% 81%; /* wheat */
-    --card: 175 41% 16%; /* dark-slate-gray */
-    --card-foreground: 38 68% 81%;
-    --popover: 175 41% 16%;
-    --popover-foreground: 38 68% 81%;
-    --primary: 38 68% 81%; /* wheat */
-    --primary-foreground: 202 77% 7%; /* rich-black */
-    --secondary: 175 41% 20%; /* slightly-lighter-dark-slate-gray */
-    --secondary-foreground: 38 68% 81%; /* wheat */
-    --muted: 175 41% 20%;
-    --muted-foreground: 38 68% 71%;
-    --accent: 22 100% 38%; /* mahogany */
-    --accent-foreground: 38 68% 81%; /* wheat */
+    --background: 180 5% 8%; /* night */
+    --foreground: 348 100% 99%; /* snow */
+    --card: 180 5% 8%; /* night */
+    --card-foreground: 348 100% 99%; /* snow */
+    --popover: 180 5% 8%; /* night */
+    --popover-foreground: 348 100% 99%; /* snow */
+    --primary: 170 64% 69%; /* tiffany-blue */
+    --primary-foreground: 180 5% 8%; /* night */
+    --secondary: 75 5% 16%; /* jet */
+    --secondary-foreground: 348 100% 99%; /* snow */
+    --muted: 75 5% 22%; /* lighter jet */
+    --muted-foreground: 348 100% 89%; /* darker snow */
+    --accent: 171 50% 40%; /* persian-green */
+    --accent-foreground: 348 100% 99%; /* snow */
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
-    --border: 175 41% 25%;
-    --input: 175 41% 25%;
-    --ring: 22 100% 38%;
+    --border: 75 5% 26%;
+    --input: 75 5% 26%;
+    --ring: 170 64% 69%; /* tiffany-blue */
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
