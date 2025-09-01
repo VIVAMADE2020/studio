@@ -7,19 +7,19 @@ const services = [
   {
     icon: <User className="h-10 w-10 text-accent" />,
     title: "Prêt Personnel",
-    description: "Financez vos projets personnels, voyages, ou études avec un prêt flexible et des taux compétitifs.",
+    description: "Financez vos projets personnels, voyages, ou études avec un prêt flexible et profitez de notre taux fixe avantageux de 2%.",
     link: "/services/pret-personnel",
   },
   {
     icon: <Home className="h-10 w-10 text-accent" />,
     title: "Prêt Immobilier",
-    description: "Devenez propriétaire ou investissez dans l'immobilier avec nos solutions de financement sur-mesure.",
+    description: "Devenez propriétaire ou investissez dans l'immobilier avec nos solutions de financement sur-mesure, toujours à un taux fixe de 2%.",
     link: "/services/pret-immobilier",
   },
   {
     icon: <Car className="h-10 w-10 text-accent" />,
     title: "Prêt Auto",
-    description: "Achetez le véhicule de vos rêves, neuf ou d'occasion, grâce à nos offres de crédit auto avantageuses.",
+    description: "Achetez le véhicule de vos rêves, neuf ou d'occasion, grâce à nos offres de crédit auto avantageuses à un taux fixe de 2%.",
     link: "/services/pret-auto",
   },
 ];

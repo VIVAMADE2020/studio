@@ -9,11 +9,11 @@ import { notFound } from 'next/navigation';
 const serviceData: { [key: string]: any } = {
   'pret-personnel': {
     title: 'Prêt Personnel',
-    tagline: 'Financez tous vos projets, sans contraintes.',
-    description: 'Le prêt personnel est une solution de financement polyvalente qui vous permet de concrétiser vos envies sans avoir à justifier de l\'utilisation des fonds. Mariage, voyage, équipement, études... vous êtes libre de l\'utiliser comme bon vous semble.',
+    tagline: 'Financez tous vos projets, sans contraintes, à un taux fixe de 2%.',
+    description: 'Le prêt personnel est une solution de financement polyvalente qui vous permet de concrétiser vos envies sans avoir à justifier de l\'utilisation des fonds. Mariage, voyage, équipement, études... vous êtes libre de l\'utiliser comme bon vous semble, en profitant d\'un taux fixe avantageux de 2%.',
     image: 'https://picsum.photos/1200/800?random=10',
     dataAiHint: 'happy person traveling',
-    features: ['Flexibilité d\'utilisation', 'Taux fixe et mensualités constantes', 'Réponse de principe rapide', 'Aucun apport personnel exigé'],
+    features: ['Taux fixe exceptionnel de 2%', 'Flexibilité d\'utilisation', 'Mensualités constantes', 'Réponse de principe rapide', 'Aucun apport personnel exigé'],
     steps: [
         { title: 'Simulation en ligne', description: 'Utilisez notre simulateur pour définir le montant et la durée de votre prêt.' },
         { title: 'Demande simplifiée', description: 'Remplissez notre formulaire en quelques minutes et téléchargez vos pièces justificatives.' },
@@ -22,11 +22,11 @@ const serviceData: { [key: string]: any } = {
   },
   'pret-immobilier': {
     title: 'Prêt Immobilier',
-    tagline: 'Devenez propriétaire en toute sérénité.',
-    description: 'Que ce soit pour l\'achat de votre résidence principale, secondaire ou un investissement locatif, notre prêt immobilier vous offre les meilleures conditions pour réaliser votre projet de vie. Nos experts vous accompagnent à chaque étape.',
+    tagline: 'Devenez propriétaire en toute sérénité avec notre taux fixe de 2%.',
+    description: 'Que ce soit pour l\'achat de votre résidence principale, secondaire ou un investissement locatif, notre prêt immobilier vous offre les meilleures conditions pour réaliser votre projet de vie. Nos experts vous accompagnent à chaque étape, avec la garantie d\'un taux fixe de 2%.',
     image: 'https://picsum.photos/1200/800?random=11',
     dataAiHint: 'modern house exterior',
-    features: ['Accompagnement personnalisé', 'Taux parmi les plus compétitifs du marché', 'Flexibilité des remboursements', 'Assurance emprunteur optimisée'],
+    features: ['Taux fixe garanti de 2%', 'Accompagnement personnalisé', 'Flexibilité des remboursements', 'Assurance emprunteur optimisée'],
     steps: [
         { title: 'Étude de votre capacité d\'emprunt', description: 'Nos conseillers évaluent avec vous votre budget et votre projet.' },
         { title: 'Montage du dossier de financement', description: 'Nous vous aidons à constituer un dossier solide pour maximiser vos chances de succès.' },
@@ -35,11 +35,11 @@ const serviceData: { [key: string]: any } = {
   },
    'pret-auto': {
     title: 'Prêt Auto',
-    tagline: 'Prenez la route avec le véhicule de vos rêves.',
-    description: 'Financez l\'achat de votre voiture neuve ou d\'occasion avec un crédit auto simple et avantageux. Nous vous proposons des solutions adaptées à votre budget pour que vous puissiez conduire en toute tranquillité.',
+    tagline: 'Prenez la route avec le véhicule de vos rêves à un taux fixe de 2%.',
+    description: 'Financez l\'achat de votre voiture neuve ou d\'occasion avec un crédit auto simple et avantageux. Nous vous proposons des solutions adaptées à votre budget pour que vous puissiez conduire en toute tranquillité, grâce à notre taux fixe de 2%.',
     image: 'https://picsum.photos/1200/800?random=12',
     dataAiHint: 'new car road',
-    features: ['Pour véhicules neufs ou d\'occasion', 'Sans apport personnel obligatoire', 'Mensualités fixes', 'Processus 100% en ligne'],
+    features: ['Taux d\'intérêt fixe de 2%', 'Pour véhicules neufs ou d\'occasion', 'Sans apport personnel obligatoire', 'Mensualités fixes', 'Processus 100% en ligne'],
     steps: [
         { title: 'Choisissez votre véhicule', description: 'Trouvez la voiture qui vous correspond chez le concessionnaire de votre choix.' },
         { title: 'Faites votre demande de prêt', description: 'Simulez et soumettez votre demande en quelques clics sur notre site.' },
