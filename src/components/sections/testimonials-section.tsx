@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Quote } from "lucide-react";
@@ -8,6 +10,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+import Autoplay from "embla-carousel-autoplay";
+import React from "react";
 
 const testimonials = [
   { name: "Sophie L.", role: "Paris, France", text: "Processus simple et rapide. J'ai pu financer ma startup grâce à VIXCAPITAL." },
@@ -43,47 +47,54 @@ const testimonials = [
 ];
 
 export function TestimonialsSection() {
-  return (
-    <section className="py-16 md:py-24 bg-secondary/50">
-      <div className="container px-4 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-primary">Ils nous font confiance à travers l'Europe</h2>
-        <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
-          La satisfaction de nos clients est notre plus grande récompense.
-        </p>
-        <Carousel
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-          className="w-full max-w-4xl mx-auto mt-12"
-        >
-          <CarouselContent>
-            {testimonials.map((testimonial, index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                 <div className="p-1 h-full">
-                    <Card className="text-left bg-card h-full">
-                      <CardContent className="flex flex-col h-full p-6">
-                        <Quote className="w-8 h-8 text-accent mb-4" />
-                        <p className="text-muted-foreground flex-grow">"{testimonial.text}"</p>
-                        <div className="flex items-center mt-6 pt-6 border-t">
-                          <Avatar>
-                            <AvatarFallback>{testimonial.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                          </Avatar>
-                          <div className="ml-4">
-                            <p className="font-semibold text-primary">{testimonial.name}</p>
-                            <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                 </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="hidden md:flex" />
-          <CarouselNext className="hidden md:flex" />
-        </Carousel>
-      </div>
-    </section>
-  );
+    const plugin = React.useRef(
+        Autoplay({ delay: 2000, stopOnInteraction: true })
+    );
+
+    return (
+        <section className="py-16 md:py-24 bg-secondary/50">
+            <div className="container px-4 text-center">
+                <h2 className="text-3xl md:text-4xl font-bold text-primary">Ils nous font confiance à travers l'Europe</h2>
+                <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
+                    La satisfaction de nos clients est notre plus grande récompense.
+                </p>
+                <Carousel
+                    plugins={[plugin.current]}
+                    opts={{
+                        align: "start",
+                        loop: true,
+                    }}
+                    onMouseEnter={plugin.current.stop}
+                    onMouseLeave={plugin.current.reset}
+                    className="w-full max-w-4xl mx-auto mt-12"
+                >
+                    <CarouselContent>
+                        {testimonials.map((testimonial, index) => (
+                            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                                <div className="p-1 h-full">
+                                    <Card className="text-left bg-card h-full">
+                                        <CardContent className="flex flex-col h-full p-6">
+                                            <Quote className="w-8 h-8 text-accent mb-4" />
+                                            <p className="text-muted-foreground flex-grow">"{testimonial.text}"</p>
+                                            <div className="flex items-center mt-6 pt-6 border-t">
+                                                <Avatar>
+                                                    <AvatarFallback>{testimonial.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                                                </Avatar>
+                                                <div className="ml-4">
+                                                    <p className="font-semibold text-primary">{testimonial.name}</p>
+                                                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                                                </div>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </div>
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="hidden md:flex" />
+                    <CarouselNext className="hidden md:flex" />
+                </Carousel>
+            </div>
+        </section>
+    );
 }
