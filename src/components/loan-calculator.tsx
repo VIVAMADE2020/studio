@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 
-// Using a fixed annual interest rate for simplicity
-const ANNUAL_INTEREST_RATE = 0.05; // 5%
+// Using a fixed annual interest rate
+const ANNUAL_INTEREST_RATE = 0.02; // 2%
 
 export function LoanCalculator() {
   const [amount, setAmount] = useState(50000);
@@ -88,7 +88,7 @@ export function LoanCalculator() {
           {formatCurrency(monthlyPayment)}
         </p>
         <p className="text-xs text-muted-foreground mt-2">
-            Basé sur un taux d'intérêt annuel de {ANNUAL_INTEREST_RATE * 100}%. Ceci est une estimation.
+            Basé sur un taux d'intérêt annuel fixe de {ANNUAL_INTEREST_RATE * 100}%. Ceci est une estimation.
         </p>
       </div>
     </div>
