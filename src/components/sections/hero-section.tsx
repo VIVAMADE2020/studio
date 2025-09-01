@@ -7,14 +7,7 @@ export function HeroSection() {
   return (
     <section className="relative w-full h-[80vh] min-h-[600px] flex items-center justify-center bg-secondary/50">
       <div className="absolute inset-0">
-        <Image 
-          src="https://picsum.photos/1920/1080"
-          alt="Meeting in a modern office"
-          fill
-          className="object-cover opacity-20"
-          data-ai-hint="modern office finance"
-          priority
-        />
+        
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
       </div>
       <div className="container relative z-10 text-center px-4">
