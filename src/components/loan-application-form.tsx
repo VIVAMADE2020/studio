@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -48,8 +49,16 @@ export function LoanApplicationForm() {
   const { toast } = useToast();
   
   const form = useForm<FormData>({
-    resolver: zodResolver(currentStep === 0 ? step1Schema : step2Schema),
-    mode: 'onBlur'
+    resolver: zodResolver(currentStep === 0 ? step1Schema : formSchema),
+    mode: 'onBlur',
+    defaultValues: {
+        loanType: '',
+        amount: undefined,
+        duration: undefined,
+        firstName: '',
+        lastName: '',
+        email: '',
+    },
   });
 
   const { control, handleSubmit, trigger, getValues } = form;
@@ -104,7 +113,11 @@ export function LoanApplicationForm() {
     if (!output) return;
 
     if (currentStep < steps.length - 1) {
-      setCurrentStep(step => step + 1);
+        if (currentStep === 1) {
+            const finalOutput = await trigger(); // Validate all fields before final step
+            if (!finalOutput) return;
+        }
+        setCurrentStep(step => step + 1);
     }
   };
 
@@ -161,7 +174,7 @@ export function LoanApplicationForm() {
                                     <FormItem>
                                         <Label htmlFor="amount">Montant souhaité (€)</Label>
                                         <FormControl>
-                                            <Input id="amount" type="number" {...field} placeholder="Ex: 10000" onChange={e => field.onChange(e.target.valueAsNumber)} />
+                                            <Input id="amount" type="number" {...field} placeholder="Ex: 10000" onChange={e => field.onChange(e.target.valueAsNumber || undefined)} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -174,7 +187,7 @@ export function LoanApplicationForm() {
                                     <FormItem>
                                         <Label htmlFor="duration">Durée de remboursement (en mois)</Label>
                                         <FormControl>
-                                            <Input id="duration" type="number" {...field} placeholder="Ex: 60" onChange={e => field.onChange(e.target.valueAsNumber)} />
+                                            <Input id="duration" type="number" {...field} placeholder="Ex: 60" onChange={e => field.onChange(e.target.valueAsNumber || undefined)} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -298,3 +311,5 @@ export function LoanApplicationForm() {
     </div>
   );
 }
+
+    
