@@ -21,16 +21,16 @@ export function PartnersSection() {
                 </p>
                 <div className="mt-12">
                     <div className="relative flex overflow-hidden group">
-                        <div className="flex space-x-12 animate-marquee group-hover:paused">
+                        <div className="flex space-x-16 animate-marquee group-hover:paused">
                             {partners.map((partner, index) => (
-                                <div key={index} className="flex items-center justify-center space-x-2 flex-shrink-0">
+                                <div key={index} className="flex items-center justify-center flex-shrink-0">
                                     <span className="text-2xl font-semibold text-muted-foreground">{partner.name}</span>
                                 </div>
                             ))}
                         </div>
-                        <div className="absolute top-0 flex space-x-12 animate-marquee2 group-hover:paused">
+                        <div className="absolute top-0 flex space-x-16 animate-marquee2 group-hover:paused">
                              {partners.map((partner, index) => (
-                                <div key={index + partners.length} className="flex items-center justify-center space-x-2 flex-shrink-0">
+                                <div key={index + partners.length} className="flex items-center justify-center flex-shrink-0">
                                     <span className="text-2xl font-semibold text-muted-foreground">{partner.name}</span>
                                 </div>
                             ))}
