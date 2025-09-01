@@ -97,7 +97,7 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
                     <CardContent className="space-y-4">
                         <p className="text-sm text-muted-foreground">Prêt à vous lancer ? Faites une demande en ligne et obtenez une réponse rapidement.</p>
                         <Button asChild size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
-                            <Link href="/contact">Demander un {service.title}</Link>
+                            <Link href="/demande-pret">Demander un {service.title}</Link>
                         </Button>
                     </CardContent>
                 </Card>

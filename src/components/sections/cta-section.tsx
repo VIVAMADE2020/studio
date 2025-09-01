@@ -11,7 +11,7 @@ export function CtaSection() {
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-            <Link href="/contact">Faire une demande</Link>
+            <Link href="/demande-pret">Faire une demande</Link>
           </Button>
           <Button asChild size="lg" variant="outline">
             <Link href="/services">Voir nos services</Link>

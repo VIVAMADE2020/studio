@@ -40,7 +40,7 @@ export function Header() {
               <Link href="/login">Espace Client</Link>
             </Button>
             <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
-              <Link href="/contact">Demander un prêt</Link>
+              <Link href="/demande-pret">Demander un prêt</Link>
             </Button>
           </div>
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -75,7 +75,7 @@ export function Header() {
                     <Link href="/login" onClick={() => setIsOpen(false)}>Espace Client</Link>
                   </Button>
                   <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 w-full text-lg">
-                    <Link href="/contact" onClick={() => setIsOpen(false)}>Demander un prêt</Link>
+                    <Link href="/demande-pret" onClick={() => setIsOpen(false)}>Demander un prêt</Link>
                   </Button>
                 </div>
               </div>
