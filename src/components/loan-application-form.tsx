@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useState, useEffect } from 'react';
+import { useForm, SubmitHandler, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
@@ -15,7 +15,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const step1Schema = z.object({
   loanType: z.string({ required_error: 'Veuillez sélectionner un type de prêt.' }),
   amount: z.coerce.number().min(1000, 'Le montant minimum est de 1000 €.'),
-  duration: z.coerce.number().min(1, 'La durée minimum est de 1 an.').max(30, 'La durée maximum est de 30 ans.'),
+  duration: z.coerce.number().min(12, 'La durée minimum est de 12 mois.').max(360, 'La durée maximum est de 360 mois (30 ans).'),
 });
 
 const step2Schema = z.object({
@@ -37,15 +37,43 @@ const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(value);
 };
 
+// Fixed annual interest rate
+const ANNUAL_INTEREST_RATE = 0.02;
+
 export function LoanApplicationForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<Partial<FormData>>({});
+  const [monthlyPayment, setMonthlyPayment] = useState(0);
   const { toast } = useToast();
   
-  const { register, handleSubmit, trigger, getValues, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, trigger, getValues, control, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(currentStep === 0 ? step1Schema : step2Schema),
     defaultValues: formData,
+    mode: 'onBlur'
   });
+
+  const watchedAmount = useWatch({ control, name: 'amount' });
+  const watchedDuration = useWatch({ control, name: 'duration' });
+
+  useEffect(() => {
+    const amount = watchedAmount;
+    const durationInMonths = watchedDuration;
+
+    if (amount > 0 && durationInMonths > 0) {
+      const monthlyRate = ANNUAL_INTEREST_RATE / 12;
+      if (monthlyRate > 0) {
+          const payment =
+            (amount * monthlyRate * Math.pow(1 + monthlyRate, durationInMonths)) /
+            (Math.pow(1 + monthlyRate, durationInMonths) - 1);
+          setMonthlyPayment(payment);
+      } else {
+          setMonthlyPayment(amount / durationInMonths);
+      }
+    } else {
+        setMonthlyPayment(0);
+    }
+  }, [watchedAmount, watchedDuration]);
+
 
   const processForm: SubmitHandler<FormData> = async (data) => {
     // In a real app, you'd send the data to your backend
@@ -62,6 +90,7 @@ export function LoanApplicationForm() {
     // Reset form or redirect
     setCurrentStep(0);
     setFormData({});
+    setMonthlyPayment(0);
   };
 
   type FieldName = keyof FormData;
@@ -103,7 +132,10 @@ export function LoanApplicationForm() {
                         <h3 className="text-xl font-semibold text-primary">{steps[0].title}</h3>
                         <div>
                             <Label>Type de prêt</Label>
-                             <Select onValueChange={(value) => setFormData(p => ({...p, loanType: value}))} defaultValue={formData.loanType}>
+                             <Select onValueChange={(value) => {
+                                const currentValues = getValues();
+                                setFormData({...currentValues, loanType: value});
+                             }} defaultValue={formData.loanType}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Sélectionnez un type de prêt..." />
                                 </SelectTrigger>
@@ -122,10 +154,22 @@ export function LoanApplicationForm() {
                             {errors.amount && <p className="text-red-500 text-sm mt-1">{errors.amount.message}</p>}
                         </div>
                         <div>
-                            <Label htmlFor="duration">Durée de remboursement (années)</Label>
-                            <Input id="duration" type="number" {...register('duration')} placeholder="Ex: 5" />
+                            <Label htmlFor="duration">Durée de remboursement (en mois)</Label>
+                            <Input id="duration" type="number" {...register('duration')} placeholder="Ex: 60" />
                             {errors.duration && <p className="text-red-500 text-sm mt-1">{errors.duration.message}</p>}
                         </div>
+
+                        {monthlyPayment > 0 && (
+                             <div className="mt-6 pt-6 border-t border-border text-center bg-secondary/20 p-4 rounded-lg">
+                                <p className="text-muted-foreground">Votre mensualité estimée</p>
+                                <p className="text-3xl font-bold text-accent mt-1">
+                                {formatCurrency(monthlyPayment)} / mois
+                                </p>
+                                <p className="text-xs text-muted-foreground mt-1">
+                                    Basé sur un taux d'intérêt annuel fixe de {ANNUAL_INTEREST_RATE * 100}%. Ceci est une estimation.
+                                </p>
+                            </div>
+                        )}
                     </motion.div>
                 )}
 
@@ -172,7 +216,9 @@ export function LoanApplicationForm() {
                             <div className="text-sm text-muted-foreground">
                                 <p><strong>Type de prêt:</strong> {formData.loanType}</p>
                                 <p><strong>Montant:</strong> {formatCurrency(formData.amount || 0)}</p>
-                                <p><strong>Durée:</strong> {formData.duration} ans</p>
+                                <p><strong>Durée:</strong> {formData.duration} mois</p>
+                                {monthlyPayment > 0 && <p><strong>Mensualité estimée:</strong> {formatCurrency(monthlyPayment)} / mois</p>}
+                                <hr className="my-2" />
                                 <p><strong>Nom:</strong> {formData.firstName} {formData.lastName}</p>
                                 <p><strong>Email:</strong> {formData.email}</p>
                             </div>
@@ -205,3 +251,5 @@ export function LoanApplicationForm() {
     </div>
   );
 }
+
+    
