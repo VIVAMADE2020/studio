@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { useForm, SubmitHandler, useWatch } from 'react-hook-form';
+import { useForm, SubmitHandler, useWatch, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+
 
 const step1Schema = z.object({
   loanType: z.string({ required_error: 'Veuillez sélectionner un type de prêt.' }),
@@ -42,15 +44,15 @@ const ANNUAL_INTEREST_RATE = 0.02;
 
 export function LoanApplicationForm() {
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<Partial<FormData>>({});
   const [monthlyPayment, setMonthlyPayment] = useState(0);
   const { toast } = useToast();
   
-  const { register, handleSubmit, trigger, getValues, control, formState: { errors } } = useForm<FormData>({
+  const form = useForm<FormData>({
     resolver: zodResolver(currentStep === 0 ? step1Schema : step2Schema),
-    defaultValues: formData,
     mode: 'onBlur'
   });
+
+  const { control, handleSubmit, trigger, getValues } = form;
 
   const watchedAmount = useWatch({ control, name: 'amount' });
   const watchedDuration = useWatch({ control, name: 'duration' });
@@ -89,7 +91,7 @@ export function LoanApplicationForm() {
 
     // Reset form or redirect
     setCurrentStep(0);
-    setFormData({});
+    form.reset();
     setMonthlyPayment(0);
   };
 
@@ -100,8 +102,6 @@ export function LoanApplicationForm() {
     const output = await trigger(fields as FieldName[], { shouldFocus: true });
     
     if (!output) return;
-
-    setFormData(prev => ({...prev, ...getValues()}));
 
     if (currentStep < steps.length - 1) {
       setCurrentStep(step => step + 1);
@@ -118,138 +118,183 @@ export function LoanApplicationForm() {
     <div className="space-y-8">
         <Progress value={((currentStep + 1) / steps.length) * 100} className="w-full" />
         
-        <form onSubmit={handleSubmit(processForm)} className="overflow-x-hidden">
-            <AnimatePresence mode="wait">
-                 {currentStep === 0 && (
-                    <motion.div
-                        key="step1"
-                        initial={{ x: 300, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        exit={{ x: -300, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="space-y-6"
-                    >
-                        <h3 className="text-xl font-semibold text-primary">{steps[0].title}</h3>
-                        <div>
-                            <Label>Type de prêt</Label>
-                             <Select onValueChange={(value) => {
-                                const currentValues = getValues();
-                                setFormData({...currentValues, loanType: value});
-                             }} defaultValue={formData.loanType}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Sélectionnez un type de prêt..." />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="pret-personnel">Prêt Personnel</SelectItem>
-                                    <SelectItem value="pret-immobilier">Prêt Immobilier</SelectItem>
-                                    <SelectItem value="pret-auto">Prêt Auto</SelectItem>
-                                    <SelectItem value="autre">Autre</SelectItem>
-                                </SelectContent>
-                            </Select>
-                            {errors.loanType && <p className="text-red-500 text-sm mt-1">{errors.loanType.message}</p>}
-                        </div>
-                        <div>
-                            <Label htmlFor="amount">Montant souhaité (€)</Label>
-                            <Input id="amount" type="number" {...register('amount')} placeholder="Ex: 10000" />
-                            {errors.amount && <p className="text-red-500 text-sm mt-1">{errors.amount.message}</p>}
-                        </div>
-                        <div>
-                            <Label htmlFor="duration">Durée de remboursement (en mois)</Label>
-                            <Input id="duration" type="number" {...register('duration')} placeholder="Ex: 60" />
-                            {errors.duration && <p className="text-red-500 text-sm mt-1">{errors.duration.message}</p>}
-                        </div>
+        <Form {...form}>
+            <form onSubmit={handleSubmit(processForm)} className="overflow-x-hidden">
+                <AnimatePresence mode="wait">
+                     {currentStep === 0 && (
+                        <motion.div
+                            key="step1"
+                            initial={{ x: 300, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: -300, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="space-y-6"
+                        >
+                            <h3 className="text-xl font-semibold text-primary">{steps[0].title}</h3>
+                             <FormField
+                              control={form.control}
+                              name="loanType"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <Label>Type de prêt</Label>
+                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Sélectionnez un type de prêt..." />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      <SelectItem value="pret-personnel">Prêt Personnel</SelectItem>
+                                      <SelectItem value="pret-immobilier">Prêt Immobilier</SelectItem>
+                                      <SelectItem value="pret-auto">Prêt Auto</SelectItem>
+                                      <SelectItem value="autre">Autre</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="amount"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <Label htmlFor="amount">Montant souhaité (€)</Label>
+                                        <FormControl>
+                                            <Input id="amount" type="number" {...field} placeholder="Ex: 10000" onChange={e => field.onChange(e.target.valueAsNumber)} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                             <FormField
+                                control={form.control}
+                                name="duration"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <Label htmlFor="duration">Durée de remboursement (en mois)</Label>
+                                        <FormControl>
+                                            <Input id="duration" type="number" {...field} placeholder="Ex: 60" onChange={e => field.onChange(e.target.valueAsNumber)} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-                        {monthlyPayment > 0 && (
-                             <div className="mt-6 pt-6 border-t border-border text-center bg-secondary/20 p-4 rounded-lg">
-                                <p className="text-muted-foreground">Votre mensualité estimée</p>
-                                <p className="text-3xl font-bold text-accent mt-1">
-                                {formatCurrency(monthlyPayment)} / mois
-                                </p>
-                                <p className="text-xs text-muted-foreground mt-1">
-                                    Basé sur un taux d'intérêt annuel fixe de {ANNUAL_INTEREST_RATE * 100}%. Ceci est une estimation.
-                                </p>
+                            {monthlyPayment > 0 && (
+                                 <div className="mt-6 pt-6 border-t border-border text-center bg-secondary/20 p-4 rounded-lg">
+                                    <p className="text-muted-foreground">Votre mensualité estimée</p>
+                                    <p className="text-3xl font-bold text-accent mt-1">
+                                    {formatCurrency(monthlyPayment)} / mois
+                                    </p>
+                                    <p className="text-xs text-muted-foreground mt-1">
+                                        Basé sur un taux d'intérêt annuel fixe de {ANNUAL_INTEREST_RATE * 100}%. Ceci est une estimation.
+                                    </p>
+                                </div>
+                            )}
+                        </motion.div>
+                    )}
+
+                    {currentStep === 1 && (
+                         <motion.div
+                            key="step2"
+                            initial={{ x: 300, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: -300, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="space-y-6"
+                        >
+                            <h3 className="text-xl font-semibold text-primary">{steps[1].title}</h3>
+                             <FormField
+                                control={form.control}
+                                name="firstName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <Label>Prénom</Label>
+                                        <FormControl>
+                                            <Input placeholder="John" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="lastName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <Label>Nom</Label>
+                                        <FormControl>
+                                            <Input placeholder="Doe" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                           <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <Label>Email</Label>
+                                        <FormControl>
+                                            <Input type="email" placeholder="john.doe@email.com" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </motion.div>
+                    )}
+                    
+                    {currentStep === 2 && (
+                        <motion.div
+                            key="step3"
+                            initial={{ x: 300, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: -300, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="space-y-6"
+                        >
+                            <h3 className="text-xl font-semibold text-primary">{steps[2].title}</h3>
+                            <div className="p-6 bg-secondary/20 rounded-lg space-y-4">
+                                <h4 className="font-semibold text-foreground">Récapitulatif de votre demande</h4>
+                                <div className="text-sm text-muted-foreground">
+                                    <p><strong>Type de prêt:</strong> {getValues("loanType")}</p>
+                                    <p><strong>Montant:</strong> {formatCurrency(getValues("amount") || 0)}</p>
+                                    <p><strong>Durée:</strong> {getValues("duration")} mois</p>
+                                    {monthlyPayment > 0 && <p><strong>Mensualité estimée:</strong> {formatCurrency(monthlyPayment)} / mois</p>}
+                                    <hr className="my-2" />
+                                    <p><strong>Nom:</strong> {getValues("firstName")} {getValues("lastName")}</p>
+                                    <p><strong>Email:</strong> {getValues("email")}</p>
+                                </div>
+                                <p className="text-xs text-muted-foreground pt-4">En cliquant sur "Soumettre ma demande", vous confirmez que les informations sont correctes.</p>
                             </div>
-                        )}
-                    </motion.div>
-                )}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
-                {currentStep === 1 && (
-                     <motion.div
-                        key="step2"
-                        initial={{ x: 300, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        exit={{ x: -300, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="space-y-6"
-                    >
-                        <h3 className="text-xl font-semibold text-primary">{steps[1].title}</h3>
-                        <div>
-                            <Label htmlFor="firstName">Prénom</Label>
-                            <Input id="firstName" {...register('firstName')} placeholder="John" />
-                            {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName.message}</p>}
-                        </div>
-                        <div>
-                            <Label htmlFor="lastName">Nom</Label>
-                            <Input id="lastName" {...register('lastName')} placeholder="Doe" />
-                            {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName.message}</p>}
-                        </div>
-                        <div>
-                            <Label htmlFor="email">Email</Label>
-                            <Input id="email" type="email" {...register('email')} placeholder="john.doe@email.com" />
-                            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
-                        </div>
-                    </motion.div>
-                )}
-                
-                {currentStep === 2 && (
-                    <motion.div
-                        key="step3"
-                        initial={{ x: 300, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        exit={{ x: -300, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="space-y-6"
-                    >
-                        <h3 className="text-xl font-semibold text-primary">{steps[2].title}</h3>
-                        <div className="p-6 bg-secondary/20 rounded-lg space-y-4">
-                            <h4 className="font-semibold text-foreground">Récapitulatif de votre demande</h4>
-                            <div className="text-sm text-muted-foreground">
-                                <p><strong>Type de prêt:</strong> {formData.loanType}</p>
-                                <p><strong>Montant:</strong> {formatCurrency(formData.amount || 0)}</p>
-                                <p><strong>Durée:</strong> {formData.duration} mois</p>
-                                {monthlyPayment > 0 && <p><strong>Mensualité estimée:</strong> {formatCurrency(monthlyPayment)} / mois</p>}
-                                <hr className="my-2" />
-                                <p><strong>Nom:</strong> {formData.firstName} {formData.lastName}</p>
-                                <p><strong>Email:</strong> {formData.email}</p>
-                            </div>
-                            <p className="text-xs text-muted-foreground pt-4">En cliquant sur "Soumettre ma demande", vous confirmez que les informations sont correctes.</p>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                <div className="mt-8 pt-6 border-t flex justify-between">
+                    {currentStep > 0 && (
+                        <Button type="button" variant="outline" onClick={prevStep}>
+                            Précédent
+                        </Button>
+                    )}
+                    
+                    {currentStep < steps.length - 1 && (
+                         <Button type="button" onClick={nextStep} className="ml-auto bg-accent text-accent-foreground hover:bg-accent/90">
+                            Suivant
+                        </Button>
+                    )}
 
-            <div className="mt-8 pt-6 border-t flex justify-between">
-                {currentStep > 0 && (
-                    <Button type="button" variant="outline" onClick={prevStep}>
-                        Précédent
-                    </Button>
-                )}
-                
-                {currentStep < steps.length - 1 && (
-                     <Button type="button" onClick={nextStep} className="ml-auto bg-accent text-accent-foreground hover:bg-accent/90">
-                        Suivant
-                    </Button>
-                )}
-
-                {currentStep === steps.length - 1 && (
-                    <Button type="submit" className="ml-auto bg-accent text-accent-foreground hover:bg-accent/90">
-                        Soumettre ma demande
-                    </Button>
-                )}
-            </div>
-        </form>
+                    {currentStep === steps.length - 1 && (
+                        <Button type="submit" className="ml-auto bg-accent text-accent-foreground hover:bg-accent/90" disabled={form.formState.isSubmitting}>
+                            {form.formState.isSubmitting ? "Envoi en cours..." : "Soumettre ma demande"}
+                        </Button>
+                    )}
+                </div>
+            </form>
+        </Form>
     </div>
   );
 }
-
-    
