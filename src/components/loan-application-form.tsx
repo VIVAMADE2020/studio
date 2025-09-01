@@ -66,8 +66,8 @@ export function LoanApplicationForm() {
     mode: 'onBlur',
     defaultValues: {
         loanType: '',
-        amount: undefined,
-        duration: undefined,
+        amount: 0,
+        duration: 0,
         firstName: '',
         lastName: '',
         email: '',
@@ -77,7 +77,7 @@ export function LoanApplicationForm() {
         postalCode: '',
         city: '',
         employmentStatus: '',
-        monthlyIncome: undefined,
+        monthlyIncome: 0,
         housingStatus: '',
     },
   });
@@ -190,7 +190,7 @@ export function LoanApplicationForm() {
                                     <FormItem>
                                         <Label htmlFor="amount">Montant souhaité (€)</Label>
                                         <FormControl>
-                                            <Input id="amount" type="number" {...field} placeholder="Ex: 10000" onChange={e => field.onChange(e.target.valueAsNumber || undefined)} />
+                                            <Input id="amount" type="number" {...field} placeholder="Ex: 10000" onChange={e => field.onChange(e.target.valueAsNumber || 0)} value={field.value || ''} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -203,7 +203,7 @@ export function LoanApplicationForm() {
                                     <FormItem>
                                         <Label htmlFor="duration">Durée de remboursement (en mois)</Label>
                                         <FormControl>
-                                            <Input id="duration" type="number" {...field} placeholder="Ex: 60" onChange={e => field.onChange(e.target.valueAsNumber || undefined)} />
+                                            <Input id="duration" type="number" {...field} placeholder="Ex: 60" onChange={e => field.onChange(e.target.valueAsNumber || 0)} value={field.value || ''} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -262,7 +262,7 @@ export function LoanApplicationForm() {
                         >
                             <h3 className="text-xl font-semibold text-primary">{steps[2].title}</h3>
                             <FormField control={form.control} name="employmentStatus" render={({ field }) => ( <FormItem> <Label>Situation professionnelle</Label> <Select onValueChange={field.onChange} defaultValue={field.value}> <FormControl> <SelectTrigger> <SelectValue placeholder="Sélectionnez votre situation..." /> </SelectTrigger> </FormControl> <SelectContent> <SelectItem value="salarie">Salarié(e)</SelectItem> <SelectItem value="independant">Indépendant(e) / Chef d'entreprise</SelectItem> <SelectItem value="retraite">Retraité(e)</SelectItem> <SelectItem value="sans-emploi">Sans emploi</SelectItem> <SelectItem value="etudiant">Étudiant(e)</SelectItem> </SelectContent> </Select> <FormMessage /> </FormItem> )}/>
-                            <FormField control={form.control} name="monthlyIncome" render={({ field }) => ( <FormItem> <Label>Revenu mensuel net (€)</Label> <FormControl> <Input type="number" placeholder="2500" {...field} onChange={e => field.onChange(e.target.valueAsNumber || undefined)} /> </FormControl> <FormMessage /> </FormItem> )}/>
+                            <FormField control={form.control} name="monthlyIncome" render={({ field }) => ( <FormItem> <Label>Revenu mensuel net (€)</Label> <FormControl> <Input type="number" placeholder="2500" {...field} onChange={e => field.onChange(e.target.valueAsNumber || 0)} value={field.value || ''} /> </FormControl> <FormMessage /> </FormItem> )}/>
                             <FormField control={form.control} name="housingStatus" render={({ field }) => ( <FormItem> <Label>Situation de logement</Label> <Select onValueChange={field.onChange} defaultValue={field.value}> <FormControl> <SelectTrigger> <SelectValue placeholder="Sélectionnez votre situation..." /> </SelectTrigger> </FormControl> <SelectContent> <SelectItem value="proprietaire">Propriétaire</SelectItem> <SelectItem value="locataire">Locataire</SelectItem> <SelectItem value="gratuit">Hébergé(e) à titre gratuit</SelectItem> <SelectItem value="autre">Autre</SelectItem> </SelectContent> </Select> <FormMessage /> </FormItem> )}/>
                         </motion.div>
                     )}
