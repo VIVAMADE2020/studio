@@ -18,18 +18,18 @@ export function PartnersSection() {
                     Nous collaborons avec les plus grandes institutions financières pour vous offrir les meilleures solutions.
                 </p>
                 <div className="mt-12">
-                    <div className="relative flex overflow-hidden group">
-                        <div className="flex space-x-32 animate-marquee group-hover:paused">
+                    <div className="relative flex overflow-x-hidden group">
+                        <div className="flex space-x-48 animate-marquee group-hover:paused">
                             {partners.map((partner, index) => (
-                                <div key={index} className="flex items-center justify-center flex-shrink-0">
-                                    <span className="text-2xl font-semibold text-muted-foreground">{partner.name}</span>
+                                <div key={index} className="flex-shrink-0">
+                                    <span className="text-2xl font-semibold text-muted-foreground whitespace-nowrap">{partner.name}</span>
                                 </div>
                             ))}
                         </div>
-                        <div className="absolute top-0 flex space-x-32 animate-marquee2 group-hover:paused">
+                        <div className="absolute top-0 flex space-x-48 animate-marquee2 group-hover:paused">
                              {partners.map((partner, index) => (
-                                <div key={index + partners.length} className="flex items-center justify-center flex-shrink-0">
-                                    <span className="text-2xl font-semibold text-muted-foreground">{partner.name}</span>
+                                <div key={index + partners.length} className="flex-shrink-0">
+                                    <span className="text-2xl font-semibold text-muted-foreground whitespace-nowrap">{partner.name}</span>
                                 </div>
                             ))}
                         </div>
@@ -45,8 +45,8 @@ export function PartnersSection() {
 // theme: {
 //   extend: {
 //     animation: {
-//       marquee: 'marquee 25s linear infinite',
-//       marquee2: 'marquee2 25s linear infinite',
+//       marquee: 'marquee 40s linear infinite',
+//       marquee2: 'marquee2 40s linear infinite',
 //     },
 //     keyframes: {
 //       marquee: {
