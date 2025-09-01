@@ -12,11 +12,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 
 const step1Schema = z.object({
-  loanType: z.string({ required_error: 'Veuillez sélectionner un type de prêt.' }),
+  loanType: z.string({ required_error: 'Veuillez sélectionner un type de prêt.' }).min(1, 'Veuillez sélectionner un type de prêt.'),
   amount: z.coerce.number().min(1000, 'Le montant minimum est de 1000 €.'),
   duration: z.coerce.number().min(12, 'La durée minimum est de 12 mois.').max(360, 'La durée maximum est de 360 mois (30 ans).'),
 });
@@ -33,9 +33,9 @@ const step2Schema = z.object({
 });
 
 const step3Schema = z.object({
-  employmentStatus: z.string({ required_error: 'Veuillez sélectionner votre situation professionnelle.'}),
+  employmentStatus: z.string({ required_error: 'Veuillez sélectionner votre situation professionnelle.'}).min(1, 'Veuillez sélectionner votre situation professionnelle.'),
   monthlyIncome: z.coerce.number().min(0, 'Le revenu ne peut être négatif.'),
-  housingStatus: z.string({ required_error: 'Veuillez sélectionner votre situation de logement.'}),
+  housingStatus: z.string({ required_error: 'Veuillez sélectionner votre situation de logement.'}).min(1, 'Veuillez sélectionner votre situation de logement.'),
 });
 
 const fullSchema = step1Schema.merge(step2Schema).merge(step3Schema);
@@ -163,7 +163,7 @@ export function LoanApplicationForm() {
                               name="loanType"
                               render={({ field }) => (
                                 <FormItem>
-                                  <Label>Type de prêt</Label>
+                                  <FormLabel>Type de prêt</FormLabel>
                                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                       <SelectTrigger>
@@ -188,7 +188,7 @@ export function LoanApplicationForm() {
                                 name="amount"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <Label htmlFor="amount">Montant souhaité (€)</Label>
+                                        <FormLabel htmlFor="amount">Montant souhaité (€)</FormLabel>
                                         <FormControl>
                                             <Input id="amount" type="number" {...field} placeholder="Ex: 10000" onChange={e => field.onChange(e.target.valueAsNumber || 0)} value={field.value || ''} />
                                         </FormControl>
@@ -201,7 +201,7 @@ export function LoanApplicationForm() {
                                 name="duration"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <Label htmlFor="duration">Durée de remboursement (en mois)</Label>
+                                        <FormLabel htmlFor="duration">Durée de remboursement (en mois)</FormLabel>
                                         <FormControl>
                                             <Input id="duration" type="number" {...field} placeholder="Ex: 60" onChange={e => field.onChange(e.target.valueAsNumber || 0)} value={field.value || ''} />
                                         </FormControl>
@@ -235,18 +235,18 @@ export function LoanApplicationForm() {
                         >
                             <h3 className="text-xl font-semibold text-primary">{steps[1].title}</h3>
                              <div className="grid md:grid-cols-2 gap-4">
-                                <FormField control={form.control} name="firstName" render={({ field }) => ( <FormItem> <Label>Prénom</Label> <FormControl> <Input placeholder="John" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
-                                <FormField control={form.control} name="lastName" render={({ field }) => ( <FormItem> <Label>Nom</Label> <FormControl> <Input placeholder="Doe" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
+                                <FormField control={form.control} name="firstName" render={({ field }) => ( <FormItem> <FormLabel>Prénom</FormLabel> <FormControl> <Input placeholder="John" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
+                                <FormField control={form.control} name="lastName" render={({ field }) => ( <FormItem> <FormLabel>Nom</FormLabel> <FormControl> <Input placeholder="Doe" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
                               </div>
                                <div className="grid md:grid-cols-2 gap-4">
-                                <FormField control={form.control} name="email" render={({ field }) => ( <FormItem> <Label>Email</Label> <FormControl> <Input type="email" placeholder="john.doe@email.com" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
-                                <FormField control={form.control} name="phone" render={({ field }) => ( <FormItem> <Label>Téléphone</Label> <FormControl> <Input placeholder="0612345678" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
+                                <FormField control={form.control} name="email" render={({ field }) => ( <FormItem> <FormLabel>Email</FormLabel> <FormControl> <Input type="email" placeholder="john.doe@email.com" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
+                                <FormField control={form.control} name="phone" render={({ field }) => ( <FormItem> <FormLabel>Téléphone</FormLabel> <FormControl> <Input placeholder="0612345678" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
                                </div>
-                               <FormField control={form.control} name="dateOfBirth" render={({ field }) => ( <FormItem> <Label>Date de naissance</Label> <FormControl> <Input type="date" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
-                               <FormField control={form.control} name="address" render={({ field }) => ( <FormItem> <Label>Adresse</Label> <FormControl> <Input placeholder="123 Rue de la République" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
+                               <FormField control={form.control} name="dateOfBirth" render={({ field }) => ( <FormItem> <FormLabel>Date de naissance</FormLabel> <FormControl> <Input type="date" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
+                               <FormField control={form.control} name="address" render={({ field }) => ( <FormItem> <FormLabel>Adresse</FormLabel> <FormControl> <Input placeholder="123 Rue de la République" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
                                <div className="grid md:grid-cols-2 gap-4">
-                                <FormField control={form.control} name="postalCode" render={({ field }) => ( <FormItem> <Label>Code Postal</Label> <FormControl> <Input placeholder="75001" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
-                                <FormField control={form.control} name="city" render={({ field }) => ( <FormItem> <Label>Ville</Label> <FormControl> <Input placeholder="Paris" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
+                                <FormField control={form.control} name="postalCode" render={({ field }) => ( <FormItem> <FormLabel>Code Postal</FormLabel> <FormControl> <Input placeholder="75001" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
+                                <FormField control={form.control} name="city" render={({ field }) => ( <FormItem> <FormLabel>Ville</FormLabel> <FormControl> <Input placeholder="Paris" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
                                </div>
                         </motion.div>
                     )}
@@ -261,9 +261,9 @@ export function LoanApplicationForm() {
                             className="space-y-6"
                         >
                             <h3 className="text-xl font-semibold text-primary">{steps[2].title}</h3>
-                            <FormField control={form.control} name="employmentStatus" render={({ field }) => ( <FormItem> <Label>Situation professionnelle</Label> <Select onValueChange={field.onChange} defaultValue={field.value}> <FormControl> <SelectTrigger> <SelectValue placeholder="Sélectionnez votre situation..." /> </SelectTrigger> </FormControl> <SelectContent> <SelectItem value="salarie">Salarié(e)</SelectItem> <SelectItem value="independant">Indépendant(e) / Chef d'entreprise</SelectItem> <SelectItem value="retraite">Retraité(e)</SelectItem> <SelectItem value="sans-emploi">Sans emploi</SelectItem> <SelectItem value="etudiant">Étudiant(e)</SelectItem> </SelectContent> </Select> <FormMessage /> </FormItem> )}/>
-                            <FormField control={form.control} name="monthlyIncome" render={({ field }) => ( <FormItem> <Label>Revenu mensuel net (€)</Label> <FormControl> <Input type="number" placeholder="2500" {...field} onChange={e => field.onChange(e.target.valueAsNumber || 0)} value={field.value || ''} /> </FormControl> <FormMessage /> </FormItem> )}/>
-                            <FormField control={form.control} name="housingStatus" render={({ field }) => ( <FormItem> <Label>Situation de logement</Label> <Select onValueChange={field.onChange} defaultValue={field.value}> <FormControl> <SelectTrigger><SelectValue placeholder="Sélectionnez votre situation..." /></SelectTrigger></FormControl><SelectContent> <SelectItem value="proprietaire">Propriétaire</SelectItem> <SelectItem value="locataire">Locataire</SelectItem> <SelectItem value="gratuit">Hébergé(e) à titre gratuit</SelectItem> <SelectItem value="autre">Autre</SelectItem> </SelectContent> </Select> <FormMessage /> </FormItem> )}/>
+                            <FormField control={form.control} name="employmentStatus" render={({ field }) => ( <FormItem> <FormLabel>Situation professionnelle</FormLabel> <Select onValueChange={field.onChange} defaultValue={field.value}> <FormControl> <SelectTrigger> <SelectValue placeholder="Sélectionnez votre situation..." /> </SelectTrigger> </FormControl> <SelectContent> <SelectItem value="salarie">Salarié(e)</SelectItem> <SelectItem value="independant">Indépendant(e) / Chef d'entreprise</SelectItem> <SelectItem value="retraite">Retraité(e)</SelectItem> <SelectItem value="sans-emploi">Sans emploi</SelectItem> <SelectItem value="etudiant">Étudiant(e)</SelectItem> </SelectContent> </Select> <FormMessage /> </FormItem> )}/>
+                            <FormField control={form.control} name="monthlyIncome" render={({ field }) => ( <FormItem> <FormLabel>Revenu mensuel net (€)</FormLabel> <FormControl> <Input type="number" placeholder="2500" {...field} onChange={e => field.onChange(e.target.valueAsNumber || 0)} value={field.value || ''} /> </FormControl> <FormMessage /> </FormItem> )}/>
+                            <FormField control={form.control} name="housingStatus" render={({ field }) => ( <FormItem> <FormLabel>Situation de logement</FormLabel> <Select onValueChange={field.onChange} defaultValue={field.value}> <FormControl> <SelectTrigger><SelectValue placeholder="Sélectionnez votre situation..." /></SelectTrigger></FormControl><SelectContent> <SelectItem value="proprietaire">Propriétaire</SelectItem> <SelectItem value="locataire">Locataire</SelectItem> <SelectItem value="gratuit">Hébergé(e) à titre gratuit</SelectItem> <SelectItem value="autre">Autre</SelectItem> </SelectContent> </Select> <FormMessage /> </FormItem> )}/>
                         </motion.div>
                     )}
 
@@ -333,5 +333,3 @@ export function LoanApplicationForm() {
     </div>
   );
 }
-
-    
