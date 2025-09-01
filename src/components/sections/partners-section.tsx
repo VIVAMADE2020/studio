@@ -1,14 +1,12 @@
 import { Landmark } from "lucide-react";
 
 const partners = [
-    { name: "BNP Paribas" },
     { name: "Société Générale" },
     { name: "Crédit Agricole" },
     { name: "AXA" },
     { name: "Allianz" },
     { name: "Crédit Mutuel" },
     { name: "Visa" },
-    { name: "Mastercard" },
 ];
 
 export function PartnersSection() {
