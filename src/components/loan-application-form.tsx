@@ -2,12 +2,11 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { useForm, SubmitHandler, useWatch, Controller } from 'react-hook-form';
+import { useForm, SubmitHandler, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
@@ -188,7 +187,7 @@ export function LoanApplicationForm() {
                                 name="amount"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel htmlFor="amount">Montant souhaité (€)</FormLabel>
+                                        <FormLabel>Montant souhaité (€)</FormLabel>
                                         <FormControl>
                                             <Input id="amount" type="number" {...field} placeholder="Ex: 10000" onChange={e => field.onChange(e.target.valueAsNumber || 0)} value={field.value || ''} />
                                         </FormControl>
@@ -201,7 +200,7 @@ export function LoanApplicationForm() {
                                 name="duration"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel htmlFor="duration">Durée de remboursement (en mois)</FormLabel>
+                                        <FormLabel>Durée de remboursement (en mois)</FormLabel>
                                         <FormControl>
                                             <Input id="duration" type="number" {...field} placeholder="Ex: 60" onChange={e => field.onChange(e.target.valueAsNumber || 0)} value={field.value || ''} />
                                         </FormControl>
@@ -333,3 +332,5 @@ export function LoanApplicationForm() {
     </div>
   );
 }
+
+    
