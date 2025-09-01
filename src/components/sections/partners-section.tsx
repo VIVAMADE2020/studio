@@ -7,6 +7,8 @@ const partners = [
     { name: "AXA" },
     { name: "Allianz" },
     { name: "Crédit Mutuel" },
+    { name: "Visa" },
+    { name: "Mastercard" },
 ];
 
 export function PartnersSection() {
@@ -22,7 +24,6 @@ export function PartnersSection() {
                         <div className="flex space-x-12 animate-marquee group-hover:paused">
                             {partners.map((partner, index) => (
                                 <div key={index} className="flex items-center justify-center space-x-2 flex-shrink-0">
-                                    <Landmark className="h-8 w-8 text-muted-foreground" />
                                     <span className="text-2xl font-semibold text-muted-foreground">{partner.name}</span>
                                 </div>
                             ))}
@@ -30,7 +31,6 @@ export function PartnersSection() {
                         <div className="absolute top-0 flex space-x-12 animate-marquee2 group-hover:paused">
                              {partners.map((partner, index) => (
                                 <div key={index + partners.length} className="flex items-center justify-center space-x-2 flex-shrink-0">
-                                    <Landmark className="h-8 w-8 text-muted-foreground" />
                                     <span className="text-2xl font-semibold text-muted-foreground">{partner.name}</span>
                                 </div>
                             ))}
