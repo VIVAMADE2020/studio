@@ -65,14 +65,6 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
     <div className="bg-background">
       {/* Hero */}
       <section className="relative py-20 md:py-32 bg-secondary/50">
-        <Image
-          src={service.image}
-          alt={service.title}
-          fill
-          className="object-cover opacity-20"
-          data-ai-hint={service.dataAiHint}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-secondary/50 to-transparent"></div>
         <div className="container relative text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-primary">{service.title}</h1>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">{service.tagline}</p>
