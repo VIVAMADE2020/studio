@@ -45,7 +45,7 @@ export function LoanApplicationForm() {
     defaultValues: {
       loanType: undefined,
       amount: 0,
-      duration: 0,
+      duration: 12,
       firstName: '',
       lastName: '',
       email: '',
@@ -202,25 +202,39 @@ export function LoanApplicationForm() {
                         <FormItem className="space-y-3">
                           <FormLabel>Situation professionnelle</FormLabel>
                           <FormControl>
-                            <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                            <RadioGroup
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                              className="flex flex-col space-y-1"
+                            >
                               <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl><RadioGroupItem value="cdi" /></FormControl>
+                                <FormControl>
+                                  <RadioGroupItem value="cdi" />
+                                </FormControl>
                                 <FormLabel className="font-normal">CDI</FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl><RadioGroupItem value="cdd" /></FormControl>
+                                <FormControl>
+                                  <RadioGroupItem value="cdd" />
+                                </FormControl>
                                 <FormLabel className="font-normal">CDD</FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl><RadioGroupItem value="independant" /></FormControl>
+                                <FormControl>
+                                  <RadioGroupItem value="independant" />
+                                </FormControl>
                                 <FormLabel className="font-normal">Indépendant</FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl><RadioGroupItem value="retraite" /></FormControl>
+                                <FormControl>
+                                  <RadioGroupItem value="retraite" />
+                                </FormControl>
                                 <FormLabel className="font-normal">Retraité</FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl><RadioGroupItem value="autre" /></FormControl>
+                                <FormControl>
+                                  <RadioGroupItem value="autre" />
+                                </FormControl>
                                 <FormLabel className="font-normal">Autre</FormLabel>
                               </FormItem>
                             </RadioGroup>
@@ -236,18 +250,28 @@ export function LoanApplicationForm() {
                       render={({ field }) => (
                         <FormItem className="space-y-3">
                           <FormLabel>Situation de logement</FormLabel>
-                           <FormControl>
-                            <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                          <FormControl>
+                            <RadioGroup
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                              className="flex flex-col space-y-1"
+                            >
                                 <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl><RadioGroupItem value="proprietaire" /></FormControl>
+                                    <FormControl>
+                                      <RadioGroupItem value="proprietaire" />
+                                    </FormControl>
                                     <FormLabel className="font-normal">Propriétaire</FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl><RadioGroupItem value="locataire" /></FormControl>
+                                    <FormControl>
+                                      <RadioGroupItem value="locataire" />
+                                    </FormControl>
                                     <FormLabel className="font-normal">Locataire</FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl><RadioGroupItem value="gratuit" /></FormControl>
+                                    <FormControl>
+                                      <RadioGroupItem value="gratuit" />
+                                    </FormControl>
                                     <FormLabel className="font-normal">Hébergé à titre gratuit</FormLabel>
                                 </FormItem>
                             </RadioGroup>
