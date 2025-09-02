@@ -43,9 +43,9 @@ export function LoanApplicationForm() {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      loanType: undefined,
-      amount: 0,
-      duration: 12,
+      loanType: '',
+      amount: 10000,
+      duration: 60,
       firstName: '',
       lastName: '',
       email: '',
@@ -54,9 +54,9 @@ export function LoanApplicationForm() {
       address: '',
       city: '',
       zipCode: '',
-      employmentStatus: undefined,
-      monthlyIncome: 0,
-      housingStatus: undefined,
+      employmentStatus: '',
+      monthlyIncome: 2500,
+      housingStatus: '',
     },
   });
 
@@ -157,8 +157,8 @@ export function LoanApplicationForm() {
                         </FormItem>
                       )}
                     />
-                    <FormField control={form.control} name="amount" render={({ field }) => (<FormItem><FormLabel>Montant souhaité (€)</FormLabel><FormControl><Input type="number" placeholder="Ex: 10000" {...field} onChange={e => field.onChange(e.target.value === '' ? '' : Number(e.target.value))} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name="duration" render={({ field }) => (<FormItem><FormLabel>Durée de remboursement (mois)</FormLabel><FormControl><Input type="number" placeholder="Ex: 60" {...field} onChange={e => field.onChange(e.target.value === '' ? '' : Number(e.target.value))} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="amount" render={({ field }) => (<FormItem><FormLabel>Montant souhaité (€)</FormLabel><FormControl><Input type="number" placeholder="Ex: 10000" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="duration" render={({ field }) => (<FormItem><FormLabel>Durée de remboursement (mois)</FormLabel><FormControl><Input type="number" placeholder="Ex: 60" {...field} /></FormControl><FormMessage /></FormItem>)} />
 
                     {monthlyPayment > 0 && (
                      <div className="mt-6 pt-6 border-t border-border text-center bg-secondary/20 p-4 rounded-lg">
@@ -243,7 +243,7 @@ export function LoanApplicationForm() {
                         </FormItem>
                       )}
                     />
-                    <FormField control={form.control} name="monthlyIncome" render={({ field }) => ( <FormItem> <FormLabel>Revenu mensuel net (€)</FormLabel> <FormControl> <Input type="number" placeholder="Ex: 2500" {...field} onChange={e => field.onChange(e.target.value === '' ? '' : Number(e.target.value))} /> </FormControl> <FormMessage /> </FormItem> )}/>
+                    <FormField control={form.control} name="monthlyIncome" render={({ field }) => ( <FormItem> <FormLabel>Revenu mensuel net (€)</FormLabel> <FormControl> <Input type="number" placeholder="Ex: 2500" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
                      <FormField
                       control={form.control}
                       name="housingStatus"
