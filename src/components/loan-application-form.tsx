@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, FieldPath } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
@@ -16,8 +16,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 const loanDetailsSchema = z.object({
   loanType: z.string({ required_error: 'Veuillez sélectionner un type de prêt.' }),
-  amount: z.coerce.number().min(1000, 'Le montant minimum est de 1000 €.').optional().or(z.literal('')),
-  duration: z.coerce.number().min(12, 'La durée minimum est de 12 mois.').max(360, 'La durée maximum est de 360 mois.').optional().or(z.literal('')),
+  amount: z.coerce.number().min(1000, 'Le montant minimum est de 1000 €.'),
+  duration: z.coerce.number().min(12, 'La durée minimum est de 12 mois.').max(360, 'La durée maximum est de 360 mois.'),
 });
 
 const personalInfoSchema = z.object({
@@ -33,7 +33,7 @@ const personalInfoSchema = z.object({
 
 const financialInfoSchema = z.object({
   employmentStatus: z.string({ required_error: "La situation professionnelle est requise." }),
-  monthlyIncome: z.coerce.number().min(0, "Le revenu doit être positif.").optional().or(z.literal('')),
+  monthlyIncome: z.coerce.number().min(0, "Le revenu doit être positif."),
   housingStatus: z.string({ required_error: "La situation de logement est requise." }),
 });
 
@@ -51,9 +51,9 @@ export function LoanApplicationForm() {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      loanType: '',
-      amount: '',
-      duration: '',
+      loanType: undefined,
+      amount: 0,
+      duration: 0,
       firstName: '',
       lastName: '',
       email: '',
@@ -62,9 +62,9 @@ export function LoanApplicationForm() {
       address: '',
       city: '',
       zipCode: '',
-      employmentStatus: '',
-      monthlyIncome: '',
-      housingStatus: '',
+      employmentStatus: undefined,
+      monthlyIncome: 0,
+      housingStatus: undefined,
     },
   });
 
@@ -90,7 +90,7 @@ export function LoanApplicationForm() {
     }
   }, [watchedAmount, watchedDuration]);
   
-  const steps = [
+  const steps: { title: string, schema?: z.ZodObject<any>, fields?: FieldPath<FormData>[] }[] = [
     { title: "Détails du prêt", schema: loanDetailsSchema, fields: ["loanType", "amount", "duration"] },
     { title: "Informations personnelles", schema: personalInfoSchema, fields: ["firstName", "lastName", "email", "phone", "birthDate", "address", "city", "zipCode"] },
     { title: "Situation financière", schema: financialInfoSchema, fields: ["employmentStatus", "monthlyIncome", "housingStatus"] },
@@ -98,9 +98,9 @@ export function LoanApplicationForm() {
   ];
 
   const nextStep = async () => {
-    const currentSchema = steps[currentStep].schema;
-    if (currentSchema) {
-      const result = await form.trigger(steps[currentStep].fields as FieldPath<FormData>[]);
+    const currentFields = steps[currentStep].fields;
+    if (currentFields) {
+      const result = await form.trigger(currentFields);
       if (result) {
         setCurrentStep(s => s + 1);
       }
@@ -123,7 +123,7 @@ export function LoanApplicationForm() {
   }
   
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(value);
+    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(value || 0);
   };
   
   return (
@@ -148,19 +148,19 @@ export function LoanApplicationForm() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Type de prêt</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                              <SelectTrigger><SelectValue placeholder="Sélectionnez un type de prêt..." /></SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="pret-personnel">Prêt Personnel</SelectItem>
-                              <SelectItem value="pret-immobilier">Prêt Immobilier</SelectItem>
-                              <SelectItem value="pret-auto">Prêt Auto</SelectItem>
-                              <SelectItem value="pret-professionnel">Prêt Professionnel</SelectItem>
-                              <SelectItem value="rachat-de-credits">Rachat de Crédits</SelectItem>
-                              <SelectItem value="pret-etudiant">Prêt Étudiant</SelectItem>
-                            </SelectContent>
-                          </Select>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                    <SelectTrigger><SelectValue placeholder="Sélectionnez un type de prêt..." /></SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    <SelectItem value="pret-personnel">Prêt Personnel</SelectItem>
+                                    <SelectItem value="pret-immobilier">Prêt Immobilier</SelectItem>
+                                    <SelectItem value="pret-auto">Prêt Auto</SelectItem>
+                                    <SelectItem value="pret-professionnel">Prêt Professionnel</SelectItem>
+                                    <SelectItem value="rachat-de-credits">Rachat de Crédits</SelectItem>
+                                    <SelectItem value="pret-etudiant">Prêt Étudiant</SelectItem>
+                                </SelectContent>
+                            </Select>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -203,35 +203,77 @@ export function LoanApplicationForm() {
             {currentStep === 2 && (
                 <div className="space-y-6">
                     <h3 className="text-xl font-semibold text-primary">{steps[2].title}</h3>
-                    <FormField control={form.control} name="employmentStatus" render={({ field }) => (
-                         <FormItem className="space-y-3">
-                            <FormLabel>Situation professionnelle</FormLabel>
-                            <FormControl>
-                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
-                                    <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="cdi" /></FormControl><FormLabel className="font-normal">CDI</FormLabel></FormItem>
-                                    <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="cdd" /></FormControl><FormLabel className="font-normal">CDD</FormLabel></FormItem>
-                                    <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="independant" /></FormControl><FormLabel className="font-normal">Indépendant</FormLabel></FormItem>
-                                    <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="retraite" /></FormControl><FormLabel className="font-normal">Retraité</FormLabel></FormItem>
-                                    <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="autre" /></FormControl><FormLabel className="font-normal">Autre</FormLabel></FormItem>
-                                </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
+                    <FormField
+                      control={form.control}
+                      name="employmentStatus"
+                      render={({ field }) => (
+                        <FormItem className="space-y-3">
+                          <FormLabel>Situation professionnelle</FormLabel>
+                          <FormControl>
+                            <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                              <FormItem className="flex items-center space-x-3 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value="cdi" />
+                                </FormControl>
+                                <FormLabel className="font-normal">CDI</FormLabel>
+                              </FormItem>
+                              <FormItem className="flex items-center space-x-3 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value="cdd" />
+                                </FormControl>
+                                <FormLabel className="font-normal">CDD</FormLabel>
+                              </FormItem>
+                              <FormItem className="flex items-center space-x-3 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value="independant" />
+                                </FormControl>
+                                <FormLabel className="font-normal">Indépendant</FormLabel>
+                              </FormItem>
+                              <FormItem className="flex items-center space-x-3 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value="retraite" />
+                                </FormControl>
+                                <FormLabel className="font-normal">Retraité</FormLabel>
+                              </FormItem>
+                              <FormItem className="flex items-center space-x-3 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value="autre" />
+                                </FormControl>
+                                <FormLabel className="font-normal">Autre</FormLabel>
+                              </FormItem>
+                            </RadioGroup>
+                          </FormControl>
+                          <FormMessage />
                         </FormItem>
-                    )}/>
+                      )}
+                    />
                     <FormField control={form.control} name="monthlyIncome" render={({ field }) => ( <FormItem> <FormLabel>Revenu mensuel net (€)</FormLabel> <FormControl> <Input type="number" placeholder="Ex: 2500" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
-                     <FormField control={form.control} name="housingStatus" render={({ field }) => (
-                         <FormItem className="space-y-3">
-                            <FormLabel>Situation de logement</FormLabel>
-                            <FormControl>
-                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
-                                    <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="proprietaire" /></FormControl><FormLabel className="font-normal">Propriétaire</FormLabel></FormItem>
-                                    <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="locataire" /></FormControl><FormLabel className="font-normal">Locataire</FormLabel></FormItem>
-                                    <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="gratuit" /></FormControl><FormLabel className="font-normal">Hébergé à titre gratuit</FormLabel></FormItem>
-                                </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
+                     <FormField
+                      control={form.control}
+                      name="housingStatus"
+                      render={({ field }) => (
+                        <FormItem className="space-y-3">
+                          <FormLabel>Situation de logement</FormLabel>
+                           <FormControl>
+                            <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                                <FormItem className="flex items-center space-x-3 space-y-0">
+                                    <FormControl><RadioGroupItem value="proprietaire" /></FormControl>
+                                    <FormLabel className="font-normal">Propriétaire</FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center space-x-3 space-y-0">
+                                    <FormControl><RadioGroupItem value="locataire" /></FormControl>
+                                    <FormLabel className="font-normal">Locataire</FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center space-x-3 space-y-0">
+                                    <FormControl><RadioGroupItem value="gratuit" /></FormControl>
+                                    <FormLabel className="font-normal">Hébergé à titre gratuit</FormLabel>
+                                </FormItem>
+                            </RadioGroup>
+                          </FormControl>
+                          <FormMessage />
                         </FormItem>
-                    )}/>
+                      )}
+                    />
                 </div>
             )}
 
@@ -255,6 +297,7 @@ export function LoanApplicationForm() {
 
         <div className="flex justify-between pt-6 border-t">
           {currentStep > 0 && <Button type="button" variant="secondary" onClick={prevStep}>Précédent</Button>}
+          <div/>
           {currentStep < steps.length - 1 && <Button type="button" onClick={nextStep}>Suivant</Button>}
           {currentStep === steps.length - 1 && (
             <Button type="submit" disabled={form.formState.isSubmitting} className="w-full md:w-auto bg-accent text-accent-foreground hover:bg-accent/90">
