@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { useForm, FieldPath } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
@@ -14,13 +14,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { AnimatePresence, motion } from 'framer-motion';
 
-const loanDetailsSchema = z.object({
+const formSchema = z.object({
   loanType: z.string({ required_error: 'Veuillez sélectionner un type de prêt.' }),
   amount: z.coerce.number().min(1000, 'Le montant minimum est de 1000 €.'),
   duration: z.coerce.number().min(12, 'La durée minimum est de 12 mois.').max(360, 'La durée maximum est de 360 mois.'),
-});
-
-const personalInfoSchema = z.object({
   firstName: z.string().min(2, "Le prénom est requis."),
   lastName: z.string().min(2, "Le nom est requis."),
   email: z.string().email("L'email est invalide."),
@@ -29,15 +26,10 @@ const personalInfoSchema = z.object({
   address: z.string().min(5, "L'adresse est requise."),
   city: z.string().min(2, "La ville est requise."),
   zipCode: z.string().min(5, "Le code postal est requis."),
-});
-
-const financialInfoSchema = z.object({
   employmentStatus: z.string({ required_error: "La situation professionnelle est requise." }),
   monthlyIncome: z.coerce.number().min(0, "Le revenu doit être positif."),
   housingStatus: z.string({ required_error: "La situation de logement est requise." }),
 });
-
-const formSchema = loanDetailsSchema.merge(personalInfoSchema).merge(financialInfoSchema);
 
 type FormData = z.infer<typeof formSchema>;
 
@@ -90,17 +82,17 @@ export function LoanApplicationForm() {
     }
   }, [watchedAmount, watchedDuration]);
   
-  const steps: { title: string, schema?: z.ZodObject<any>, fields?: FieldPath<FormData>[] }[] = [
-    { title: "Détails du prêt", schema: loanDetailsSchema, fields: ["loanType", "amount", "duration"] },
-    { title: "Informations personnelles", schema: personalInfoSchema, fields: ["firstName", "lastName", "email", "phone", "birthDate", "address", "city", "zipCode"] },
-    { title: "Situation financière", schema: financialInfoSchema, fields: ["employmentStatus", "monthlyIncome", "housingStatus"] },
+  const steps = [
+    { title: "Détails du prêt", fields: ["loanType", "amount", "duration"] },
+    { title: "Informations personnelles", fields: ["firstName", "lastName", "email", "phone", "birthDate", "address", "city", "zipCode"] },
+    { title: "Situation financière", fields: ["employmentStatus", "monthlyIncome", "housingStatus"] },
     { title: "Récapitulatif" },
   ];
 
   const nextStep = async () => {
     const currentFields = steps[currentStep].fields;
     if (currentFields) {
-      const result = await form.trigger(currentFields);
+      const result = await form.trigger(currentFields as any);
       if (result) {
         setCurrentStep(s => s + 1);
       }
@@ -165,8 +157,8 @@ export function LoanApplicationForm() {
                         </FormItem>
                       )}
                     />
-                    <FormField control={form.control} name="amount" render={({ field }) => (<FormItem><FormLabel>Montant souhaité (€)</FormLabel><FormControl><Input type="number" placeholder="Ex: 10000" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name="duration" render={({ field }) => (<FormItem><FormLabel>Durée de remboursement (mois)</FormLabel><FormControl><Input type="number" placeholder="Ex: 60" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="amount" render={({ field }) => (<FormItem><FormLabel>Montant souhaité (€)</FormLabel><FormControl><Input type="number" placeholder="Ex: 10000" {...field} onChange={e => field.onChange(e.target.value === '' ? '' : Number(e.target.value))} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="duration" render={({ field }) => (<FormItem><FormLabel>Durée de remboursement (mois)</FormLabel><FormControl><Input type="number" placeholder="Ex: 60" {...field} onChange={e => field.onChange(e.target.value === '' ? '' : Number(e.target.value))} /></FormControl><FormMessage /></FormItem>)} />
 
                     {monthlyPayment > 0 && (
                      <div className="mt-6 pt-6 border-t border-border text-center bg-secondary/20 p-4 rounded-lg">
@@ -212,33 +204,23 @@ export function LoanApplicationForm() {
                           <FormControl>
                             <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
                               <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="cdi" />
-                                </FormControl>
+                                <FormControl><RadioGroupItem value="cdi" /></FormControl>
                                 <FormLabel className="font-normal">CDI</FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="cdd" />
-                                </FormControl>
+                                <FormControl><RadioGroupItem value="cdd" /></FormControl>
                                 <FormLabel className="font-normal">CDD</FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="independant" />
-                                </FormControl>
+                                <FormControl><RadioGroupItem value="independant" /></FormControl>
                                 <FormLabel className="font-normal">Indépendant</FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="retraite" />
-                                </FormControl>
+                                <FormControl><RadioGroupItem value="retraite" /></FormControl>
                                 <FormLabel className="font-normal">Retraité</FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="autre" />
-                                </FormControl>
+                                <FormControl><RadioGroupItem value="autre" /></FormControl>
                                 <FormLabel className="font-normal">Autre</FormLabel>
                               </FormItem>
                             </RadioGroup>
@@ -247,7 +229,7 @@ export function LoanApplicationForm() {
                         </FormItem>
                       )}
                     />
-                    <FormField control={form.control} name="monthlyIncome" render={({ field }) => ( <FormItem> <FormLabel>Revenu mensuel net (€)</FormLabel> <FormControl> <Input type="number" placeholder="Ex: 2500" {...field} /> </FormControl> <FormMessage /> </FormItem> )}/>
+                    <FormField control={form.control} name="monthlyIncome" render={({ field }) => ( <FormItem> <FormLabel>Revenu mensuel net (€)</FormLabel> <FormControl> <Input type="number" placeholder="Ex: 2500" {...field} onChange={e => field.onChange(e.target.value === '' ? '' : Number(e.target.value))} /> </FormControl> <FormMessage /> </FormItem> )}/>
                      <FormField
                       control={form.control}
                       name="housingStatus"
