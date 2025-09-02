@@ -43,7 +43,7 @@ export function LoanApplicationForm() {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      loanType: '',
+      loanType: undefined,
       amount: 10000,
       duration: 60,
       firstName: '',
@@ -54,9 +54,9 @@ export function LoanApplicationForm() {
       address: '',
       city: '',
       zipCode: '',
-      employmentStatus: '',
+      employmentStatus: undefined,
       monthlyIncome: 2500,
-      housingStatus: '',
+      housingStatus: undefined,
     },
   });
 
@@ -201,44 +201,34 @@ export function LoanApplicationForm() {
                       render={({ field }) => (
                         <FormItem className="space-y-3">
                           <FormLabel>Situation professionnelle</FormLabel>
-                          <FormControl>
-                            <RadioGroup
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                              className="flex flex-col space-y-1"
-                            >
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="cdi" />
-                                </FormControl>
-                                <FormLabel className="font-normal">CDI</FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="cdd" />
-                                </FormControl>
-                                <FormLabel className="font-normal">CDD</FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="independant" />
-                                </FormControl>
-                                <FormLabel className="font-normal">Indépendant</FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="retraite" />
-                                </FormControl>
-                                <FormLabel className="font-normal">Retraité</FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="autre" />
-                                </FormControl>
-                                <FormLabel className="font-normal">Autre</FormLabel>
-                              </FormItem>
-                            </RadioGroup>
-                          </FormControl>
+                            <FormControl>
+                                <RadioGroup
+                                  onValueChange={field.onChange}
+                                  defaultValue={field.value}
+                                  className="flex flex-col space-y-1"
+                                >
+                                  <FormItem className="flex items-center space-x-3 space-y-0">
+                                      <RadioGroupItem value="cdi" />
+                                    <FormLabel className="font-normal">CDI</FormLabel>
+                                  </FormItem>
+                                  <FormItem className="flex items-center space-x-3 space-y-0">
+                                      <RadioGroupItem value="cdd" />
+                                    <FormLabel className="font-normal">CDD</FormLabel>
+                                  </FormItem>
+                                  <FormItem className="flex items-center space-x-3 space-y-0">
+                                      <RadioGroupItem value="independant" />
+                                    <FormLabel className="font-normal">Indépendant</FormLabel>
+                                  </FormItem>
+                                  <FormItem className="flex items-center space-x-3 space-y-0">
+                                      <RadioGroupItem value="retraite" />
+                                    <FormLabel className="font-normal">Retraité</FormLabel>
+                                  </FormItem>
+                                  <FormItem className="flex items-center space-x-3 space-y-0">
+                                      <RadioGroupItem value="autre" />
+                                    <FormLabel className="font-normal">Autre</FormLabel>
+                                  </FormItem>
+                                </RadioGroup>
+                            </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -250,32 +240,26 @@ export function LoanApplicationForm() {
                       render={({ field }) => (
                         <FormItem className="space-y-3">
                           <FormLabel>Situation de logement</FormLabel>
-                          <FormControl>
-                            <RadioGroup
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                              className="flex flex-col space-y-1"
-                            >
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                      <RadioGroupItem value="proprietaire" />
-                                    </FormControl>
-                                    <FormLabel className="font-normal">Propriétaire</FormLabel>
-                                </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                      <RadioGroupItem value="locataire" />
-                                    </FormControl>
-                                    <FormLabel className="font-normal">Locataire</FormLabel>
-                                </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                      <RadioGroupItem value="gratuit" />
-                                    </FormControl>
-                                    <FormLabel className="font-normal">Hébergé à titre gratuit</FormLabel>
-                                </FormItem>
-                            </RadioGroup>
-                          </FormControl>
+                            <FormControl>
+                                <RadioGroup
+                                  onValueChange={field.onChange}
+                                  defaultValue={field.value}
+                                  className="flex flex-col space-y-1"
+                                >
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <RadioGroupItem value="proprietaire" />
+                                        <FormLabel className="font-normal">Propriétaire</FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <RadioGroupItem value="locataire" />
+                                        <FormLabel className="font-normal">Locataire</FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <RadioGroupItem value="gratuit" />
+                                        <FormLabel className="font-normal">Hébergé à titre gratuit</FormLabel>
+                                    </FormItem>
+                                </RadioGroup>
+                            </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
