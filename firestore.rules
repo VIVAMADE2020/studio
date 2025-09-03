@@ -1,17 +1,15 @@
 
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
+    // By default, deny all reads and writes
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    
+    // Allow clients to read their own data
     match /clients/{userId} {
-      // Un client authentifié ne peut lire que son propre document.
-      // Personne d'autre ne peut lire les documents des clients depuis le client.
-      // La lecture de la liste des clients se fait via une Action Serveur sécurisée.
-      allow read: if request.auth != null && request.auth.uid == userId;
-
-      // Personne ne peut écrire directement depuis le client.
-      // Toutes les écritures se font via des Actions Serveur sécurisées.
-      allow write: if false;
+      allow get: if request.auth != null && request.auth.uid == userId;
     }
   }
 }

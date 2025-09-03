@@ -37,6 +37,11 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
           displayName: `${firstName} ${lastName}`,
         });
 
+        const monthlyRate = interestRate ? (interestRate / 100) / 12 : 0;
+        const payment = loanAmount && interestRate && loanDuration && monthlyRate > 0
+            ? (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, loanDuration)) / (Math.pow(1 + monthlyRate, loanDuration) - 1)
+            : 0;
+
         const newClient: Omit<Client, 'id'> = {
             uid: userRecord.uid,
             firstName,
@@ -61,9 +66,6 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
         }
 
         if (accountType === 'loan' && loanAmount && interestRate && loanDuration) {
-             const monthlyRate = (interestRate / 100) / 12;
-             const payment = (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, loanDuration)) / (Math.pow(1 + monthlyRate, loanDuration) - 1);
-
             newClient.loanDetails = {
                 loanAmount,
                 interestRate,
@@ -81,8 +83,11 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
         if (error.code === 'auth/email-already-exists') {
             return { success: false, error: "Un compte avec cet email existe déjà." };
         }
+        if (error.code === 'auth/weak-password') {
+             return { success: false, error: "Le mot de passe est trop faible. Il doit faire au moins 6 caractères." };
+        }
         if (error.code === 'auth/invalid-password') {
-            return { success: false, error: "Le mot de passe est trop faible. Il doit faire au moins 6 caractères." };
+            return { success: false, error: "Le mot de passe est invalide." };
         }
         if (error.message.includes('FIREBASE_CONFIG')) {
              return { success: false, error: "Erreur de configuration Firebase côté serveur." };
@@ -140,19 +145,17 @@ export async function addTransactionAction(values: z.infer<typeof transactionSch
     }
 }
 
-export async function getClientsAction(): Promise<{ success: boolean, data?: Client[], error?: string }> {
+export async function getClientsAction(): Promise<Client[]> {
     try {
         const snapshot = await adminDb.collection('clients').get();
+        if (snapshot.empty) {
+            return [];
+        }
         const clients = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Client));
-        return { success: true, data: clients };
+        return clients;
     } catch (error: any) {
         console.error("Error getting clients (action):", error);
-        if (error.message.includes('Firebase ID token has invalid signature')) {
-             return { success: false, error: "Erreur d'authentification. Veuillez vous reconnecter." };
-        }
-        if (error.message.includes('FIREBASE_CONFIG')) {
-             return { success: false, error: "Le service d'administration Firebase n'est pas initialisé." };
-        }
-        return { success: false, error: 'Impossible de récupérer la liste des clients.' };
+        // We throw the error so the page can handle it, e.g. show an error message
+        throw new Error('Impossible de récupérer la liste des clients.');
     }
 }
