@@ -145,17 +145,16 @@ export async function addTransactionAction(values: z.infer<typeof transactionSch
     }
 }
 
-export async function getClientsAction(): Promise<Client[]> {
+export async function getClientsAction(): Promise<{data: Client[] | null, error: string | null}> {
     try {
         const snapshot = await adminDb.collection('clients').get();
         if (snapshot.empty) {
-            return [];
+            return { data: [], error: null };
         }
         const clients = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Client));
-        return clients;
+        return { data: clients, error: null };
     } catch (error: any) {
         console.error("Error getting clients (action):", error);
-        // We throw the error so the page can handle it, e.g. show an error message
-        throw new Error('Impossible de récupérer la liste des clients.');
+        return { data: null, error: 'Impossible de récupérer la liste des clients.' };
     }
 }

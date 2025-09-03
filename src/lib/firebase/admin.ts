@@ -1,17 +1,21 @@
 
 import admin from 'firebase-admin';
+import { App, getApps, initializeApp } from 'firebase-admin/app';
+import { getAuth } from 'firebase-admin/auth';
+import { getFirestore } from 'firebase-admin/firestore';
 
-// This file is only ever imported on the server, so we can use the `getApps`
-// check to ensure we only initialize the app once per server instance.
-if (!admin.apps.length) {
-  try {
-    // App Hosting provides the FIREBASE_CONFIG environment variable,
-    // which the Firebase Admin SDK can use to initialize.
-    admin.initializeApp();
-  } catch (error: any) {
-    console.error('Firebase admin initialization error', error.stack);
+// This file is only ever imported on the server.
+// We use this pattern to ensure we only initialize the app once.
+function getFirebaseAdminApp(): App {
+  if (getApps().length > 0) {
+    return getApps()[0];
   }
+
+  // App Hosting provides the FIREBASE_CONFIG environment variable,
+  // which the Firebase Admin SDK can use to initialize.
+  return initializeApp();
 }
 
-export const auth = admin.auth();
-export const db = admin.firestore();
+export const adminApp = getFirebaseAdminApp();
+export const auth = getAuth(adminApp);
+export const db = getFirestore(adminApp);
