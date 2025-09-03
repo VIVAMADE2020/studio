@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency } from '@/lib/utils';
@@ -20,46 +20,55 @@ interface AmortizationRow {
 }
 
 interface LoanCalculatorProps {
-    amount: number;
-    duration: number;
-    onAmountChange: (value: number) => void;
-    onDurationChange: (value: number) => void;
+    amount?: number;
+    duration?: number;
+    onAmountChange?: (value: number) => void;
+    onDurationChange?: (value: number) => void;
     showCard?: boolean;
 }
 
 export function LoanCalculator({ 
-    amount, 
-    duration, 
+    amount: initialAmount = 50000, 
+    duration: initialDuration = 120, 
     onAmountChange, 
     onDurationChange,
     showCard = true,
 }: LoanCalculatorProps) {
-  const [_amount, setAmount] = useState(amount);
-  const [_duration, setDuration] = useState(duration);
+  const [_amount, setAmount] = useState(initialAmount);
+  const [_duration, setDuration] = useState(initialDuration);
   const [monthlyPayment, setMonthlyPayment] = useState(0);
   const [amortizationSchedule, setAmortizationSchedule] = useState<AmortizationRow[]>([]);
 
   useEffect(() => {
-    setAmount(amount);
-  }, [amount]);
+    if (initialAmount !== undefined) setAmount(initialAmount);
+  }, [initialAmount]);
 
   useEffect(() => {
-    setDuration(duration);
-  }, [duration]);
+    if (initialDuration !== undefined) setDuration(initialDuration);
+  }, [initialDuration]);
 
   useEffect(() => {
+    const parsedAmount = isNaN(Number(_amount)) ? 0 : Number(_amount);
+    const parsedDuration = isNaN(Number(_duration)) ? 0 : Number(_duration);
+
+    if (parsedAmount <= 0 || parsedDuration <= 0) {
+        setMonthlyPayment(0);
+        setAmortizationSchedule([]);
+        return;
+    }
+
     const monthlyRate = ANNUAL_INTEREST_RATE / 12;
-    const numberOfMonths = _duration;
+    const numberOfMonths = parsedDuration;
     
     let payment = 0;
     if (numberOfMonths > 0) {
         if (monthlyRate > 0) {
           payment =
-            (_amount * monthlyRate * Math.pow(1 + monthlyRate, numberOfMonths)) /
+            (parsedAmount * monthlyRate * Math.pow(1 + monthlyRate, numberOfMonths)) /
             (Math.pow(1 + monthlyRate, numberOfMonths) - 1);
           setMonthlyPayment(payment);
         } else {
-          payment = _amount / numberOfMonths;
+          payment = parsedAmount / numberOfMonths;
           setMonthlyPayment(payment);
         }
     } else {
@@ -67,9 +76,9 @@ export function LoanCalculator({
     }
     
     // Calculate amortization schedule
-    if (payment > 0) {
+    if (payment > 0 && isFinite(payment)) {
         const schedule: AmortizationRow[] = [];
-        let remainingBalance = _amount;
+        let remainingBalance = parsedAmount;
         for (let i = 1; i <= numberOfMonths; i++) {
             const interest = remainingBalance * monthlyRate;
             const principal = payment - interest;
@@ -88,57 +97,47 @@ export function LoanCalculator({
     }
 
   }, [_amount, _duration]);
-
-  const handleAmountChange = (value: number[]) => {
-      setAmount(value[0]);
-      onAmountChange(value[0]);
-  }
-
-  const handleDurationChange = (value: number[]) => {
-      setDuration(value[0]);
-      onDurationChange(value[0]);
-  }
   
-  const durationInYears = (_duration / 12).toFixed(1).replace('.0', '');
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.valueAsNumber || 0;
+      setAmount(value);
+      if(onAmountChange) onAmountChange(value);
+  }
+
+  const handleDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.valueAsNumber || 0;
+      setDuration(value);
+      if(onDurationChange) onDurationChange(value);
+  }
 
   const CalculatorContent = () => (
     <>
-      <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <Label htmlFor="amount">Montant du prêt</Label>
-          <span className="font-bold text-primary text-lg">{formatCurrency(_amount)}</span>
-        </div>
-        <Slider
-          id="amount"
-          min={1000}
-          max={500000}
-          step={1000}
-          value={[_amount]}
-          onValueChange={handleAmountChange}
-        />
-        <div className="flex justify-between text-xs text-muted-foreground">
-            <span>{formatCurrency(1000)}</span>
-            <span>{formatCurrency(500000)}</span>
-        </div>
-      </div>
-      
-      <div className="space-y-4">
-        <div className="flex justify-between items-center">
-            <Label htmlFor="duration">Durée du prêt</Label>
-            <span className="font-bold text-primary text-lg">{_duration} mois ({durationInYears} an{parseFloat(durationInYears) > 1 ? 's' : ''})</span>
-        </div>
-        <Slider
-          id="duration"
-          min={12}
-          max={360}
-          step={1}
-          value={[_duration]}
-          onValueChange={handleDurationChange}
-        />
-        <div className="flex justify-between text-xs text-muted-foreground">
-            <span>12 mois</span>
-            <span>360 mois</span>
-        </div>
+      <div className="grid md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="amount">Montant du prêt (€)</Label>
+            <Input
+              id="amount"
+              type="number"
+              value={_amount}
+              onChange={handleAmountChange}
+              placeholder="ex: 50000"
+              min="1000"
+              max="500000"
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="duration">Durée du prêt (en mois)</Label>
+            <Input
+              id="duration"
+              type="number"
+              value={_duration}
+              onChange={handleDurationChange}
+              placeholder="ex: 120"
+              min="12"
+              max="360"
+            />
+          </div>
       </div>
 
       <div className="mt-8 pt-6 border-t border-border text-center">
