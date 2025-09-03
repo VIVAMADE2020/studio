@@ -5,7 +5,7 @@ import { z } from "zod";
 const formSchema = z.object({
   loanType: z.string(),
   loanAmount: z.number(),
-  loanDuration: z.number(),
+  loanDuration: z.number().min(12).max(360), // Durée en mois
   firstName: z.string(),
   lastName: z.string(),
   email: z.string().email(),

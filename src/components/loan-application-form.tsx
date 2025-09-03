@@ -35,7 +35,7 @@ import { formatCurrency } from "@/lib/utils";
 const loanDetailsSchema = z.object({
   loanType: z.string({ required_error: "Veuillez sélectionner un type de prêt." }),
   loanAmount: z.coerce.number().min(1000, "Le montant minimum est de 1000€.").max(500000, "Le montant maximum est de 500 000€."),
-  loanDuration: z.coerce.number().min(1, "La durée minimale est de 1 an.").max(30, "La durée maximale est de 30 ans."),
+  loanDuration: z.coerce.number().min(12, "La durée minimale est de 12 mois.").max(360, "La durée maximale est de 360 mois (30 ans)."),
 });
 
 const personalInfoSchema = z.object({
@@ -74,7 +74,7 @@ export function LoanApplicationForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       loanAmount: 10000,
-      loanDuration: 5,
+      loanDuration: 60,
     },
   });
   
@@ -161,7 +161,7 @@ export function LoanApplicationForm() {
                 )}
               />
               <FormField control={form.control} name="loanAmount" render={({ field }) => (<FormItem><FormLabel>Montant souhaité</FormLabel><FormControl><Input type="number" placeholder="ex: 10000" {...field} /></FormControl><FormMessage /></FormItem>)} />
-              <FormField control={form.control} name="loanDuration" render={({ field }) => (<FormItem><FormLabel>Durée de remboursement (en années)</FormLabel><FormControl><Input type="number" placeholder="ex: 5" {...field} /></FormControl><FormMessage /></FormItem>)} />
+              <FormField control={form.control} name="loanDuration" render={({ field }) => (<FormItem><FormLabel>Durée de remboursement (en mois)</FormLabel><FormControl><Input type="number" placeholder="ex: 60" {...field} /></FormControl><FormMessage /></FormItem>)} />
             </div>
           )}
 
@@ -229,7 +229,7 @@ export function LoanApplicationForm() {
                     <CardContent className="pt-6 space-y-4">
                         <div><strong className="text-primary">Type de prêt:</strong> {formData.loanType}</div>
                         <div><strong className="text-primary">Montant:</strong> {formatCurrency(formData.loanAmount)}</div>
-                        <div><strong className="text-primary">Durée:</strong> {formData.loanDuration} ans</div>
+                        <div><strong className="text-primary">Durée:</strong> {formData.loanDuration} mois</div>
                         <hr/>
                         <div><strong className="text-primary">Nom:</strong> {formData.firstName} {formData.lastName}</div>
                         <div><strong className="text-primary">Email:</strong> {formData.email}</div>

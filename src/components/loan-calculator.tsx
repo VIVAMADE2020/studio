@@ -9,12 +9,12 @@ const ANNUAL_INTEREST_RATE = 0.02; // 2%
 
 export function LoanCalculator() {
   const [amount, setAmount] = useState(50000);
-  const [duration, setDuration] = useState(10); // in years
+  const [duration, setDuration] = useState(120); // in months
   const [monthlyPayment, setMonthlyPayment] = useState(0);
 
   useEffect(() => {
     const monthlyRate = ANNUAL_INTEREST_RATE / 12;
-    const numberOfMonths = duration * 12;
+    const numberOfMonths = duration;
     
     if (numberOfMonths > 0) {
         if (monthlyRate > 0) {
@@ -41,6 +41,9 @@ export function LoanCalculator() {
   const handleDurationChange = (value: number[]) => {
       setDuration(value[0]);
   }
+  
+  const durationInYears = (duration / 12).toFixed(1).replace('.0', '');
+
 
   return (
     <div className="space-y-8">
@@ -66,19 +69,19 @@ export function LoanCalculator() {
       <div className="space-y-4">
         <div className="flex justify-between items-center">
             <Label htmlFor="duration">Durée du prêt</Label>
-            <span className="font-bold text-primary text-lg">{duration} an{duration > 1 ? 's' : ''}</span>
+            <span className="font-bold text-primary text-lg">{duration} mois ({durationInYears} an{parseFloat(durationInYears) > 1 ? 's' : ''})</span>
         </div>
         <Slider
           id="duration"
-          min={1}
-          max={30}
+          min={12}
+          max={360}
           step={1}
           value={[duration]}
           onValueChange={handleDurationChange}
         />
         <div className="flex justify-between text-xs text-muted-foreground">
-            <span>1 an</span>
-            <span>30 ans</span>
+            <span>12 mois</span>
+            <span>360 mois</span>
         </div>
       </div>
 
