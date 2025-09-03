@@ -5,9 +5,10 @@ import { logoutAdmin, verifyAdminAuth } from '@/app/actions/admin-auth';
 import { AddClientForm } from '@/components/admin-add-client-form';
 import { getClients } from '@/lib/firebase/firestore';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { revalidatePath } from 'next/cache';
 
 // Server action for logout
-async function logout() {
+async function handleLogout() {
     'use server';
     await logoutAdmin();
     redirect('/admin/login');
@@ -33,7 +34,7 @@ export default async function AdminDashboardPage() {
         <div className="container py-12">
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-3xl font-bold text-primary">Tableau de Bord Administrateur</h1>
-                <form action={logout}>
+                <form action={handleLogout}>
                     <Button type="submit" variant="outline">Se déconnecter</Button>
                 </form>
             </div>

@@ -51,6 +51,7 @@ export function AdminLoginForm() {
                 description: "Redirection vers le tableau de bord...",
               });
               router.push('/admin/dashboard');
+              router.refresh(); // Force le rafraîchissement de la page pour charger le nouvel état
           } else {
               throw new Error(sessionResult.error || "La création de la session a échoué.");
           }
@@ -59,12 +60,13 @@ export function AdminLoginForm() {
       }
     
     } catch (error: any) {
-        let errorMessage = "Les identifiants sont incorrects ou une erreur est survenue.";
+        let errorMessage = "Une erreur est survenue. Veuillez vérifier vos identifiants.";
         if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
             errorMessage = "L'email ou le mot de passe est incorrect.";
         }
         if (error.message.includes("Firebase")) {
-            errorMessage = "Erreur de configuration Firebase. Veuillez vérifier la console.";
+            console.error("Firebase Error Details:", error);
+            errorMessage = "Erreur de configuration ou de connexion à Firebase.";
         }
       toast({
         variant: "destructive",

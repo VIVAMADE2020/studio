@@ -17,10 +17,10 @@ export async function createAdminSession(idToken: string) {
     // Le simple fait de recevoir un idToken est une forme de validation.
     // Le client a dû s'authentifier avec succès auprès de Firebase pour l'obtenir.
 
-    // On vérifie que l'email dans le jeton décodé (ici, simulé, mais l'idée est là)
-    // correspond à l'email de l'admin. Pour une vraie validation, il faudrait décoder le JWT.
-    // Le formulaire de login s'assure déjà que seul l'admin peut se connecter.
-    // On peut donc faire confiance au token envoyé ici.
+    // On vérifie que le token n'est pas vide.
+    if (!idToken) {
+      throw new Error("Le jeton d'identification est vide.");
+    }
     
     cookies().set(ADMIN_AUTH_COOKIE, idToken, {
         httpOnly: true,
@@ -30,6 +30,7 @@ export async function createAdminSession(idToken: string) {
     });
     return { success: true };
   } catch (error: any) {
+    console.error("Erreur lors de la création de la session:", error);
     return { success: false, error: "Erreur lors de la création de la session." };
   }
 }
