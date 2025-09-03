@@ -204,12 +204,13 @@ export function LoanApplicationForm() {
   const FileInputField = ({name, label}: {name: "identityProof" | "residenceProof" | "incomeProof", label: string}) => {
       const file = form.watch(name);
       const fileName = file?.[0]?.name;
+      const fileInputRef = form.register(name);
 
       return (
         <FormField
           control={form.control}
           name={name}
-          render={({ field: { onChange, onBlur, value, ref } }) => (
+          render={({ field: { onChange, onBlur, value, ref: _ref, ...field } }) => (
             <FormItem>
               <FormLabel>{label}</FormLabel>
               <FormControl>
@@ -225,9 +226,7 @@ export function LoanApplicationForm() {
                             <Input 
                                 type="file" 
                                 className="pl-10"
-                                onChange={(e) => onChange(e.target.files)}
-                                onBlur={onBlur}
-                                ref={ref}
+                                {...fileInputRef}
                             />
                         </div>
                     )}
