@@ -29,7 +29,7 @@ export default function AdminDashboardPage() {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setUser(user);
-            setLoading(false);
+            // Don't set loading to false here, wait for client fetch
         });
         return () => unsubscribe();
     }, []);
@@ -55,6 +55,9 @@ export default function AdminDashboardPage() {
     useEffect(() => {
         if (user) {
            fetchClients();
+        } else {
+            // If there's no user, we can stop loading
+            setLoading(false);
         }
     }, [user, refreshKey]);
 
@@ -86,7 +89,7 @@ export default function AdminDashboardPage() {
     };
 
 
-    if (loading && !user) {
+    if (loading) {
         return (
             <div className="container py-12">
                 <Skeleton className="h-10 w-1/3 mb-8" />
@@ -152,16 +155,6 @@ export default function AdminDashboardPage() {
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
-                                        {loading && (
-                                            Array.from({ length: 3 }).map((_, i) => (
-                                                <TableRow key={i}>
-                                                    <TableCell><Skeleton className="h-6 w-32"/></TableCell>
-                                                    <TableCell><Skeleton className="h-6 w-16"/></TableCell>
-                                                    <TableCell className="text-right"><Skeleton className="h-6 w-24 ml-auto"/></TableCell>
-                                                    <TableCell className="text-right"><Skeleton className="h-8 w-20 ml-auto"/></TableCell>
-                                                </TableRow>
-                                            ))
-                                        )}
                                         {!loading && clients.map((client) => (
                                             <TableRow key={client.id}>
                                                 <TableCell>

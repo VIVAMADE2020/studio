@@ -68,6 +68,8 @@ export function AdminManageClientModal({ isOpen, onClose, client }: AdminManageC
       setWasUpdated(true);
       // We will need to re-fetch client data to show the new transaction
       // The parent component will handle this on close.
+      // For now, we just close the modal, and the parent will refresh.
+      // A more advanced implementation could update the state locally.
     } else {
       toast({
         variant: "destructive",
@@ -77,10 +79,16 @@ export function AdminManageClientModal({ isOpen, onClose, client }: AdminManageC
     }
   }
 
+  const handleClose = () => {
+    onClose(wasUpdated);
+    // Reset local state when closing
+    setWasUpdated(false);
+  }
+
   const sortedTransactions = [...(client.transactions || [])].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose(wasUpdated)}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Gérer le client : {client.firstName} {client.lastName}</DialogTitle>
@@ -166,7 +174,7 @@ export function AdminManageClientModal({ isOpen, onClose, client }: AdminManageC
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onClose(wasUpdated)}>Fermer</Button>
+          <Button variant="outline" onClick={handleClose}>Fermer</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

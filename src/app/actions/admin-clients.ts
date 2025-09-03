@@ -4,7 +4,7 @@
 import { z } from "zod";
 import { Client, Transaction } from "@/lib/firebase/firestore";
 import { auth as adminAuth, db as adminDb } from "@/lib/firebase/admin";
-import { doc, setDoc, updateDoc, getDoc, arrayUnion, increment } from "firebase/firestore";
+import { arrayUnion, increment } from "firebase/firestore";
 
 
 const formSchema = z.object({
@@ -147,6 +147,9 @@ export async function getClientsAction(): Promise<{ success: boolean, data?: Cli
         return { success: true, data: clients };
     } catch (error: any) {
         console.error("Error getting clients (action):", error);
+        if (error.message.includes('Firebase ID token has invalid signature')) {
+             return { success: false, error: "Erreur d'authentification. Veuillez vous reconnecter." };
+        }
         if (error.message.includes('FIREBASE_CONFIG')) {
              return { success: false, error: "Le service d'administration Firebase n'est pas initialisé." };
         }
