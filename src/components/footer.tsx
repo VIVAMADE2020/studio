@@ -50,7 +50,7 @@ export function Footer() {
             <h3 className="font-semibold text-primary">Contact</h3>
             <ul className="mt-4 space-y-2">
               <li className="text-sm">123 Rue de la Finance, 75001 Paris</li>
-              <li className="text-sm">contact@flexfond.fr</li>
+              <li className="text-sm">contact@flexfond.com</li>
               <li className="text-sm">+33 1 23 45 67 89</li>
             </ul>
           </div>
