@@ -2,9 +2,10 @@
 "use server";
 
 import { z } from "zod";
-import { addClient, Client, Transaction } from "@/lib/firebase/firestore";
+import { Client, Transaction } from "@/lib/firebase/firestore";
 import { db } from "@/lib/firebase/config";
-import { doc, updateDoc, getDoc, arrayUnion, increment } from "firebase/firestore";
+import { doc, updateDoc, getDoc, arrayUnion, increment, collection, addDoc, setDoc } from "firebase/firestore";
+import { authAdmin } from "@/lib/firebase/admin";
 
 // Schéma pour la validation du formulaire d'ajout de client
 const formSchema = z.object({
@@ -12,15 +13,11 @@ const formSchema = z.object({
   firstName: z.string().min(2, "Le prénom est requis."),
   lastName: z.string().min(2, "Le nom est requis."),
   email: z.string().email("L'email est invalide."),
+  password: z.string().min(8, "Le mot de passe doit faire au moins 8 caractères."),
   
   // Account
   accountType: z.enum(['current', 'loan']),
   initialBalance: z.coerce.number().min(0, "Le solde initial doit être positif."),
-  
-  // Banking Info (optionnel car on peut les générer)
-  accountNumber: z.string().optional(),
-  iban: z.string().optional(),
-  swiftCode: z.string().optional(),
   
   // Loan Details (conditionnel dans le composant)
   loanAmount: z.coerce.number().optional(),
@@ -38,17 +35,26 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
     try {
       const data = parsed.data;
 
-      // Construire l'objet client
+      // 1. Créer l'utilisateur dans Firebase Authentication
+      const userRecord = await authAdmin.createUser({
+        email: data.email,
+        password: data.password,
+        displayName: `${data.firstName} ${data.lastName}`,
+        emailVerified: true, // On peut considérer l'email comme vérifié
+        disabled: false,
+      });
+
+      // 2. Construire l'objet client pour Firestore
       const newClient: Omit<Client, 'id'> = {
+        uid: userRecord.uid, // Lier le document Firestore à l'utilisateur Auth
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
         accountType: data.accountType,
         accountBalance: data.initialBalance,
-        // Générer des numéros de compte si non fournis
-        accountNumber: data.accountNumber || `FR${Math.floor(10000000000 + Math.random() * 90000000000)}`,
-        iban: data.iban || `FR76${Math.floor(10000000000000000000000 + Math.random() * 90000000000000000000000)}`,
-        swiftCode: data.swiftCode || 'FLEXFR21XXX',
+        accountNumber: `FR${Math.floor(10000000000 + Math.random() * 90000000000)}`,
+        iban: `FR76${Math.floor(10000000000000000000000 + Math.random() * 90000000000000000000000)}`,
+        swiftCode: 'FLEXFR21XXX',
         transactions: [],
       };
 
@@ -65,18 +71,19 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
           };
       }
 
-      const result = await addClient(newClient);
+      // 3. Créer le document dans Firestore avec l'UID comme ID de document
+      await setDoc(doc(db, "clients", userRecord.uid), newClient);
 
-      if (result.success) {
-          return { success: true, id: result.id };
-      } else {
-          return { success: false, error: result.error };
-      }
+      return { success: true, id: userRecord.uid };
+
     } catch(error: any) {
       console.error("Error in addClientAction:", error);
       
-      if (error.code === 'permission-denied') {
-          return { success: false, error: "Action non autorisée. Seuls les administrateurs peuvent ajouter des clients."};
+      if (error.code === 'auth/email-already-exists') {
+          return { success: false, error: "Un client avec cet email existe déjà."};
+      }
+      if (error.code === 'permission-denied' || error.code === 'PERMISSION_DENIED') {
+          return { success: false, error: "Action non autorisée. Vérifiez les règles de sécurité et les credentials du service account."};
       }
       return { success: false, error: "Une erreur est survenue côté serveur."};
     }

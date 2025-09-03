@@ -19,7 +19,8 @@ export interface LoanDetails {
 }
 
 export interface Client {
-  id?: string;
+  id?: string; // Firestore document ID
+  uid: string; // Firebase Auth User ID
   // Personal Info
   firstName: string;
   lastName: string;
@@ -43,6 +44,9 @@ export interface Client {
 
 const clientsCollection = collection(db, "clients");
 
+// Cette fonction n'est plus utilisée directement par le formulaire admin, 
+// car la nouvelle action addClientAction gère la création Auth + Firestore.
+// On la garde au cas où pour d'autres usages.
 export async function addClient(client: Omit<Client, 'id'>) {
   try {
     const docRef = await addDoc(clientsCollection, client);
@@ -61,6 +65,7 @@ export async function addClient(client: Omit<Client, 'id'>) {
 export async function getClients(): Promise<Client[]> {
   try {
     const querySnapshot = await getDocs(clientsCollection);
+    // L'ID du document est maintenant l'UID de l'utilisateur
     return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Client));
   } catch (error) {
       console.error("Error getting documents: ", error);

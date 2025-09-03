@@ -25,6 +25,7 @@ const formSchema = z.object({
   firstName: z.string().min(2, "Le prénom est requis."),
   lastName: z.string().min(2, "Le nom est requis."),
   email: z.string().email("L'email est invalide."),
+  password: z.string().min(8, "Le mot de passe doit contenir au moins 8 caractères."),
   
   // Account
   accountType: z.enum(['current', 'loan'], { required_error: "Veuillez sélectionner un type de compte." }),
@@ -57,6 +58,7 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
       firstName: "",
       lastName: "",
       email: "",
+      password: "",
       accountType: undefined,
       initialBalance: 0,
       loanAmount: undefined,
@@ -68,8 +70,6 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
   const accountType = form.watch("accountType");
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Note: L'action serveur gère la création d'utilisateur et de compte.
-    // L'email sera utilisé comme identifiant et un mot de passe temporaire pourra être généré côté serveur si nécessaire.
     const result = await addClientAction(values);
     
     if (result.success) {
@@ -80,7 +80,7 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
       form.reset();
       onClientAdded();
     } else {
-      console.error("Form submission error:", result.error, result.details);
+      console.error("Form submission error:", result.error);
       toast({
         variant: "destructive",
         title: "Erreur",
@@ -97,10 +97,11 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <h4 className="text-sm font-medium text-muted-foreground">Informations Personnelles</h4>
+            <h4 className="text-sm font-medium text-muted-foreground">Informations Personnelles et Connexion</h4>
             <FormField control={form.control} name="firstName" render={({ field }) => (<FormItem><FormLabel>Prénom</FormLabel><FormControl><Input placeholder="John" {...field} /></FormControl><FormMessage /></FormItem>)} />
             <FormField control={form.control} name="lastName" render={({ field }) => (<FormItem><FormLabel>Nom</FormLabel><FormControl><Input placeholder="Doe" {...field} /></FormControl><FormMessage /></FormItem>)} />
             <FormField control={form.control} name="email" render={({ field }) => (<FormItem><FormLabel>Email (Identifiant de connexion)</FormLabel><FormControl><Input placeholder="john.doe@email.com" {...field} /></FormControl><FormDescription>Le client utilisera cet email pour se connecter.</FormDescription><FormMessage /></FormItem>)} />
+            <FormField control={form.control} name="password" render={({ field }) => (<FormItem><FormLabel>Mot de passe</FormLabel><FormControl><Input type="password" {...field} /></FormControl><FormDescription>Mot de passe pour l'espace client.</FormDescription><FormMessage /></FormMessage></FormItem>)} />
 
             <h4 className="text-sm font-medium text-muted-foreground pt-4 border-t">Détails du Compte</h4>
              <FormField
