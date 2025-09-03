@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Flag, Building, Users, Target, Eye, Handshake, Globe } from 'lucide-react';
+import { Flag, Building, Users, Target, Eye, Handshake, Globe, Banknote } from 'lucide-react';
 import React from 'react';
 
 const timelineEvents = [
@@ -8,11 +8,12 @@ const timelineEvents = [
     { year: "2018", title: "Expansion", description: "Élargissement de notre gamme de produits pour inclure les prêts immobiliers et professionnels.", icon: <Building /> },
     { year: "2020", title: "Partenariats Stratégiques", description: "Nous nouons des partenariats avec des acteurs clés de la finance et de l'immobilier.", icon: <Handshake /> },
     { year: "2023", title: "10 000 Clients", description: "Nous franchissons le cap symbolique des 10 000 clients satisfaits à travers la France.", icon: <Users /> },
+    { year: "2024", title: "Lancement de la Banque en Ligne", description: "Introduction de notre service de banque en ligne exclusif pour nos clients.", icon: <Banknote /> },
 ];
 
 const values = [
     { icon: <Target className="h-8 w-8 text-accent" />, title: "Mission", description: "Simplifier le financement pour permettre à chacun de réaliser ses projets de vie en toute confiance." },
-    { icon: <Eye className="h-8 w-8 text-accent" />, title: "Vision", description: "Devenir le partenaire financier de référence, reconnu pour notre innovation, notre transparence et notre excellence de service." },
+    { icon: <Eye className="h-8 w-8 text-accent" />, title: "Vision", description: "Devenir le partenaire financier de référence, reconnu pour notre innovation, notre transparence et notre excellence de service, incluant une offre bancaire complète." },
     { icon: <Handshake className="h-8 w-8 text-accent" />, title: "Valeurs", description: "Confiance, Intégrité, Proximité, et Engagement. Ces piliers guident chacune de nos actions au quotidien." },
 ];
 

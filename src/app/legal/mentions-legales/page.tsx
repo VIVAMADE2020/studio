@@ -11,6 +11,7 @@ export default function MentionsLegalesPage() {
       
       <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">1. Éditeur du site</h2>
       <p>Le site internet FLEXFOND, accessible à l'adresse www.flexfond.com, est édité par FLEXFOND, société [Forme juridique] au capital de [Montant] euros, immatriculée au Registre du Commerce et des Sociétés de [Ville] sous le numéro [Numéro RCS], dont le siège social est situé au 123 Rue de la Finance, 75001 Paris, France.</p>
+      <p>FLEXFOND agit en tant que fournisseur de solutions de financement et de services de banque en ligne pour ses clients via son espace client sécurisé.</p>
       <p>Numéro de TVA intracommunautaire : [Numéro de TVA]</p>
       <p>Directeur de la publication : Alexandre Martin</p>
       <p>Contact : <a href="mailto:contact@flexfond.com">contact@flexfond.com</a> | +33 1 23 45 67 89</p>

@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, User, Home, Car, Building, Briefcase, GraduationCap } from "lucide-react";
+import { ArrowRight, User, Home, Car, Building, Briefcase, GraduationCap, Banknote } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -11,6 +11,7 @@ const allServices = [
   { icon: <Building />, title: "Prêt Professionnel", description: "Développez votre activité avec nos solutions pour entreprises.", link: "/services/pret-professionnel" },
   { icon: <Briefcase />, title: "Rachat de Crédits", description: "Regroupez vos prêts en un seul pour alléger vos mensualités.", link: "/services/rachat-de-credits" },
   { icon: <GraduationCap />, title: "Prêt Étudiant", description: "Financez vos études en toute sérénité.", link: "/services/pret-etudiant" },
+  { icon: <Banknote />, title: "Banque en Ligne", description: "Gérez vos comptes et vos prêts depuis notre plateforme sécurisée, réservée à nos clients.", link: "/login" },
 ];
 
 export default function ServicesPage() {

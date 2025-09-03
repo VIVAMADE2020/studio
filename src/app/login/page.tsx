@@ -11,7 +11,7 @@ export default function LoginPage() {
                 <CardHeader>
                     <CardTitle className="text-2xl">Espace Client</CardTitle>
                     <CardDescription>
-                        Entrez vos identifiants pour accéder à votre tableau de bord.
+                        Accédez à votre tableau de bord, gérez vos prêts et découvrez nos services de banque en ligne.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4">
@@ -28,7 +28,7 @@ export default function LoginPage() {
                     <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Se connecter</Button>
                     <div className="text-center text-sm text-muted-foreground">
                         Pas encore de compte ?{" "}
-                        <Link href="/contact" className="underline text-primary">
+                        <Link href="/demande-pret" className="underline text-primary">
                             Faire une demande
                         </Link>
                     </div>
