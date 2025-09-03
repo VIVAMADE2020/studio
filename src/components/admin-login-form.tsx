@@ -30,6 +30,10 @@ export function AdminLoginForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      if (!auth) {
+        throw new Error("La configuration de l'authentification Firebase n'a pas pu être chargée.");
+      }
+      
       // 1. Authentifier l'utilisateur avec Firebase Auth côté client
       const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
       const user = userCredential.user;
@@ -59,12 +63,15 @@ export function AdminLoginForm() {
         if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
             errorMessage = "L'email ou le mot de passe est incorrect.";
         }
+        if (error.message.includes("Firebase")) {
+            errorMessage = "Erreur de configuration Firebase. Veuillez vérifier la console.";
+        }
       toast({
         variant: "destructive",
         title: "Erreur d'authentification",
         description: errorMessage,
       });
-      form.reset();
+      console.error("Login Error:", error);
     }
   }
 

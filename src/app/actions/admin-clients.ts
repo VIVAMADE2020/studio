@@ -6,9 +6,9 @@ import { verifyAdminAuth } from "./admin-auth";
 import { revalidatePath } from "next/cache";
 
 const formSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
-  email: z.string().email(),
+  firstName: z.string().min(2, "Le prénom est requis."),
+  lastName: z.string().min(2, "Le nom est requis."),
+  email: z.string().email("L'email est invalide."),
 });
 
 export async function addClientAction(values: z.infer<typeof formSchema>) {
@@ -23,12 +23,17 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
         return { success: false, error: "Données invalides." };
     }
 
-    const result = await addClient(parsed.data);
+    try {
+      const result = await addClient(parsed.data);
 
-    if (result.success) {
-        revalidatePath("/admin/dashboard");
-        return { success: true, id: result.id };
-    } else {
-        return { success: false, error: result.error };
+      if (result.success) {
+          revalidatePath("/admin/dashboard");
+          return { success: true, id: result.id };
+      } else {
+          return { success: false, error: result.error };
+      }
+    } catch(error) {
+      console.error("Error in addClientAction:", error);
+      return { success: false, error: "Une erreur est survenue côté serveur."};
     }
 }
