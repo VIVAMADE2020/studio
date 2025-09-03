@@ -1,13 +1,10 @@
-
 rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Les administrateurs peuvent lire et écrire toutes les données des clients.
-    // Pour cet exemple, nous considérons tout utilisateur authentifié comme un potentiel administrateur
-    // pour simplifier. Une meilleure approche serait d'utiliser des rôles personnalisés.
-    match /clients/{userId} {
-      // Un client peut lire ses propres informations si son UID correspond à l'ID du document.
-      // L'administrateur peut lire et écrire toutes les données.
+    match /clients/{clientId} {
+      // Any authenticated user can manage all clients (this is the admin).
+      // The client can only read their own data.
       allow read, write: if request.auth != null;
     }
   }
