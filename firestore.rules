@@ -1,14 +1,20 @@
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Les administrateurs (tout utilisateur authentifié accédant au back-office) 
-    // peuvent lister et écrire dans la collection des clients.
     match /clients/{clientId} {
-      allow list, write: if request.auth != null;
-      
-      // Un client authentifié ne peut lire que son propre document.
+      // Un client authentifié peut lire ses propres informations.
       allow get: if request.auth != null && request.auth.uid == clientId;
+      
+      // Un administrateur (tout utilisateur authentifié via le backend) peut tout faire.
+      // Cela inclut la création, la mise à jour et la suppression.
+      allow write: if request.auth != null;
+      
+      // La permission de lister toute la collection est gérée ci-dessous.
+    }
+    
+    match /clients/{document=**} {
+      // Tout utilisateur authentifié (l'administrateur) peut lister les documents de la collection.
+      allow list: if request.auth != null;
     }
   }
 }
