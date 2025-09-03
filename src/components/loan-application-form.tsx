@@ -244,6 +244,9 @@ export function LoanApplicationForm() {
                         <SelectItem value="personal">Prêt Personnel</SelectItem>
                         <SelectItem value="mortgage">Prêt Immobilier</SelectItem>
                         <SelectItem value="auto">Prêt Auto</SelectItem>
+                        <SelectItem value="professional">Prêt Professionnel</SelectItem>
+                        <SelectItem value="consolidation">Rachat de Crédits</SelectItem>
+                        <SelectItem value="student">Prêt Étudiant</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -396,3 +399,5 @@ export function LoanApplicationForm() {
     </Form>
   );
 }
+
+    
