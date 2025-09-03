@@ -7,10 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { authenticateAdmin } from "@/app/actions/admin-auth";
 import { useRouter } from "next/navigation";
+import { auth } from "@/lib/firebase/config";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { authenticateAdmin } from "@/app/actions/admin-auth";
+
 
 const formSchema = z.object({
+  email: z.string().email({ message: "Veuillez entrer une adresse email valide." }),
   password: z.string().min(1, { message: "Le mot de passe est requis." }),
 });
 
@@ -20,23 +24,35 @@ export function AdminLoginForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      email: "",
       password: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const result = await authenticateAdmin(values.password);
-    if (result.success) {
-      toast({
-        title: "Authentification réussie",
-        description: "Redirection vers le tableau de bord...",
-      });
-      router.push('/admin/dashboard');
-    } else {
+    try {
+      // We perform client-side sign-in to get the token
+      const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+      
+      // Then, we call a server action to set the secure cookie
+      // In a real app, we'd pass the userCredential.user.stsTokenManager.accessToken
+      const result = await authenticateAdmin(values.email, values.password);
+
+      if (result.success) {
+        toast({
+          title: "Authentification réussie",
+          description: "Redirection vers le tableau de bord...",
+        });
+        router.push('/admin/dashboard');
+        router.refresh(); // To ensure the server-side auth check is re-run
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Erreur d'authentification",
-        description: result.error || "Mot de passe incorrect.",
+        description: "Les identifiants sont incorrects ou une erreur est survenue.",
       });
       form.reset();
     }
@@ -45,6 +61,19 @@ export function AdminLoginForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input type="email" placeholder="admin@flexfond.com" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="password"
