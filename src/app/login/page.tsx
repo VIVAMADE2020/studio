@@ -35,15 +35,13 @@ export default function LoginPage() {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
             
-            // TODO: Ici, il faudra rediriger vers l'espace client une fois créé.
-            // Pour l'instant, on affiche un toast de succès.
-            
             toast({
                 title: "Connexion réussie !",
                 description: `Bienvenue sur votre espace client.`,
             });
             
-            // router.push("/client-dashboard"); // Redirection future
+            // TODO: Rediriger vers l'espace client une fois créé
+            // router.push("/client-dashboard");
 
         } catch (error: any) {
             let errorMessage = "Une erreur est survenue. Veuillez vérifier vos identifiants.";
@@ -102,12 +100,6 @@ export default function LoginPage() {
                             <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90" disabled={form.formState.isSubmitting}>
                                 {form.formState.isSubmitting ? "Connexion..." : "Se connecter"}
                             </Button>
-                            <div className="text-center text-sm text-muted-foreground">
-                                Pas encore de compte ?{" "}
-                                <Link href="/signup" className="underline text-primary">
-                                    S'inscrire
-                                </Link>
-                            </div>
                         </CardFooter>
                     </form>
                 </Form>

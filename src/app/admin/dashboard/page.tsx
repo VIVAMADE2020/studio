@@ -23,6 +23,7 @@ export default function AdminDashboardPage() {
     const [error, setError] = useState<string | null>(null);
     const [selectedClient, setSelectedClient] = useState<Client | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [refreshKey, setRefreshKey] = useState(0);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -50,7 +51,7 @@ export default function AdminDashboardPage() {
         if (user) {
            fetchClients();
         }
-    }, [user]);
+    }, [user, refreshKey]);
 
     const handleLogout = async () => {
         await auth.signOut();
@@ -63,7 +64,7 @@ export default function AdminDashboardPage() {
     };
     
     const handleClientAdded = () => {
-        fetchClients();
+        setRefreshKey(oldKey => oldKey + 1);
     };
 
     const handleManageClient = (client: Client) => {
@@ -75,7 +76,7 @@ export default function AdminDashboardPage() {
         setIsModalOpen(false);
         setSelectedClient(null);
         if (wasUpdated) {
-            fetchClients();
+            setRefreshKey(oldKey => oldKey + 1);
         }
     };
 
