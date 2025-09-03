@@ -24,14 +24,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, ArrowRight, Send, Loader2, Upload, FileText, AlertCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Send, Loader2, Upload, AlertCircle } from "lucide-react";
 import { submitLoanApplication } from "@/app/actions/loan-application";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/card";
 import { formatCurrency } from "@/lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
+import { LoanCalculator } from "./loan-calculator";
 
 const loanDetailsSchema = z.object({
   loanType: z.string({ required_error: "Veuillez sélectionner un type de prêt." }),
@@ -54,7 +54,7 @@ const personalInfoSchema = z.object({
 });
 
 const financialInfoSchema = z.object({
-  employmentStatus: z.string().min(2, "La profession est requise."),
+  employmentStatus: z.string({ required_error: "La profession est requise." }),
   monthlyIncome: z.coerce.number().min(500, "Le revenu minimum est de 500€."),
   monthlyExpenses: z.coerce.number().min(0, "Veuillez entrer un montant valide."),
   housingStatus: z.string({ required_error: "Veuillez sélectionner votre situation de logement." }),
@@ -93,7 +93,7 @@ const formSchema = loanDetailsSchema.merge(personalInfoSchema).merge(financialIn
 type FormValues = z.infer<typeof formSchema>;
 
 const steps = [
-  { id: 'loanDetails', title: 'Détails du prêt', fields: ['loanType', 'loanAmount', 'loanDuration'], schema: loanDetailsSchema },
+  { id: 'loanDetails', title: 'Détails et Simulation', fields: ['loanType', 'loanAmount', 'loanDuration'], schema: loanDetailsSchema },
   { id: 'personalInfo', title: 'Informations Personnelles', fields: ['firstName', 'lastName', 'email', 'phone', 'whatsapp', 'birthDate', 'maritalStatus', 'address', 'city', 'country', 'childrenCount'], schema: personalInfoSchema },
   { id: 'financialInfo', title: 'Situation Financière', fields: ['employmentStatus', 'monthlyIncome', 'monthlyExpenses', 'housingStatus'], schema: financialInfoSchema },
   { id: 'documents', title: 'Vos Documents', fields: ['identityProof', 'residenceProof', 'incomeProof'], schema: documentsSchema },
@@ -108,9 +108,10 @@ export function LoanApplicationForm() {
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
+    mode: "onBlur",
     defaultValues: {
       loanType: "",
-      loanAmount: 10000,
+      loanAmount: 50000,
       loanDuration: 120,
       firstName: "",
       lastName: "",
@@ -190,12 +191,11 @@ export function LoanApplicationForm() {
   }
 
   const FileInputField = ({name, label}: {name: "identityProof" | "residenceProof" | "incomeProof", label: string}) => {
-      const { control } = form;
       return (
         <FormField
-          control={control}
+          control={form.control}
           name={name}
-          render={({ field }) => (
+          render={({ field: { onChange, ...fieldProps } }) => (
             <FormItem>
               <FormLabel>{label}</FormLabel>
               <FormControl>
@@ -204,7 +204,8 @@ export function LoanApplicationForm() {
                     <Input 
                         type="file" 
                         className="pl-10"
-                        onChange={(e) => field.onChange(e.target.files)}
+                        onChange={(e) => onChange(e.target.files)}
+                        {...fieldProps}
                     />
                 </div>
               </FormControl>
@@ -253,8 +254,13 @@ export function LoanApplicationForm() {
                   </FormItem>
                 )}
               />
-              <FormField control={form.control} name="loanAmount" render={({ field }) => (<FormItem><FormLabel>Montant souhaité (€)</FormLabel><FormControl><Input type="number" placeholder="ex: 10000" {...field} /></FormControl><FormMessage /></FormItem>)} />
-              <FormField control={form.control} name="loanDuration" render={({ field }) => (<FormItem><FormLabel>Durée de remboursement (en mois)</FormLabel><FormControl><Input type="number" placeholder="ex: 120" {...field} /></FormControl><FormMessage /></FormItem>)} />
+              <LoanCalculator 
+                amount={form.watch('loanAmount')}
+                duration={form.watch('loanDuration')}
+                onAmountChange={(value) => form.setValue('loanAmount', value)}
+                onDurationChange={(value) => form.setValue('loanDuration', value)}
+                showCard={false}
+              />
             </div>
           )}
 
@@ -286,27 +292,56 @@ export function LoanApplicationForm() {
           {currentStep === 2 && (
             <div className="space-y-6">
                 <h3 className="text-xl font-semibold text-center">{steps[2].title}</h3>
-                <FormField control={form.control} name="employmentStatus" render={({ field }) => (<FormItem><FormLabel>Profession</FormLabel><FormControl><Input placeholder="ex: Développeur web" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                <FormField
+                  control={form.control}
+                  name="employmentStatus"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Situation professionnelle</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger><SelectValue placeholder="Sélectionnez une option" /></SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="cdi">Salarié (CDI)</SelectItem>
+                          <SelectItem value="cdd">Salarié (CDD)</SelectItem>
+                          <SelectItem value="interim">Intérimaire</SelectItem>
+                          <SelectItem value="independent">Indépendant / Auto-entrepreneur</SelectItem>
+                          <SelectItem value="functionary">Fonctionnaire</SelectItem>
+                          <SelectItem value="retired">Retraité</SelectItem>
+                          <SelectItem value="student">Étudiant</SelectItem>
+                          <SelectItem value="unemployed">Sans emploi</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <div className="grid md:grid-cols-2 gap-6">
                   <FormField control={form.control} name="monthlyIncome" render={({ field }) => (<FormItem><FormLabel>Revenu mensuel net (€)</FormLabel><FormControl><Input type="number" placeholder="ex: 2500" {...field} /></FormControl><FormMessage /></FormItem>)} />
                   <FormField control={form.control} name="monthlyExpenses" render={({ field }) => (<FormItem><FormLabel>Charges mensuelles (€)</FormLabel><FormControl><Input type="number" placeholder="ex: 800" {...field} /></FormControl><FormMessage /></FormItem>)} />
                 </div>
-                <FormField
-                    control={form.control}
-                    name="housingStatus"
-                    render={({ field }) => (
-                    <FormItem className="space-y-3">
-                        <FormLabel>Situation de logement</FormLabel>
+                 <FormField
+                  control={form.control}
+                  name="housingStatus"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Situation de logement</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                        <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
-                            <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="owner" /></FormControl><FormLabel className="font-normal">Propriétaire</FormLabel></FormItem>
-                            <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="tenant" /></FormControl><FormLabel className="font-normal">Locataire</FormLabel></FormItem>
-                            <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="hosted" /></FormControl><FormLabel className="font-normal">Hébergé(e) à titre gratuit</FormLabel></FormItem>
-                        </RadioGroup>
+                          <SelectTrigger><SelectValue placeholder="Sélectionnez une option" /></SelectTrigger>
                         </FormControl>
-                        <FormMessage />
+                        <SelectContent>
+                          <SelectItem value="owner-with-mortgage">Propriétaire (avec crédit)</SelectItem>
+                          <SelectItem value="owner-no-mortgage">Propriétaire (sans crédit)</SelectItem>
+                          <SelectItem value="tenant">Locataire</SelectItem>
+                          <SelectItem value="hosted">Hébergé(e) à titre gratuit</SelectItem>
+                          <SelectItem value="other">Autre</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
                     </FormItem>
-                    )}
+                  )}
                 />
             </div>
           )}
@@ -349,7 +384,7 @@ export function LoanApplicationForm() {
                             <div className="md:col-span-2"><strong className="text-primary">Adresse:</strong> {formData.address}, {formData.city}, {formData.country}</div>
                             <div><strong className="text-primary">Situation familiale:</strong> {formData.maritalStatus}</div>
                             <div><strong className="text-primary">Enfants à charge:</strong> {formData.childrenCount}</div>
-                            <div><strong className="text-primary">Profession:</strong> {formData.employmentStatus}</div>
+                            <div><strong className="text-primary">Situation professionnelle:</strong> {formData.employmentStatus}</div>
                             <div><strong className="text-primary">Revenu mensuel:</strong> {formatCurrency(formData.monthlyIncome)}</div>
                             <div><strong className="text-primary">Charges mensuelles:</strong> {formatCurrency(formData.monthlyExpenses)}</div>
                             <div><strong className="text-primary">Logement:</strong> {formData.housingStatus}</div>
@@ -399,5 +434,3 @@ export function LoanApplicationForm() {
     </Form>
   );
 }
-
-    
