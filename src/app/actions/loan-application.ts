@@ -9,6 +9,7 @@ import { z } from "zod";
 
 const formSchema = z.object({
   loanType: z.string(),
+  loanReason: z.string(),
   loanAmount: z.number(),
   loanDuration: z.number().min(12).max(360),
   firstName: z.string(),
@@ -50,3 +51,5 @@ export async function submitLoanApplication(values: z.infer<typeof formSchema>) 
 
   return { success: true };
 }
+
+    
