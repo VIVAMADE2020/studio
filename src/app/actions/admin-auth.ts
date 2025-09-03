@@ -1,7 +1,10 @@
 "use server";
 
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+
+// This value should be in your .env.local, but for simplicity we keep it here
+// This is a simple auth mechanism. For production, use a robust auth library.
+const ADMIN_AUTH_TOKEN = "secret-admin-token-789123";
 
 export async function authenticateAdmin(password: string) {
   const adminPassword = process.env.ADMIN_PASSWORD;
@@ -11,21 +14,26 @@ export async function authenticateAdmin(password: string) {
   }
 
   if (password === adminPassword) {
-    // This is a simple auth mechanism. For production, use a robust auth library.
-    const authToken = Math.random().toString(36).substring(2);
-    
-    cookies().set('admin-auth', authToken, {
+    cookies().set('admin-auth', ADMIN_AUTH_TOKEN, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 60 * 60 * 24, // 1 day
       path: '/',
     });
     
-    process.env.ADMIN_AUTH_TOKEN = authToken;
-
-
     return { success: true };
   }
 
   return { success: false, error: "Mot de passe incorrect." };
+}
+
+export async function verifyAdminAuth() {
+    const cookieStore = cookies();
+    const authCookie = cookieStore.get('admin-auth');
+    return authCookie?.value === ADMIN_AUTH_TOKEN;
+}
+
+export async function logoutAdmin() {
+    'use server';
+    cookies().delete('admin-auth');
 }

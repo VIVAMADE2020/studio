@@ -1,24 +1,20 @@
-// This is a placeholder for the admin dashboard.
-// We will build this out in the next steps.
-
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { logoutAdmin, verifyAdminAuth } from '@/app/actions/admin-auth';
 
 // Server action for logout
 async function logout() {
     'use server';
-    cookies().delete('admin-auth');
+    await logoutAdmin();
     redirect('/admin/login');
 }
 
+export default async function AdminDashboardPage() {
+    const isAuthenticated = await verifyAdminAuth();
 
-export default function AdminDashboardPage() {
-    const cookieStore = cookies();
-    const authCookie = cookieStore.get('admin-auth');
-
-    if (!authCookie || authCookie.value !== process.env.ADMIN_AUTH_TOKEN) {
+    if (!isAuthenticated) {
         redirect('/admin/login');
     }
 
