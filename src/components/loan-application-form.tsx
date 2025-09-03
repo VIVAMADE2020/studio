@@ -291,37 +291,11 @@ export function LoanApplicationForm() {
                   </FormItem>
                 )}
               />
-              <div className="grid md:grid-cols-2 gap-6">
-                <FormField
-                    control={form.control}
-                    name="loanAmount"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Montant du prêt (€)</FormLabel>
-                            <FormControl>
-                                <Input type="number" placeholder="ex: 50000" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="loanDuration"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Durée du prêt (en mois)</FormLabel>
-                            <FormControl>
-                                <Input type="number" placeholder="ex: 120" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-              </div>
               <LoanCalculator 
                 amount={form.watch('loanAmount')}
                 duration={form.watch('loanDuration')}
+                onAmountChange={(value) => form.setValue('loanAmount', value, { shouldValidate: true })}
+                onDurationChange={(value) => form.setValue('loanDuration', value, { shouldValidate: true })}
                 showCard={false}
               />
             </div>

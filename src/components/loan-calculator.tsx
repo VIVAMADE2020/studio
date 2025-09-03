@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { formatCurrency } from '@/lib/utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { ScrollArea } from './ui/scroll-area';
+import { useFormContext } from 'react-hook-form';
 
 // Using a fixed annual interest rate
 const ANNUAL_INTEREST_RATE = 0.02; // 2%
@@ -38,7 +39,11 @@ export function LoanCalculator({
   const [_duration, setDuration] = useState(initialDuration);
   const [monthlyPayment, setMonthlyPayment] = useState(0);
   const [amortizationSchedule, setAmortizationSchedule] = useState<AmortizationRow[]>([]);
+  
+  // Try to get form context if available
+  const form = useFormContext();
 
+  // Sync with props if they change
   useEffect(() => {
     if (initialAmount !== undefined) setAmount(initialAmount);
   }, [initialAmount]);
@@ -47,6 +52,7 @@ export function LoanCalculator({
     if (initialDuration !== undefined) setDuration(initialDuration);
   }, [initialDuration]);
 
+  // Perform calculation when amount or duration changes
   useEffect(() => {
     const parsedAmount = isNaN(Number(_amount)) ? 0 : Number(_amount);
     const parsedDuration = isNaN(Number(_duration)) ? 0 : Number(_duration);
@@ -120,10 +126,12 @@ export function LoanCalculator({
               type="number"
               value={_amount}
               onChange={handleAmountChange}
+              onBlur={() => form?.trigger('loanAmount')}
               placeholder="ex: 50000"
               min="1000"
               max="500000"
             />
+             {form?.formState.errors.loanAmount && <p className="text-sm font-medium text-destructive">{form.formState.errors.loanAmount.message as string}</p>}
           </div>
           
           <div className="space-y-2">
@@ -133,10 +141,12 @@ export function LoanCalculator({
               type="number"
               value={_duration}
               onChange={handleDurationChange}
+              onBlur={() => form?.trigger('loanDuration')}
               placeholder="ex: 120"
               min="12"
               max="360"
             />
+            {form?.formState.errors.loanDuration && <p className="text-sm font-medium text-destructive">{form.formState.errors.loanDuration.message as string}</p>}
           </div>
       </div>
 
