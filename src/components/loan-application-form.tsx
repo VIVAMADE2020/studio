@@ -35,7 +35,7 @@ import { formatCurrency } from "@/lib/utils";
 const loanDetailsSchema = z.object({
   loanType: z.string({ required_error: "Veuillez sélectionner un type de prêt." }),
   loanAmount: z.coerce.number().min(1000, "Le montant minimum est de 1000€.").max(500000, "Le montant maximum est de 500 000€."),
-  loanDuration: z.coerce.number().min(12, "La durée minimale est de 12 mois.").max(360, "La durée maximale est de 360 mois (30 ans)."),
+  loanDuration: z.coerce.number().min(12, "La durée minimale est de 12 mois.").max(360, "La durée maximale est de 30 ans."),
 });
 
 const personalInfoSchema = z.object({
@@ -73,8 +73,18 @@ export function LoanApplicationForm() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      loanType: "",
       loanAmount: 10000,
-      loanDuration: 60,
+      loanDuration: 120,
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      birthDate: "",
+      maritalStatus: "",
+      employmentStatus: "",
+      monthlyIncome: 2500,
+      housingStatus: "",
     },
   });
   
@@ -161,7 +171,7 @@ export function LoanApplicationForm() {
                 )}
               />
               <FormField control={form.control} name="loanAmount" render={({ field }) => (<FormItem><FormLabel>Montant souhaité</FormLabel><FormControl><Input type="number" placeholder="ex: 10000" {...field} /></FormControl><FormMessage /></FormItem>)} />
-              <FormField control={form.control} name="loanDuration" render={({ field }) => (<FormItem><FormLabel>Durée de remboursement (en mois)</FormLabel><FormControl><Input type="number" placeholder="ex: 60" {...field} /></FormControl><FormMessage /></FormItem>)} />
+              <FormField control={form.control} name="loanDuration" render={({ field }) => (<FormItem><FormLabel>Durée de remboursement (en mois)</FormLabel><FormControl><Input type="number" placeholder="ex: 120" {...field} /></FormControl><FormMessage /></FormItem>)} />
             </div>
           )}
 
