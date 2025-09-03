@@ -11,15 +11,32 @@ export interface Transaction {
   amount: number; // Positive for credit, negative for debit
 }
 
-// NOTE: This is a placeholder for the client data structure
+export interface LoanDetails {
+  loanAmount: number;
+  interestRate: number;
+  loanDuration: number; // in months
+  monthlyPayment: number;
+}
+
 export interface Client {
   id?: string;
+  // Personal Info
   firstName: string;
   lastName: string;
-  email: string;
+  email: string; // Will be used for client login
+  
+  // Account Type
+  accountType: 'current' | 'loan';
+
   // Banking Info
+  accountNumber?: string;
   iban?: string;
+  swiftCode?: string;
   accountBalance?: number;
+
+  // Loan Account Details
+  loanDetails?: LoanDetails;
+  
   // Transaction History
   transactions?: Transaction[];
 }
@@ -28,18 +45,16 @@ const clientsCollection = collection(db, "clients");
 
 export async function addClient(client: Omit<Client, 'id'>) {
   try {
-    // Initialize with default banking info when creating a client
-    const newClient: Omit<Client, 'id'> = {
-      ...client,
-      iban: client.iban || "",
-      accountBalance: client.accountBalance || 0,
-      transactions: client.transactions || [],
-    };
-    const docRef = await addDoc(clientsCollection, newClient);
+    const docRef = await addDoc(clientsCollection, client);
     return { success: true, id: docRef.id };
   } catch (error) {
     console.error("Error adding document: ", error);
-    return { success: false, error: "Failed to add client." };
+    // Typage de l'erreur pour accéder à la propriété 'code'
+    const firebaseError = error as { code?: string, message?: string };
+    if (firebaseError.code === 'permission-denied') {
+        return { success: false, error: "Permission refusée. Assurez-vous que l'administrateur est correctement authentifié et que les règles de sécurité Firestore sont correctes." };
+    }
+    return { success: false, error: firebaseError.message || "Failed to add client." };
   }
 }
 

@@ -12,6 +12,8 @@ import { AddClientForm } from '@/components/admin-add-client-form';
 import { getClients, Client } from '@/lib/firebase/firestore';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
+import { formatCurrency } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
 
 export default function AdminDashboardPage() {
     const [user, setUser] = useState<User | null>(null);
@@ -65,8 +67,8 @@ export default function AdminDashboardPage() {
                 <Skeleton className="h-10 w-1/3 mb-8" />
                 <Skeleton className="h-8 w-2/3 mb-8" />
                 <div className="grid md:grid-cols-3 gap-8">
-                    <Skeleton className="md:col-span-1 h-96" />
-                    <Skeleton className="md:col-span-2 h-96" />
+                    <Skeleton className="md:col-span-1 h-[600px]" />
+                    <Skeleton className="md:col-span-2 h-[600px]" />
                 </div>
             </div>
         );
@@ -102,19 +104,11 @@ export default function AdminDashboardPage() {
             
             <p className="text-muted-foreground mb-8">Bienvenue dans l'espace d'administration. C'est ici que vous pourrez gérer vos clients et leurs comptes.</p>
 
-            <div className="grid md:grid-cols-3 gap-8">
-                <div className="md:col-span-1">
-                     <Card>
-                        <CardHeader>
-                            <CardTitle>Ajouter un nouveau client</CardTitle>
-                            <CardDescription>Créez un profil pour un nouveau client.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <AddClientForm onClientAdded={handleClientAdded} />
-                        </CardContent>
-                    </Card>
+            <div className="grid lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-1">
+                     <AddClientForm onClientAdded={handleClientAdded} />
                 </div>
-                <div className="md:col-span-2">
+                <div className="lg:col-span-2">
                     <Card>
                         <CardHeader>
                             <CardTitle>Liste des Clients</CardTitle>
@@ -125,22 +119,29 @@ export default function AdminDashboardPage() {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead>Prénom</TableHead>
-                                        <TableHead>Nom</TableHead>
-                                        <TableHead>Email</TableHead>
+                                        <TableHead>Client</TableHead>
+                                        <TableHead>Type de Compte</TableHead>
+                                        <TableHead className="text-right">Solde</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {clients.map((client) => (
                                         <TableRow key={client.id}>
-                                            <TableCell>{client.firstName}</TableCell>
-                                            <TableCell>{client.lastName}</TableCell>
-                                            <TableCell>{client.email}</TableCell>
+                                            <TableCell>
+                                                <div className="font-medium">{client.firstName} {client.lastName}</div>
+                                                <div className="text-sm text-muted-foreground">{client.email}</div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Badge variant={client.accountType === 'loan' ? 'secondary' : 'default'}>
+                                                    {client.accountType === 'loan' ? 'Prêt' : 'Courant'}
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell className="text-right">{formatCurrency(client.accountBalance || 0)}</TableCell>
                                         </TableRow>
                                     ))}
                                      {clients.length === 0 && !error && (
                                         <TableRow>
-                                            <TableCell colSpan={3} className="text-center text-muted-foreground">
+                                            <TableCell colSpan={3} className="text-center text-muted-foreground py-8">
                                                 Aucun client pour le moment.
                                             </TableCell>
                                         </TableRow>
