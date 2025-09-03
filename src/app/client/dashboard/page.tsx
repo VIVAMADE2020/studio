@@ -1,11 +1,25 @@
 import { getClientDataAction } from '@/app/actions/admin-clients';
-import { auth } from '@/lib/firebase/config';
+import { auth } from '@/lib/firebase/admin';
 import { ClientDashboard } from '@/components/client-dashboard';
-import { getCurrentUser } from '@/lib/firebase/auth';
+import { cookies } from 'next/headers';
 
 
 export default async function ClientDashboardPage() {
-    const user = await getCurrentUser();
+    const cookieStore = cookies();
+    const idToken = cookieStore.get('firebaseIdToken')?.value;
+
+    let user = null;
+    if (idToken) {
+        try {
+            const decodedToken = await auth.verifyIdToken(idToken);
+            user = await auth.getUser(decodedToken.uid);
+        } catch (error) {
+            console.error("Token verification failed:", error);
+            // The token is invalid, so the user is not authenticated.
+            user = null;
+        }
+    }
+
 
     if (!user) {
         // This case should be handled by the layout, but as a safeguard:

@@ -7,6 +7,22 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
+// Helper function to set a cookie
+const setCookie = (name: string, value: string, days: number) => {
+    let expires = "";
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+
+// Helper function to erase a cookie
+const eraseCookie = (name: string) => {   
+    document.cookie = name+'=; Max-Age=-99999999; path=/;';  
+}
+
 export default function ClientLayout({
   children,
 }: {
@@ -16,10 +32,20 @@ export default function ClientLayout({
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
+    if (!loading) {
+        if (user) {
+            // User is signed in, get the token and set it as a cookie
+            user.getIdToken().then(token => {
+                setCookie('firebaseIdToken', token, 1);
+            });
+        } else {
+            // User is signed out, remove the cookie and redirect
+            eraseCookie('firebaseIdToken');
+            router.push('/login');
+        }
     }
   }, [user, loading, router]);
+
 
   if (loading) {
     return (
