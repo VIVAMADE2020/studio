@@ -6,8 +6,8 @@ import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'VIXCAPITAL | Solutions Financières',
-  description: 'VIXCAPITAL propose des solutions financières sur-mesure pour tous vos projets. Prêts personnels, immobiliers, et plus encore.',
+  title: 'FLEXFOND | Solutions Financières',
+  description: 'FLEXFOND propose des solutions financières sur-mesure pour tous vos projets. Prêts personnels, immobiliers, et plus encore.',
 };
 
 export default function RootLayout({

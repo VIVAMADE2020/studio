@@ -21,7 +21,7 @@ export function HeroSection() {
           />
         </h1>
         <p className="mt-6 max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground">
-          Que ce soit pour un projet personnel, un investissement immobilier ou l'achat d'un véhicule, VIXCAPITAL vous accompagne avec des solutions de financement adaptées et transparentes.
+          Que ce soit pour un projet personnel, un investissement immobilier ou l'achat d'un véhicule, FLEXFOND vous accompagne avec des solutions de financement adaptées et transparentes.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">

@@ -9,7 +9,7 @@ export function Footer() {
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2">
               <Landmark className="h-8 w-8 text-primary" />
-              <span className="font-bold text-xl text-primary">VIXCAPITAL</span>
+              <span className="font-bold text-xl text-primary">FLEXFOND</span>
             </Link>
             <p className="text-sm">
               Solutions financières sur-mesure pour réaliser vos projets en toute confiance.
@@ -50,14 +50,14 @@ export function Footer() {
             <h3 className="font-semibold text-primary">Contact</h3>
             <ul className="mt-4 space-y-2">
               <li className="text-sm">123 Rue de la Finance, 75001 Paris</li>
-              <li className="text-sm">contact@vixcapital.fr</li>
+              <li className="text-sm">contact@flexfond.fr</li>
               <li className="text-sm">+33 1 23 45 67 89</li>
             </ul>
           </div>
         </div>
 
         <div className="mt-12 border-t border-border pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} VIXCAPITAL. Tous droits réservés.</p>
+          <p>&copy; {new Date().getFullYear()} FLEXFOND. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

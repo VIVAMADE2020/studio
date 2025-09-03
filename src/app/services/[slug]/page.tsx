@@ -79,7 +79,7 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
               <h2 className="text-2xl font-bold text-primary">Qu'est-ce que le {service.title} ?</h2>
               <div className="prose prose-lg max-w-none text-muted-foreground mt-4 leading-relaxed" dangerouslySetInnerHTML={{ __html: service.description }} />
 
-              <h3 className="text-xl font-bold text-primary mt-12">Les avantages VIXCAPITAL</h3>
+              <h3 className="text-xl font-bold text-primary mt-12">Les avantages FLEXFOND</h3>
               <ul className="mt-6 space-y-4">
                 {service.features.map((feature: string, index: number) => (
                   <li key={index} className="flex items-start gap-3">

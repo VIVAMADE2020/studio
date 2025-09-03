@@ -3,7 +3,7 @@ import { Flag, Building, Users, Target, Eye, Handshake, Globe } from 'lucide-rea
 import React from 'react';
 
 const timelineEvents = [
-    { year: "2015", title: "Fondation", description: "VIXCAPITAL est créé avec l'ambition de rendre les services financiers plus accessibles et transparents.", icon: <Flag /> },
+    { year: "2015", title: "Fondation", description: "FLEXFOND est créé avec l'ambition de rendre les services financiers plus accessibles et transparents.", icon: <Flag /> },
     { year: "2017", title: "Lancement en ligne", description: "Notre plateforme numérique est lancée, permettant des demandes de prêt 100% en ligne.", icon: <Globe /> },
     { year: "2018", title: "Expansion", description: "Élargissement de notre gamme de produits pour inclure les prêts immobiliers et professionnels.", icon: <Building /> },
     { year: "2020", title: "Partenariats Stratégiques", description: "Nous nouons des partenariats avec des acteurs clés de la finance et de l'immobilier.", icon: <Handshake /> },
@@ -74,7 +74,7 @@ export default function AboutPage() {
             <section className="py-16 md:py-24">
                 <div className="container text-center">
                      <h2 className="text-3xl md:text-4xl font-bold text-primary">Notre Équipe Dirigeante</h2>
-                     <p className="mt-2 text-muted-foreground max-w-2xl mx-auto">Des experts passionnés qui façonnent l'avenir de VIXCAPITAL.</p>
+                     <p className="mt-2 text-muted-foreground max-w-2xl mx-auto">Des experts passionnés qui façonnent l'avenir de FLEXFOND.</p>
                      <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                          {[
                             { name: 'Alexandre Martin', role: 'PDG & Fondateur', image: 'https://picsum.photos/400/400?random=4', hint: 'professional man' },

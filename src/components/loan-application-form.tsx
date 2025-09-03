@@ -195,7 +195,7 @@ export function LoanApplicationForm() {
             <CardTitle className="text-2xl mt-4">Demande Envoyée !</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground">Merci pour votre demande. Un conseiller VIXCAPITAL vous contactera dans les plus brefs délais pour discuter de votre projet.</p>
+            <p className="text-muted-foreground">Merci pour votre demande. Un conseiller FLEXFOND vous contactera dans les plus brefs délais pour discuter de votre projet.</p>
           </CardContent>
         </Card>
       );
