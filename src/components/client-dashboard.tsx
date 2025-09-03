@@ -2,6 +2,9 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase/config';
+import { getClientDataAction } from '@/app/actions/admin-clients';
 import { Client } from '@/lib/firebase/firestore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -10,20 +13,39 @@ import { formatCurrency } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Banknote, Landmark, Percent, Calendar, FileText } from 'lucide-react';
 
-export function ClientDashboard({ initialClientData, error: initialError }: { initialClientData: Client | null, error: string | null }) {
-    const [clientData] = useState<Client | null>(initialClientData);
-    const [loading, setLoading] = useState(!initialClientData && !initialError);
-    const [error] = useState<string | null>(initialError);
+export function ClientDashboard() {
+    const [user, authLoading, authError] = useAuthState(auth);
+    const [clientData, setClientData] = useState<Client | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        // If data or an error is provided initially, we don't need to show a loading state.
-        if (initialClientData || initialError) {
+        // Ne rien faire tant que l'état d'authentification est en cours de chargement
+        if (authLoading) {
+            return;
+        }
+        
+        // Si l'utilisateur est bien connecté, on récupère ses données
+        if (user) {
+            const fetchClientData = async () => {
+                const { data, error: fetchError } = await getClientDataAction(user.uid);
+                if (fetchError) {
+                    setError(fetchError);
+                }
+                if (data) {
+                    setClientData(data);
+                }
+                setLoading(false);
+            };
+            fetchClientData();
+        } else {
+            // Si l'utilisateur n'est pas connecté (et que le chargement est terminé), on arrête le chargement.
+            // La redirection sera gérée par le layout.
             setLoading(false);
         }
-    }, [initialClientData, initialError]);
+    }, [user, authLoading]);
 
-
-    if (loading) {
+    if (loading || authLoading) {
         return (
              <div className="container py-12">
                 <div className="max-w-5xl mx-auto">
@@ -34,9 +56,7 @@ export function ClientDashboard({ initialClientData, error: initialError }: { in
                         <Skeleton className="h-32" />
                         <Skeleton className="h-32" />
                     </div>
-                    {/* Loan details skeleton */}
-                     <Skeleton className="h-48 mb-8" />
-                    {/* Transactions skeleton */}
+                    <Skeleton className="h-48 mb-8" />
                     <Skeleton className="h-96" />
                 </div>
             </div>
@@ -47,8 +67,13 @@ export function ClientDashboard({ initialClientData, error: initialError }: { in
         return <div className="text-center py-12 text-destructive">{error}</div>;
     }
     
-    if (!clientData) {
-        return <div className="text-center py-12 text-muted-foreground">Aucune donnée client disponible.</div>;
+    if (!clientData || !user) {
+         // Ce cas est normalement géré par le layout qui redirige vers /login
+        return (
+            <div className="container py-12 text-center">
+                <p>Vous devez être connecté pour voir cette page.</p>
+            </div>
+        );
     }
 
     const sortedTransactions = [...(clientData.transactions || [])].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -171,4 +196,3 @@ export function ClientDashboard({ initialClientData, error: initialError }: { in
         </div>
     );
 }
-

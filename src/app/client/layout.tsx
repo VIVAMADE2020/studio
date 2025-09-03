@@ -7,24 +7,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
-// Helper function to set a cookie
-const setCookie = (name: string, value: string, days: number) => {
-    let expires = "";
-    if (days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days*24*60*60*1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    // Assurez-vous que le cookie est accessible sur tout le site
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-}
-
-// Helper function to erase a cookie
-const eraseCookie = (name: string) => {   
-    // Assurez-vous que le path est correct lors de la suppression
-    document.cookie = name+'=; Max-Age=-99999999; path=/;';  
-}
-
 export default function ClientLayout({
   children,
 }: {
@@ -34,25 +16,18 @@ export default function ClientLayout({
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading) {
-        if (user) {
-            // L'utilisateur est connecté, on récupère son token et on le stocke dans un cookie.
-            // Ce cookie sera lu par les Server Components.
-            user.getIdToken().then(token => {
-                setCookie('firebaseIdToken', token, 1); // Le cookie expirera en 1 jour
-            });
-        } else {
-            // L'utilisateur n'est pas connecté, on efface le cookie et on le redirige.
-            eraseCookie('firebaseIdToken');
-            router.push('/login');
-        }
+    // Si le chargement est terminé et qu'il n'y a pas d'utilisateur,
+    // on redirige vers la page de connexion.
+    if (!loading && !user) {
+      router.push('/login');
     }
   }, [user, loading, router]);
 
 
+  // Pendant le chargement de l'état d'authentification, on affiche un skeleton.
+  // C'est crucial pour empêcher le rendu des pages enfants (comme le tableau de bord)
+  // avant que l'on soit certain que l'utilisateur est bien connecté.
   if (loading) {
-    // Pendant que l'état d'authentification est en cours de vérification, 
-    // on affiche un skeleton loader. C'est crucial pour ne pas rendre la page enfant prématurément.
     return (
         <div className="container py-12">
             <div className="max-w-5xl mx-auto">
@@ -69,17 +44,17 @@ export default function ClientLayout({
     );
   }
 
+  // En cas d'erreur d'authentification.
   if (error) {
-    // En cas d'erreur avec le hook d'authentification
     return <div className="text-center py-12 text-destructive">Une erreur d'authentification est survenue.</div>;
   }
   
+  // Si l'utilisateur est bien connecté, on affiche la page demandée.
   if (user) {
-     // Si l'utilisateur est bien connecté, on affiche la page demandée.
      return <>{children}</>;
   }
 
-  // Si l'utilisateur n'est pas connecté et n'est plus en chargement,
-  // la redirection dans useEffect aura lieu. On ne rend rien en attendant.
+  // Si l'utilisateur n'est pas connecté et que le chargement est terminé,
+  // la redirection dans useEffect aura déjà été déclenchée. On ne rend rien en attendant.
   return null;
 }
