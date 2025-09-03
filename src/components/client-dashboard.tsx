@@ -11,36 +11,42 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatCurrency } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Banknote, Landmark, Percent, Calendar, FileText } from 'lucide-react';
+import { Banknote, Landmark, Percent, Calendar, FileText, AlertCircle } from 'lucide-react';
 
 export function ClientDashboard() {
-    const [user, authLoading, authError] = useAuthState(auth);
+    const [user, authLoading] = useAuthState(auth);
     const [clientData, setClientData] = useState<Client | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        // Ne rien faire tant que l'état d'authentification est en cours de chargement
         if (authLoading) {
+            setLoading(true);
             return;
         }
         
-        // Si l'utilisateur est bien connecté, on récupère ses données
         if (user) {
             const fetchClientData = async () => {
+                setLoading(true);
                 const { data, error: fetchError } = await getClientDataAction(user.uid);
+                
                 if (fetchError) {
                     setError(fetchError);
-                }
-                if (data) {
+                    setClientData(null);
+                } else if (data) {
                     setClientData(data);
+                    setError(null);
+                } else {
+                    // This case handles when data is null but there is no error,
+                    // meaning the profile was not found.
+                    setError("Le profil client associé à votre compte est introuvable.");
+                    setClientData(null);
                 }
                 setLoading(false);
             };
             fetchClientData();
         } else {
-            // Si l'utilisateur n'est pas connecté (et que le chargement est terminé), on arrête le chargement.
-            // La redirection sera gérée par le layout.
+            // User is not logged in, layout will handle redirection.
             setLoading(false);
         }
     }, [user, authLoading]);
@@ -64,16 +70,23 @@ export function ClientDashboard() {
     }
     
     if (error) {
-        return <div className="container py-12 text-center text-destructive">{error}</div>;
-    }
-    
-    if (!clientData || !user) {
-         // Ce cas est normalement géré par le layout qui redirige vers /login
         return (
-            <div className="container py-12 text-center">
-                <p>Vous devez être connecté pour voir cette page.</p>
+            <div className="container py-12">
+                 <div className="max-w-xl mx-auto">
+                    <Alert variant="destructive">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertTitle>Erreur de chargement</AlertTitle>
+                        <AlertDescription>{error}</AlertDescription>
+                    </Alert>
+                </div>
             </div>
         );
+    }
+    
+    if (!clientData) {
+        // This case is for when loading is finished but there's no user.
+        // It should be handled by the layout redirecting to /login
+        return null;
     }
 
     const sortedTransactions = [...(clientData.transactions || [])].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());

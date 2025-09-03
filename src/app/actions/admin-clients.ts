@@ -167,7 +167,8 @@ export async function getClientDataAction(uid: string): Promise<{ data: Client |
     try {
         const docSnap = await adminDb.collection('clients').doc(uid).get();
         if (!docSnap.exists) {
-            return { data: null, error: "Profil client non trouvé." };
+            // This is not an error, it just means the profile doesn't exist.
+            return { data: null, error: null };
         }
         const clientData = { id: docSnap.id, ...docSnap.data() } as Client;
         return { data: clientData, error: null };
