@@ -29,6 +29,7 @@ import { ScrollArea } from "./ui/scroll-area";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { formatCurrency } from "@/lib/utils";
 import { Badge } from "./ui/badge";
+import { useState } from "react";
 
 interface AdminManageClientModalProps {
   isOpen: boolean;
@@ -160,7 +161,6 @@ export function AdminManageClientModal({ isOpen, onClose, client }: AdminManageC
                             )}
                         </TableBody>
                     </Table>
-                </Table>
                  </ScrollArea>
             </div>
         </div>
