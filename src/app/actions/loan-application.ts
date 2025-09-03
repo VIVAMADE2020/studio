@@ -14,8 +14,13 @@ const formSchema = z.object({
   whatsapp: z.string(),
   birthDate: z.string(),
   maritalStatus: z.string(),
+  address: z.string(),
+  city: z.string(),
+  country: z.string(),
+  childrenCount: z.number().min(0),
   employmentStatus: z.string(),
   monthlyIncome: z.number(),
+  monthlyExpenses: z.number().min(0),
   housingStatus: z.string(),
 });
 

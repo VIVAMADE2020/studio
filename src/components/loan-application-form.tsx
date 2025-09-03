@@ -43,14 +43,19 @@ const personalInfoSchema = z.object({
   lastName: z.string().min(2, "Le nom est requis."),
   email: z.string().email("Veuillez entrer une adresse email valide."),
   phone: z.string().min(10, "Veuillez entrer un numéro de téléphone valide."),
-  whatsapp: z.string().min(10, "Veuillez entrer un numéro WhatsApp valide."),
+  whatsapp: z.string().min(10, "Le numéro WhatsApp est obligatoire."),
   birthDate: z.string().regex(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/, "Veuillez entrer une date valide (JJ/MM/AAAA)."),
   maritalStatus: z.string({ required_error: "Veuillez sélectionner votre situation familiale." }),
+  address: z.string().min(5, "L'adresse est requise."),
+  city: z.string().min(2, "La ville est requise."),
+  country: z.string().min(2, "Le pays est requis."),
+  childrenCount: z.coerce.number().min(0, "Veuillez entrer un nombre valide."),
 });
 
 const financialInfoSchema = z.object({
   employmentStatus: z.string().min(2, "La profession est requise."),
   monthlyIncome: z.coerce.number().min(500, "Le revenu minimum est de 500€."),
+  monthlyExpenses: z.coerce.number().min(0, "Veuillez entrer un montant valide."),
   housingStatus: z.string({ required_error: "Veuillez sélectionner votre situation de logement." }),
 });
 
@@ -60,8 +65,8 @@ type FormValues = z.infer<typeof formSchema>;
 
 const steps = [
   { id: 'loanDetails', title: 'Détails du prêt', fields: ['loanType', 'loanAmount', 'loanDuration'], schema: loanDetailsSchema },
-  { id: 'personalInfo', title: 'Informations Personnelles', fields: ['firstName', 'lastName', 'email', 'phone', 'whatsapp', 'birthDate', 'maritalStatus'], schema: personalInfoSchema },
-  { id: 'financialInfo', title: 'Situation Financière', fields: ['employmentStatus', 'monthlyIncome', 'housingStatus'], schema: financialInfoSchema },
+  { id: 'personalInfo', title: 'Informations Personnelles', fields: ['firstName', 'lastName', 'email', 'phone', 'whatsapp', 'birthDate', 'maritalStatus', 'address', 'city', 'country', 'childrenCount'], schema: personalInfoSchema },
+  { id: 'financialInfo', title: 'Situation Financière', fields: ['employmentStatus', 'monthlyIncome', 'monthlyExpenses', 'housingStatus'], schema: financialInfoSchema },
   { id: 'summary', title: 'Récapitulatif' },
 ];
 
@@ -84,8 +89,13 @@ export function LoanApplicationForm() {
       whatsapp: "",
       birthDate: "",
       maritalStatus: "",
+      address: "",
+      city: "",
+      country: "",
+      childrenCount: 0,
       employmentStatus: "",
       monthlyIncome: 2500,
+      monthlyExpenses: 0,
       housingStatus: "",
     },
   });
@@ -190,7 +200,15 @@ export function LoanApplicationForm() {
                 <FormField control={form.control} name="whatsapp" render={({ field }) => (<FormItem><FormLabel>WhatsApp</FormLabel><FormControl><Input type="tel" placeholder="0612345678" {...field} /></FormControl><FormMessage /></FormItem>)} />
               </div>
               <FormField control={form.control} name="birthDate" render={({ field }) => (<FormItem><FormLabel>Date de naissance</FormLabel><FormControl><Input type="text" placeholder="JJ/MM/AAAA" {...field} /></FormControl><FormMessage /></FormItem>)} />
-              <FormField control={form.control} name="maritalStatus" render={({ field }) => (<FormItem><FormLabel>Situation familiale</FormLabel><Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Sélectionnez votre situation" /></SelectTrigger></FormControl><SelectContent><SelectItem value="single">Célibataire</SelectItem><SelectItem value="married">Marié(e)</SelectItem><SelectItem value="divorced">Divorcé(e)</SelectItem><SelectItem value="widowed">Veuf(ve)</SelectItem></SelectContent></Select><FormMessage /></FormItem>)} />
+              <FormField control={form.control} name="address" render={({ field }) => (<FormItem><FormLabel>Adresse</FormLabel><FormControl><Input placeholder="123 rue de Paris" {...field} /></FormControl><FormMessage /></FormItem>)} />
+              <div className="grid md:grid-cols-2 gap-6">
+                <FormField control={form.control} name="city" render={({ field }) => (<FormItem><FormLabel>Ville</FormLabel><FormControl><Input placeholder="Paris" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="country" render={({ field }) => (<FormItem><FormLabel>Pays</FormLabel><FormControl><Input placeholder="France" {...field} /></FormControl><FormMessage /></FormItem>)} />
+              </div>
+               <div className="grid md:grid-cols-2 gap-6">
+                <FormField control={form.control} name="maritalStatus" render={({ field }) => (<FormItem><FormLabel>Situation familiale</FormLabel><Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Sélectionnez votre situation" /></SelectTrigger></FormControl><SelectContent><SelectItem value="single">Célibataire</SelectItem><SelectItem value="married">Marié(e)</SelectItem><SelectItem value="divorced">Divorcé(e)</SelectItem><SelectItem value="widowed">Veuf(ve)</SelectItem></SelectContent></Select><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="childrenCount" render={({ field }) => (<FormItem><FormLabel>Nombre d'enfants</FormLabel><FormControl><Input type="number" placeholder="ex: 2" {...field} /></FormControl><FormMessage /></FormItem>)} />
+              </div>
             </div>
           )}
           
@@ -198,7 +216,10 @@ export function LoanApplicationForm() {
             <div className="space-y-6">
                 <h3 className="text-xl font-semibold text-center">{steps[2].title}</h3>
                 <FormField control={form.control} name="employmentStatus" render={({ field }) => (<FormItem><FormLabel>Profession</FormLabel><FormControl><Input placeholder="ex: Développeur web" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                <FormField control={form.control} name="monthlyIncome" render={({ field }) => (<FormItem><FormLabel>Revenu mensuel net</FormLabel><FormControl><Input type="number" placeholder="ex: 2500" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                <div className="grid md:grid-cols-2 gap-6">
+                  <FormField control={form.control} name="monthlyIncome" render={({ field }) => (<FormItem><FormLabel>Revenu mensuel net</FormLabel><FormControl><Input type="number" placeholder="ex: 2500" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="monthlyExpenses" render={({ field }) => (<FormItem><FormLabel>Charges mensuelles</FormLabel><FormControl><Input type="number" placeholder="ex: 800" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                </div>
                 <FormField
                     control={form.control}
                     name="housingStatus"
@@ -224,21 +245,25 @@ export function LoanApplicationForm() {
                 <h3 className="text-xl font-semibold text-center">{steps[3].title}</h3>
                 <p className="text-center text-muted-foreground">Veuillez vérifier les informations avant de soumettre.</p>
                 <Card>
-                    <CardContent className="pt-6 space-y-4">
-                        <div><strong className="text-primary">Type de prêt:</strong> {formData.loanType}</div>
-                        <div><strong className="text-primary">Montant:</strong> {formatCurrency(formData.loanAmount)}</div>
-                        <div><strong className="text-primary">Durée:</strong> {formData.loanDuration} mois</div>
-                        <hr/>
-                        <div><strong className="text-primary">Nom:</strong> {formData.firstName} {formData.lastName}</div>
-                        <div><strong className="text-primary">Email:</strong> {formData.email}</div>
-                         <div><strong className="text-primary">Téléphone:</strong> {formData.phone}</div>
-                         <div><strong className="text-primary">WhatsApp:</strong> {formData.whatsapp}</div>
-                        <div><strong className="text-primary">Date de naissance:</strong> {formData.birthDate}</div>
-                        <div><strong className="text-primary">Situation familiale:</strong> {formData.maritalStatus}</div>
-                        <hr/>
-                         <div><strong className="text-primary">Profession:</strong> {formData.employmentStatus}</div>
-                        <div><strong className="text-primary">Revenu mensuel:</strong> {formatCurrency(formData.monthlyIncome)}</div>
-                        <div><strong className="text-primary">Logement:</strong> {formData.housingStatus}</div>
+                    <CardContent className="pt-6 space-y-4 text-sm">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                            <div><strong className="text-primary">Type de prêt:</strong> {formData.loanType || "N/A"}</div>
+                            <div><strong className="text-primary">Montant:</strong> {formatCurrency(formData.loanAmount)}</div>
+                            <div><strong className="text-primary">Durée:</strong> {formData.loanDuration} mois</div>
+                            <div><strong className="text-primary">Prénom:</strong> {formData.firstName}</div>
+                            <div><strong className="text-primary">Nom:</strong> {formData.lastName}</div>
+                            <div><strong className="text-primary">Email:</strong> {formData.email}</div>
+                            <div><strong className="text-primary">Téléphone:</strong> {formData.phone}</div>
+                            <div><strong className="text-primary">WhatsApp:</strong> {formData.whatsapp}</div>
+                            <div><strong className="text-primary">Date de naissance:</strong> {formData.birthDate}</div>
+                            <div className="md:col-span-2"><strong className="text-primary">Adresse:</strong> {formData.address}, {formData.city}, {formData.country}</div>
+                            <div><strong className="text-primary">Situation familiale:</strong> {formData.maritalStatus}</div>
+                            <div><strong className="text-primary">Enfants à charge:</strong> {formData.childrenCount}</div>
+                            <div><strong className="text-primary">Profession:</strong> {formData.employmentStatus}</div>
+                            <div><strong className="text-primary">Revenu mensuel:</strong> {formatCurrency(formData.monthlyIncome)}</div>
+                            <div><strong className="text-primary">Charges mensuelles:</strong> {formatCurrency(formData.monthlyExpenses)}</div>
+                            <div><strong className="text-primary">Logement:</strong> {formData.housingStatus}</div>
+                        </div>
                     </CardContent>
                 </Card>
             </div>
