@@ -70,24 +70,24 @@ const ACCEPTED_FILE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp
 
 const documentsSchema = z.object({
     identityProof: z.any()
-        .refine((files) => files?.[0], "Une pièce d'identité est requise.")
-        .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
+        .refine((file) => file, "Une pièce d'identité est requise.")
+        .refine((file) => file?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
         .refine(
-          (files) => ACCEPTED_FILE_TYPES.includes(files?.[0]?.type),
+          (file) => ACCEPTED_FILE_TYPES.includes(file?.type),
           "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
         ),
     residenceProof: z.any()
-        .refine((files) => files?.[0], "Un justificatif de domicile est requis.")
-        .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
+        .refine((file) => file, "Un justificatif de domicile est requis.")
+        .refine((file) => file?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
         .refine(
-            (files) => ACCEPTED_FILE_TYPES.includes(files?.[0]?.type),
+            (file) => ACCEPTED_FILE_TYPES.includes(file?.type),
             "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
         ),
     incomeProof: z.any()
-        .refine((files) => files?.[0], "Un justificatif de revenus est requis.")
-        .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
+        .refine((file) => file, "Un justificatif de revenus est requis.")
+        .refine((file) => file?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
         .refine(
-            (files) => ACCEPTED_FILE_TYPES.includes(files?.[0]?.type),
+            (file) => ACCEPTED_FILE_TYPES.includes(file?.type),
             "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
         ),
 });
@@ -168,9 +168,9 @@ export function LoanApplicationForm() {
     setIsSubmitting(true);
 
     try {
-        const identityProofFile = values.identityProof[0];
-        const residenceProofFile = values.residenceProof[0];
-        const incomeProofFile = values.incomeProof[0];
+        const identityProofFile = values.identityProof;
+        const residenceProofFile = values.residenceProof;
+        const incomeProofFile = values.incomeProof;
 
         const [identityProofData, residenceProofData, incomeProofData] = await Promise.all([
             fileToBase64(identityProofFile),
@@ -188,7 +188,6 @@ export function LoanApplicationForm() {
             incomeProofData,
         };
         
-        // Supprimer les champs de type FileList pour éviter les erreurs de sérialisation
         delete (dataToSend as any).identityProof;
         delete (dataToSend as any).residenceProof;
         delete (dataToSend as any).incomeProof;
@@ -230,34 +229,44 @@ export function LoanApplicationForm() {
   }
 
   const FileInputField = ({name, label}: {name: "identityProof" | "residenceProof" | "incomeProof", label: string}) => {
-    const fileRef = form.register(name);
     const watchedFile = form.watch(name);
-    const fileName = watchedFile?.[0]?.name;
+    const fileName = watchedFile?.name;
 
     return (
-        <FormItem>
-            <FormLabel>{label}</FormLabel>
-            <FormControl>
-                <div className="relative">
-                    <div className="flex items-center justify-between h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
-                        <span className={`truncate pr-8 ${fileName ? 'text-foreground' : 'text-muted-foreground'}`}>
-                            {fileName || "Aucun fichier sélectionné"}
-                        </span>
-                        {fileName ? (
-                           <FileCheck className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green-500" />
-                        ) : (
-                           <Upload className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                        )}
-                    </div>
-                    <Input
-                        type="file"
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                        {...fileRef}
-                    />
-                </div>
-            </FormControl>
-            <FormMessage />
-        </FormItem>
+        <FormField
+            control={form.control}
+            name={name}
+            render={({ field: { onChange, onBlur, value, ref } }) => (
+                <FormItem>
+                    <FormLabel>{label}</FormLabel>
+                    <FormControl>
+                        <div className="relative">
+                            <div className="flex items-center justify-between h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+                                <span className={`truncate pr-8 ${fileName ? 'text-foreground' : 'text-muted-foreground'}`}>
+                                    {fileName || "Aucun fichier sélectionné"}
+                                </span>
+                                {fileName ? (
+                                   <FileCheck className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green-500" />
+                                ) : (
+                                   <Upload className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                )}
+                            </div>
+                            <Input
+                                type="file"
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    onChange(file); // This correctly sets the file object for validation
+                                }}
+                                onBlur={onBlur}
+                                ref={ref}
+                            />
+                        </div>
+                    </FormControl>
+                    <FormMessage />
+                </FormItem>
+            )}
+        />
     );
   }
 
@@ -463,9 +472,9 @@ export function LoanApplicationForm() {
                             <div className="md:col-span-2 pt-4 mt-4 border-t">
                                 <strong className="text-primary">Documents fournis :</strong>
                                 <ul className="list-disc pl-5 mt-2 space-y-1">
-                                    <li>Pièce d'identité: <span className="text-muted-foreground">{formData.identityProof?.[0]?.name || "Non fourni"}</span></li>
-                                    <li>Justificatif de domicile: <span className="text-muted-foreground">{formData.residenceProof?.[0]?.name || "Non fourni"}</span></li>
-                                    <li>Justificatif de revenus: <span className="text-muted-foreground">{formData.incomeProof?.[0]?.name || "Non fourni"}</span></li>
+                                    <li>Pièce d'identité: <span className="text-muted-foreground">{formData.identityProof?.name || "Non fourni"}</span></li>
+                                    <li>Justificatif de domicile: <span className="text-muted-foreground">{formData.residenceProof?.name || "Non fourni"}</span></li>
+                                    <li>Justificatif de revenus: <span className="text-muted-foreground">{formData.incomeProof?.name || "Non fourni"}</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -515,4 +524,7 @@ const steps = [
   { id: 'legal', title: 'Consentement', fields: ['legalConsent'], schema: legalSchema },
   { id: 'summary', title: 'Récapitulatif' },
 ];
+    
+
+
     
