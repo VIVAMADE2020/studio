@@ -78,14 +78,13 @@ export default function AboutPage() {
                      <p className="mt-2 text-muted-foreground max-w-2xl mx-auto">Des experts passionnés qui façonnent l'avenir de FLEXFOND.</p>
                      <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                          {[
-                            { name: 'Alexandre Martin', role: 'PDG & Fondateur', image: 'https://picsum.photos/400/400?random=4', hint: 'professional man' },
-                            { name: 'Isabelle Dubois', role: 'Directrice Financière', image: 'https://picsum.photos/400/400?random=5', hint: 'professional woman' },
-                            { name: 'Thomas Bernard', role: 'Directeur des Opérations', image: 'https://picsum.photos/400/400?random=6', hint: 'professional man suit' },
+                            { name: 'Alexandre Martin', role: 'PDG & Fondateur' },
+                            { name: 'Isabelle Dubois', role: 'Directrice Financière' },
+                            { name: 'Thomas Bernard', role: 'Directeur des Opérations' },
                          ].map(member => (
-                            <div key={member.name}>
-                                <Image src={member.image} alt={member.name} width={400} height={400} data-ai-hint={member.hint} className="rounded-full w-48 h-48 mx-auto object-cover" />
-                                <h4 className="mt-4 text-xl font-semibold text-primary">{member.name}</h4>
-                                <p className="text-accent">{member.role}</p>
+                            <div key={member.name} className="p-6 bg-card rounded-lg shadow-md">
+                                <h4 className="text-xl font-semibold text-primary">{member.name}</h4>
+                                <p className="text-accent mt-2">{member.role}</p>
                             </div>
                          ))}
                      </div>
