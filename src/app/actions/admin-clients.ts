@@ -1,9 +1,8 @@
 "use server";
 
 import { z } from "zod";
-import { addClient, Client } from "@/lib/firebase/firestore";
+import { addClient } from "@/lib/firebase/firestore";
 import { verifyAdminAuth } from "./admin-auth";
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
 const formSchema = z.object({
@@ -27,7 +26,7 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
     const result = await addClient(parsed.data);
 
     if (result.success) {
-        revalidatePath("/admin/dashboard"); // Demande à Next.js de rafraîchir les données de la page
+        revalidatePath("/admin/dashboard");
         return { success: true, id: result.id };
     } else {
         return { success: false, error: result.error };

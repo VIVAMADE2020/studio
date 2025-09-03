@@ -43,7 +43,6 @@ export function AddClientForm() {
         description: "Le nouveau client a été ajouté avec succès.",
       });
       form.reset();
-      // This is a client component, so we use router.refresh() to re-fetch server-side data
       router.refresh(); 
     } else {
       toast({

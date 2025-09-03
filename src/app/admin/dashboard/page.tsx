@@ -1,10 +1,9 @@
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { logoutAdmin, verifyAdminAuth } from '@/app/actions/admin-auth';
 import { AddClientForm } from '@/components/admin-add-client-form';
-import { getClients, Client } from '@/lib/firebase/firestore';
+import { getClients } from '@/lib/firebase/firestore';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 // Server action for logout
@@ -21,7 +20,14 @@ export default async function AdminDashboardPage() {
         redirect('/admin/login');
     }
 
-    const clients = await getClients();
+    let clients = [];
+    try {
+      clients = await getClients();
+    } catch (error) {
+        console.error("Erreur lors de la récupération des clients:", error);
+        // Affiche une erreur ou un message dans le UI si nécessaire
+    }
+
 
     return (
         <div className="container py-12">
