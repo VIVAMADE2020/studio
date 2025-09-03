@@ -12,7 +12,7 @@ import { formatCurrency } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Banknote, Landmark, Percent, Calendar, FileText } from 'lucide-react';
-import { getClientDataAction } from '@/app/actions/client-auth';
+import { getClientDataAction } from '@/app/actions/admin-clients';
 
 export default function ClientDashboardPage() {
     const [user] = useAuthState(auth);

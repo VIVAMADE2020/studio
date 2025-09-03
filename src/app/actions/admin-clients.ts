@@ -158,3 +158,20 @@ export async function getClientsAction(): Promise<{data: Client[] | null, error:
         return { data: null, error: 'Impossible de récupérer la liste des clients.' };
     }
 }
+
+export async function getClientDataAction(uid: string): Promise<{ data: Client | null, error: string | null }> {
+    if (!uid) {
+        return { data: null, error: "Utilisateur non authentifié." };
+    }
+    try {
+        const docSnap = await adminDb.collection('clients').doc(uid).get();
+        if (!docSnap.exists) {
+            return { data: null, error: "Profil client non trouvé." };
+        }
+        const clientData = { id: docSnap.id, ...docSnap.data() } as Client;
+        return { data: clientData, error: null };
+    } catch (error) {
+        console.error("Error getting client data (action):", error);
+        return { data: null, error: "Impossible de récupérer les données du profil." };
+    }
+}
