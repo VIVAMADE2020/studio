@@ -25,8 +25,6 @@ export async function signupAction(values: z.infer<typeof formSchema>) {
         const { email, password, firstName, lastName } = parsed.data;
 
         // 1. Create user in Firebase Auth
-        // NOTE: This uses the client SDK on the server, which is fine for this use case
-        // as we are in a trusted server environment (Server Action).
         const userCredential = await createUserWithEmailAndPassword(clientAuth, email, password);
         const user = userCredential.user;
 
@@ -38,7 +36,7 @@ export async function signupAction(values: z.infer<typeof formSchema>) {
             email,
             accountType: 'current', // Default account type
             accountBalance: 0, // Default balance
-            accountNumber: `000${Math.floor(10000000 + Math.random() * 90000000)}`,
+            accountNumber: `FLX${Math.floor(1000000000 + Math.random() * 9000000000)}`,
             iban: `FR76 30002 00550 ${Math.floor(10000000000 + Math.random() * 90000000000)} 97`,
             swiftCode: 'FLXDFRPP',
             transactions: [],

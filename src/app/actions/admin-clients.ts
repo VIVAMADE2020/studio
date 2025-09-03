@@ -74,6 +74,7 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
             };
         }
         
+        // Explicitly set the document ID to be the user's UID
         await adminDb.collection("clients").doc(userRecord.uid).set(newClient);
 
         return { success: true, userId: userRecord.uid };
