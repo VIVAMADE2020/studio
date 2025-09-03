@@ -18,7 +18,6 @@ const formSchema = z.object({
   phone: z.string(),
   whatsapp: z.string(),
   birthDate: z.string(),
-  birthPlace: z.string(),
   maritalStatus: z.string(),
   address: z.string(),
   city: z.string(),
@@ -46,11 +45,17 @@ export async function submitLoanApplication(values: z.infer<typeof formSchema>) 
   // dans une base de données et notifieriez les équipes compétentes.
   console.log("Nouvelle demande de prêt reçue :");
   console.log(parsed.data);
+
+  // TODO: Intégration avec Google Drive
+  // Ici, vous ajouteriez le code pour vous connecter à l'API Google Drive
+  // et envoyer `parsed.data` ainsi que les fichiers uploadés.
+  // Cela nécessite une gestion sécurisée des clés d'API et des tokens OAuth.
+  // Exemple conceptuel :
+  // const drive = await getDriveService();
+  // await drive.files.create({ ... });
   
   // Simule une latence réseau
   await new Promise(resolve => setTimeout(resolve, 1500));
 
   return { success: true };
 }
-
-    
