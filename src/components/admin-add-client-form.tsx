@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -15,7 +16,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { addClientAction } from "@/app/actions/admin-clients";
-import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   firstName: z.string().min(2, { message: "Le prénom doit contenir au moins 2 caractères." }),
@@ -23,9 +23,12 @@ const formSchema = z.object({
   email: z.string().email({ message: "Veuillez entrer une adresse email valide." }),
 });
 
-export function AddClientForm() {
+interface AddClientFormProps {
+    onClientAdded: () => void;
+}
+
+export function AddClientForm({ onClientAdded }: AddClientFormProps) {
   const { toast } = useToast();
-  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,7 +46,7 @@ export function AddClientForm() {
         description: "Le nouveau client a été ajouté avec succès.",
       });
       form.reset();
-      router.refresh(); 
+      onClientAdded();
     } else {
       toast({
         variant: "destructive",

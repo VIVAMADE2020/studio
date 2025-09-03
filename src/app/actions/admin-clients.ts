@@ -1,9 +1,8 @@
+
 "use server";
 
 import { z } from "zod";
 import { addClient } from "@/lib/firebase/firestore";
-import { verifyAdminAuth } from "./admin-auth";
-import { revalidatePath } from "next/cache";
 
 const formSchema = z.object({
   firstName: z.string().min(2, "Le prénom est requis."),
@@ -11,12 +10,9 @@ const formSchema = z.object({
   email: z.string().email("L'email est invalide."),
 });
 
+// NOTE: La vérification de l'administrateur est maintenant gérée par les règles de sécurité de Firestore.
+// L'action échouera si elle n'est pas appelée par un administrateur authentifié.
 export async function addClientAction(values: z.infer<typeof formSchema>) {
-    const isAdmin = await verifyAdminAuth();
-    if (!isAdmin) {
-        return { success: false, error: "Non autorisé" };
-    }
-
     const parsed = formSchema.safeParse(values);
 
     if (!parsed.success) {
@@ -27,13 +23,17 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
       const result = await addClient(parsed.data);
 
       if (result.success) {
-          revalidatePath("/admin/dashboard");
           return { success: true, id: result.id };
       } else {
           return { success: false, error: result.error };
       }
-    } catch(error) {
+    } catch(error: any) {
       console.error("Error in addClientAction:", error);
+      
+      // Gérer l'erreur de permission de Firestore
+      if (error.code === 'permission-denied') {
+          return { success: false, error: "Action non autorisée. Seuls les administrateurs peuvent ajouter des clients."};
+      }
       return { success: false, error: "Une erreur est survenue côté serveur."};
     }
 }

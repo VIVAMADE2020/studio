@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -7,9 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
-import { createAdminSession } from "@/app/actions/admin-auth";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, User } from "firebase/auth";
 import { auth } from "@/lib/firebase/config";
 
 const formSchema = z.object({
@@ -17,9 +16,12 @@ const formSchema = z.object({
   password: z.string().min(1, { message: "Le mot de passe est requis." }),
 });
 
-export function AdminLoginForm() {
+interface AdminLoginFormProps {
+    onLoginSuccess: (user: User) => void;
+}
+
+export function AdminLoginForm({ onLoginSuccess }: AdminLoginFormProps) {
   const { toast } = useToast();
-  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,30 +36,12 @@ export function AdminLoginForm() {
         throw new Error("La configuration de l'authentification Firebase n'a pas pu être chargée.");
       }
       
-      // 1. Authentifier l'utilisateur avec Firebase Auth côté client
       const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
-      const user = userCredential.user;
-
-      if (user) {
-          // 2. Obtenir le jeton d'identification de l'utilisateur
-          const idToken = await user.getIdToken();
-
-          // 3. Envoyer le jeton au serveur pour créer une session (cookie)
-          const sessionResult = await createAdminSession(idToken);
-
-          if (sessionResult.success) {
-               toast({
-                title: "Authentification réussie",
-                description: "Redirection vers le tableau de bord...",
-              });
-              router.push('/admin/dashboard');
-              router.refresh(); // Force le rafraîchissement de la page pour charger le nouvel état
-          } else {
-              throw new Error(sessionResult.error || "La création de la session a échoué.");
-          }
-      } else {
-        throw new Error("L'utilisateur n'a pas pu être authentifié.");
-      }
+      toast({
+        title: "Connexion réussie!",
+        description: `Bienvenue, ${userCredential.user.email}.`,
+      });
+      onLoginSuccess(userCredential.user);
     
     } catch (error: any) {
         let errorMessage = "Une erreur est survenue. Veuillez vérifier vos identifiants.";
