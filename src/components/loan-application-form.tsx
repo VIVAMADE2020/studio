@@ -409,7 +409,7 @@ export function LoanApplicationForm() {
                             </FormControl>
                             <div className="space-y-1 leading-none">
                                 <FormLabel>
-                                    J'ai lu et j'accepte les <Link href="/legal" className="text-primary underline">mentions légales</Link> et la <Link href="/privacy" className="text-primary underline">politique de confidentialité</Link>.
+                                    J'ai lu et j'accepte les <Link href="/legal/mentions-legales" className="text-primary underline">mentions légales</Link> et la <Link href="/legal/politique-de-confidentialite" className="text-primary underline">politique de confidentialité</Link>.
                                 </FormLabel>
                                 <FormMessage />
                             </div>
