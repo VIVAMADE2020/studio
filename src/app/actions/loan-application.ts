@@ -39,12 +39,8 @@ export async function submitLoanApplication(values: z.infer<typeof formSchema>) 
 
   // --- Intégration avec Google Apps Script ---
   try {
-    // Note : Pour les fichiers, nous n'envoyons que le nom.
-    // Une intégration complète nécessiterait de téléverser les fichiers sur Drive
-    // via le script et d'enregistrer les liens dans la feuille de calcul.
-    // Ce code envoie uniquement les données textuelles.
     const dataToSend = {
-      sheet: 'LoanApplications', // Nom de la feuille
+      sheet: 'LoanApplications', // Nom utilisé par le script pour identifier le formulaire
       ...parsed.data,
     };
     

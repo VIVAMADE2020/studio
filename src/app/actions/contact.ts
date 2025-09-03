@@ -25,7 +25,7 @@ export async function sendContactMessage(values: z.infer<typeof formSchema>) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            sheet: 'Contacts', // Nom de la feuille de calcul
+            sheet: 'Contacts', // Nom utilisé par le script pour identifier le formulaire
             ...parsed.data 
         }),
     });
@@ -35,9 +35,6 @@ export async function sendContactMessage(values: z.infer<typeof formSchema>) {
         console.error("Google Script Error:", errorText);
         throw new Error('La réponse du serveur n\'est pas OK.');
     }
-    
-    // La réponse de Google Script est souvent du HTML, mais on peut vérifier le succès.
-    // Pour une réponse JSON, vous utiliseriez : await response.json();
     
   } catch (error) {
     console.error("Erreur lors de l'envoi vers Google Script:", error);
