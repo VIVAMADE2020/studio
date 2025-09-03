@@ -1,7 +1,7 @@
 
 "use server";
 
-import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, where, query, limit, getDoc } from "firebase/firestore";
 import { db } from "./config";
 
 export interface Transaction {
@@ -44,16 +44,12 @@ export interface Client {
 
 const clientsCollection = collection(db, "clients");
 
-// Cette fonction n'est plus utilisée directement par le formulaire admin, 
-// car la nouvelle action addClientAction gère la création Auth + Firestore.
-// On la garde au cas où pour d'autres usages.
 export async function addClient(client: Omit<Client, 'id'>) {
   try {
     const docRef = await addDoc(clientsCollection, client);
     return { success: true, id: docRef.id };
   } catch (error) {
     console.error("Error adding document: ", error);
-    // Typage de l'erreur pour accéder à la propriété 'code'
     const firebaseError = error as { code?: string, message?: string };
     if (firebaseError.code === 'permission-denied') {
         return { success: false, error: "Permission refusée. Assurez-vous que l'administrateur est correctement authentifié et que les règles de sécurité Firestore sont correctes." };
@@ -65,13 +61,27 @@ export async function addClient(client: Omit<Client, 'id'>) {
 export async function getClients(): Promise<Client[]> {
   try {
     const querySnapshot = await getDocs(clientsCollection);
-    // L'ID du document est maintenant l'UID de l'utilisateur
     return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Client));
   } catch (error) {
       console.error("Error getting documents: ", error);
-      // In case of error (e.g., permissions), return an empty array
       return [];
   }
+}
+
+export async function getClientByUid(uid: string): Promise<Client | null> {
+    try {
+        const clientDocRef = doc(db, "clients", uid);
+        const clientSnap = await getDoc(clientDocRef);
+
+        if (clientSnap.exists()) {
+            return { id: clientSnap.id, ...clientSnap.data() } as Client;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error("Error getting client by UID:", error);
+        throw error; // Re-throw the error to be caught by the caller
+    }
 }
 
 

@@ -33,15 +33,14 @@ export default function LoginPage() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+            await signInWithEmailAndPassword(auth, values.email, values.password);
             
             toast({
                 title: "Connexion réussie !",
                 description: `Bienvenue sur votre espace client.`,
             });
             
-            // TODO: Rediriger vers l'espace client une fois créé
-            // router.push("/client-dashboard");
+            router.push("/client/dashboard");
 
         } catch (error: any) {
             let errorMessage = "Une erreur est survenue. Veuillez vérifier vos identifiants.";
