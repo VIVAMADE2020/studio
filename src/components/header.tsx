@@ -39,9 +39,6 @@ export function Header() {
             <Button asChild variant="ghost">
               <Link href="/login">Espace Client</Link>
             </Button>
-            <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
-              <Link href="/demande-pret">Demander un prêt</Link>
-            </Button>
           </div>
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
@@ -73,9 +70,6 @@ export function Header() {
                 <div className="mt-auto p-4 flex flex-col gap-4 border-t">
                   <Button asChild variant="ghost" className="w-full justify-start text-lg">
                     <Link href="/login" onClick={() => setIsOpen(false)}>Espace Client</Link>
-                  </Button>
-                  <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 w-full text-lg">
-                    <Link href="/demande-pret" onClick={() => setIsOpen(false)}>Demander un prêt</Link>
                   </Button>
                 </div>
               </div>
