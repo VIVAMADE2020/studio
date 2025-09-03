@@ -3,10 +3,6 @@
 
 import { z } from "zod";
 
-// Note: In a real app, file handling would be more complex, 
-// likely involving uploads to a storage service and storing URLs.
-// For this demo, we'll just accept the file names as strings.
-
 const formSchema = z.object({
   loanType: z.string(),
   loanReason: z.string(),
@@ -41,21 +37,36 @@ export async function submitLoanApplication(values: z.infer<typeof formSchema>) 
     return { success: false, error: "Les données fournies sont invalides." };
   }
 
-  // Dans une application réelle, vous enregistreriez ces données
-  // dans une base de données et notifieriez les équipes compétentes.
-  console.log("Nouvelle demande de prêt reçue :");
-  console.log(parsed.data);
+  // --- Intégration avec Google Apps Script ---
+  try {
+    // Note : Pour les fichiers, nous n'envoyons que le nom.
+    // Une intégration complète nécessiterait de téléverser les fichiers sur Drive
+    // via le script et d'enregistrer les liens dans la feuille de calcul.
+    // Ce code envoie uniquement les données textuelles.
+    const dataToSend = {
+      sheet: 'LoanApplications', // Nom de la feuille
+      ...parsed.data,
+    };
+    
+    const response = await fetch(process.env.GOOGLE_SCRIPT_WEB_APP_URL!, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dataToSend),
+    });
 
-  // TODO: Intégration avec Google Drive
-  // Ici, vous ajouteriez le code pour vous connecter à l'API Google Drive
-  // et envoyer `parsed.data` ainsi que les fichiers uploadés.
-  // Cela nécessite une gestion sécurisée des clés d'API et des tokens OAuth.
-  // Exemple conceptuel :
-  // const drive = await getDriveService();
-  // await drive.files.create({ ... });
-  
-  // Simule une latence réseau
-  await new Promise(resolve => setTimeout(resolve, 1500));
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Google Script Error:", errorText);
+      throw new Error('La réponse du serveur n\'est pas OK.');
+    }
+
+  } catch (error) {
+    console.error("Erreur lors de l'envoi vers Google Script:", error);
+    return { success: false, error: "Une erreur est survenue lors de l'envoi de la demande." };
+  }
+  // --- Fin de l'intégration ---
 
   return { success: true };
 }

@@ -17,21 +17,33 @@ export async function sendContactMessage(values: z.infer<typeof formSchema>) {
     return { success: false, error: "Invalid data" };
   }
 
-  // In a real application, you would send an email here.
-  // For this example, we'll just log the data to the console.
-  console.log("New contact message received:");
-  console.log(parsed.data);
-  
-  // TODO: Intégration avec Google Drive
-  // Ici, vous ajouteriez le code pour vous connecter à l'API Google Drive
-  // et envoyer les données de `parsed.data` dans un nouveau fichier/document.
-  // Cela nécessite une gestion sécurisée des clés d'API et des tokens OAuth.
-  // Exemple conceptuel :
-  // const drive = await getDriveService();
-  // await drive.files.create({ resource: { name: 'nouveau_contact.txt', ... }, media: { body: ..., mimeType: 'text/plain' }});
+  // --- Intégration avec Google Apps Script ---
+  try {
+    const response = await fetch(process.env.GOOGLE_SCRIPT_WEB_APP_URL!, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            sheet: 'Contacts', // Nom de la feuille de calcul
+            ...parsed.data 
+        }),
+    });
 
-  // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
+    if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Google Script Error:", errorText);
+        throw new Error('La réponse du serveur n\'est pas OK.');
+    }
+    
+    // La réponse de Google Script est souvent du HTML, mais on peut vérifier le succès.
+    // Pour une réponse JSON, vous utiliseriez : await response.json();
+    
+  } catch (error) {
+    console.error("Erreur lors de l'envoi vers Google Script:", error);
+    return { success: false, error: "Une erreur est survenue lors de l'envoi." };
+  }
+  // --- Fin de l'intégration ---
 
   return { success: true };
 }
