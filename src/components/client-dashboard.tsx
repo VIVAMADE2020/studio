@@ -64,7 +64,7 @@ export function ClientDashboard() {
     }
     
     if (error) {
-        return <div className="text-center py-12 text-destructive">{error}</div>;
+        return <div className="container py-12 text-center text-destructive">{error}</div>;
     }
     
     if (!clientData || !user) {
