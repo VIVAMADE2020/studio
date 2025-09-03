@@ -35,7 +35,10 @@ export function Header() {
           ))}
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-4">
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-2">
+            <Button asChild>
+              <Link href="/demande-pret">Faire une demande</Link>
+            </Button>
             <Button asChild variant="ghost">
               <Link href="/login">Espace Client</Link>
             </Button>
@@ -68,6 +71,9 @@ export function Header() {
                   ))}
                 </nav>
                 <div className="mt-auto p-4 flex flex-col gap-4 border-t">
+                  <Button asChild className="w-full justify-start text-lg">
+                     <Link href="/demande-pret" onClick={() => setIsOpen(false)}>Faire une demande</Link>
+                  </Button>
                   <Button asChild variant="ghost" className="w-full justify-start text-lg">
                     <Link href="/login" onClick={() => setIsOpen(false)}>Espace Client</Link>
                   </Button>

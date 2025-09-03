@@ -1,9 +1,11 @@
 import { LoanCalculator } from "@/components/loan-calculator";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 export function LoanCalculatorSection() {
   return (
-    <section className="py-16 md:py-24 bg-background">
+    <section id="loan-calculator" className="py-16 md:py-24 bg-background scroll-mt-20">
       <div className="container px-4">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1">
@@ -22,6 +24,9 @@ export function LoanCalculatorSection() {
             <p className="mt-4 text-muted-foreground">
               Utilisez notre simulateur pour avoir une idée claire de votre engagement financier. Ajustez le montant et la durée pour trouver la combinaison parfaite qui correspond à votre budget. C'est simple, rapide et sans engagement.
             </p>
+             <Button asChild size="lg" className="mt-6">
+                <Link href="/demande-pret">Commencer ma demande</Link>
+            </Button>
           </div>
         </div>
       </div>
