@@ -1,195 +1,25 @@
-
-"use client";
-
-import { useState, useEffect } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '@/lib/firebase/config';
-import { Client, Transaction } from '@/lib/firebase/firestore';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Skeleton } from '@/components/ui/skeleton';
-import { formatCurrency } from '@/lib/utils';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Banknote, Landmark, Percent, Calendar, FileText } from 'lucide-react';
 import { getClientDataAction } from '@/app/actions/admin-clients';
+import { auth } from '@/lib/firebase/config';
+import { ClientDashboard } from '@/components/client-dashboard';
+import { getCurrentUser } from '@/lib/firebase/auth';
 
-export default function ClientDashboardPage() {
-    const [user] = useAuthState(auth);
-    const [clientData, setClientData] = useState<Client | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        async function fetchClientData() {
-            if (user) {
-                try {
-                    setLoading(true);
-                    const { data, error: fetchError } = await getClientDataAction(user.uid);
-                    if (fetchError) {
-                       throw new Error(fetchError);
-                    }
-                    if (data) {
-                        setClientData(data);
-                    } else {
-                        setError("Profil client non trouvé. Veuillez contacter le support.");
-                    }
-                } catch (e: any) {
-                    console.error("Error fetching client data: ", e);
-                    setError(e.message || "Impossible de charger les données du profil.");
-                } finally {
-                    setLoading(false);
-                }
-            }
-        }
-        fetchClientData();
-    }, [user]);
+export default async function ClientDashboardPage() {
+    const user = await getCurrentUser();
 
-    if (loading) {
+    if (!user) {
+        // This case should be handled by the layout, but as a safeguard:
         return (
-             <div className="container py-12">
-                <div className="max-w-5xl mx-auto">
-                    <Skeleton className="h-10 w-1/3 mb-4" />
-                    <Skeleton className="h-6 w-1/2 mb-8" />
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-                        <Skeleton className="h-32" />
-                        <Skeleton className="h-32" />
-                        <Skeleton className="h-32" />
-                    </div>
-                    {/* Loan details skeleton */}
-                     <Skeleton className="h-48 mb-8" />
-                    {/* Transactions skeleton */}
-                    <Skeleton className="h-96" />
-                </div>
+            <div className="container py-12 text-center">
+                <p>Vous devez être connecté pour voir cette page.</p>
             </div>
         );
     }
     
-    if (error) {
-        return <div className="text-center py-12 text-destructive">{error}</div>;
-    }
-    
-    if (!clientData) {
-        return <div className="text-center py-12 text-muted-foreground">Aucune donnée client disponible.</div>;
-    }
+    // This now runs on the server, ensuring data is fetched with admin privileges
+    // before the page is rendered.
+    const { data: initialClientData, error } = await getClientDataAction(user.uid);
 
-    const sortedTransactions = [...(clientData.transactions || [])].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
-    return (
-        <div className="bg-secondary/50 min-h-screen">
-            <div className="container py-12">
-                 <div className="max-w-5xl mx-auto">
-                    <div className="mb-8">
-                        <h1 className="text-3xl md:text-4xl font-bold text-primary">Bonjour, {clientData.firstName}</h1>
-                        <p className="text-muted-foreground">Bienvenue sur votre espace client sécurisé.</p>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                <CardTitle className="text-sm font-medium">Solde Actuel</CardTitle>
-                                <Banknote className="h-4 w-4 text-muted-foreground"/>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{formatCurrency(clientData.accountBalance || 0)}</div>
-                            </CardContent>
-                        </Card>
-                         <Card>
-                            <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                <CardTitle className="text-sm font-medium">Type de Compte</CardTitle>
-                                <FileText className="h-4 w-4 text-muted-foreground"/>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold capitalize">{clientData.accountType === 'loan' ? 'Prêt' : 'Courant'}</div>
-                            </CardContent>
-                        </Card>
-                         <Card>
-                            <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                <CardTitle className="text-sm font-medium">Numéro de Compte</CardTitle>
-                                <Landmark className="h-4 w-4 text-muted-foreground"/>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-lg font-semibold font-mono">{clientData.accountNumber}</div>
-                            </CardContent>
-                        </Card>
-                    </div>
-
-                    {clientData.accountType === 'loan' && clientData.loanDetails && (
-                        <Card className="mb-8">
-                            <CardHeader>
-                                <CardTitle>Détails de votre prêt</CardTitle>
-                            </CardHeader>
-                            <CardContent className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                <div className="flex items-center gap-3">
-                                    <Banknote className="h-6 w-6 text-accent"/>
-                                    <div>
-                                        <p className="text-sm text-muted-foreground">Montant Emprunté</p>
-                                        <p className="font-bold">{formatCurrency(clientData.loanDetails.loanAmount)}</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <Percent className="h-6 w-6 text-accent"/>
-                                    <div>
-                                        <p className="text-sm text-muted-foreground">Taux Annuel</p>
-                                        <p className="font-bold">{clientData.loanDetails.interestRate}%</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <Calendar className="h-6 w-6 text-accent"/>
-                                    <div>
-                                        <p className="text-sm text-muted-foreground">Durée</p>
-                                        <p className="font-bold">{clientData.loanDetails.loanDuration} mois</p>
-                                    </div>
-                                </div>
-                                 <Alert>
-                                    <Banknote className="h-4 w-4"/>
-                                    <AlertTitle className="font-bold">Mensualité</AlertTitle>
-                                    <AlertDescription>
-                                        {formatCurrency(clientData.loanDetails.monthlyPayment)}
-                                    </AlertDescription>
-                                </Alert>
-                            </CardContent>
-                        </Card>
-                    )}
-
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Historique des transactions</CardTitle>
-                            <CardDescription>Retrouvez ici la liste de vos dernières opérations.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                             <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Date</TableHead>
-                                        <TableHead>Description</TableHead>
-                                        <TableHead className="text-right">Montant</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {sortedTransactions.length > 0 ? sortedTransactions.map((tx: Transaction) => (
-                                        <TableRow key={tx.id}>
-                                            <TableCell className="text-xs text-muted-foreground">{new Date(tx.date).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })}</TableCell>
-                                            <TableCell>{tx.description}</TableCell>
-                                            <TableCell className="text-right font-mono">
-                                                <span className={tx.amount > 0 ? 'text-green-600' : 'text-destructive'}>
-                                                    {tx.amount > 0 ? `+${formatCurrency(tx.amount)}` : formatCurrency(tx.amount)}
-                                                </span>
-                                            </TableCell>
-                                        </TableRow>
-                                    )) : (
-                                        <TableRow>
-                                            <TableCell colSpan={3} className="text-center text-muted-foreground py-8">
-                                                Aucune transaction pour le moment.
-                                            </TableCell>
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </CardContent>
-                    </Card>
-                 </div>
-            </div>
-        </div>
-    );
+    // We pass the fetched data and any potential error to the client component.
+    return <ClientDashboard initialClientData={initialClientData} error={error} />;
 }
