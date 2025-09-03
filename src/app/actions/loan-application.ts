@@ -29,6 +29,7 @@ const formSchema = z.object({
   identityProof: z.string(),
   residenceProof: z.string(),
   incomeProof: z.string(),
+  legalConsent: z.boolean(),
 });
 
 export async function submitLoanApplication(values: z.infer<typeof formSchema>) {

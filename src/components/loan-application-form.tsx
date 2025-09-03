@@ -26,12 +26,14 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, ArrowRight, Send, Loader2, Upload, AlertCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Send, Loader2, Upload, AlertCircle, FileCheck } from "lucide-react";
 import { submitLoanApplication } from "@/app/actions/loan-application";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/card";
 import { formatCurrency } from "@/lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { LoanCalculator } from "./loan-calculator";
+import { Checkbox } from "./ui/checkbox";
+import Link from "next/link";
 
 const loanDetailsSchema = z.object({
   loanType: z.string({ required_error: "Veuillez sélectionner un type de prêt." }),
@@ -54,41 +56,46 @@ const personalInfoSchema = z.object({
 });
 
 const financialInfoSchema = z.object({
-  employmentStatus: z.string({ required_error: "La profession est requise." }),
+  employmentStatus: z.string().min(2, { message: "La profession est requise." }),
   monthlyIncome: z.coerce.number().min(500, "Le revenu minimum est de 500€."),
   monthlyExpenses: z.coerce.number().min(0, "Veuillez entrer un montant valide."),
   housingStatus: z.string({ required_error: "Veuillez sélectionner votre situation de logement." }),
 });
 
-const MAX_FILE_SIZE = 5000000; // 5MB
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp", "application/pdf"];
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const ACCEPTED_FILE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp", "application/pdf"];
 
 const documentsSchema = z.object({
     identityProof: z.any()
-        .refine((files) => files?.length == 1, "Une pièce d'identité est requise.")
+        .refine((files) => files?.[0], "Une pièce d'identité est requise.")
         .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
         .refine(
-          (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+          (files) => ACCEPTED_FILE_TYPES.includes(files?.[0]?.type),
           "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
         ),
     residenceProof: z.any()
-        .refine((files) => files?.length == 1, "Un justificatif de domicile est requis.")
+        .refine((files) => files?.[0], "Un justificatif de domicile est requis.")
         .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
         .refine(
-            (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+            (files) => ACCEPTED_FILE_TYPES.includes(files?.[0]?.type),
             "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
         ),
     incomeProof: z.any()
-        .refine((files) => files?.length == 1, "Un justificatif de revenus est requis.")
+        .refine((files) => files?.[0], "Un justificatif de revenus est requis.")
         .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
         .refine(
-            (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+            (files) => ACCEPTED_FILE_TYPES.includes(files?.[0]?.type),
             "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
         ),
 });
 
+const legalSchema = z.object({
+    legalConsent: z.boolean().refine(val => val === true, {
+        message: "Vous devez accepter les conditions pour continuer."
+    })
+});
 
-const formSchema = loanDetailsSchema.merge(personalInfoSchema).merge(financialInfoSchema).merge(documentsSchema);
+const formSchema = loanDetailsSchema.merge(personalInfoSchema).merge(financialInfoSchema).merge(documentsSchema).merge(legalSchema);
 
 type FormValues = z.infer<typeof formSchema>;
 
@@ -97,6 +104,7 @@ const steps = [
   { id: 'personalInfo', title: 'Informations Personnelles', fields: ['firstName', 'lastName', 'email', 'phone', 'whatsapp', 'birthDate', 'maritalStatus', 'address', 'city', 'country', 'childrenCount'], schema: personalInfoSchema },
   { id: 'financialInfo', title: 'Situation Financière', fields: ['employmentStatus', 'monthlyIncome', 'monthlyExpenses', 'housingStatus'], schema: financialInfoSchema },
   { id: 'documents', title: 'Vos Documents', fields: ['identityProof', 'residenceProof', 'incomeProof'], schema: documentsSchema },
+  { id: 'legal', title: 'Consentement', fields: ['legalConsent'], schema: legalSchema },
   { id: 'summary', title: 'Récapitulatif' },
 ];
 
@@ -110,7 +118,7 @@ export function LoanApplicationForm() {
     resolver: zodResolver(formSchema),
     mode: "onBlur",
     defaultValues: {
-      loanType: "",
+      loanType: undefined,
       loanAmount: 50000,
       loanDuration: 120,
       firstName: "",
@@ -119,7 +127,7 @@ export function LoanApplicationForm() {
       phone: "",
       whatsapp: "",
       birthDate: "",
-      maritalStatus: "",
+      maritalStatus: undefined,
       address: "",
       city: "",
       country: "",
@@ -127,14 +135,15 @@ export function LoanApplicationForm() {
       employmentStatus: "",
       monthlyIncome: 2500,
       monthlyExpenses: 0,
-      housingStatus: "",
+      housingStatus: undefined,
       identityProof: undefined,
       residenceProof: undefined,
       incomeProof: undefined,
+      legalConsent: false,
     },
   });
   
-  const formData = form.getValues();
+  const formData = form.watch();
 
   const handleNext = async () => {
     const currentStepSchema = steps[currentStep].schema;
@@ -151,8 +160,7 @@ export function LoanApplicationForm() {
   
   async function onSubmit(values: FormValues) {
     setIsSubmitting(true);
-    // In a real app, you would upload files to a storage service first.
-    // For this demo, we'll just pass the file info.
+
     const dataToSubmit = {
         ...values,
         identityProof: values.identityProof[0].name,
@@ -191,22 +199,35 @@ export function LoanApplicationForm() {
   }
 
   const FileInputField = ({name, label}: {name: "identityProof" | "residenceProof" | "incomeProof", label: string}) => {
+      const file = form.watch(name);
+      const fileName = file?.[0]?.name;
+
       return (
         <FormField
           control={form.control}
           name={name}
-          render={({ field: { onChange, ...fieldProps } }) => (
+          render={({ field: { onChange, onBlur, value, ref } }) => (
             <FormItem>
               <FormLabel>{label}</FormLabel>
               <FormControl>
                 <div className="relative">
-                    <Upload className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                    <Input 
-                        type="file" 
-                        className="pl-10"
-                        onChange={(e) => onChange(e.target.files)}
-                        {...fieldProps}
-                    />
+                    {fileName ? (
+                        <div className="flex items-center justify-between h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+                            <span className="text-muted-foreground truncate pr-8">{fileName}</span>
+                            <FileCheck className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green-500" />
+                        </div>
+                    ) : (
+                        <div className="relative">
+                            <Upload className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                            <Input 
+                                type="file" 
+                                className="pl-10"
+                                onChange={(e) => onChange(e.target.files)}
+                                onBlur={onBlur}
+                                ref={ref}
+                            />
+                        </div>
+                    )}
                 </div>
               </FormControl>
               <FormMessage />
@@ -297,22 +318,8 @@ export function LoanApplicationForm() {
                   name="employmentStatus"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Situation professionnelle</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger><SelectValue placeholder="Sélectionnez une option" /></SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="cdi">Salarié (CDI)</SelectItem>
-                          <SelectItem value="cdd">Salarié (CDD)</SelectItem>
-                          <SelectItem value="interim">Intérimaire</SelectItem>
-                          <SelectItem value="independent">Indépendant / Auto-entrepreneur</SelectItem>
-                          <SelectItem value="functionary">Fonctionnaire</SelectItem>
-                          <SelectItem value="retired">Retraité</SelectItem>
-                          <SelectItem value="student">Étudiant</SelectItem>
-                          <SelectItem value="unemployed">Sans emploi</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <FormLabel>Profession</FormLabel>
+                      <FormControl><Input placeholder="ex: Développeur Web" {...field} /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -366,8 +373,34 @@ export function LoanApplicationForm() {
           )}
 
           {currentStep === 4 && (
-            <div className="space-y-6">
+             <div className="space-y-6">
                 <h3 className="text-xl font-semibold text-center">{steps[4].title}</h3>
+                <FormField
+                    control={form.control}
+                    name="legalConsent"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+                            <FormControl>
+                                <Checkbox
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                                <FormLabel>
+                                    J'ai lu et j'accepte les <Link href="/legal" className="text-primary underline">mentions légales</Link> et la <Link href="/privacy" className="text-primary underline">politique de confidentialité</Link>.
+                                </FormLabel>
+                                <FormMessage />
+                            </div>
+                        </FormItem>
+                    )}
+                />
+             </div>
+          )}
+
+          {currentStep === 5 && (
+            <div className="space-y-6">
+                <h3 className="text-xl font-semibold text-center">{steps[5].title}</h3>
                 <p className="text-center text-muted-foreground">Veuillez vérifier les informations avant de soumettre.</p>
                 <Card>
                     <CardContent className="pt-6 space-y-4 text-sm">
@@ -381,10 +414,10 @@ export function LoanApplicationForm() {
                             <div><strong className="text-primary">Téléphone:</strong> {formData.phone}</div>
                             <div><strong className="text-primary">WhatsApp:</strong> {formData.whatsapp}</div>
                             <div><strong className="text-primary">Date de naissance:</strong> {formData.birthDate}</div>
-                            <div className="md:col-span-2"><strong className="text-primary">Adresse:</strong> {formData.address}, {formData.city}, {formData.country}</div>
+                            <div className="md:col-span-2"><strong className="text-primary">Adresse:</strong> {`${formData.address}, ${formData.city}, ${formData.country}`}</div>
                             <div><strong className="text-primary">Situation familiale:</strong> {formData.maritalStatus}</div>
                             <div><strong className="text-primary">Enfants à charge:</strong> {formData.childrenCount}</div>
-                            <div><strong className="text-primary">Situation professionnelle:</strong> {formData.employmentStatus}</div>
+                            <div><strong className="text-primary">Profession:</strong> {formData.employmentStatus}</div>
                             <div><strong className="text-primary">Revenu mensuel:</strong> {formatCurrency(formData.monthlyIncome)}</div>
                             <div><strong className="text-primary">Charges mensuelles:</strong> {formatCurrency(formData.monthlyExpenses)}</div>
                             <div><strong className="text-primary">Logement:</strong> {formData.housingStatus}</div>
