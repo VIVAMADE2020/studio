@@ -5,9 +5,15 @@ import Image from "next/image";
 
 export function HeroSection() {
   return (
-    <section className="relative w-full h-[80vh] min-h-[600px] flex items-center justify-center bg-secondary/50">
+    <section className="relative w-full flex items-center justify-center bg-secondary/50 py-24 sm:py-32 lg:py-40">
       <div className="absolute inset-0">
-        
+        <Image 
+          src="https://picsum.photos/1920/1080"
+          alt="Background"
+          fill
+          className="object-cover"
+          data-ai-hint="business meeting"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
       </div>
       <div className="container relative z-10 text-center px-4">
