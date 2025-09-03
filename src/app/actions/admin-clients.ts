@@ -32,6 +32,10 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
         return { success: false, error: "Données invalides.", details: parsed.error.format() };
     }
 
+    if (!authAdmin) {
+        return { success: false, error: "Le service d'administration Firebase n'est pas initialisé. Vérifiez la configuration de la clé de service." };
+    }
+
     try {
       const data = parsed.data;
 

@@ -101,7 +101,7 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
             <FormField control={form.control} name="firstName" render={({ field }) => (<FormItem><FormLabel>Prénom</FormLabel><FormControl><Input placeholder="John" {...field} /></FormControl><FormMessage /></FormItem>)} />
             <FormField control={form.control} name="lastName" render={({ field }) => (<FormItem><FormLabel>Nom</FormLabel><FormControl><Input placeholder="Doe" {...field} /></FormControl><FormMessage /></FormItem>)} />
             <FormField control={form.control} name="email" render={({ field }) => (<FormItem><FormLabel>Email (Identifiant de connexion)</FormLabel><FormControl><Input placeholder="john.doe@email.com" {...field} /></FormControl><FormDescription>Le client utilisera cet email pour se connecter.</FormDescription><FormMessage /></FormItem>)} />
-            <FormField control={form.control} name="password" render={({ field }) => (<FormItem><FormLabel>Mot de passe</FormLabel><FormControl><Input type="password" {...field} /></FormControl><FormDescription>Mot de passe pour l'espace client.</FormDescription><FormMessage /></FormMessage></FormItem>)} />
+            <FormField control={form.control} name="password" render={({ field }) => (<FormItem><FormLabel>Mot de passe</FormLabel><FormControl><Input type="password" {...field} /></FormControl><FormDescription>Mot de passe pour l'espace client.</FormDescription><FormMessage /></FormItem>)} />
 
             <h4 className="text-sm font-medium text-muted-foreground pt-4 border-t">Détails du Compte</h4>
              <FormField
