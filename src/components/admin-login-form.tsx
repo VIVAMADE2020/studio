@@ -8,8 +8,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { auth } from "@/lib/firebase/config";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { authenticateAdmin } from "@/app/actions/admin-auth";
 
 
@@ -31,11 +29,6 @@ export function AdminLoginForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      // We perform client-side sign-in to get the token
-      const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
-      
-      // Then, we call a server action to set the secure cookie
-      // In a real app, we'd pass the userCredential.user.stsTokenManager.accessToken
       const result = await authenticateAdmin(values.email, values.password);
 
       if (result.success) {
@@ -44,7 +37,7 @@ export function AdminLoginForm() {
           description: "Redirection vers le tableau de bord...",
         });
         router.push('/admin/dashboard');
-        router.refresh(); // To ensure the server-side auth check is re-run
+        router.refresh();
       } else {
         throw new Error(result.error);
       }

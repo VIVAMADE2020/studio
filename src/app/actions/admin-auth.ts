@@ -1,8 +1,6 @@
 "use server";
 
 import { cookies } from 'next/headers';
-import { auth } from '@/lib/firebase/config';
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 const ADMIN_AUTH_COOKIE = "admin-auth-token";
 
@@ -10,13 +8,10 @@ const ADMIN_AUTH_COOKIE = "admin-auth-token";
 // For a real production app, you would use Firebase Admin SDK to mint custom tokens
 // and verify them. We are using client-side SDK authentication here for simplicity
 // since we don't have a full Node.js backend environment to use the Admin SDK.
+// This simplified version checks against environment variables.
 
 export async function authenticateAdmin(email: string, password: string) {
   try {
-    // We can't directly use Firebase Auth on the server-side without the Admin SDK.
-    // This is a conceptual representation. The actual sign-in will happen on the client
-    // and the token will be sent to the server.
-    // For now, we will just check against env variables as a placeholder.
     if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
         // In a real app, we would get the token from the client, verify it, and then set the cookie.
         // As a placeholder, we'll set a simple cookie value.
