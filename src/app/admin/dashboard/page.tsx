@@ -31,11 +31,12 @@ export default async function AdminDashboardPage() {
 
             <div className="grid gap-6">
                 <Card>
-                    <CardHeader>
-                        <CardTitle>Prochaines étapes</CardTitle>
+                    <CardHeader className="flex flex-row items-center justify-between">
+                        <CardTitle>Gestion des Clients</CardTitle>
+                        <Button>Ajouter un client</Button>
                     </CardHeader>
                     <CardContent>
-                        <p>Nous allons maintenant construire ici la fonctionnalité pour créer et gérer vos clients.</p>
+                        <p>La liste de vos clients s'affichera ici. Nous allons maintenant construire le formulaire pour en ajouter.</p>
                     </CardContent>
                 </Card>
             </div>
