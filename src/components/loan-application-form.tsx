@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import { useState } from "react";
@@ -68,28 +67,18 @@ const financialInfoSchema = z.object({
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_FILE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp", "application/pdf"];
 
+const fileSchema = z.any()
+  .refine((file) => file, "Ce document est requis.")
+  .refine((file) => file?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
+  .refine(
+    (file) => ACCEPTED_FILE_TYPES.includes(file?.type),
+    "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
+  );
+
 const documentsSchema = z.object({
-    identityProof: z.any()
-        .refine((file) => file, "Une pièce d'identité est requise.")
-        .refine((file) => file?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
-        .refine(
-          (file) => ACCEPTED_FILE_TYPES.includes(file?.type),
-          "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
-        ),
-    residenceProof: z.any()
-        .refine((file) => file, "Un justificatif de domicile est requis.")
-        .refine((file) => file?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
-        .refine(
-            (file) => ACCEPTED_FILE_TYPES.includes(file?.type),
-            "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
-        ),
-    incomeProof: z.any()
-        .refine((file) => file, "Un justificatif de revenus est requis.")
-        .refine((file) => file?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
-        .refine(
-            (file) => ACCEPTED_FILE_TYPES.includes(file?.type),
-            "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
-        ),
+    identityProof: fileSchema,
+    residenceProof: fileSchema,
+    incomeProof: fileSchema,
 });
 
 const legalSchema = z.object({
@@ -187,11 +176,6 @@ export function LoanApplicationForm() {
             incomeProof: incomeProofFile.name,
             incomeProofData,
         };
-        
-        delete (dataToSend as any).identityProof;
-        delete (dataToSend as any).residenceProof;
-        delete (dataToSend as any).incomeProof;
-
 
         const result = await submitLoanApplication(dataToSend);
         setIsSubmitting(false);
@@ -229,38 +213,22 @@ export function LoanApplicationForm() {
   }
 
   const FileInputField = ({name, label}: {name: "identityProof" | "residenceProof" | "incomeProof", label: string}) => {
-    const watchedFile = form.watch(name);
-    const fileName = watchedFile?.name;
-
+    const file = form.watch(name);
     return (
         <FormField
             control={form.control}
             name={name}
-            render={({ field: { onChange, onBlur, value, ref } }) => (
+            render={({ field }) => (
                 <FormItem>
                     <FormLabel>{label}</FormLabel>
                     <FormControl>
                         <div className="relative">
-                            <div className="flex items-center justify-between h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
-                                <span className={`truncate pr-8 ${fileName ? 'text-foreground' : 'text-muted-foreground'}`}>
-                                    {fileName || "Aucun fichier sélectionné"}
-                                </span>
-                                {fileName ? (
-                                   <FileCheck className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green-500" />
-                                ) : (
-                                   <Upload className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                )}
-                            </div>
-                            <Input
+                             <Input
                                 type="file"
-                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                onChange={(e) => {
-                                    const file = e.target.files?.[0];
-                                    onChange(file); // This correctly sets the file object for validation
-                                }}
-                                onBlur={onBlur}
-                                ref={ref}
+                                onChange={(e) => field.onChange(e.target.files ? e.target.files[0] : undefined)}
+                                className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
                             />
+                            {file && <FileCheck className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green-500 pointer-events-none" />}
                         </div>
                     </FormControl>
                     <FormMessage />
@@ -497,7 +465,7 @@ export function LoanApplicationForm() {
             </Button>
           )}
           {currentStep === steps.length - 1 && (
-            <Button type="submit" className="ml-auto" disabled={isSubmitting}>
+            <Button type="submit" className="ml-auto" disabled={isSubmitting || !form.formState.isValid}>
                 {isSubmitting ? (
                     <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -526,5 +494,7 @@ const steps = [
 ];
     
 
+
+    
 
     
