@@ -18,6 +18,7 @@ const formSchema = z.object({
   phone: z.string(),
   whatsapp: z.string(),
   birthDate: z.string(),
+  birthPlace: z.string(),
   maritalStatus: z.string(),
   address: z.string(),
   city: z.string(),

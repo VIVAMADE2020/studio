@@ -50,6 +50,7 @@ const personalInfoSchema = z.object({
   phone: z.string().min(10, "Veuillez entrer un numéro de téléphone valide."),
   whatsapp: z.string().min(10, "Le numéro WhatsApp est obligatoire."),
   birthDate: z.string().regex(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/, "Veuillez entrer une date valide (JJ/MM/AAAA)."),
+  birthPlace: z.string().min(2, "Le lieu de naissance est requis."),
   maritalStatus: z.string({ required_error: "Veuillez sélectionner votre situation familiale." }),
   address: z.string().min(5, "L'adresse est requise."),
   city: z.string().min(2, "La ville est requise."),
@@ -103,7 +104,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 const steps = [
   { id: 'loanDetails', title: 'Détails et Simulation', fields: ['loanType', 'loanReason', 'loanAmount', 'loanDuration'], schema: loanDetailsSchema },
-  { id: 'personalInfo', title: 'Informations Personnelles', fields: ['firstName', 'lastName', 'email', 'phone', 'whatsapp', 'birthDate', 'maritalStatus', 'address', 'city', 'country', 'childrenCount'], schema: personalInfoSchema },
+  { id: 'personalInfo', title: 'Informations Personnelles', fields: ['firstName', 'lastName', 'email', 'phone', 'whatsapp', 'birthDate', 'birthPlace', 'maritalStatus', 'address', 'city', 'country', 'childrenCount'], schema: personalInfoSchema },
   { id: 'financialInfo', title: 'Situation Financière', fields: ['employmentStatus', 'monthlyIncome', 'monthlyExpenses', 'housingStatus'], schema: financialInfoSchema },
   { id: 'documents', title: 'Vos Documents', fields: ['identityProof', 'residenceProof', 'incomeProof'], schema: documentsSchema },
   { id: 'legal', title: 'Consentement', fields: ['legalConsent'], schema: legalSchema },
@@ -130,6 +131,7 @@ export function LoanApplicationForm() {
       phone: "",
       whatsapp: "",
       birthDate: "",
+      birthPlace: "",
       maritalStatus: undefined,
       address: "",
       city: "",
@@ -313,7 +315,10 @@ export function LoanApplicationForm() {
                 <FormField control={form.control} name="phone" render={({ field }) => (<FormItem><FormLabel>Téléphone</FormLabel><FormControl><Input type="tel" placeholder="0612345678" {...field} /></FormControl><FormMessage /></FormItem>)} />
                 <FormField control={form.control} name="whatsapp" render={({ field }) => (<FormItem><FormLabel>WhatsApp</FormLabel><FormControl><Input type="tel" placeholder="0612345678" {...field} /></FormControl><FormMessage /></FormItem>)} />
               </div>
-              <FormField control={form.control} name="birthDate" render={({ field }) => (<FormItem><FormLabel>Date de naissance</FormLabel><FormControl><Input type="text" placeholder="JJ/MM/AAAA" {...field} /></FormControl><FormMessage /></FormItem>)} />
+              <div className="grid md:grid-cols-2 gap-6">
+                <FormField control={form.control} name="birthDate" render={({ field }) => (<FormItem><FormLabel>Date de naissance</FormLabel><FormControl><Input type="text" placeholder="JJ/MM/AAAA" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="birthPlace" render={({ field }) => (<FormItem><FormLabel>Lieu de naissance</FormLabel><FormControl><Input placeholder="Paris" {...field} /></FormControl><FormMessage /></FormItem>)} />
+              </div>
               <FormField control={form.control} name="address" render={({ field }) => (<FormItem><FormLabel>Adresse</FormLabel><FormControl><Input placeholder="123 rue de Paris" {...field} /></FormControl><FormMessage /></FormItem>)} />
               <div className="grid md:grid-cols-2 gap-6">
                 <FormField control={form.control} name="city" render={({ field }) => (<FormItem><FormLabel>Ville</FormLabel><FormControl><Input placeholder="Paris" {...field} /></FormControl><FormMessage /></FormItem>)} />
@@ -431,6 +436,7 @@ export function LoanApplicationForm() {
                             <div><strong className="text-primary">Téléphone:</strong> {formData.phone}</div>
                             <div><strong className="text-primary">WhatsApp:</strong> {formData.whatsapp}</div>
                             <div><strong className="text-primary">Date de naissance:</strong> {formData.birthDate}</div>
+                            <div><strong className="text-primary">Lieu de naissance:</strong> {formData.birthPlace}</div>
                             <div className="md:col-span-2"><strong className="text-primary">Adresse:</strong> {`${formData.address}, ${formData.city}, ${formData.country}`}</div>
                             <div><strong className="text-primary">Situation familiale:</strong> {formData.maritalStatus}</div>
                             <div><strong className="text-primary">Enfants à charge:</strong> {formData.childrenCount}</div>
