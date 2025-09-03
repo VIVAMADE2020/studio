@@ -70,24 +70,24 @@ const ACCEPTED_FILE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp
 
 const documentsSchema = z.object({
     identityProof: z.any()
-        .refine((files) => files?.[0], "Une pièce d'identité est requise.")
-        .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
+        .refine((file) => file, "Une pièce d'identité est requise.")
+        .refine((file) => file?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
         .refine(
-          (files) => ACCEPTED_FILE_TYPES.includes(files?.[0]?.type),
+          (file) => ACCEPTED_FILE_TYPES.includes(file?.type),
           "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
         ),
     residenceProof: z.any()
-        .refine((files) => files?.[0], "Un justificatif de domicile est requis.")
-        .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
+        .refine((file) => file, "Un justificatif de domicile est requis.")
+        .refine((file) => file?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
         .refine(
-            (files) => ACCEPTED_FILE_TYPES.includes(files?.[0]?.type),
+            (file) => ACCEPTED_FILE_TYPES.includes(file?.type),
             "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
         ),
     incomeProof: z.any()
-        .refine((files) => files?.[0], "Un justificatif de revenus est requis.")
-        .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
+        .refine((file) => file, "Un justificatif de revenus est requis.")
+        .refine((file) => file?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
         .refine(
-            (files) => ACCEPTED_FILE_TYPES.includes(files?.[0]?.type),
+            (file) => ACCEPTED_FILE_TYPES.includes(file?.type),
             "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
         ),
 });
@@ -188,18 +188,18 @@ export function LoanApplicationForm() {
 
     try {
         const [identityProofData, residenceProofData, incomeProofData] = await Promise.all([
-            fileToBase64(values.identityProof[0]),
-            fileToBase64(values.residenceProof[0]),
-            fileToBase64(values.incomeProof[0]),
+            fileToBase64(values.identityProof),
+            fileToBase64(values.residenceProof),
+            fileToBase64(values.incomeProof),
         ]);
 
         const dataToSend = {
             ...values,
-            identityProof: values.identityProof[0].name,
+            identityProof: values.identityProof.name,
             identityProofData,
-            residenceProof: values.residenceProof[0].name,
+            residenceProof: values.residenceProof.name,
             residenceProofData,
-            incomeProof: values.incomeProof[0].name,
+            incomeProof: values.incomeProof.name,
             incomeProofData,
         };
 
@@ -248,39 +248,33 @@ export function LoanApplicationForm() {
   }
 
   const FileInputField = ({name, label}: {name: "identityProof" | "residenceProof" | "incomeProof", label: string}) => {
-    const files = form.watch(name);
-    const fileName = files?.[0]?.name;
-
     return (
         <FormField
             control={form.control}
             name={name}
-            render={({ field: { onChange, onBlur, name: fieldName, ref } }) => (
+            render={({ field: { onChange, value, ...rest } }) => (
                 <FormItem>
                     <FormLabel>{label}</FormLabel>
                     <FormControl>
-                        <div className="relative">
-                             {fileName ? (
-                                <div className="flex items-center justify-between h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
-                                    <span className="text-muted-foreground truncate pr-8">{fileName}</span>
-                                    <FileCheck className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green-500" />
-                                </div>
-                            ) : (
-                                <div className="relative">
-                                    <Upload className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                    <Input
-                                        type="file"
-                                        className="pl-10"
-                                        ref={ref}
-                                        name={fieldName}
-                                        onBlur={onBlur}
-                                        onChange={(e) => {
-                                            onChange(e.target.files);
-                                        }}
-                                    />
-                                </div>
-                            )}
-                        </div>
+                         {value?.name ? (
+                            <div className="flex items-center justify-between h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+                                <span className="text-muted-foreground truncate pr-8">{value.name}</span>
+                                <FileCheck className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green-500" />
+                            </div>
+                        ) : (
+                            <div className="relative">
+                                <Upload className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                <Input
+                                    type="file"
+                                    className="pl-10"
+                                    {...rest}
+                                    onChange={(e) => {
+                                        const file = e.target.files?.[0];
+                                        onChange(file);
+                                    }}
+                                />
+                            </div>
+                        )}
                     </FormControl>
                     <FormMessage />
                 </FormItem>
@@ -491,9 +485,9 @@ export function LoanApplicationForm() {
                             <div className="md:col-span-2 pt-4 mt-4 border-t">
                                 <strong className="text-primary">Documents fournis :</strong>
                                 <ul className="list-disc pl-5 mt-2 space-y-1">
-                                    <li>Pièce d'identité: <span className="text-muted-foreground">{formData.identityProof?.[0]?.name || "Non fourni"}</span></li>
-                                    <li>Justificatif de domicile: <span className="text-muted-foreground">{formData.residenceProof?.[0]?.name || "Non fourni"}</span></li>
-                                    <li>Justificatif de revenus: <span className="text-muted-foreground">{formData.incomeProof?.[0]?.name || "Non fourni"}</span></li>
+                                    <li>Pièce d'identité: <span className="text-muted-foreground">{formData.identityProof?.name || "Non fourni"}</span></li>
+                                    <li>Justificatif de domicile: <span className="text-muted-foreground">{formData.residenceProof?.name || "Non fourni"}</span></li>
+                                    <li>Justificatif de revenus: <span className="text-muted-foreground">{formData.incomeProof?.name || "Non fourni"}</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -534,3 +528,5 @@ export function LoanApplicationForm() {
     </Form>
   );
 }
+
+    
