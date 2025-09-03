@@ -35,7 +35,7 @@ import { formatCurrency } from "@/lib/utils";
 const loanDetailsSchema = z.object({
   loanType: z.string({ required_error: "Veuillez sélectionner un type de prêt." }),
   loanAmount: z.coerce.number().min(1000, "Le montant minimum est de 1000€.").max(500000, "Le montant maximum est de 500 000€."),
-  loanDuration: z.coerce.number().min(12, "La durée minimale est de 12 mois.").max(360, "La durée maximale est de 30 ans."),
+  loanDuration: z.coerce.number().min(12, "La durée minimale est de 12 mois.").max(360, "La durée maximale est de 30 ans (360 mois)."),
 });
 
 const personalInfoSchema = z.object({
@@ -43,12 +43,13 @@ const personalInfoSchema = z.object({
   lastName: z.string().min(2, "Le nom est requis."),
   email: z.string().email("Veuillez entrer une adresse email valide."),
   phone: z.string().min(10, "Veuillez entrer un numéro de téléphone valide."),
-  birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Veuillez entrer une date valide (AAAA-MM-JJ)."),
+  whatsapp: z.string().min(10, "Veuillez entrer un numéro WhatsApp valide."),
+  birthDate: z.string().regex(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/, "Veuillez entrer une date valide (JJ/MM/AAAA)."),
   maritalStatus: z.string({ required_error: "Veuillez sélectionner votre situation familiale." }),
 });
 
 const financialInfoSchema = z.object({
-  employmentStatus: z.string({ required_error: "Veuillez sélectionner votre situation professionnelle." }),
+  employmentStatus: z.string().min(2, "La profession est requise."),
   monthlyIncome: z.coerce.number().min(500, "Le revenu minimum est de 500€."),
   housingStatus: z.string({ required_error: "Veuillez sélectionner votre situation de logement." }),
 });
@@ -59,7 +60,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 const steps = [
   { id: 'loanDetails', title: 'Détails du prêt', fields: ['loanType', 'loanAmount', 'loanDuration'], schema: loanDetailsSchema },
-  { id: 'personalInfo', title: 'Informations Personnelles', fields: ['firstName', 'lastName', 'email', 'phone', 'birthDate', 'maritalStatus'], schema: personalInfoSchema },
+  { id: 'personalInfo', title: 'Informations Personnelles', fields: ['firstName', 'lastName', 'email', 'phone', 'whatsapp', 'birthDate', 'maritalStatus'], schema: personalInfoSchema },
   { id: 'financialInfo', title: 'Situation Financière', fields: ['employmentStatus', 'monthlyIncome', 'housingStatus'], schema: financialInfoSchema },
   { id: 'summary', title: 'Récapitulatif' },
 ];
@@ -80,6 +81,7 @@ export function LoanApplicationForm() {
       lastName: "",
       email: "",
       phone: "",
+      whatsapp: "",
       birthDate: "",
       maritalStatus: "",
       employmentStatus: "",
@@ -183,8 +185,11 @@ export function LoanApplicationForm() {
                 <FormField control={form.control} name="lastName" render={({ field }) => (<FormItem><FormLabel>Nom</FormLabel><FormControl><Input placeholder="Dupont" {...field} /></FormControl><FormMessage /></FormItem>)} />
               </div>
               <FormField control={form.control} name="email" render={({ field }) => (<FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" placeholder="jean.dupont@email.com" {...field} /></FormControl><FormMessage /></FormItem>)} />
-              <FormField control={form.control} name="phone" render={({ field }) => (<FormItem><FormLabel>Téléphone</FormLabel><FormControl><Input type="tel" placeholder="0612345678" {...field} /></FormControl><FormMessage /></FormItem>)} />
-              <FormField control={form.control} name="birthDate" render={({ field }) => (<FormItem><FormLabel>Date de naissance</FormLabel><FormControl><Input type="date" {...field} /></FormControl><FormMessage /></FormItem>)} />
+              <div className="grid md:grid-cols-2 gap-6">
+                <FormField control={form.control} name="phone" render={({ field }) => (<FormItem><FormLabel>Téléphone</FormLabel><FormControl><Input type="tel" placeholder="0612345678" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="whatsapp" render={({ field }) => (<FormItem><FormLabel>WhatsApp</FormLabel><FormControl><Input type="tel" placeholder="0612345678" {...field} /></FormControl><FormMessage /></FormItem>)} />
+              </div>
+              <FormField control={form.control} name="birthDate" render={({ field }) => (<FormItem><FormLabel>Date de naissance</FormLabel><FormControl><Input type="text" placeholder="JJ/MM/AAAA" {...field} /></FormControl><FormMessage /></FormItem>)} />
               <FormField control={form.control} name="maritalStatus" render={({ field }) => (<FormItem><FormLabel>Situation familiale</FormLabel><Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Sélectionnez votre situation" /></SelectTrigger></FormControl><SelectContent><SelectItem value="single">Célibataire</SelectItem><SelectItem value="married">Marié(e)</SelectItem><SelectItem value="divorced">Divorcé(e)</SelectItem><SelectItem value="widowed">Veuf(ve)</SelectItem></SelectContent></Select><FormMessage /></FormItem>)} />
             </div>
           )}
@@ -192,24 +197,7 @@ export function LoanApplicationForm() {
           {currentStep === 2 && (
             <div className="space-y-6">
                 <h3 className="text-xl font-semibold text-center">{steps[2].title}</h3>
-                <FormField
-                    control={form.control}
-                    name="employmentStatus"
-                    render={({ field }) => (
-                    <FormItem className="space-y-3">
-                        <FormLabel>Situation professionnelle</FormLabel>
-                        <FormControl>
-                        <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
-                            <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="cdi" /></FormControl><FormLabel className="font-normal">CDI</FormLabel></FormItem>
-                            <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="cdd" /></FormControl><FormLabel className="font-normal">CDD</FormLabel></FormItem>
-                            <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="independent" /></FormControl><FormLabel className="font-normal">Indépendant / Entrepreneur</FormLabel></FormItem>
-                             <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="retired" /></FormControl><FormLabel className="font-normal">Retraité</FormLabel></FormItem>
-                        </RadioGroup>
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                    )}
-                />
+                <FormField control={form.control} name="employmentStatus" render={({ field }) => (<FormItem><FormLabel>Profession</FormLabel><FormControl><Input placeholder="ex: Développeur web" {...field} /></FormControl><FormMessage /></FormItem>)} />
                 <FormField control={form.control} name="monthlyIncome" render={({ field }) => (<FormItem><FormLabel>Revenu mensuel net</FormLabel><FormControl><Input type="number" placeholder="ex: 2500" {...field} /></FormControl><FormMessage /></FormItem>)} />
                 <FormField
                     control={form.control}
@@ -244,10 +232,11 @@ export function LoanApplicationForm() {
                         <div><strong className="text-primary">Nom:</strong> {formData.firstName} {formData.lastName}</div>
                         <div><strong className="text-primary">Email:</strong> {formData.email}</div>
                          <div><strong className="text-primary">Téléphone:</strong> {formData.phone}</div>
+                         <div><strong className="text-primary">WhatsApp:</strong> {formData.whatsapp}</div>
                         <div><strong className="text-primary">Date de naissance:</strong> {formData.birthDate}</div>
                         <div><strong className="text-primary">Situation familiale:</strong> {formData.maritalStatus}</div>
                         <hr/>
-                         <div><strong className="text-primary">Situation pro:</strong> {formData.employmentStatus}</div>
+                         <div><strong className="text-primary">Profession:</strong> {formData.employmentStatus}</div>
                         <div><strong className="text-primary">Revenu mensuel:</strong> {formatCurrency(formData.monthlyIncome)}</div>
                         <div><strong className="text-primary">Logement:</strong> {formData.housingStatus}</div>
                     </CardContent>

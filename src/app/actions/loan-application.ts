@@ -1,3 +1,4 @@
+
 "use server";
 
 import { z } from "zod";
@@ -10,6 +11,7 @@ const formSchema = z.object({
   lastName: z.string(),
   email: z.string().email(),
   phone: z.string(),
+  whatsapp: z.string(),
   birthDate: z.string(),
   maritalStatus: z.string(),
   employmentStatus: z.string(),
