@@ -27,10 +27,11 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, ArrowRight, Send, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Send, Loader2, Upload, FileText, AlertCircle } from "lucide-react";
 import { submitLoanApplication } from "@/app/actions/loan-application";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/card";
 import { formatCurrency } from "@/lib/utils";
+import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 
 const loanDetailsSchema = z.object({
   loanType: z.string({ required_error: "Veuillez sélectionner un type de prêt." }),
@@ -59,7 +60,35 @@ const financialInfoSchema = z.object({
   housingStatus: z.string({ required_error: "Veuillez sélectionner votre situation de logement." }),
 });
 
-const formSchema = loanDetailsSchema.merge(personalInfoSchema).merge(financialInfoSchema);
+const MAX_FILE_SIZE = 5000000; // 5MB
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp", "application/pdf"];
+
+const documentsSchema = z.object({
+    identityProof: z.any()
+        .refine((files) => files?.length == 1, "Une pièce d'identité est requise.")
+        .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
+        .refine(
+          (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+          "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
+        ),
+    residenceProof: z.any()
+        .refine((files) => files?.length == 1, "Un justificatif de domicile est requis.")
+        .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
+        .refine(
+            (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+            "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
+        ),
+    incomeProof: z.any()
+        .refine((files) => files?.length == 1, "Un justificatif de revenus est requis.")
+        .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
+        .refine(
+            (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+            "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
+        ),
+});
+
+
+const formSchema = loanDetailsSchema.merge(personalInfoSchema).merge(financialInfoSchema).merge(documentsSchema);
 
 type FormValues = z.infer<typeof formSchema>;
 
@@ -67,6 +96,7 @@ const steps = [
   { id: 'loanDetails', title: 'Détails du prêt', fields: ['loanType', 'loanAmount', 'loanDuration'], schema: loanDetailsSchema },
   { id: 'personalInfo', title: 'Informations Personnelles', fields: ['firstName', 'lastName', 'email', 'phone', 'whatsapp', 'birthDate', 'maritalStatus', 'address', 'city', 'country', 'childrenCount'], schema: personalInfoSchema },
   { id: 'financialInfo', title: 'Situation Financière', fields: ['employmentStatus', 'monthlyIncome', 'monthlyExpenses', 'housingStatus'], schema: financialInfoSchema },
+  { id: 'documents', title: 'Vos Documents', fields: ['identityProof', 'residenceProof', 'incomeProof'], schema: documentsSchema },
   { id: 'summary', title: 'Récapitulatif' },
 ];
 
@@ -97,6 +127,9 @@ export function LoanApplicationForm() {
       monthlyIncome: 2500,
       monthlyExpenses: 0,
       housingStatus: "",
+      identityProof: undefined,
+      residenceProof: undefined,
+      incomeProof: undefined,
     },
   });
   
@@ -117,7 +150,16 @@ export function LoanApplicationForm() {
   
   async function onSubmit(values: FormValues) {
     setIsSubmitting(true);
-    const result = await submitLoanApplication(values);
+    // In a real app, you would upload files to a storage service first.
+    // For this demo, we'll just pass the file info.
+    const dataToSubmit = {
+        ...values,
+        identityProof: values.identityProof[0].name,
+        residenceProof: values.residenceProof[0].name,
+        incomeProof: values.incomeProof[0].name,
+    };
+
+    const result = await submitLoanApplication(dataToSubmit);
     setIsSubmitting(false);
 
     if (result.success) {
@@ -147,9 +189,35 @@ export function LoanApplicationForm() {
       );
   }
 
+  const FileInputField = ({name, label}: {name: "identityProof" | "residenceProof" | "incomeProof", label: string}) => {
+      const { control } = form;
+      return (
+        <FormField
+          control={control}
+          name={name}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{label}</FormLabel>
+              <FormControl>
+                <div className="relative">
+                    <Upload className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                    <Input 
+                        type="file" 
+                        className="pl-10"
+                        onChange={(e) => field.onChange(e.target.files)}
+                    />
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      );
+  }
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 overflow-hidden">
         <Progress value={progress} className="mb-8" />
         <AnimatePresence mode="wait">
             <motion.div
@@ -182,7 +250,7 @@ export function LoanApplicationForm() {
                   </FormItem>
                 )}
               />
-              <FormField control={form.control} name="loanAmount" render={({ field }) => (<FormItem><FormLabel>Montant souhaité</FormLabel><FormControl><Input type="number" placeholder="ex: 10000" {...field} /></FormControl><FormMessage /></FormItem>)} />
+              <FormField control={form.control} name="loanAmount" render={({ field }) => (<FormItem><FormLabel>Montant souhaité (€)</FormLabel><FormControl><Input type="number" placeholder="ex: 10000" {...field} /></FormControl><FormMessage /></FormItem>)} />
               <FormField control={form.control} name="loanDuration" render={({ field }) => (<FormItem><FormLabel>Durée de remboursement (en mois)</FormLabel><FormControl><Input type="number" placeholder="ex: 120" {...field} /></FormControl><FormMessage /></FormItem>)} />
             </div>
           )}
@@ -207,7 +275,7 @@ export function LoanApplicationForm() {
               </div>
                <div className="grid md:grid-cols-2 gap-6">
                 <FormField control={form.control} name="maritalStatus" render={({ field }) => (<FormItem><FormLabel>Situation familiale</FormLabel><Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Sélectionnez votre situation" /></SelectTrigger></FormControl><SelectContent><SelectItem value="single">Célibataire</SelectItem><SelectItem value="married">Marié(e)</SelectItem><SelectItem value="divorced">Divorcé(e)</SelectItem><SelectItem value="widowed">Veuf(ve)</SelectItem></SelectContent></Select><FormMessage /></FormItem>)} />
-                <FormField control={form.control} name="childrenCount" render={({ field }) => (<FormItem><FormLabel>Nombre d'enfants</FormLabel><FormControl><Input type="number" placeholder="ex: 2" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="childrenCount" render={({ field }) => (<FormItem><FormLabel>Nombre d'enfants à charge</FormLabel><FormControl><Input type="number" placeholder="ex: 2" {...field} /></FormControl><FormMessage /></FormItem>)} />
               </div>
             </div>
           )}
@@ -217,8 +285,8 @@ export function LoanApplicationForm() {
                 <h3 className="text-xl font-semibold text-center">{steps[2].title}</h3>
                 <FormField control={form.control} name="employmentStatus" render={({ field }) => (<FormItem><FormLabel>Profession</FormLabel><FormControl><Input placeholder="ex: Développeur web" {...field} /></FormControl><FormMessage /></FormItem>)} />
                 <div className="grid md:grid-cols-2 gap-6">
-                  <FormField control={form.control} name="monthlyIncome" render={({ field }) => (<FormItem><FormLabel>Revenu mensuel net</FormLabel><FormControl><Input type="number" placeholder="ex: 2500" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                  <FormField control={form.control} name="monthlyExpenses" render={({ field }) => (<FormItem><FormLabel>Charges mensuelles</FormLabel><FormControl><Input type="number" placeholder="ex: 800" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="monthlyIncome" render={({ field }) => (<FormItem><FormLabel>Revenu mensuel net (€)</FormLabel><FormControl><Input type="number" placeholder="ex: 2500" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="monthlyExpenses" render={({ field }) => (<FormItem><FormLabel>Charges mensuelles (€)</FormLabel><FormControl><Input type="number" placeholder="ex: 800" {...field} /></FormControl><FormMessage /></FormItem>)} />
                 </div>
                 <FormField
                     control={form.control}
@@ -243,6 +311,25 @@ export function LoanApplicationForm() {
           {currentStep === 3 && (
             <div className="space-y-6">
                 <h3 className="text-xl font-semibold text-center">{steps[3].title}</h3>
+                <p className="text-center text-muted-foreground">Veuillez fournir les documents requis pour l'étude de votre dossier.</p>
+                <div className="space-y-4">
+                    <FileInputField name="identityProof" label="Pièce d'identité (Recto/Verso)" />
+                    <FileInputField name="residenceProof" label="Justificatif de domicile (- de 3 mois)" />
+                    <FileInputField name="incomeProof" label="Justificatif de revenus (3 derniers bulletins)" />
+                </div>
+                <Alert>
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Information importante</AlertTitle>
+                    <AlertDescription>
+                        Si votre dossier est accepté après étude de ces documents, vos informations bancaires vous seront demandées pour finaliser le contrat de prêt.
+                    </AlertDescription>
+                </Alert>
+            </div>
+          )}
+
+          {currentStep === 4 && (
+            <div className="space-y-6">
+                <h3 className="text-xl font-semibold text-center">{steps[4].title}</h3>
                 <p className="text-center text-muted-foreground">Veuillez vérifier les informations avant de soumettre.</p>
                 <Card>
                     <CardContent className="pt-6 space-y-4 text-sm">
@@ -263,6 +350,14 @@ export function LoanApplicationForm() {
                             <div><strong className="text-primary">Revenu mensuel:</strong> {formatCurrency(formData.monthlyIncome)}</div>
                             <div><strong className="text-primary">Charges mensuelles:</strong> {formatCurrency(formData.monthlyExpenses)}</div>
                             <div><strong className="text-primary">Logement:</strong> {formData.housingStatus}</div>
+                            <div className="md:col-span-2 pt-4 mt-4 border-t">
+                                <strong className="text-primary">Documents fournis :</strong>
+                                <ul className="list-disc pl-5 mt-2 space-y-1">
+                                    <li>Pièce d'identité: <span className="text-muted-foreground">{formData.identityProof?.[0]?.name || "Non fourni"}</span></li>
+                                    <li>Justificatif de domicile: <span className="text-muted-foreground">{formData.residenceProof?.[0]?.name || "Non fourni"}</span></li>
+                                    <li>Justificatif de revenus: <span className="text-muted-foreground">{formData.incomeProof?.[0]?.name || "Non fourni"}</span></li>
+                                </ul>
+                            </div>
                         </div>
                     </CardContent>
                 </Card>
