@@ -3,8 +3,8 @@
 
 import { z } from "zod";
 import { Client, Transaction } from "@/lib/firebase/firestore";
-import { auth, db } from "@/lib/firebase/config";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth as adminAuth } from "@/lib/firebase/admin";
+import { db } from "@/lib/firebase/config";
 import { doc, setDoc, updateDoc, getDoc, arrayUnion, increment } from "firebase/firestore";
 
 
@@ -31,21 +31,21 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
     try {
         const { email, password, firstName, lastName, accountType, initialBalance, loanAmount, interestRate, loanDuration } = parsed.data;
 
-        // NOTE: This is a temporary auth instance for user creation.
-        // It's a trick to use the client SDK on the server, which is fine for this specific purpose
-        // but not for general server-side authentication.
-        const tempAuth = auth;
-        const userCredential = await createUserWithEmailAndPassword(tempAuth, email, password);
-        const user = userCredential.user;
+        // 1. Create user with Firebase Admin SDK
+        const userRecord = await adminAuth.createUser({
+          email,
+          password,
+          displayName: `${firstName} ${lastName}`,
+        });
 
         const newClient: Omit<Client, 'id'> = {
-            uid: user.uid,
+            uid: userRecord.uid,
             firstName,
             lastName,
             email,
             accountType,
             accountBalance: initialBalance,
-            accountNumber: `000${Math.floor(10000000 + Math.random() * 90000000)}`,
+            accountNumber: `FLX${Math.floor(1000000000 + Math.random() * 9000000000)}`,
             iban: `FR76 30002 00550 ${Math.floor(10000000000 + Math.random() * 90000000000)} 97`,
             swiftCode: 'FLXDFRPP',
             transactions: [],
@@ -63,27 +63,31 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
 
         if (accountType === 'loan' && loanAmount && interestRate && loanDuration) {
              const monthlyRate = (interestRate / 100) / 12;
-             const monthlyPayment = (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, loanDuration)) / (Math.pow(1 + monthlyRate, loanDuration) - 1);
+             const payment = (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, loanDuration)) / (Math.pow(1 + monthlyRate, loanDuration) - 1);
 
             newClient.loanDetails = {
                 loanAmount,
                 interestRate,
                 loanDuration,
-                monthlyPayment: monthlyPayment,
+                monthlyPayment: isFinite(payment) ? payment : 0,
             };
         }
         
-        await setDoc(doc(db, "clients", user.uid), newClient);
+        await setDoc(doc(db, "clients", userRecord.uid), newClient);
 
-        return { success: true, userId: user.uid };
+        return { success: true, userId: userRecord.uid };
 
     } catch (error: any) {
         console.error("Add Client Action Error:", error);
-        if (error.code === 'auth/email-already-in-use') {
+        if (error.code === 'auth/email-already-exists') {
             return { success: false, error: "Un compte avec cet email existe déjà." };
         }
-        if (error.code === 'auth/weak-password') {
-            return { success: false, error: "Le mot de passe est trop faible." };
+        if (error.code === 'auth/invalid-password') {
+            return { success: false, error: "Le mot de passe est trop faible. Il doit faire au moins 6 caractères." };
+        }
+        // Catch initialization errors from admin SDK
+        if (error.message.includes('FIREBASE_CONFIG')) {
+             return { success: false, error: "Erreur de configuration Firebase côté serveur." };
         }
         return { success: false, error: "Une erreur est survenue lors de la création du client." };
     }
