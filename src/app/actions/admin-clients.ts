@@ -56,13 +56,14 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
         email: data.email,
         accountType: data.accountType,
         accountBalance: data.initialBalance,
-        accountNumber: `FR${Math.floor(10000000000 + Math.random() * 90000000000)}`,
-        iban: `FR76${Math.floor(10000000000000000000000 + Math.random() * 90000000000000000000000)}`,
-        swiftCode: 'FLEXFR21XXX',
+        // Génération automatique des informations bancaires
+        accountNumber: `000${Math.floor(10000000 + Math.random() * 90000000)}`,
+        iban: `FR76 30002 00550 ${Math.floor(10000000000 + Math.random() * 90000000000)} 97`,
+        swiftCode: 'FLXDFRPP',
         transactions: [],
       };
 
-      // Si c'est un compte de prêt, ajouter les détails du prêt
+      // Si c'est un compte de prêt, ajouter les détails du prêt et calculer la mensualité
       if (data.accountType === 'loan' && data.loanAmount && data.interestRate && data.loanDuration) {
           const monthlyRate = data.interestRate / 100 / 12;
           const monthlyPayment = (data.loanAmount * monthlyRate * Math.pow(1 + monthlyRate, data.loanDuration)) / (Math.pow(1 + monthlyRate, data.loanDuration) - 1);
