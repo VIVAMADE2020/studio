@@ -2,7 +2,8 @@
 "use server";
 
 import { z } from "zod";
-import { auth, db } from "@/lib/firebase/config";
+import { auth as clientAuth, db } from "@/lib/firebase/config";
+import { auth as adminAuth, db as adminDb } from "@/lib/firebase/admin";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { Client } from "@/lib/firebase/firestore";
@@ -27,7 +28,7 @@ export async function signupAction(values: z.infer<typeof formSchema>) {
         // 1. Create user in Firebase Auth
         // NOTE: This uses the client SDK on the server, which is fine for this use case
         // as we are in a trusted server environment (Server Action).
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(clientAuth, email, password);
         const user = userCredential.user;
 
         // 2. Create client document in Firestore
@@ -55,5 +56,22 @@ export async function signupAction(values: z.infer<typeof formSchema>) {
             return { success: false, error: "Un compte avec cet email existe déjà." };
         }
         return { success: false, error: "Une erreur est survenue lors de la création du compte." };
+    }
+}
+
+export async function getClientDataAction(uid: string): Promise<{ data: Client | null, error: string | null }> {
+    if (!uid) {
+        return { data: null, error: "Utilisateur non authentifié." };
+    }
+    try {
+        const docSnap = await adminDb.collection('clients').doc(uid).get();
+        if (!docSnap.exists) {
+            return { data: null, error: "Profil client non trouvé." };
+        }
+        const clientData = { id: docSnap.id, ...docSnap.data() } as Client;
+        return { data: clientData, error: null };
+    } catch (error) {
+        console.error("Error getting client data (action):", error);
+        return { data: null, error: "Impossible de récupérer les données du profil." };
     }
 }

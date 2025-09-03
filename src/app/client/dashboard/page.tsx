@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase/config';
-import { Client, getClientByUid, Transaction } from '@/lib/firebase/firestore';
+import { Client, Transaction } from '@/lib/firebase/firestore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -12,6 +12,7 @@ import { formatCurrency } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Banknote, Landmark, Percent, Calendar, FileText } from 'lucide-react';
+import { getClientDataAction } from '@/app/actions/client-auth';
 
 export default function ClientDashboardPage() {
     const [user] = useAuthState(auth);
@@ -24,15 +25,18 @@ export default function ClientDashboardPage() {
             if (user) {
                 try {
                     setLoading(true);
-                    const data = await getClientByUid(user.uid);
+                    const { data, error: fetchError } = await getClientDataAction(user.uid);
+                    if (fetchError) {
+                       throw new Error(fetchError);
+                    }
                     if (data) {
                         setClientData(data);
                     } else {
                         setError("Profil client non trouvé. Veuillez contacter le support.");
                     }
-                } catch (e) {
+                } catch (e: any) {
                     console.error("Error fetching client data: ", e);
-                    setError("Impossible de charger les données du profil.");
+                    setError(e.message || "Impossible de charger les données du profil.");
                 } finally {
                     setLoading(false);
                 }
