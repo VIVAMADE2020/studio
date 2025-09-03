@@ -3,8 +3,7 @@
 
 import { z } from "zod";
 import { Client, Transaction } from "@/lib/firebase/firestore";
-import { auth as adminAuth } from "@/lib/firebase/admin";
-import { db } from "@/lib/firebase/config";
+import { auth as adminAuth, db as adminDb } from "@/lib/firebase/admin";
 import { doc, setDoc, updateDoc, getDoc, arrayUnion, increment } from "firebase/firestore";
 
 
@@ -73,7 +72,7 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
             };
         }
         
-        await setDoc(doc(db, "clients", userRecord.uid), newClient);
+        await adminDb.collection("clients").doc(userRecord.uid).set(newClient);
 
         return { success: true, userId: userRecord.uid };
 
@@ -85,7 +84,6 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
         if (error.code === 'auth/invalid-password') {
             return { success: false, error: "Le mot de passe est trop faible. Il doit faire au moins 6 caractères." };
         }
-        // Catch initialization errors from admin SDK
         if (error.message.includes('FIREBASE_CONFIG')) {
              return { success: false, error: "Erreur de configuration Firebase côté serveur." };
         }
@@ -115,10 +113,10 @@ export async function addTransactionAction(values: z.infer<typeof transactionSch
             return { success: false, error: "Le montant ne peut pas être zéro." };
         }
 
-        const clientRef = doc(db, "clients", clientId);
+        const clientRef = adminDb.collection("clients").doc(clientId);
 
-        const clientSnap = await getDoc(clientRef);
-        if (!clientSnap.exists()) {
+        const clientSnap = await clientRef.get();
+        if (!clientSnap.exists) {
             return { success: false, error: "Client non trouvé." };
         }
 
@@ -129,7 +127,7 @@ export async function addTransactionAction(values: z.infer<typeof transactionSch
             amount: amount,
         };
 
-        await updateDoc(clientRef, {
+        await clientRef.update({
             transactions: arrayUnion(newTransaction),
             accountBalance: increment(amount),
         });
@@ -138,9 +136,20 @@ export async function addTransactionAction(values: z.infer<typeof transactionSch
 
     } catch (error: any) {
         console.error("Error adding transaction:", error);
-        if (error.code === 'permission-denied') {
-            return { success: false, error: "Action non autorisée. Seuls les administrateurs peuvent effectuer cette action."};
-        }
         return { success: false, error: "Une erreur est survenue lors de l'ajout de la transaction." };
+    }
+}
+
+export async function getClientsAction(): Promise<{ success: boolean, data?: Client[], error?: string }> {
+    try {
+        const snapshot = await adminDb.collection('clients').get();
+        const clients = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Client));
+        return { success: true, data: clients };
+    } catch (error: any) {
+        console.error("Error getting clients (action):", error);
+        if (error.message.includes('FIREBASE_CONFIG')) {
+             return { success: false, error: "Le service d'administration Firebase n'est pas initialisé." };
+        }
+        return { success: false, error: 'Impossible de récupérer la liste des clients.' };
     }
 }

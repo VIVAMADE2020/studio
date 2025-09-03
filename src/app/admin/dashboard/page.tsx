@@ -9,7 +9,8 @@ import { AdminLoginForm } from '@/components/admin-login-form';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AddClientForm } from '@/components/admin-add-client-form';
-import { getClients, Client } from '@/lib/firebase/firestore';
+import { Client } from '@/lib/firebase/firestore';
+import { getClientsAction } from '@/app/actions/admin-clients';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatCurrency } from '@/lib/utils';
@@ -36,12 +37,16 @@ export default function AdminDashboardPage() {
     const fetchClients = async () => {
         setLoading(true);
         try {
-            const clientData = await getClients();
-            setClients(clientData);
-            setError(null);
+            const result = await getClientsAction();
+            if (result.success && result.data) {
+                setClients(result.data);
+                setError(null);
+            } else {
+                 setError(result.error || "Impossible de charger les clients.");
+            }
         } catch (err) {
             console.error("Erreur lors de la récupération des clients:", err);
-            setError("Impossible de charger les clients. Vérifiez les règles de sécurité Firestore.");
+            setError("Une erreur inattendue est survenue.");
         } finally {
             setLoading(false);
         }
