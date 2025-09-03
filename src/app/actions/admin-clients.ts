@@ -2,9 +2,11 @@
 "use server";
 
 import { z } from "zod";
-import { addClient, Client } from "@/lib/firebase/firestore";
+import { addClient, Client, Transaction } from "@/lib/firebase/firestore";
+import { db } from "@/lib/firebase/config";
+import { doc, updateDoc, getDoc, arrayUnion, increment } from "firebase/firestore";
 
-// Schéma pour la validation des données du formulaire
+// Schéma pour la validation du formulaire d'ajout de client
 const formSchema = z.object({
   // Personal
   firstName: z.string().min(2, "Le prénom est requis."),
@@ -66,8 +68,6 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
       const result = await addClient(newClient);
 
       if (result.success) {
-          // IMPORTANT: En production, il faudrait aussi créer un utilisateur dans Firebase Auth ici.
-          // Pour l'instant, on se concentre sur Firestore.
           return { success: true, id: result.id };
       } else {
           return { success: false, error: result.error };
@@ -79,5 +79,59 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
           return { success: false, error: "Action non autorisée. Seuls les administrateurs peuvent ajouter des clients."};
       }
       return { success: false, error: "Une erreur est survenue côté serveur."};
+    }
+}
+
+
+// Schéma pour la validation du formulaire de transaction
+const transactionSchema = z.object({
+  clientId: z.string(),
+  description: z.string().min(3, "La description est requise."),
+  amount: z.coerce.number(),
+});
+
+export async function addTransactionAction(values: z.infer<typeof transactionSchema>) {
+    const parsed = transactionSchema.safeParse(values);
+
+    if (!parsed.success) {
+        return { success: false, error: "Données de transaction invalides." };
+    }
+
+    try {
+        const { clientId, description, amount } = parsed.data;
+
+        if (amount === 0) {
+            return { success: false, error: "Le montant ne peut pas être zéro." };
+        }
+
+        const clientRef = doc(db, "clients", clientId);
+
+        // Vérifier si le client existe (optionnel mais recommandé)
+        const clientSnap = await getDoc(clientRef);
+        if (!clientSnap.exists()) {
+            return { success: false, error: "Client non trouvé." };
+        }
+
+        const newTransaction: Transaction = {
+            id: crypto.randomUUID(),
+            date: new Date().toISOString(),
+            description: description,
+            amount: amount,
+        };
+
+        // Mettre à jour le document client
+        await updateDoc(clientRef, {
+            transactions: arrayUnion(newTransaction),
+            accountBalance: increment(amount),
+        });
+
+        return { success: true };
+
+    } catch (error: any) {
+        console.error("Error adding transaction:", error);
+        if (error.code === 'permission-denied') {
+            return { success: false, error: "Action non autorisée. Seuls les administrateurs peuvent effectuer cette action."};
+        }
+        return { success: false, error: "Une erreur est survenue lors de l'ajout de la transaction." };
     }
 }
