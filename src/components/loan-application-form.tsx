@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useState } from "react";
@@ -97,9 +98,20 @@ const legalSchema = z.object({
     })
 });
 
-const formSchema = loanDetailsSchema.merge(personalInfoSchema).merge(financialInfoSchema).merge(documentsSchema).merge(legalSchema);
+// Le schéma complet utilisé par le formulaire
+const formClientSchema = loanDetailsSchema.merge(personalInfoSchema).merge(financialInfoSchema).merge(documentsSchema).merge(legalSchema);
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer<typeof formClientSchema>;
+
+// Schéma pour les données envoyées au serveur (avec fichiers en base64)
+const serverSchema = formClientSchema.extend({
+    identityProof: z.string(),
+    identityProofData: z.string(),
+    residenceProof: z.string(),
+    residenceProofData: z.string(),
+    incomeProof: z.string(),
+    incomeProofData: z.string(),
+});
 
 const steps = [
   { id: 'loanDetails', title: 'Détails et Simulation', fields: ['loanType', 'loanReason', 'loanAmount', 'loanDuration'], schema: loanDetailsSchema },
@@ -110,6 +122,16 @@ const steps = [
   { id: 'summary', title: 'Récapitulatif' },
 ];
 
+// Fonction pour convertir un fichier en Base64
+const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (error) => reject(error);
+    });
+};
+
 export function LoanApplicationForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -117,7 +139,7 @@ export function LoanApplicationForm() {
   const { toast } = useToast();
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formClientSchema),
     mode: "onBlur",
     defaultValues: {
       loanType: undefined,
@@ -164,24 +186,48 @@ export function LoanApplicationForm() {
   async function onSubmit(values: FormValues) {
     setIsSubmitting(true);
 
-    const dataToSubmit = {
-        ...values,
-        identityProof: values.identityProof[0].name,
-        residenceProof: values.residenceProof[0].name,
-        incomeProof: values.incomeProof[0].name,
-    };
+    try {
+        const [identityProofData, residenceProofData, incomeProofData] = await Promise.all([
+            fileToBase64(values.identityProof[0]),
+            fileToBase64(values.residenceProof[0]),
+            fileToBase64(values.incomeProof[0]),
+        ]);
 
-    const result = await submitLoanApplication(dataToSubmit);
-    setIsSubmitting(false);
+        const dataToSend = {
+            ...values,
+            identityProof: values.identityProof[0].name,
+            identityProofData,
+            residenceProof: values.residenceProof[0].name,
+            residenceProofData,
+            incomeProof: values.incomeProof[0].name,
+            incomeProofData,
+        };
 
-    if (result.success) {
-      setIsSubmitted(true);
-    } else {
-      toast({
-        variant: "destructive",
-        title: "Erreur",
-        description: result.error || "Une erreur est survenue lors de la soumission. Veuillez réessayer.",
-      });
+        // Valider avec le schéma serveur avant envoi
+        const parsedData = serverSchema.safeParse(dataToSend);
+        if (!parsedData.success) {
+            console.error("Client-side validation failed for server schema:", parsedData.error.format());
+            toast({ variant: "destructive", title: "Erreur de validation", description: "Certaines données sont invalides."});
+            setIsSubmitting(false);
+            return;
+        }
+
+        const result = await submitLoanApplication(parsedData.data);
+        setIsSubmitting(false);
+
+        if (result.success) {
+            setIsSubmitted(true);
+        } else {
+            toast({
+                variant: "destructive",
+                title: "Erreur",
+                description: result.error || "Une erreur est survenue lors de la soumission. Veuillez réessayer.",
+            });
+        }
+    } catch (error) {
+        console.error("Error processing files:", error);
+        toast({ variant: "destructive", title: "Erreur de fichier", description: "Impossible de traiter les fichiers joints."});
+        setIsSubmitting(false);
     }
   }
   
@@ -202,42 +248,47 @@ export function LoanApplicationForm() {
   }
 
   const FileInputField = ({name, label}: {name: "identityProof" | "residenceProof" | "incomeProof", label: string}) => {
-      const file = form.watch(name);
-      const fileName = file?.[0]?.name;
-      const fileInputRef = form.register(name);
+    const files = form.watch(name);
+    const fileName = files?.[0]?.name;
 
-      return (
+    return (
         <FormField
-          control={form.control}
-          name={name}
-          render={({ field: { onChange, onBlur, value, ref: _ref, ...field } }) => (
-            <FormItem>
-              <FormLabel>{label}</FormLabel>
-              <FormControl>
-                <div className="relative">
-                    {fileName ? (
-                        <div className="flex items-center justify-between h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
-                            <span className="text-muted-foreground truncate pr-8">{fileName}</span>
-                            <FileCheck className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green-500" />
-                        </div>
-                    ) : (
+            control={form.control}
+            name={name}
+            render={({ field: { onChange, onBlur, name: fieldName, ref } }) => (
+                <FormItem>
+                    <FormLabel>{label}</FormLabel>
+                    <FormControl>
                         <div className="relative">
-                            <Upload className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                            <Input 
-                                type="file" 
-                                className="pl-10"
-                                {...fileInputRef}
-                            />
+                             {fileName ? (
+                                <div className="flex items-center justify-between h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+                                    <span className="text-muted-foreground truncate pr-8">{fileName}</span>
+                                    <FileCheck className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green-500" />
+                                </div>
+                            ) : (
+                                <div className="relative">
+                                    <Upload className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                    <Input
+                                        type="file"
+                                        className="pl-10"
+                                        ref={ref}
+                                        name={fieldName}
+                                        onBlur={onBlur}
+                                        onChange={(e) => {
+                                            onChange(e.target.files);
+                                        }}
+                                    />
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+                    </FormControl>
+                    <FormMessage />
+                </FormItem>
+            )}
         />
-      );
+    );
   }
+
 
   return (
     <Form {...form}>

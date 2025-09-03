@@ -23,9 +23,12 @@ const formSchema = z.object({
   monthlyIncome: z.number(),
   monthlyExpenses: z.number().min(0),
   housingStatus: z.string(),
-  identityProof: z.string(),
+  identityProof: z.string(), // Contient le nom du fichier
+  identityProofData: z.string(), // Contient les données en Base64
   residenceProof: z.string(),
+  residenceProofData: z.string(),
   incomeProof: z.string(),
+  incomeProofData: z.string(),
   legalConsent: z.boolean(),
 });
 
@@ -49,6 +52,7 @@ export async function submitLoanApplication(values: z.infer<typeof formSchema>) 
       headers: {
         'Content-Type': 'application/json',
       },
+      // Le corps de la requête peut être volumineux à cause des fichiers en Base64
       body: JSON.stringify(dataToSend),
     });
 
