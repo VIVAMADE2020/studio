@@ -19,6 +19,8 @@ import { useToast } from "@/hooks/use-toast";
 import { addClientAction } from "@/app/actions/admin-clients";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { useEffect, useState } from "react";
+import { formatCurrency } from "@/lib/utils";
 
 const formSchema = z.object({
   // Personal
@@ -52,6 +54,8 @@ interface AddClientFormProps {
 
 export function AddClientForm({ onClientAdded }: AddClientFormProps) {
   const { toast } = useToast();
+  const [monthlyPayment, setMonthlyPayment] = useState(0);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -68,6 +72,23 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
   });
 
   const accountType = form.watch("accountType");
+  const loanAmount = form.watch("loanAmount");
+  const interestRate = form.watch("interestRate");
+  const loanDuration = form.watch("loanDuration");
+
+  useEffect(() => {
+    if (accountType === 'loan' && loanAmount && interestRate && loanDuration) {
+      const monthlyRate = interestRate / 100 / 12;
+      if (monthlyRate > 0) {
+        const payment = (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, loanDuration)) / (Math.pow(1 + monthlyRate, loanDuration) - 1);
+        setMonthlyPayment(payment);
+      } else {
+        setMonthlyPayment(loanAmount / loanDuration);
+      }
+    } else {
+      setMonthlyPayment(0);
+    }
+  }, [accountType, loanAmount, interestRate, loanDuration]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const result = await addClientAction(values);
@@ -131,6 +152,13 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
                     <FormField control={form.control} name="loanAmount" render={({ field }) => (<FormItem><FormLabel>Montant du Prêt (€)</FormLabel><FormControl><Input type="number" placeholder="50000" {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name="interestRate" render={({ field }) => (<FormItem><FormLabel>Taux d'intérêt annuel (%)</FormLabel><FormControl><Input type="number" step="0.01" placeholder="2.0" {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name="loanDuration" render={({ field }) => (<FormItem><FormLabel>Durée du prêt (en mois)</FormLabel><FormControl><Input type="number" placeholder="120" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    
+                    {monthlyPayment > 0 && (
+                      <div className="mt-4 pt-4 border-t border-dashed">
+                        <p className="text-sm text-muted-foreground">Mensualité estimée :</p>
+                        <p className="text-lg font-bold text-primary">{formatCurrency(monthlyPayment)}</p>
+                      </div>
+                    )}
                 </div>
             )}
             
