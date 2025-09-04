@@ -17,14 +17,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 
 
 const StatCard = ({ icon, title, value, description }: { icon: React.ReactNode, title: string, value: string, description: string }) => (
-    <Card className="bg-slate-900/50 border-slate-700">
+    <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-300">{title}</CardTitle>
+            <CardTitle className="text-sm font-medium">{title}</CardTitle>
             {icon}
         </CardHeader>
         <CardContent>
-            <div className="text-4xl font-bold text-white">{value}</div>
-            <p className="text-xs text-slate-400">{description}</p>
+            <div className="text-4xl font-bold text-primary">{value}</div>
+            <p className="text-xs text-muted-foreground">{description}</p>
         </CardContent>
     </Card>
 );
@@ -36,18 +36,18 @@ const DashboardSkeleton = () => (
             <Skeleton className="h-10 w-32" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Skeleton className="h-32" />
-            <Skeleton className="h-32" />
-            <Skeleton className="h-32" />
+            <Skeleton className="h-32 rounded-lg" />
+            <Skeleton className="h-32 rounded-lg" />
+            <Skeleton className="h-32 rounded-lg" />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1 space-y-8">
-                <Skeleton className="h-48" />
-                <Skeleton className="h-48" />
+                <Skeleton className="h-48 rounded-lg" />
+                <Skeleton className="h-48 rounded-lg" />
             </div>
              <div className="lg:col-span-2 space-y-8">
-                <Skeleton className="h-48" />
-                 <Skeleton className="h-64" />
+                <Skeleton className="h-48 rounded-lg" />
+                 <Skeleton className="h-64 rounded-lg" />
             </div>
         </div>
     </div>
@@ -119,7 +119,7 @@ export default function ClientDashboardPage() {
 
 
     return (
-        <div className="space-y-8 text-white">
+        <div className="space-y-8">
              <motion.div 
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -128,9 +128,9 @@ export default function ClientDashboardPage() {
             >
                  <div>
                     <h1 className="text-2xl md:text-3xl font-bold">Bonjour, {client.firstName}</h1>
-                    <p className="text-slate-300">Bienvenue sur votre espace personnel.</p>
+                    <p className="text-muted-foreground">Bienvenue sur votre espace personnel.</p>
                 </div>
-                <Button variant="outline" onClick={handleLogout} className="bg-transparent border-slate-600 hover:bg-slate-800 hover:text-white">
+                <Button variant="outline" onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     Déconnexion
                 </Button>
@@ -142,9 +142,9 @@ export default function ClientDashboardPage() {
                  transition={{ duration: 0.5, delay: 0.1 }}
                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-                <StatCard icon={<Wallet className="h-5 w-5 text-slate-400"/>} title="Solde Actuel" value={formatCurrency(balance)} description="Solde disponible sur votre compte"/>
-                <StatCard icon={<TrendingUp className="h-5 w-5 text-green-400"/>} title="Revenus (30j)" value={formatCurrency(totalIncome)} description="Total des crédits ce mois-ci"/>
-                <StatCard icon={<TrendingDown className="h-5 w-5 text-red-400"/>} title="Dépenses (30j)" value={formatCurrency(totalExpenses)} description="Total des débits ce mois-ci"/>
+                <StatCard icon={<Wallet className="h-5 w-5 text-muted-foreground"/>} title="Solde Actuel" value={formatCurrency(balance)} description="Solde disponible sur votre compte"/>
+                <StatCard icon={<TrendingUp className="h-5 w-5 text-green-500"/>} title="Revenus (30j)" value={formatCurrency(totalIncome)} description="Total des crédits ce mois-ci"/>
+                <StatCard icon={<TrendingDown className="h-5 w-5 text-red-500"/>} title="Dépenses (30j)" value={formatCurrency(totalExpenses)} description="Total des débits ce mois-ci"/>
             </motion.div>
 
 
@@ -152,49 +152,49 @@ export default function ClientDashboardPage() {
                 {/* Left Column */}
                 <div className="lg:col-span-1 space-y-8">
                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
-                        <Card className="bg-slate-900/50 border-slate-700">
+                        <Card>
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2"><User className="h-5 w-5 text-primary"/> Mon Profil</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-3 text-sm">
-                                <div className="font-semibold text-white">
+                                <div className="font-semibold">
                                     {client.firstName} {client.lastName}
                                 </div>
-                                <div className="flex items-center gap-3 text-slate-300">
-                                    <Mail className="h-4 w-4 text-slate-400 flex-shrink-0" /> <span className="truncate">{client.email}</span>
+                                <div className="flex items-center gap-3 text-muted-foreground">
+                                    <Mail className="h-4 w-4 text-muted-foreground flex-shrink-0" /> <span className="truncate">{client.email}</span>
                                 </div>
-                                <div className="flex items-center gap-3 text-slate-300">
-                                    <Hash className="h-4 w-4 text-slate-400 flex-shrink-0" /> <span>{client.identificationNumber}</span>
+                                <div className="flex items-center gap-3 text-muted-foreground">
+                                    <Hash className="h-4 w-4 text-muted-foreground flex-shrink-0" /> <span>{client.identificationNumber}</span>
                                 </div>
-                                <div className="flex items-center gap-3 text-slate-300">
-                                    <Calendar className="h-4 w-4 text-slate-400 flex-shrink-0" /> <span>Client depuis le {new Date(client.creationDate).toLocaleDateString()}</span>
+                                <div className="flex items-center gap-3 text-muted-foreground">
+                                    <Calendar className="h-4 w-4 text-muted-foreground flex-shrink-0" /> <span>Client depuis le {new Date(client.creationDate).toLocaleDateString()}</span>
                                 </div>
                             </CardContent>
                         </Card>
                     </motion.div>
                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
-                        <Card className="bg-slate-900/50 border-slate-700">
+                        <Card>
                             <CardHeader>
                                  <CardTitle className="flex items-center gap-2"><Landmark className="h-5 w-5 text-primary"/> Informations Bancaires</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4 text-sm font-mono">
                                  <div>
                                     <div className="flex justify-between items-center mb-1">
-                                        <span className="text-slate-400 font-sans text-xs uppercase tracking-wider">IBAN</span>
-                                        <Button variant="ghost" size="icon" className="h-6 w-6 text-slate-400 hover:bg-slate-800 hover:text-white" onClick={() => copyToClipboard(client.iban, 'IBAN')}>
+                                        <span className="text-muted-foreground font-sans text-xs uppercase tracking-wider">IBAN</span>
+                                        <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:bg-accent/10" onClick={() => copyToClipboard(client.iban, 'IBAN')}>
                                             <Copy className="h-3 w-3"/>
                                         </Button>
                                     </div>
-                                    <p className="break-all text-white">{client.iban}</p>
+                                    <p className="break-all">{client.iban}</p>
                                 </div>
                                 <div>
                                     <div className="flex justify-between items-center mb-1">
-                                        <span className="text-slate-400 font-sans text-xs uppercase tracking-wider">SWIFT/BIC</span>
-                                        <Button variant="ghost" size="icon" className="h-6 w-6 text-slate-400 hover:bg-slate-800 hover:text-white" onClick={() => copyToClipboard(client.swiftCode, 'SWIFT/BIC')}>
+                                        <span className="text-muted-foreground font-sans text-xs uppercase tracking-wider">SWIFT/BIC</span>
+                                        <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:bg-accent/10" onClick={() => copyToClipboard(client.swiftCode, 'SWIFT/BIC')}>
                                             <Copy className="h-3 w-3"/>
                                         </Button>
                                     </div>
-                                    <p className="text-white">{client.swiftCode}</p>
+                                    <p>{client.swiftCode}</p>
                                 </div>
                             </CardContent>
                         </Card>
@@ -204,34 +204,34 @@ export default function ClientDashboardPage() {
                 {/* Right Column */}
                 <div className="lg:col-span-2 space-y-8">
                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }}>
-                        <h3 className="text-lg font-semibold mb-4 text-white">Raccourcis</h3>
+                        <h3 className="text-lg font-semibold mb-4">Raccourcis</h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2 bg-slate-900/50 border-slate-700 hover:bg-slate-800 hover:text-white"><Send /><span>Faire un virement</span></Button>
-                            <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2 bg-slate-900/50 border-slate-700 hover:bg-slate-800 hover:text-white"><FileText /><span>Demander un relevé</span></Button>
-                            <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2 bg-slate-900/50 border-slate-700 hover:bg-slate-800 hover:text-white"><MessageSquare /><span>Contacter mon conseiller</span></Button>
+                            <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2"><Send /><span>Faire un virement</span></Button>
+                            <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2"><FileText /><span>Demander un relevé</span></Button>
+                            <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2"><MessageSquare /><span>Contacter mon conseiller</span></Button>
                         </div>
                     </motion.div>
                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }}>
-                        <Card className="bg-slate-900/50 border-slate-700">
+                        <Card>
                             <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                <CardTitle className="text-white">Historique des Transactions</CardTitle>
-                                <History className="h-5 w-5 text-slate-400" />
+                                <CardTitle>Historique des Transactions</CardTitle>
+                                <History className="h-5 w-5 text-muted-foreground" />
                             </CardHeader>
                             <CardContent>
                                 <Table>
                                     <TableHeader>
-                                        <TableRow className="border-slate-700">
-                                            <TableHead className="text-slate-300">Date</TableHead>
-                                            <TableHead className="text-slate-300">Description</TableHead>
-                                            <TableHead className="text-right text-slate-300">Montant</TableHead>
+                                        <TableRow>
+                                            <TableHead>Date</TableHead>
+                                            <TableHead>Description</TableHead>
+                                            <TableHead className="text-right">Montant</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                         {sortedTransactions.length > 0 ? sortedTransactions.slice(0, 10).map(t => (
-                                            <TableRow key={t.id} className="border-slate-800">
-                                                <TableCell className="text-xs text-slate-400">{new Date(t.date).toLocaleDateString()}</TableCell>
-                                                <TableCell className="text-white">{t.description}</TableCell>
-                                                <TableCell className={`text-right font-medium ${t.amount >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                            <TableRow key={t.id}>
+                                                <TableCell className="text-xs text-muted-foreground">{new Date(t.date).toLocaleDateString()}</TableCell>
+                                                <TableCell>{t.description}</TableCell>
+                                                <TableCell className={`text-right font-medium ${t.amount >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                                                     <div className="flex items-center justify-end gap-2">
                                                         <CircleDollarSign className="h-4 w-4 opacity-70" />
                                                         <span>{t.amount >= 0 ? '+' : ''}{formatCurrency(t.amount)}</span>
@@ -239,8 +239,8 @@ export default function ClientDashboardPage() {
                                                 </TableCell>
                                             </TableRow>
                                         )) : (
-                                            <TableRow className="border-slate-800">
-                                                <TableCell colSpan={3} className="text-center text-slate-400 py-12">
+                                            <TableRow>
+                                                <TableCell colSpan={3} className="text-center text-muted-foreground py-12">
                                                     Vous n'avez aucune transaction pour le moment.
                                                 </TableCell>
                                             </TableRow>
@@ -255,5 +255,3 @@ export default function ClientDashboardPage() {
         </div>
     );
 }
-
-    
