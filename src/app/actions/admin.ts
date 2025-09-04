@@ -3,9 +3,6 @@
 
 import { z } from "zod";
 
-// Force la lecture du fichier .env à chaque exécution
-require('dotenv').config({ path: '.env' });
-
 const loginSchema = z.object({
   password: z.string().min(1, "Le mot de passe est requis."),
 });
@@ -18,6 +15,7 @@ export async function verifyAdminPassword(values: z.infer<typeof loginSchema>) {
 
     const { password } = parsed.data;
 
+    // Next.js charge automatiquement les variables depuis .env.local
     if (password === process.env.ADMIN_PASSWORD) {
         return { success: true };
     } else {
