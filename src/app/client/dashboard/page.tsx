@@ -9,7 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { formatCurrency } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { LogOut, Landmark, Copy, User, Mail, Hash, Calendar, Wallet, History, BarChart3, TrendingUp, TrendingDown } from "lucide-react";
+import { LogOut, Landmark, Copy, User, Mail, Hash, Calendar, Wallet, History, BarChart3, TrendingUp, TrendingDown, Send, FileText, MessageSquare, CircleDollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
@@ -29,10 +29,14 @@ const DashboardSkeleton = () => (
             <div className="lg:col-span-1 space-y-8">
                 <Card><CardContent className="p-6 space-y-4"><Skeleton className="h-10 w-3/4" /><Skeleton className="h-4 w-1/2" /><Skeleton className="h-4 w-1/2" /></CardContent></Card>
                 <Card><CardContent className="p-6 space-y-4"><Skeleton className="h-6 w-1/2 mb-4" /><Skeleton className="h-5 w-full" /><Skeleton className="h-5 w-full" /><Skeleton className="h-5 w-4/5" /></CardContent></Card>
-                <Card><CardContent className="p-6 space-y-4"><Skeleton className="h-6 w-1/2 mb-4" /><Skeleton className="h-5 w-full" /><Skeleton className="h-5 w-full" /></CardContent></Card>
             </div>
             <div className="lg:col-span-2 space-y-8">
-                <Card><CardContent className="p-6"><Skeleton className="h-80 w-full" /></CardContent></Card>
+                <Card><CardContent className="p-6"><Skeleton className="h-64 w-full" /></CardContent></Card>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Skeleton className="h-24 w-full" />
+                    <Skeleton className="h-24 w-full" />
+                    <Skeleton className="h-24 w-full" />
+                </div>
                 <Card><CardContent className="p-6"><Skeleton className="h-48 w-full" /></CardContent></Card>
             </div>
         </div>
@@ -110,7 +114,7 @@ export default function ClientDashboardPage() {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="flex justify-between items-center"
+                className="flex justify-between items-start"
             >
                  <div>
                     <h1 className="text-2xl md:text-3xl font-bold">Bonjour, {client.firstName}</h1>
@@ -133,23 +137,13 @@ export default function ClientDashboardPage() {
                             </CardHeader>
                             <CardContent>
                                 <div className="text-4xl font-bold text-primary">{formatCurrency(balance)}</div>
-                                <div className="grid grid-cols-2 gap-4 text-xs mt-4 text-muted-foreground">
-                                    <div className="flex items-center gap-1">
-                                        <TrendingUp className="h-4 w-4 text-green-500" />
-                                        <span>{formatCurrency(totalIncome)}</span>
-                                    </div>
-                                    <div className="flex items-center gap-1">
-                                        <TrendingDown className="h-4 w-4 text-red-500" />
-                                        <span>{formatCurrency(totalExpenses)}</span>
-                                    </div>
-                                </div>
                             </CardContent>
                         </Card>
                     </motion.div>
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
                         <Card>
                              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                <CardTitle className="text-sm font-medium">Mon Profil</CardTitle>
+                                <CardTitle className="text-sm font-medium">Mon Profil & Coordonnées</CardTitle>
                                 <User className="h-4 w-4 text-muted-foreground" />
                             </CardHeader>
                             <CardContent className="space-y-4 text-sm pt-4">
@@ -165,36 +159,28 @@ export default function ClientDashboardPage() {
                                 <div className="flex items-center gap-3">
                                     <Calendar className="h-4 w-4 text-muted-foreground flex-shrink-0" /> <span>Client depuis le {new Date(client.creationDate).toLocaleDateString()}</span>
                                 </div>
+                                <div className="border-t pt-4 mt-4 space-y-4 font-mono">
+                                    <div>
+                                        <div className="flex justify-between items-center mb-1">
+                                            <span className="text-muted-foreground font-sans text-xs uppercase tracking-wider">IBAN</span>
+                                            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => copyToClipboard(client.iban, 'IBAN')}>
+                                                <Copy className="h-3 w-3"/>
+                                            </Button>
+                                        </div>
+                                        <p className="break-all">{client.iban}</p>
+                                    </div>
+                                    <div>
+                                        <div className="flex justify-between items-center mb-1">
+                                            <span className="text-muted-foreground font-sans text-xs uppercase tracking-wider">SWIFT/BIC</span>
+                                            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => copyToClipboard(client.swiftCode, 'SWIFT/BIC')}>
+                                                <Copy className="h-3 w-3"/>
+                                            </Button>
+                                        </div>
+                                        <p>{client.swiftCode}</p>
+                                    </div>
+                                </div>
                             </CardContent>
                         </Card>
-                    </motion.div>
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
-                         <Card>
-                             <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                <CardTitle className="text-sm font-medium">Coordonnées Bancaires</CardTitle>
-                                <Landmark className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent className="pt-4 space-y-4 text-sm font-mono">
-                                <div>
-                                    <div className="flex justify-between items-center mb-1">
-                                        <span className="text-muted-foreground font-sans text-xs uppercase tracking-wider">IBAN</span>
-                                        <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => copyToClipboard(client.iban, 'IBAN')}>
-                                            <Copy className="h-3 w-3"/>
-                                        </Button>
-                                    </div>
-                                    <p className="break-all">{client.iban}</p>
-                                </div>
-                                <div>
-                                    <div className="flex justify-between items-center mb-1">
-                                        <span className="text-muted-foreground font-sans text-xs uppercase tracking-wider">SWIFT/BIC</span>
-                                        <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => copyToClipboard(client.swiftCode, 'SWIFT/BIC')}>
-                                            <Copy className="h-3 w-3"/>
-                                        </Button>
-                                    </div>
-                                    <p>{client.swiftCode}</p>
-                                </div>
-                            </CardContent>
-                         </Card>
                     </motion.div>
                 </div>
 
@@ -208,11 +194,11 @@ export default function ClientDashboardPage() {
                             </CardHeader>
                             <CardContent>
                                 {sortedTransactions.length > 0 ? (
-                                    <div className="h-80 w-full">
+                                    <div className="h-64 w-full">
                                          <ClientDashboardChart data={sortedTransactions} />
                                     </div>
                                 ) : (
-                                    <div className="h-80 flex flex-col items-center justify-center text-center text-muted-foreground">
+                                    <div className="h-64 flex flex-col items-center justify-center text-center text-muted-foreground">
                                         <BarChart3 className="h-12 w-12 mb-4" />
                                         <p>Le graphique de vos activités apparaîtra ici dès que vous aurez des transactions.</p>
                                     </div>
@@ -220,7 +206,35 @@ export default function ClientDashboardPage() {
                             </CardContent>
                         </Card>
                     </motion.div>
-                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }}>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Card>
+                             <CardHeader className="pb-2">
+                                <CardTitle className="text-base font-medium flex items-center gap-2"><TrendingUp className="text-green-500" /> Revenus</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-2xl font-bold">{formatCurrency(totalIncome)}</p>
+                                <p className="text-xs text-muted-foreground">Total des crédits reçus</p>
+                            </CardContent>
+                        </Card>
+                        <Card>
+                             <CardHeader className="pb-2">
+                                <CardTitle className="text-base font-medium flex items-center gap-2"><TrendingDown className="text-red-500" /> Dépenses</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-2xl font-bold">{formatCurrency(totalExpenses)}</p>
+                                <p className="text-xs text-muted-foreground">Total des débits effectués</p>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.6 }}>
+                        <h3 className="text-lg font-semibold mb-4">Raccourcis</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2"><Send /><span>Faire un virement</span></Button>
+                            <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2"><FileText /><span>Demander un relevé</span></Button>
+                            <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2"><MessageSquare /><span>Contacter mon conseiller</span></Button>
+                        </div>
+                    </motion.div>
+                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.7 }}>
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between pb-2">
                                 <CardTitle>Historique des Transactions</CardTitle>
@@ -241,7 +255,10 @@ export default function ClientDashboardPage() {
                                                 <TableCell className="text-xs text-muted-foreground">{new Date(t.date).toLocaleDateString()}</TableCell>
                                                 <TableCell>{t.description}</TableCell>
                                                 <TableCell className={`text-right font-medium ${t.amount >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                    {t.amount >= 0 ? '+' : ''}{formatCurrency(t.amount)}
+                                                    <div className="flex items-center justify-end gap-2">
+                                                        <CircleDollarSign className="h-4 w-4 opacity-70" />
+                                                        <span>{t.amount >= 0 ? '+' : ''}{formatCurrency(t.amount)}</span>
+                                                    </div>
                                                 </TableCell>
                                             </TableRow>
                                         )) : (
