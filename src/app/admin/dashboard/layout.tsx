@@ -1,18 +1,42 @@
 
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Home } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { Home, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [isVerifying, setIsVerifying] = useState(true);
+
+  useEffect(() => {
+    try {
+      const adminLoggedIn = sessionStorage.getItem('adminLoggedIn');
+      if (adminLoggedIn !== 'true') {
+        router.replace('/admin/login');
+      } else {
+        setIsVerifying(false);
+      }
+    } catch (error) {
+      router.replace('/admin/login');
+    }
+  }, [router]);
+  
 
   const navItems = [
     { href: '/admin/dashboard', label: 'Clients', icon: Home },
   ];
+
+  if (isVerifying) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-secondary/30">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    )
+  }
 
   return (
     <div className="bg-secondary/30 min-h-screen">
