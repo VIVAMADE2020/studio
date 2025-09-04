@@ -71,19 +71,31 @@ export default function ClientDashboardPage() {
         }
 
         const fetchClientData = async () => {
-            setIsLoading(true);
-            const result = await getClientByIdentificationNumberAction(identificationNumber);
-            if (result.error || !result.data) {
-                setError(result.error || "Impossible de charger les données.");
-                sessionStorage.removeItem('identificationNumber');
-            } else {
-                setClient(result.data);
+            // Only show loader on initial fetch
+            if (!client) setIsLoading(true);
+            try {
+                const result = await getClientByIdentificationNumberAction(identificationNumber);
+                if (result.error || !result.data) {
+                    setError(result.error || "Impossible de charger les données.");
+                    sessionStorage.removeItem('identificationNumber');
+                } else {
+                    setClient(result.data);
+                }
+            } catch (e) {
+                 setError("Une erreur de communication est survenue.");
+            } finally {
+                if (isLoading) setIsLoading(false);
             }
-            setIsLoading(false);
         };
 
         fetchClientData();
-    }, [router]);
+
+        // Set up an interval to refetch data every 15 seconds
+        const intervalId = setInterval(fetchClientData, 15000);
+
+        // Clean up the interval on component unmount
+        return () => clearInterval(intervalId);
+    }, [router, client, isLoading]);
 
     const handleLogout = () => {
         sessionStorage.removeItem('identificationNumber');
@@ -311,5 +323,3 @@ export default function ClientDashboardPage() {
         </TooltipProvider>
     );
 }
-
-    
