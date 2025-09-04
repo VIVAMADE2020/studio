@@ -1,2 +1,11 @@
-
-[]
+[
+  {
+    "firstName": "jokn",
+    "lastName": "voli",
+    "email": "tio@hotmail.com",
+    "initialBalance": 0,
+    "accountNumber": "FLEX-1ICQDT",
+    "creationDate": "2025-09-04T10:20:46.495Z",
+    "transactions": []
+  }
+]

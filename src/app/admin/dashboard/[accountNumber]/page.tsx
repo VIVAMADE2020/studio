@@ -78,7 +78,7 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
                 </div>
 
                 <div className="lg:col-span-1 space-y-8">
-                    <Card className="sticky top-24">
+                    <Card>
                         <CardHeader>
                             <CardTitle>Solde Actuel</CardTitle>
                         </CardHeader>
