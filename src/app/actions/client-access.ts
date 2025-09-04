@@ -11,13 +11,10 @@ export async function getClientByAccountNumberAction(accountNumber: string): Pro
     }
 
     try {
-        const q = query(
-            collection(adminDb, "clients"), 
-            where("accountNumber", "==", accountNumber),
-            limit(1)
-        );
+        const clientsRef = adminDb.collection("clients");
+        const q = clientsRef.where("accountNumber", "==", accountNumber).limit(1);
 
-        const querySnapshot = await getDocs(q);
+        const querySnapshot = await q.get();
 
         if (querySnapshot.empty) {
             return { data: null, error: "Numéro de compte invalide ou introuvable." };
@@ -29,7 +26,7 @@ export async function getClientByAccountNumberAction(accountNumber: string): Pro
         return { data: clientData, error: null };
 
     } catch (error: any) {
-        console.error("Error getting client data by account number (action):", error);
+        console.error("Error getting client data by account number (action):", error.message || error);
         return { data: null, error: "Impossible de vérifier le numéro de compte." };
     }
 }
