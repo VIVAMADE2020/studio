@@ -40,23 +40,21 @@ const addTransactionSchema = z.object({
 
 // --- Fonctions d'interaction avec Google Apps Script ---
 
-// URL de l'application web Google Apps Script. 
-// Ce script agit comme une API qui interagit avec Google Drive (pour les données des clients)
-// et Google Sheets (pour les soumissions de formulaires).
-const SCRIPT_URL = process.env.GOOGLE_SCRIPT_WEB_APP_URL!;
+// URL du script Google Apps Script dédié à la gestion de la base de données sur Google Drive.
+// Ce script est distinct de celui utilisé pour les formulaires.
+const DB_SCRIPT_URL = process.env.GOOGLE_SCRIPT_DB_URL!;
 
 async function callGoogleScript(action: string, payload: object) {
-    if (!SCRIPT_URL) {
-        throw new Error("L'URL du script Google n'est pas configurée dans les variables d'environnement.");
+    if (!DB_SCRIPT_URL) {
+        throw new Error("L'URL du script de base de données Google (DB_SCRIPT_URL) n'est pas configurée.");
     }
     try {
-        const response = await fetch(SCRIPT_URL, {
+        const response = await fetch(DB_SCRIPT_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ action, ...payload }),
-            // Ne pas mettre en cache les requêtes POST pour s'assurer d'avoir les données à jour
             cache: 'no-store',
         });
 
@@ -68,7 +66,6 @@ async function callGoogleScript(action: string, payload: object) {
         const result = await response.json();
         
         if (result.status === 'error') {
-            // Propage l'erreur venant du script pour l'afficher dans l'UI
             throw new Error(result.message || 'An unknown error occurred in Google Script.');
         }
 
@@ -76,7 +73,6 @@ async function callGoogleScript(action: string, payload: object) {
 
     } catch (error: any) {
         console.error(`Error calling Google Script action '${action}':`, error.message);
-        // Rethrow l'erreur pour qu'elle soit attrapée par les actions serveur
         throw new Error(error.message || `Failed to execute action ${action}.`);
     }
 }
