@@ -22,8 +22,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
-  beneficiaryName: z.string().min(2, "Le nom du bénéficiaire est requis."),
-  beneficiaryIban: z.string().min(14, "L'IBAN du bénéficiaire est invalide.").max(34, "L'IBAN du bénéficiaire est invalide."),
+  beneficiaryName: z.string().min(2, "Le nom du titulaire est requis."),
+  beneficiaryIban: z.string().min(14, "L'IBAN est invalide.").max(34, "L'IBAN est invalide."),
+  beneficiaryBankName: z.string().min(2, "Le nom de la banque est requis."),
+  beneficiarySwiftCode: z.string().min(8, "Le code SWIFT/BIC est invalide.").max(11, "Le code SWIFT/BIC est invalide."),
   amount: z.coerce.number().positive("Le montant doit être un nombre positif."),
   description: z.string().min(3, "Veuillez fournir une description pour le virement."),
 });
@@ -36,7 +38,6 @@ export function ClientTransferForm() {
   const router = useRouter();
 
   useEffect(() => {
-    // Côté client uniquement, pour récupérer l'ID depuis la session de stockage
     const id = sessionStorage.getItem('identificationNumber');
     setSenderId(id);
   }, []);
@@ -46,6 +47,8 @@ export function ClientTransferForm() {
     defaultValues: {
       beneficiaryName: "",
       beneficiaryIban: "",
+      beneficiaryBankName: "",
+      beneficiarySwiftCode: "",
       amount: 0,
       description: "",
     },
@@ -65,8 +68,8 @@ export function ClientTransferForm() {
 
     if (result.success) {
       toast({
-        title: "Virement effectué !",
-        description: "Les fonds ont été envoyés avec succès.",
+        title: "Virement initié !",
+        description: "Les fonds sont en cours de traitement. Vous pouvez suivre le statut sur votre tableau de bord.",
       });
       router.push('/client/dashboard');
     } else {
@@ -86,7 +89,7 @@ export function ClientTransferForm() {
           name="beneficiaryName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nom complet du bénéficiaire</FormLabel>
+              <FormLabel>Nom complet du titulaire du compte</FormLabel>
               <FormControl><Input placeholder="John Doe" {...field} /></FormControl>
               <FormMessage />
             </FormItem>
@@ -103,6 +106,30 @@ export function ClientTransferForm() {
             </FormItem>
           )}
         />
+        <div className="grid grid-cols-2 gap-6">
+            <FormField
+              control={form.control}
+              name="beneficiaryBankName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nom de la banque</FormLabel>
+                  <FormControl><Input placeholder="Banque Populaire" {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="beneficiarySwiftCode"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Code SWIFT/BIC</FormLabel>
+                  <FormControl><Input placeholder="CCBPFRPP" {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+        </div>
         <FormField
           control={form.control}
           name="amount"

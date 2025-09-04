@@ -1,11 +1,12 @@
 
 import { getClientByIdentificationNumberAction } from "@/app/actions/clients";
 import { AddTransactionForm } from "@/components/admin-add-transaction-form";
+import { AdminTransferSettingsForm } from "@/components/admin-transfer-settings-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency } from "@/lib/utils";
-import { ArrowLeft, Landmark } from "lucide-react";
+import { ArrowLeft, Landmark, Settings } from "lucide-react";
 import Link from "next/link";
 
 export default async function AdminClientDetailPage({ params }: { params: { accountNumber: string } }) {
@@ -19,7 +20,8 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
         return <div className="container py-8">Client non trouvé.</div>;
     }
 
-    const balance = client.initialBalance + client.transactions.reduce((acc, t) => acc + t.amount, 0);
+    const completedTransactions = client.transactions.filter(t => t.status === 'COMPLETED');
+    const balance = client.initialBalance + completedTransactions.reduce((acc, t) => acc + t.amount, 0);
 
     return (
         <div className="container py-8">
@@ -31,7 +33,7 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
             </Button>
             <h1 className="text-3xl font-bold mb-6">Détails du Client</h1>
 
-            <div className="grid lg:grid-cols-3 gap-8">
+            <div className="grid lg:grid-cols-3 gap-8 items-start">
                 <div className="lg:col-span-2 space-y-8">
                     <Card>
                         <CardHeader>
@@ -63,6 +65,7 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
                                     <TableRow>
                                         <TableHead>Date</TableHead>
                                         <TableHead>Description</TableHead>
+                                        <TableHead>Statut</TableHead>
                                         <TableHead className="text-right">Montant</TableHead>
                                     </TableRow>
                                 </TableHeader>
@@ -71,13 +74,23 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
                                         <TableRow key={t.id}>
                                             <TableCell>{new Date(t.date).toLocaleDateString()}</TableCell>
                                             <TableCell>{t.description}</TableCell>
+                                            <TableCell>
+                                                <span className={`px-2 py-1 text-xs rounded-full ${
+                                                    t.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
+                                                    t.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
+                                                    t.status === 'PROCESSING' ? 'bg-blue-100 text-blue-800' :
+                                                    'bg-red-100 text-red-800'
+                                                }`}>
+                                                    {t.status}
+                                                </span>
+                                            </TableCell>
                                             <TableCell className={`text-right font-medium ${t.amount >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                                                 {formatCurrency(t.amount)}
                                             </TableCell>
                                         </TableRow>
                                     )) : (
                                         <TableRow>
-                                            <TableCell colSpan={3} className="text-center text-muted-foreground">Aucune transaction.</TableCell>
+                                            <TableCell colSpan={4} className="text-center text-muted-foreground">Aucune transaction.</TableCell>
                                         </TableRow>
                                     )}
                                 </TableBody>
@@ -90,6 +103,7 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
                     <Card>
                         <CardHeader>
                             <CardTitle>Solde Actuel</CardTitle>
+                            <CardDescription>Basé sur les transactions complétées.</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <p className="text-4xl font-bold text-primary">{formatCurrency(balance)}</p>
@@ -97,8 +111,20 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
                     </Card>
                     <Card>
                         <CardHeader>
-                            <CardTitle>Ajouter une Transaction</CardTitle>
-                            <CardDescription>Créditez ou débitez le compte.</CardDescription>
+                             <CardTitle className="flex items-center gap-2"><Settings className="h-5 w-5"/> Configuration des Virements</CardTitle>
+                            <CardDescription>Définissez le délai de traitement des virements sortants pour ce client.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                           <AdminTransferSettingsForm 
+                                identificationNumber={client.identificationNumber}
+                                currentSettings={client.transferSettings}
+                           />
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Ajouter une Transaction Manuelle</CardTitle>
+                            <CardDescription>Créditez ou débitez le compte instantanément (statut "COMPLETED").</CardDescription>
                         </CardHeader>
                         <CardContent>
                            <AddTransactionForm identificationNumber={client.identificationNumber} />
