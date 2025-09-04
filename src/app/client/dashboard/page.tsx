@@ -27,8 +27,9 @@ const DashboardSkeleton = () => (
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             <div className="lg:col-span-1 space-y-8">
-                <Card><CardContent className="p-6 space-y-4"><Skeleton className="h-10 w-3/4" /><Skeleton className="h-4 w-1/2" /><Skeleton className="h-4 w-1/2" /></CardContent></Card>
-                <Card><CardContent className="p-6 space-y-4"><Skeleton className="h-6 w-1/2 mb-4" /><Skeleton className="h-5 w-full" /><Skeleton className="h-5 w-full" /><Skeleton className="h-5 w-4/5" /></CardContent></Card>
+                <Card><CardContent className="p-6 space-y-4"><Skeleton className="h-10 w-3/4" /><Skeleton className="h-4 w-1/2" /></CardContent></Card>
+                <Card><CardContent className="p-6 space-y-4"><Skeleton className="h-6 w-1/2 mb-4" /><Skeleton className="h-5 w-full" /><Skeleton className="h-5 w-full" /></CardContent></Card>
+                <Card><CardContent className="p-6 space-y-4"><Skeleton className="h-6 w-1/2 mb-4" /><Skeleton className="h-5 w-full" /><Skeleton className="h-5 w-4/5" /></CardContent></Card>
             </div>
             <div className="lg:col-span-2 space-y-8">
                 <Card><CardContent className="p-6"><Skeleton className="h-64 w-full" /></CardContent></Card>
@@ -140,15 +141,14 @@ export default function ClientDashboardPage() {
                             </CardContent>
                         </Card>
                     </motion.div>
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
+                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
                         <Card>
-                             <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                <CardTitle className="text-sm font-medium">Mon Profil & Coordonnées</CardTitle>
-                                <User className="h-4 w-4 text-muted-foreground" />
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2"><User className="h-5 w-5"/> Mon Profil</CardTitle>
                             </CardHeader>
-                            <CardContent className="space-y-4 text-sm pt-4">
-                                <div className="flex items-center gap-3 font-semibold text-card-foreground">
-                                    <span>{client.firstName} {client.lastName}</span>
+                            <CardContent className="space-y-3 text-sm">
+                                <div className="font-semibold text-card-foreground">
+                                    {client.firstName} {client.lastName}
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <Mail className="h-4 w-4 text-muted-foreground flex-shrink-0" /> <span className="truncate">{client.email}</span>
@@ -159,25 +159,32 @@ export default function ClientDashboardPage() {
                                 <div className="flex items-center gap-3">
                                     <Calendar className="h-4 w-4 text-muted-foreground flex-shrink-0" /> <span>Client depuis le {new Date(client.creationDate).toLocaleDateString()}</span>
                                 </div>
-                                <div className="border-t pt-4 mt-4 space-y-4 font-mono">
-                                    <div>
-                                        <div className="flex justify-between items-center mb-1">
-                                            <span className="text-muted-foreground font-sans text-xs uppercase tracking-wider">IBAN</span>
-                                            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => copyToClipboard(client.iban, 'IBAN')}>
-                                                <Copy className="h-3 w-3"/>
-                                            </Button>
-                                        </div>
-                                        <p className="break-all">{client.iban}</p>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
+                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
+                        <Card>
+                            <CardHeader>
+                                 <CardTitle className="flex items-center gap-2"><Landmark className="h-5 w-5"/> Informations Bancaires</CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-4 text-sm font-mono">
+                                 <div>
+                                    <div className="flex justify-between items-center mb-1">
+                                        <span className="text-muted-foreground font-sans text-xs uppercase tracking-wider">IBAN</span>
+                                        <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => copyToClipboard(client.iban, 'IBAN')}>
+                                            <Copy className="h-3 w-3"/>
+                                        </Button>
                                     </div>
-                                    <div>
-                                        <div className="flex justify-between items-center mb-1">
-                                            <span className="text-muted-foreground font-sans text-xs uppercase tracking-wider">SWIFT/BIC</span>
-                                            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => copyToClipboard(client.swiftCode, 'SWIFT/BIC')}>
-                                                <Copy className="h-3 w-3"/>
-                                            </Button>
-                                        </div>
-                                        <p>{client.swiftCode}</p>
+                                    <p className="break-all">{client.iban}</p>
+                                </div>
+                                <div>
+                                    <div className="flex justify-between items-center mb-1">
+                                        <span className="text-muted-foreground font-sans text-xs uppercase tracking-wider">SWIFT/BIC</span>
+                                        <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => copyToClipboard(client.swiftCode, 'SWIFT/BIC')}>
+                                            <Copy className="h-3 w-3"/>
+                                        </Button>
                                     </div>
+                                    <p>{client.swiftCode}</p>
                                 </div>
                             </CardContent>
                         </Card>
