@@ -92,7 +92,7 @@ export function AdminClientList({ initialClients }: AdminClientListProps) {
               clients.map((client) => {
                  const balance = client.initialBalance + client.transactions.reduce((acc, t) => acc + t.amount, 0);
                  return (
-                    <TableRow key={client.identificationNumber}>
+                    <TableRow key={client.email}>
                       <TableCell className="font-medium">{client.firstName} {client.lastName}</TableCell>
                       <TableCell>{client.identificationNumber}</TableCell>
                       <TableCell>{client.email}</TableCell>
