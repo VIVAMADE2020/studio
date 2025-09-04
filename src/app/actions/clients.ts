@@ -10,8 +10,17 @@ import path from 'path';
 const DB_PATH = path.resolve(process.cwd(), 'src', 'data', 'clients.json');
 
 // --- Types ---
+export type AccountType = 'GENERAL' | 'LOAN';
 export type TransactionStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
 export type TransferDurationUnit = 'minutes' | 'hours' | 'days';
+
+export interface LoanDetails {
+    loanAmount: number;
+    interestRate: number;
+    loanTerm: number; // in months
+    repaymentStartDate: string;
+    monthlyPayment: number;
+}
 
 export interface Client {
   identificationNumber: string;
@@ -25,6 +34,8 @@ export interface Client {
   accountNumber: string;
   iban: string;
   swiftCode: string;
+  accountType: AccountType;
+  loanDetails?: LoanDetails;
   transferSettings?: {
     duration: number;
     unit: TransferDurationUnit;
@@ -101,13 +112,27 @@ function generateIban(accountNumber: string) {
 
 
 // --- Schémas de validation ---
-const addClientSchema = z.object({
+const baseClientSchema = z.object({
   firstName: z.string().min(2, "Le prénom est requis."),
   lastName: z.string().min(2, "Le nom est requis."),
   email: z.string().email("Email invalide."),
   password: z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères."),
   initialBalance: z.coerce.number().min(0, "Le solde initial doit être positif."),
+  accountType: z.enum(['GENERAL', 'LOAN']),
 });
+
+const loanDetailsSchema = z.object({
+    loanAmount: z.coerce.number().positive("Le montant du prêt doit être positif."),
+    interestRate: z.coerce.number().min(0, "Le taux d'intérêt doit être positif ou nul."),
+    loanTerm: z.coerce.number().positive("La durée doit être positive."),
+    repaymentStartDate: z.string().min(1, "La date de début est requise."),
+    monthlyPayment: z.coerce.number().positive("La mensualité doit être positive."),
+});
+
+const addClientSchema = z.discriminatedUnion("accountType", [
+    baseClientSchema.extend({ accountType: z.literal("GENERAL") }),
+    baseClientSchema.extend({ accountType: z.literal("LOAN"), loanDetails: loanDetailsSchema })
+]);
 
 const addTransactionSchema = z.object({
     identificationNumber: z.string(),
@@ -146,7 +171,7 @@ export async function addClientAction(values: z.infer<typeof addClientSchema>) {
         const accountNumber = generateAccountNumber();
         const iban = generateIban(accountNumber);
         
-        const newClient: Client = {
+        const newClientData = {
             ...parsed.data,
             identificationNumber: `FLEX-${Math.random().toString(36).substr(2, 6).toUpperCase()}`,
             creationDate: new Date().toISOString(),
@@ -154,8 +179,22 @@ export async function addClientAction(values: z.infer<typeof addClientSchema>) {
             accountNumber,
             iban,
             swiftCode: 'FLEXFRPP',
-            transferSettings: { duration: 1, unit: 'days' }, // Default setting
+            transferSettings: { duration: 1, unit: 'days' },
         };
+        
+        let newClient: Client;
+
+        if(newClientData.accountType === 'LOAN') {
+            newClient = {
+                ...newClientData,
+                loanDetails: newClientData.loanDetails
+            }
+        } else {
+             newClient = {
+                ...newClientData,
+            }
+        }
+
         clients.push(newClient);
         await writeDb(clients);
         

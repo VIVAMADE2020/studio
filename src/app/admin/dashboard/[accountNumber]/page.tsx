@@ -2,11 +2,12 @@
 import { getClientByIdentificationNumberAction } from "@/app/actions/clients";
 import { AddTransactionForm } from "@/components/admin-add-transaction-form";
 import { AdminTransferSettingsForm } from "@/components/admin-transfer-settings-form";
+import { LoanDetailsCard } from "@/components/client-loan-details-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency } from "@/lib/utils";
-import { ArrowLeft, Landmark, Settings } from "lucide-react";
+import { ArrowLeft, Landmark, Settings, Banknote } from "lucide-react";
 import Link from "next/link";
 
 export default async function AdminClientDetailPage({ params }: { params: { accountNumber: string } }) {
@@ -44,6 +45,7 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
                             <p><strong>N° d'identification:</strong> {client.identificationNumber}</p>
                             <p><strong>Email:</strong> {client.email}</p>
                             <p><strong>Client depuis:</strong> {new Date(client.creationDate).toLocaleDateString()}</p>
+                            <p><strong>Type de compte:</strong> <span className={`px-2 py-1 text-xs rounded-full font-medium ${client.accountType === 'LOAN' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}`}>{client.accountType}</span></p>
                         </CardContent>
                     </Card>
                      <Card>
@@ -56,6 +58,16 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
                             <p><strong>SWIFT/BIC:</strong> {client.swiftCode}</p>
                         </CardContent>
                     </Card>
+                     {client.accountType === 'LOAN' && client.loanDetails && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2"><Banknote className="h-5 w-5"/> Détails du Prêt</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <LoanDetailsCard loanDetails={client.loanDetails} />
+                            </CardContent>
+                        </Card>
+                    )}
                      <Card>
                         <CardHeader>
                             <CardTitle>Historique des Transactions</CardTitle>

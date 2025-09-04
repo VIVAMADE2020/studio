@@ -7,7 +7,7 @@ import { getClientByIdentificationNumberAction, Client, Transaction } from "@/ap
 import { formatCurrency } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { LogOut, Landmark, Copy, User, Mail, Hash, Calendar, Wallet, History, Send, FileText, MessageSquare, CircleDollarSign, CheckCircle, Fingerprint } from "lucide-react";
+import { LogOut, Landmark, Copy, User, Mail, Hash, Calendar, Wallet, History, Send, FileText, MessageSquare, CircleDollarSign, CheckCircle, Fingerprint, Banknote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
@@ -16,6 +16,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { TransactionProgress } from "@/components/client-transaction-progress";
+import { LoanDetailsCard } from "@/components/client-loan-details-card";
 
 
 const StatCard = ({ icon, title, value, description }: { icon: React.ReactNode, title: string, value: string, description: string }) => (
@@ -214,6 +215,18 @@ export default function ClientDashboardPage() {
 
                 {/* Right Column */}
                 <div className="lg:col-span-2 space-y-8">
+                     {client.accountType === 'LOAN' && client.loanDetails && (
+                         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.35 }}>
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle className="flex items-center gap-2"><Banknote className="h-5 w-5 text-primary"/> Détails de votre Prêt</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <LoanDetailsCard loanDetails={client.loanDetails} />
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+                    )}
                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }}>
                         <h3 className="text-lg font-semibold mb-4">Raccourcis</h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

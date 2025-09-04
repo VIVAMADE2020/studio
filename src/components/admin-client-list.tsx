@@ -13,7 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatCurrency } from "@/lib/utils";
-import { PlusCircle, RefreshCw, User, Eye } from "lucide-react";
+import { PlusCircle, RefreshCw, User, Eye, Banknote, Landmark } from "lucide-react";
 import Link from "next/link";
 import {
   Dialog,
@@ -24,6 +24,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { AddClientForm } from "./admin-add-client-form";
+import { Badge } from "./ui/badge";
 
 interface AdminClientListProps {
   initialClients: Client[];
@@ -81,7 +82,7 @@ export function AdminClientList({ initialClients }: AdminClientListProps) {
           <TableHeader>
             <TableRow>
               <TableHead>Nom</TableHead>
-              <TableHead>N° d'identification</TableHead>
+              <TableHead>Type de Compte</TableHead>
               <TableHead>Email</TableHead>
               <TableHead className="text-right">Solde</TableHead>
               <TableHead className="text-center">Actions</TableHead>
@@ -94,7 +95,12 @@ export function AdminClientList({ initialClients }: AdminClientListProps) {
                  return (
                     <TableRow key={client.email}>
                       <TableCell className="font-medium">{client.firstName} {client.lastName}</TableCell>
-                      <TableCell>{client.identificationNumber}</TableCell>
+                      <TableCell>
+                        <Badge variant={client.accountType === 'LOAN' ? "default" : "secondary"} className="text-xs">
+                          {client.accountType === 'LOAN' ? <Banknote className="mr-1 h-3 w-3"/> : <Landmark className="mr-1 h-3 w-3"/>}
+                          {client.accountType === 'LOAN' ? 'Prêt' : 'Général'}
+                        </Badge>
+                      </TableCell>
                       <TableCell>{client.email}</TableCell>
                       <TableCell className="text-right">{formatCurrency(balance)}</TableCell>
                       <TableCell className="text-center">
