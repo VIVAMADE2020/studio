@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   beneficiaryName: z.string().min(2, "Le nom du titulaire est requis."),
+  beneficiaryAccountNumber: z.string().min(5, "Le numéro de compte est invalide."),
   beneficiaryIban: z.string().min(14, "L'IBAN est invalide.").max(34, "L'IBAN est invalide."),
   beneficiaryBankName: z.string().min(2, "Le nom de la banque est requis."),
   beneficiarySwiftCode: z.string().min(8, "Le code SWIFT/BIC est invalide.").max(11, "Le code SWIFT/BIC est invalide."),
@@ -46,6 +47,7 @@ export function ClientTransferForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       beneficiaryName: "",
+      beneficiaryAccountNumber: "",
       beneficiaryIban: "",
       beneficiaryBankName: "",
       beneficiarySwiftCode: "",
@@ -91,6 +93,17 @@ export function ClientTransferForm() {
             <FormItem>
               <FormLabel>Nom complet du titulaire du compte</FormLabel>
               <FormControl><Input placeholder="John Doe" {...field} /></FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+         <FormField
+          control={form.control}
+          name="beneficiaryAccountNumber"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Numéro de compte du bénéficiaire</FormLabel>
+              <FormControl><Input placeholder="00123456789" {...field} /></FormControl>
               <FormMessage />
             </FormItem>
           )}

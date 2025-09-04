@@ -7,7 +7,7 @@ import { getClientByIdentificationNumberAction, Client, Transaction } from "@/ap
 import { formatCurrency } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { LogOut, Landmark, Copy, User, Mail, Hash, Calendar, Wallet, History, Send, FileText, MessageSquare, CircleDollarSign, Clock, CheckCircle } from "lucide-react";
+import { LogOut, Landmark, Copy, User, Mail, Hash, Calendar, Wallet, History, Send, FileText, MessageSquare, CircleDollarSign, CheckCircle, Fingerprint } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
@@ -182,6 +182,15 @@ export default function ClientDashboardPage() {
                             <CardContent className="space-y-4 text-sm font-mono">
                                  <div>
                                     <div className="flex justify-between items-center mb-1">
+                                        <span className="text-muted-foreground font-sans text-xs uppercase tracking-wider">N° de Compte</span>
+                                         <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:bg-accent/10" onClick={() => copyToClipboard(client.accountNumber, 'Numéro de compte')}>
+                                            <Copy className="h-3 w-3"/>
+                                        </Button>
+                                    </div>
+                                    <p className="break-all">{client.accountNumber}</p>
+                                </div>
+                                 <div>
+                                    <div className="flex justify-between items-center mb-1">
                                         <span className="text-muted-foreground font-sans text-xs uppercase tracking-wider">IBAN</span>
                                         <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:bg-accent/10" onClick={() => copyToClipboard(client.iban, 'IBAN')}>
                                             <Copy className="h-3 w-3"/>
@@ -270,5 +279,3 @@ export default function ClientDashboardPage() {
         </div>
     );
 }
-
-    

@@ -22,6 +22,7 @@ export interface Client {
   initialBalance: number;
   transactions: Transaction[];
   creationDate: string;
+  accountNumber: string;
   iban: string;
   swiftCode: string;
   transferSettings?: {
@@ -39,6 +40,7 @@ export interface Transaction {
   estimatedCompletionDate?: string;
   beneficiary?: {
       name: string;
+      accountNumber: string;
       iban: string;
       bankName: string;
       swiftCode: string;
@@ -73,16 +75,30 @@ async function writeDb(data: Client[]): Promise<void> {
 }
 
 // --- Fonctions utilitaires ---
-function generateIban() {
+function generateAccountNumber() {
+    return Math.random().toString().slice(2, 13).padStart(11, '0');
+}
+function generateIban(accountNumber: string) {
     const countryCode = 'FR';
     const bankCode = '30002'; // Code banque fictif
     const branchCode = '00550'; // Code guichet fictif
-    const accountNumber = Math.random().toString().slice(2, 13).padStart(11, '0');
     const bban = `${bankCode}${branchCode}${accountNumber}`;
-    const ribKey = 97 - (parseInt(bban.replace(/./g, char => char.charCodeAt(0) - 'A'.charCodeAt(0) + 10), 10) % 97);
-    const checkDigits = String(ribKey).padStart(2, '0');
+    
+    // Calcul de la clé RIB
+    const bbanForCalc = bban.split('').map(char => {
+        const charCode = char.charCodeAt(0);
+        if (charCode >= 65 && charCode <= 90) { // is A-Z
+            return charCode - 55;
+        }
+        return char;
+    }).join('');
+
+    const remainder = BigInt(bbanForCalc + '152700') % 97n;
+    const checkDigits = String(97n - remainder).padStart(2, '0');
+
     return `${countryCode}${checkDigits}${bban}`;
 }
+
 
 // --- Schémas de validation ---
 const addClientSchema = z.object({
@@ -102,6 +118,7 @@ const addTransactionSchema = z.object({
 const transferFundsSchema = z.object({
     senderIdentificationNumber: z.string(),
     beneficiaryName: z.string().min(2, "Le nom du titulaire est requis."),
+    beneficiaryAccountNumber: z.string().min(5, "Le numéro de compte est invalide."),
     beneficiaryIban: z.string().min(14, "L'IBAN du bénéficiaire est invalide."),
     beneficiaryBankName: z.string().min(2, "Le nom de la banque est requis."),
     beneficiarySwiftCode: z.string().min(8, "Le code SWIFT/BIC est invalide."),
@@ -126,12 +143,16 @@ export async function addClientAction(values: z.infer<typeof addClientSchema>) {
 
     try {
         const clients = await readDb();
+        const accountNumber = generateAccountNumber();
+        const iban = generateIban(accountNumber);
+        
         const newClient: Client = {
             ...parsed.data,
             identificationNumber: `FLEX-${Math.random().toString(36).substr(2, 6).toUpperCase()}`,
             creationDate: new Date().toISOString(),
             transactions: [],
-            iban: generateIban(),
+            accountNumber,
+            iban,
             swiftCode: 'FLEXFRPP',
             transferSettings: { duration: 1, unit: 'days' }, // Default setting
         };
@@ -248,7 +269,16 @@ export async function transferFundsAction(values: z.infer<typeof transferFundsSc
         return { success: false, error: "Données de virement invalides." };
     }
     
-    const { senderIdentificationNumber, beneficiaryIban, amount, description, beneficiaryName, beneficiaryBankName, beneficiarySwiftCode } = parsed.data;
+    const { 
+        senderIdentificationNumber, 
+        beneficiaryIban,
+        beneficiaryAccountNumber,
+        amount, 
+        description, 
+        beneficiaryName, 
+        beneficiaryBankName, 
+        beneficiarySwiftCode 
+    } = parsed.data;
 
     try {
         const clients = await readDb();
@@ -288,6 +318,7 @@ export async function transferFundsAction(values: z.infer<typeof transferFundsSc
             estimatedCompletionDate: estimatedCompletionDate.toISOString(),
             beneficiary: {
                 name: beneficiaryName,
+                accountNumber: beneficiaryAccountNumber,
                 iban: beneficiaryIban,
                 bankName: beneficiaryBankName,
                 swiftCode: beneficiarySwiftCode,
@@ -337,5 +368,3 @@ export async function updateClientTransferSettingsAction(values: z.infer<typeof 
         return { success: false, error: error.message };
     }
 }
-
-    

@@ -51,6 +51,7 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
                             <CardTitle className="flex items-center gap-2"><Landmark className="h-5 w-5"/> Informations Bancaires</CardTitle>
                         </CardHeader>
                         <CardContent className="text-sm space-y-2 font-mono">
+                            <p><strong>N° de Compte:</strong> {client.accountNumber}</p>
                             <p><strong>IBAN:</strong> {client.iban}</p>
                             <p><strong>SWIFT/BIC:</strong> {client.swiftCode}</p>
                         </CardContent>
