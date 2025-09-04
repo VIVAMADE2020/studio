@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getClientByIdentificationNumberAction, Client } from "@/app/actions/clients";
+import { getClientByIdentificationNumberAction, Client, Transaction } from "@/app/actions/clients";
 import { formatCurrency } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -15,6 +15,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { TransactionProgress } from "@/components/client-transaction-progress";
 
 
 const StatCard = ({ icon, title, value, description }: { icon: React.ReactNode, title: string, value: string, description: string }) => (
@@ -119,21 +120,6 @@ export default function ClientDashboardPage() {
     const totalIncome = completedTransactions.filter(t => t.amount > 0).reduce((acc, t) => acc + t.amount, 0);
     const totalExpenses = completedTransactions.filter(t => t.amount < 0).reduce((acc, t) => acc + t.amount, 0);
 
-    const getStatusBadge = (status: string) => {
-        switch (status) {
-            case 'COMPLETED':
-                return <Badge variant="secondary" className="bg-green-100 text-green-800"><CheckCircle className="h-3 w-3 mr-1" /> Terminé</Badge>;
-            case 'PENDING':
-                return <Badge variant="secondary" className="bg-yellow-100 text-yellow-800"><Clock className="h-3 w-3 mr-1" /> En attente</Badge>;
-            case 'PROCESSING':
-                 return <Badge variant="secondary" className="bg-blue-100 text-blue-800"><Clock className="h-3 w-3 mr-1" /> En traitement</Badge>;
-            case 'FAILED':
-                 return <Badge variant="destructive">Échoué</Badge>;
-            default:
-                return <Badge variant="outline">{status}</Badge>;
-        }
-    }
-
     return (
         <div className="space-y-8">
              <motion.div 
@@ -237,25 +223,29 @@ export default function ClientDashboardPage() {
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
-                                            <TableHead>Date</TableHead>
                                             <TableHead>Description</TableHead>
-                                            <TableHead>Statut</TableHead>
+                                            <TableHead>Statut / Progression</TableHead>
                                             <TableHead className="text-right">Montant</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
-                                        {sortedTransactions.length > 0 ? sortedTransactions.slice(0, 10).map(t => (
+                                        {sortedTransactions.length > 0 ? sortedTransactions.slice(0, 10).map((t: Transaction) => (
                                             <TableRow key={t.id}>
-                                                <TableCell className="text-xs text-muted-foreground">{new Date(t.date).toLocaleDateString()}</TableCell>
                                                 <TableCell>
                                                     <div>{t.description}</div>
-                                                    {t.estimatedCompletionDate && t.status !== 'COMPLETED' && (
-                                                        <div className="text-xs text-muted-foreground">
-                                                            Arrivée estimée: {new Date(t.estimatedCompletionDate).toLocaleDateString()}
-                                                        </div>
+                                                    <div className="text-xs text-muted-foreground">{new Date(t.date).toLocaleString('fr-FR')}</div>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {t.status === 'COMPLETED' ? (
+                                                        <Badge variant="secondary" className="bg-green-100 text-green-800"><CheckCircle className="h-3 w-3 mr-1" /> Terminé</Badge>
+                                                    ) : t.status === 'FAILED' ? (
+                                                        <Badge variant="destructive">Échoué</Badge>
+                                                    ) : (
+                                                        <TransactionProgress 
+                                                            transaction={t}
+                                                        />
                                                     )}
                                                 </TableCell>
-                                                <TableCell>{getStatusBadge(t.status)}</TableCell>
                                                 <TableCell className={`text-right font-medium ${t.amount >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                                                     <div className="flex items-center justify-end gap-2">
                                                         <CircleDollarSign className="h-4 w-4 opacity-70" />
@@ -265,7 +255,7 @@ export default function ClientDashboardPage() {
                                             </TableRow>
                                         )) : (
                                             <TableRow>
-                                                <TableCell colSpan={4} className="text-center text-muted-foreground py-12">
+                                                <TableCell colSpan={3} className="text-center text-muted-foreground py-12">
                                                     Vous n'avez aucune transaction pour le moment.
                                                 </TableCell>
                                             </TableRow>
@@ -280,3 +270,5 @@ export default function ClientDashboardPage() {
         </div>
     );
 }
+
+    
