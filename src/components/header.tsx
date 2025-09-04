@@ -40,9 +40,6 @@ export function Header() {
              <Button asChild>
               <Link href="/demande-pret">Faire une demande</Link>
             </Button>
-            <Button asChild variant="ghost">
-                <Link href="/client/access">Espace Client</Link>
-            </Button>
           </div>
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
@@ -75,9 +72,6 @@ export function Header() {
                   <Button asChild className="w-full justify-start text-lg">
                      <Link href="/demande-pret" onClick={() => setIsOpen(false)}>Faire une demande</Link>
                   </Button>
-                   <Button asChild variant="ghost" className="w-full justify-start text-lg">
-                        <Link href="/client/access" onClick={() => setIsOpen(false)}>Espace Client</Link>
-                    </Button>
                 </div>
               </div>
             </SheetContent>
