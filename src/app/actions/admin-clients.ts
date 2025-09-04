@@ -4,7 +4,7 @@
 import { z } from "zod";
 import { Client, Transaction } from "@/lib/firebase/firestore";
 import { auth as adminAuth, db as adminDb } from "@/lib/firebase/admin";
-import { arrayUnion, increment } from "firebase/firestore";
+import { FieldValue } from "firebase-admin/firestore";
 
 
 const formSchema = z.object({
@@ -120,9 +120,10 @@ export async function addTransactionAction(values: z.infer<typeof transactionSch
             amount: amount,
         };
 
+        // Utilisation des fonctions du SDK Admin
         await clientRef.update({
-            transactions: arrayUnion(newTransaction),
-            accountBalance: increment(amount),
+            transactions: FieldValue.arrayUnion(newTransaction),
+            accountBalance: FieldValue.increment(amount),
         });
 
         return { success: true };
