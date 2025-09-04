@@ -76,7 +76,7 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
         return { success: true, userId: uid };
 
     } catch (error: any) {
-        console.error("Add Client Action Error:", error);
+        console.error("Add Client Action Error:", error.message || error);
         if (error.message.includes('FIREBASE_CONFIG')) {
              return { success: false, error: "Erreur de configuration Firebase côté serveur." };
         }
@@ -128,7 +128,7 @@ export async function addTransactionAction(values: z.infer<typeof transactionSch
         return { success: true };
 
     } catch (error: any) {
-        console.error("Error adding transaction:", error);
+        console.error("Error adding transaction:", error.message || error);
         return { success: false, error: "Une erreur est survenue lors de l'ajout de la transaction." };
     }
 }
@@ -142,7 +142,7 @@ export async function getClientsAction(): Promise<{data: Client[] | null, error:
         const clients = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Client));
         return { data: clients, error: null };
     } catch (error: any) {
-        console.error("Error getting clients (action):", error);
+        console.error("Error getting clients (action):", error.message || error);
         return { data: null, error: 'Impossible de récupérer la liste des clients.' };
     }
 }
