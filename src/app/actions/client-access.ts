@@ -3,7 +3,7 @@
 
 import { Client } from "@/lib/firebase/firestore";
 import { db as adminDb } from "@/lib/firebase/admin";
-import { collection, query, where, getDocs, limit } from "firebase/firestore";
+import { collection, query, where, getDocs, limit } from "firebase-admin/firestore";
 
 export async function getClientByAccountNumberAction(accountNumber: string): Promise<{ data: Client | null, error: string | null }> {
     if (!accountNumber) {
