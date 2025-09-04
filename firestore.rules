@@ -1,0 +1,29 @@
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Rules for the 'clients' collection
+    match /clients/{userId} {
+      
+      // CREATE: Allow any authenticated user to create their own profile document.
+      // This is necessary for the signup process.
+      allow create: if request.auth != null && request.auth.uid == userId;
+
+      // READ: Allow a user to read their own document.
+      allow get: if request.auth != null && request.auth.uid == userId;
+      
+      // UPDATE: Allow a user to update their own document.
+      allow update: if request.auth != null && request.auth.uid == userId;
+
+      // DELETE: Disallow deletion by clients for data integrity.
+      allow delete: if false;
+
+      // LIST: By default, listing documents in a collection is disallowed for clients
+      // to prevent them from seeing all other users.
+      // The admin panel uses admin privileges and bypasses these rules.
+      allow list: if false;
+    }
+  }
+}
