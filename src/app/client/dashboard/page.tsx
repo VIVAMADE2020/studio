@@ -33,8 +33,7 @@ const DashboardSkeleton = () => (
             </div>
             <div className="lg:col-span-2 space-y-8">
                 <Card><CardContent className="p-6"><Skeleton className="h-64 w-full" /></CardContent></Card>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <Skeleton className="h-24 w-full" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Skeleton className="h-24 w-full" />
                     <Skeleton className="h-24 w-full" />
                 </div>
@@ -285,4 +284,3 @@ export default function ClientDashboardPage() {
         </div>
     );
 }
-
