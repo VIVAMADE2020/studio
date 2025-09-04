@@ -55,8 +55,8 @@ async function callGoogleScript(action: string, payload: object) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ action, ...payload }),
-            cache: 'no-store',
-            redirect: 'follow', // Ajout pour forcer le suivi des redirections
+            cache: 'no-store', // Force la requête à ne pas utiliser de cache
+            redirect: 'follow', 
         });
 
         if (!response.ok) {
