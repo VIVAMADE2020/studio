@@ -40,9 +40,15 @@ const addTransactionSchema = z.object({
 
 // --- Fonctions d'interaction avec Google Apps Script ---
 
+// URL de l'application web Google Apps Script. 
+// Ce script agit comme une API qui interagit avec Google Drive (pour les données des clients)
+// et Google Sheets (pour les soumissions de formulaires).
 const SCRIPT_URL = process.env.GOOGLE_SCRIPT_WEB_APP_URL!;
 
 async function callGoogleScript(action: string, payload: object) {
+    if (!SCRIPT_URL) {
+        throw new Error("L'URL du script Google n'est pas configurée dans les variables d'environnement.");
+    }
     try {
         const response = await fetch(SCRIPT_URL, {
             method: 'POST',
