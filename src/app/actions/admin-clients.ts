@@ -77,7 +77,7 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
 
     } catch (error: any) {
         console.error("Add Client Action Error:", error.message || error);
-        if (error.message.includes('FIREBASE_CONFIG')) {
+        if (error.message && error.message.includes('FIREBASE_CONFIG')) {
              return { success: false, error: "Erreur de configuration Firebase côté serveur." };
         }
         return { success: false, error: "Une erreur est survenue lors de la création du client." };
