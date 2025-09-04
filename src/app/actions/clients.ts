@@ -88,6 +88,15 @@ const addTransactionSchema = z.object({
     amount: z.coerce.number(),
 });
 
+const transferFundsSchema = z.object({
+    senderIdentificationNumber: z.string(),
+    beneficiaryName: z.string().min(2, "Le nom du bénéficiaire est requis."),
+    beneficiaryIban: z.string().min(14, "L'IBAN du bénéficiaire est invalide."),
+    amount: z.coerce.number().positive("Le montant doit être positif."),
+    description: z.string().min(3, "La description est trop courte."),
+});
+
+
 // --- Actions Serveur ---
 
 export async function addClientAction(values: z.infer<typeof addClientSchema>) {
@@ -209,5 +218,65 @@ export async function addTransactionAction(values: z.infer<typeof addTransaction
         return { success: true };
     } catch (error: any) {
         return { success: false, error: error.message };
+    }
+}
+
+export async function transferFundsAction(values: z.infer<typeof transferFundsSchema>) {
+    const parsed = transferFundsSchema.safeParse(values);
+    if (!parsed.success) {
+        return { success: false, error: "Données de virement invalides." };
+    }
+    
+    const { senderIdentificationNumber, beneficiaryIban, amount, description, beneficiaryName } = parsed.data;
+
+    try {
+        const clients = await readDb();
+        const senderIndex = clients.findIndex(c => c.identificationNumber === senderIdentificationNumber);
+
+        if (senderIndex === -1) {
+            return { success: false, error: "Compte expéditeur non trouvé." };
+        }
+
+        const sender = clients[senderIndex];
+        const senderBalance = sender.initialBalance + sender.transactions.reduce((acc, t) => acc + t.amount, 0);
+
+        if (senderBalance < amount) {
+            return { success: false, error: "Solde insuffisant pour effectuer ce virement." };
+        }
+
+        // Créer la transaction de débit pour l'expéditeur
+        const debitTransaction: Transaction = {
+            id: `TXN-D-${new Date().getTime()}`,
+            date: new Date().toISOString(),
+            description: `Virement à ${beneficiaryName} - ${description}`,
+            amount: -amount,
+        };
+        clients[senderIndex].transactions.push(debitTransaction);
+
+        // Chercher le bénéficiaire parmi les clients
+        const beneficiaryIndex = clients.findIndex(c => c.iban === beneficiaryIban);
+        if (beneficiaryIndex !== -1) {
+            // Si le bénéficiaire est un client, créditer son compte
+            const creditTransaction: Transaction = {
+                id: `TXN-C-${new Date().getTime()}`,
+                date: new Date().toISOString(),
+                description: `Virement de ${sender.firstName} ${sender.lastName} - ${description}`,
+                amount: amount,
+            };
+            clients[beneficiaryIndex].transactions.push(creditTransaction);
+        } else {
+            // Si le bénéficiaire n'est pas un client, on ne fait rien de plus (dans une vraie app, on enverrait à un système interbancaire)
+        }
+        
+        await writeDb(clients);
+        
+        revalidatePath('/client/dashboard');
+        revalidatePath(`/client/dashboard/transfer`);
+        
+        return { success: true };
+
+    } catch (error: any) {
+        console.error("Erreur lors du virement:", error);
+        return { success: false, error: `Une erreur est survenue: ${error.message}` };
     }
 }

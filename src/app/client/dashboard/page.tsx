@@ -206,7 +206,7 @@ export default function ClientDashboardPage() {
                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }}>
                         <h3 className="text-lg font-semibold mb-4">Raccourcis</h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2"><Send /><span>Faire un virement</span></Button>
+                            <Button asChild variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2"><Link href="/client/dashboard/transfer"><Send /><span>Faire un virement</span></Link></Button>
                             <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2"><FileText /><span>Demander un relevé</span></Button>
                             <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2"><MessageSquare /><span>Contacter mon conseiller</span></Button>
                         </div>
