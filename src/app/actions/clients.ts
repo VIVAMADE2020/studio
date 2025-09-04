@@ -56,6 +56,7 @@ async function callGoogleScript(action: string, payload: object) {
             },
             body: JSON.stringify({ action, ...payload }),
             cache: 'no-store',
+            redirect: 'follow', // Ajout pour forcer le suivi des redirections
         });
 
         if (!response.ok) {
