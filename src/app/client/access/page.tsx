@@ -6,55 +6,54 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { auth } from "@/lib/firebase/config";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { getClientByAccountNumberAction } from "@/app/actions/client-access";
 
 const formSchema = z.object({
-  email: z.string().email({ message: "Veuillez entrer une adresse email valide." }),
-  password: z.string().min(1, { message: "Le mot de passe est requis." }),
+  accountNumber: z.string().min(10, { message: "Veuillez entrer un numéro de compte valide." }),
 });
 
-
-export default function LoginPage() {
+export default function ClientAccessPage() {
     const { toast } = useToast();
     const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            email: "",
-            password: "",
+            accountNumber: "",
         },
     });
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            await signInWithEmailAndPassword(auth, values.email, values.password);
+            const { data, error } = await getClientByAccountNumberAction(values.accountNumber);
+
+            if (error || !data) {
+                 toast({
+                    variant: "destructive",
+                    title: "Accès refusé",
+                    description: error || "Aucun compte client trouvé pour ce numéro.",
+                });
+                return;
+            }
             
             toast({
-                title: "Connexion réussie !",
-                description: `Bienvenue sur votre espace client.`,
+                title: "Accès autorisé !",
+                description: `Chargement du tableau de bord pour ${data.firstName}.`,
             });
             
-            router.push("/client/dashboard");
+            router.push(`/client/dashboard?accountNumber=${values.accountNumber}`);
 
         } catch (error: any) {
-            let errorMessage = "Une erreur est survenue. Veuillez vérifier vos identifiants.";
-            if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-                errorMessage = "L'email ou le mot de passe est incorrect.";
-            }
             toast({
                 variant: "destructive",
-                title: "Erreur d'authentification",
-                description: errorMessage,
+                title: "Erreur",
+                description: "Une erreur inattendue est survenue.",
             });
         }
     }
-
 
     return (
         <div className="flex items-center justify-center min-h-[80vh] bg-secondary/50">
@@ -64,31 +63,18 @@ export default function LoginPage() {
                         <CardHeader>
                             <CardTitle className="text-2xl">Espace Client</CardTitle>
                             <CardDescription>
-                                Accédez à votre tableau de bord, gérez vos prêts et découvrez nos services de banque en ligne.
+                                Entrez votre numéro de compte pour accéder à votre tableau de bord.
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="grid gap-4">
                             <FormField
                                 control={form.control}
-                                name="email"
+                                name="accountNumber"
                                 render={({ field }) => (
                                     <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel>Numéro de Compte</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="m@example.com" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="password"
-                                render={({ field }) => (
-                                    <FormItem>
-                                    <FormLabel>Mot de passe</FormLabel>
-                                    <FormControl>
-                                        <Input type="password" {...field} />
+                                        <Input placeholder="FLX1234567890" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                     </FormItem>
@@ -97,7 +83,7 @@ export default function LoginPage() {
                         </CardContent>
                         <CardFooter className="flex flex-col gap-4">
                             <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90" disabled={form.formState.isSubmitting}>
-                                {form.formState.isSubmitting ? "Connexion..." : "Se connecter"}
+                                {form.formState.isSubmitting ? "Vérification..." : "Accéder à mon compte"}
                             </Button>
                         </CardFooter>
                     </form>

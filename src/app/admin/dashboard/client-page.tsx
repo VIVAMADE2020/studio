@@ -2,10 +2,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '@/lib/firebase/config';
-
-import { AdminLoginForm } from '@/components/admin-login-form';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AddClientForm } from '@/components/admin-add-client-form';
@@ -81,6 +77,7 @@ function AdminDashboard({ initialClients, error }: { initialClients: Client[] | 
                                     <TableRow>
                                         <TableHead>Client</TableHead>
                                         <TableHead>Type</TableHead>
+                                        <TableHead>Numéro de compte</TableHead>
                                         <TableHead className="text-right">Solde</TableHead>
                                         <TableHead className="text-right">Actions</TableHead>
                                     </TableRow>
@@ -97,6 +94,9 @@ function AdminDashboard({ initialClients, error }: { initialClients: Client[] | 
                                                     {client.accountType === 'loan' ? 'Prêt' : 'Courant'}
                                                 </Badge>
                                             </TableCell>
+                                            <TableCell>
+                                                <div className="font-mono text-xs">{client.accountNumber}</div>
+                                            </TableCell>
                                             <TableCell className="text-right">{formatCurrency(client.accountBalance || 0)}</TableCell>
                                             <TableCell className="text-right">
                                                 <Button variant="outline" size="sm" onClick={() => handleManageClient(client)}>Gérer</Button>
@@ -105,7 +105,7 @@ function AdminDashboard({ initialClients, error }: { initialClients: Client[] | 
                                     ))}
                                      {clients.length === 0 && !pageError && (
                                         <TableRow>
-                                            <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
+                                            <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
                                                 Aucun client pour le moment.
                                             </TableCell>
                                         </TableRow>
@@ -129,61 +129,12 @@ function AdminDashboard({ initialClients, error }: { initialClients: Client[] | 
 
 
 export function AdminDashboardClientPage({ initialClients, error }: { initialClients: Client[] | null, error: string | null }) {
-    const [user, setUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            setUser(user);
-            setLoading(false);
-        });
-        return () => unsubscribe();
-    }, []);
-    
-    const handleLogout = async () => {
-        await auth.signOut();
-        setUser(null);
-    };
-
-    if (loading) {
-        return (
-            <div className="container py-12">
-                <Skeleton className="h-10 w-1/3 mb-8" />
-                <Skeleton className="h-8 w-2/3 mb-8" />
-                <div className="grid md:grid-cols-3 gap-8">
-                    <Skeleton className="md:col-span-1 h-[600px]" />
-                    <Skeleton className="md:col-span-2 h-[600px]" />
-                </div>
-            </div>
-        );
-    }
-    
-    if (!user) {
-        return (
-            <div className="flex items-center justify-center min-h-[80vh] bg-secondary/50">
-                <Card className="w-full max-w-sm mx-4 shadow-lg">
-                    <CardHeader>
-                        <CardTitle className="text-2xl">Accès Administrateur</CardTitle>
-                        <CardDescription>
-                           Connectez-vous pour accéder au panneau d'administration.
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <AdminLoginForm onLoginSuccess={setUser} />
-                    </CardContent>
-                </Card>
-            </div>
-        );
-    }
-
      return (
         <div className="container py-12">
             <div className="flex justify-between items-center mb-8">
                 <div>
-                    <h1 className="text-3xl font-bold text-primary">Tableau de Bord</h1>
-                    <p className="text-muted-foreground">Connecté en tant que {user.email}</p>
+                    <h1 className="text-3xl font-bold text-primary">Tableau de Bord Administrateur</h1>
                 </div>
-                <Button onClick={handleLogout} variant="outline">Se déconnecter</Button>
             </div>
             
             <p className="text-muted-foreground mb-8">Bienvenue dans l'espace d'administration. C'est ici que vous pourrez gérer vos clients et leurs comptes.</p>
@@ -191,4 +142,3 @@ export function AdminDashboardClientPage({ initialClients, error }: { initialCli
         </div>
     );
 }
-

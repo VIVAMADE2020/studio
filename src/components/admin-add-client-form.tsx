@@ -32,7 +32,6 @@ const formSchema = z.object({
   firstName: z.string().min(2, "Le prénom est requis."),
   lastName: z.string().min(2, "Le nom est requis."),
   email: z.string().email("L'email est invalide."),
-  password: z.string().min(8, "Le mot de passe doit faire au moins 8 caractères."),
   accountType: z.enum(['current', 'loan'], { required_error: "Le type de compte est requis."}),
   initialBalance: z.coerce.number().min(0, "Le solde initial doit être positif ou nul."),
   // Loan details are optional and only validated if the accountType is 'loan'
@@ -64,7 +63,6 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
       firstName: "",
       lastName: "",
       email: "",
-      password: "",
       accountType: "current",
       initialBalance: 0,
       loanAmount: 10000,
@@ -122,7 +120,6 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
             <FormField control={form.control} name="firstName" render={({ field }) => (<FormItem><FormLabel>Prénom</FormLabel><FormControl><Input placeholder="Jean" {...field} /></FormControl><FormMessage /></FormItem>)} />
             <FormField control={form.control} name="lastName" render={({ field }) => (<FormItem><FormLabel>Nom</FormLabel><FormControl><Input placeholder="Dupont" {...field} /></FormControl><FormMessage /></FormItem>)} />
             <FormField control={form.control} name="email" render={({ field }) => (<FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" placeholder="jean.dupont@email.com" {...field} /></FormControl><FormMessage /></FormItem>)} />
-            <FormField control={form.control} name="password" render={({ field }) => (<FormItem><FormLabel>Mot de passe</FormLabel><FormControl><Input type="password" placeholder="••••••••" {...field} /></FormControl><FormMessage /></FormItem>)} />
             <FormField control={form.control} name="initialBalance" render={({ field }) => (<FormItem><FormLabel>Solde initial (€)</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
             
             <FormField
@@ -178,4 +175,3 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
     </Card>
   );
 }
-

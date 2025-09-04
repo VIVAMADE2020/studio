@@ -11,7 +11,7 @@ const formSchema = z.object({
   firstName: z.string().min(2, "Le prénom est requis."),
   lastName: z.string().min(2, "Le nom est requis."),
   email: z.string().email("L'email est invalide."),
-  password: z.string().min(8, "Le mot de passe doit faire au moins 8 caractères."),
+  // Le mot de passe n'est plus nécessaire
   accountType: z.enum(['current', 'loan']),
   initialBalance: z.coerce.number().min(0, "Le solde initial doit être positif."),
   loanAmount: z.coerce.number().optional(),
@@ -28,14 +28,10 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
     }
 
     try {
-        const { email, password, firstName, lastName, accountType, initialBalance, loanAmount, interestRate, loanDuration } = parsed.data;
-
-        // 1. Create user with Firebase Admin SDK
-        const userRecord = await adminAuth.createUser({
-          email,
-          password,
-          displayName: `${firstName} ${lastName}`,
-        });
+        const { email, firstName, lastName, accountType, initialBalance, loanAmount, interestRate, loanDuration } = parsed.data;
+        
+        // On génère un UID factice car il n'y a plus de vrai utilisateur Auth
+        const uid = `user_${crypto.randomUUID()}`;
 
         const monthlyRate = interestRate ? (interestRate / 100) / 12 : 0;
         const payment = loanAmount && interestRate && loanDuration && monthlyRate > 0
@@ -43,7 +39,7 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
             : 0;
 
         const newClient: Omit<Client, 'id'> = {
-            uid: userRecord.uid,
+            uid: uid,
             firstName,
             lastName,
             email,
@@ -74,22 +70,13 @@ export async function addClientAction(values: z.infer<typeof formSchema>) {
             };
         }
         
-        // Explicitly set the document ID to be the user's UID
-        await adminDb.collection("clients").doc(userRecord.uid).set(newClient);
+        // On utilise un ID de document auto-généré par Firestore
+        await adminDb.collection("clients").add(newClient);
 
-        return { success: true, userId: userRecord.uid };
+        return { success: true, userId: uid };
 
     } catch (error: any) {
         console.error("Add Client Action Error:", error);
-        if (error.code === 'auth/email-already-exists') {
-            return { success: false, error: "Un compte avec cet email existe déjà." };
-        }
-        if (error.code === 'auth/weak-password') {
-             return { success: false, error: "Le mot de passe est trop faible. Il doit faire au moins 6 caractères." };
-        }
-        if (error.code === 'auth/invalid-password') {
-            return { success: false, error: "Le mot de passe est invalide." };
-        }
         if (error.message.includes('FIREBASE_CONFIG')) {
              return { success: false, error: "Erreur de configuration Firebase côté serveur." };
         }
@@ -157,33 +144,5 @@ export async function getClientsAction(): Promise<{data: Client[] | null, error:
     } catch (error: any) {
         console.error("Error getting clients (action):", error);
         return { data: null, error: 'Impossible de récupérer la liste des clients.' };
-    }
-}
-
-export async function getClientDataAction(uid: string, idToken: string): Promise<{ data: Client | null, error: string | null }> {
-    if (!uid || !idToken) {
-        return { data: null, error: "Informations d'authentification manquantes." };
-    }
-    try {
-        // Verify the ID token to ensure the request is authenticated.
-        const decodedToken = await adminAuth.verifyIdToken(idToken);
-        // Check if the UID from the token matches the requested UID.
-        if (decodedToken.uid !== uid) {
-            return { data: null, error: "Non autorisé." };
-        }
-
-        const docSnap = await adminDb.collection('clients').doc(uid).get();
-        if (!docSnap.exists) {
-            // This is not an error, it just means the profile doesn't exist.
-            return { data: null, error: "Le profil client associé à votre compte est introuvable." };
-        }
-        const clientData = { id: docSnap.id, ...docSnap.data() } as Client;
-        return { data: clientData, error: null };
-    } catch (error: any) {
-        console.error("Error getting client data (action):", error);
-        if (error.code === 'auth/id-token-expired') {
-            return { data: null, error: "Votre session a expiré. Veuillez vous reconnecter."};
-        }
-        return { data: null, error: "Impossible de récupérer les données du profil." };
     }
 }
