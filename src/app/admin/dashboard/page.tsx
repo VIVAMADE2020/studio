@@ -7,26 +7,6 @@ import { AlertCircle } from "lucide-react";
 import Link from "next/link";
 
 export default async function AdminDashboardPage() {
-    // Affiche une alerte si les variables d'environnement ne sont pas configurées
-    if (!process.env.GOOGLE_SCRIPT_DB_URL || !process.env.GOOGLE_SCRIPT_WEB_APP_URL) {
-        return (
-             <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Configuration Manquante</AlertTitle>
-                <AlertDescription>
-                    <p>Une ou plusieurs URLs de Google Script ne sont pas configurées dans vos variables d'environnement.</p>
-                    <p className="mt-2">Veuillez créer un fichier `.env.local` à la racine de votre projet et y ajouter les lignes suivantes avec vos URLs :</p>
-                    <pre className="mt-2 bg-muted p-2 rounded-md text-xs">
-                        <code>
-                            GOOGLE_SCRIPT_WEB_APP_URL=VOTRE_URL_FORMULAIRES<br/>
-                            GOOGLE_SCRIPT_DB_URL=VOTRE_URL_BASE_DE_DONNEES
-                        </code>
-                    </pre>
-                </AlertDescription>
-            </Alert>
-        )
-    }
-
     const { data: clients, error } = await getClientsAction();
 
     if (error) {
@@ -36,7 +16,6 @@ export default async function AdminDashboardPage() {
                 <AlertTitle>Erreur de chargement des clients</AlertTitle>
                 <AlertDescription>
                     {error}
-                    <p className="mt-2 text-xs">Assurez-vous que l'URL du script de base de données est correcte et que le script est bien déployé avec un accès pour "Tout le monde".</p>
                 </AlertDescription>
             </Alert>
         )
