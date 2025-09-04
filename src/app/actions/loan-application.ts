@@ -3,6 +3,8 @@
 
 import { z } from "zod";
 
+// Le schéma est simplifié pour ne plus inclure la conversion en Base64.
+// Nous nous fions aux noms de fichiers. La logique de script devra gérer le reste.
 const formSchema = z.object({
   loanType: z.string(),
   loanReason: z.string(),
@@ -23,12 +25,10 @@ const formSchema = z.object({
   monthlyIncome: z.number(),
   monthlyExpenses: z.number().min(0),
   housingStatus: z.string(),
-  identityProof: z.string(), // Contient le nom du fichier
-  identityProofData: z.string(), // Contient les données en Base64
+  // On ne transmet plus les données Base64, juste les noms
+  identityProof: z.string(),
   residenceProof: z.string(),
-  residenceProofData: z.string(),
   incomeProof: z.string(),
-  incomeProofData: z.string(),
   legalConsent: z.boolean(),
 });
 
@@ -45,6 +45,7 @@ export async function submitLoanApplication(values: z.infer<typeof formSchema>) 
     const dataToSend = {
       sheet: 'LoanApplications', // Nom utilisé par le script pour identifier le formulaire
       ...parsed.data,
+      // Retrait des champs data qui n'existent plus dans le schéma
     };
     
     const response = await fetch(process.env.GOOGLE_SCRIPT_WEB_APP_URL!, {
@@ -52,7 +53,7 @@ export async function submitLoanApplication(values: z.infer<typeof formSchema>) 
       headers: {
         'Content-Type': 'application/json',
       },
-      // Le corps de la requête peut être volumineux à cause des fichiers en Base64
+      // Le corps de la requête est maintenant plus léger
       body: JSON.stringify(dataToSend),
     });
 

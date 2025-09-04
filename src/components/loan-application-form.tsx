@@ -67,18 +67,19 @@ const financialInfoSchema = z.object({
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_FILE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp", "application/pdf"];
 
-const fileSchema = z.any()
+// Le schéma de validation des fichiers est simplifié pour le client
+const fileClientSchema = z.any()
   .refine((file) => file, "Ce document est requis.")
   .refine((file) => file?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
   .refine(
     (file) => ACCEPTED_FILE_TYPES.includes(file?.type),
     "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
   );
-
+  
 const documentsSchema = z.object({
-    identityProof: fileSchema,
-    residenceProof: fileSchema,
-    incomeProof: fileSchema,
+    identityProof: fileClientSchema,
+    residenceProof: fileClientSchema,
+    incomeProof: fileClientSchema,
 });
 
 const legalSchema = z.object({
@@ -87,20 +88,10 @@ const legalSchema = z.object({
     })
 });
 
-// Le schéma complet utilisé par le formulaire
+// Schéma complet utilisé par le formulaire côté client
 const formClientSchema = loanDetailsSchema.merge(personalInfoSchema).merge(financialInfoSchema).merge(documentsSchema).merge(legalSchema);
 
 type FormValues = z.infer<typeof formClientSchema>;
-
-// Fonction pour convertir un fichier en Base64
-const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = (error) => reject(error);
-    });
-};
 
 export function LoanApplicationForm() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -141,9 +132,9 @@ export function LoanApplicationForm() {
   const formData = form.watch();
 
   const handleNext = async () => {
-    const currentStepSchema = steps[currentStep].schema;
-    if (currentStepSchema) {
-        const result = await form.trigger(steps[currentStep].fields as (keyof FormValues)[]);
+    const currentStepFields = steps[currentStep].fields as (keyof FormValues)[] | undefined;
+    if (currentStepFields) {
+        const result = await form.trigger(currentStepFields);
         if (!result) return;
     }
     setCurrentStep((prev) => prev + 1);
@@ -157,24 +148,12 @@ export function LoanApplicationForm() {
     setIsSubmitting(true);
 
     try {
-        const identityProofFile = values.identityProof;
-        const residenceProofFile = values.residenceProof;
-        const incomeProofFile = values.incomeProof;
-
-        const [identityProofData, residenceProofData, incomeProofData] = await Promise.all([
-            fileToBase64(identityProofFile),
-            fileToBase64(residenceProofFile),
-            fileToBase64(incomeProofFile),
-        ]);
-
         const dataToSend = {
             ...values,
-            identityProof: identityProofFile.name,
-            identityProofData,
-            residenceProof: residenceProofFile.name,
-            residenceProofData,
-            incomeProof: incomeProofFile.name,
-            incomeProofData,
+            // On envoie uniquement les noms des fichiers
+            identityProof: values.identityProof.name,
+            residenceProof: values.residenceProof.name,
+            incomeProof: values.incomeProof.name,
         };
 
         const result = await submitLoanApplication(dataToSend);
@@ -190,8 +169,8 @@ export function LoanApplicationForm() {
             });
         }
     } catch (error) {
-        console.error("Error processing files:", error);
-        toast({ variant: "destructive", title: "Erreur de fichier", description: "Impossible de traiter les fichiers joints."});
+        console.error("Error processing form:", error);
+        toast({ variant: "destructive", title: "Erreur du formulaire", description: "Impossible de traiter le formulaire."});
         setIsSubmitting(false);
     }
   }
@@ -485,16 +464,10 @@ export function LoanApplicationForm() {
 }
 
 const steps = [
-  { id: 'loanDetails', title: 'Détails et Simulation', fields: ['loanType', 'loanReason', 'loanAmount', 'loanDuration'], schema: loanDetailsSchema },
-  { id: 'personalInfo', title: 'Informations Personnelles', fields: ['firstName', 'lastName', 'email', 'phone', 'whatsapp', 'birthDate', 'maritalStatus', 'address', 'city', 'country', 'childrenCount'], schema: personalInfoSchema },
-  { id: 'financialInfo', title: 'Situation Financière', fields: ['employmentStatus', 'monthlyIncome', 'monthlyExpenses', 'housingStatus'], schema: financialInfoSchema },
-  { id: 'documents', title: 'Vos Documents', fields: ['identityProof', 'residenceProof', 'incomeProof'], schema: documentsSchema },
-  { id: 'legal', title: 'Consentement', fields: ['legalConsent'], schema: legalSchema },
+  { id: 'loanDetails', title: 'Détails et Simulation', fields: ['loanType', 'loanReason', 'loanAmount', 'loanDuration'] },
+  { id: 'personalInfo', title: 'Informations Personnelles', fields: ['firstName', 'lastName', 'email', 'phone', 'whatsapp', 'birthDate', 'maritalStatus', 'address', 'city', 'country', 'childrenCount'] },
+  { id: 'financialInfo', title: 'Situation Financière', fields: ['employmentStatus', 'monthlyIncome', 'monthlyExpenses', 'housingStatus'] },
+  { id: 'documents', title: 'Vos Documents', fields: ['identityProof', 'residenceProof', 'incomeProof'] },
+  { id: 'legal', title: 'Consentement', fields: ['legalConsent'] },
   { id: 'summary', title: 'Récapitulatif' },
 ];
-    
-
-
-    
-
-    
