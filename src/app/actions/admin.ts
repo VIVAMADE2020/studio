@@ -14,10 +14,12 @@ export async function verifyAdminPassword(values: z.infer<typeof loginSchema>) {
     }
 
     const { password } = parsed.data;
+    const adminPassword = process.env.ADMIN_PASSWORD;
 
-    if (password === process.env.ADMIN_PASSWORD) {
+    if (password === adminPassword) {
         return { success: true };
     } else {
+        console.log("Admin password from env:", adminPassword);
         return { success: false, error: "Mot de passe incorrect." };
     }
 }
