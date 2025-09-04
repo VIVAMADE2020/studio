@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, Landmark } from "lucide-react";
+import { Menu, Landmark, User } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -35,12 +35,16 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <div className="flex flex-1 items-center justify-end space-x-4">
-          <div className="hidden md:flex items-center space-x-2">
-             <Button asChild>
-              <Link href="/demande-pret">Faire une demande</Link>
-            </Button>
-          </div>
+        <div className="flex flex-1 items-center justify-end space-x-2">
+          <Button variant="ghost" asChild>
+            <Link href="/client/access">
+              <User className="mr-2 h-4 w-4" />
+              Espace Client
+            </Link>
+          </Button>
+          <Button asChild>
+            <Link href="/demande-pret">Faire une demande</Link>
+          </Button>
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="ghost" size="icon">
@@ -69,6 +73,12 @@ export function Header() {
                   ))}
                 </nav>
                 <div className="mt-auto p-4 flex flex-col gap-4 border-t">
+                  <Button asChild className="w-full justify-start text-lg">
+                     <Link href="/client/access" onClick={() => setIsOpen(false)}>
+                       <User className="mr-2 h-5 w-5" />
+                       Espace Client
+                      </Link>
+                  </Button>
                   <Button asChild className="w-full justify-start text-lg">
                      <Link href="/demande-pret" onClick={() => setIsOpen(false)}>Faire une demande</Link>
                   </Button>
