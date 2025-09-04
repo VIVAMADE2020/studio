@@ -22,6 +22,7 @@ const formSchema = z.object({
   firstName: z.string().min(2, "Le prénom est requis."),
   lastName: z.string().min(2, "Le nom est requis."),
   email: z.string().email("Email invalide."),
+  password: z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères."),
   initialBalance: z.coerce.number().min(0, "Le solde initial doit être positif ou nul."),
 });
 
@@ -39,6 +40,7 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
       firstName: "",
       lastName: "",
       email: "",
+      password: "",
       initialBalance: 0,
     },
   });
@@ -101,6 +103,17 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
         />
         <FormField
           control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Mot de passe</FormLabel>
+              <FormControl><Input type="password" placeholder="••••••••" {...field} /></FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="initialBalance"
           render={({ field }) => (
             <FormItem>
@@ -118,4 +131,3 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
     </Form>
   );
 }
-

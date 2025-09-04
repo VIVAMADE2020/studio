@@ -15,6 +15,7 @@ export interface Client {
   firstName: string;
   lastName: string;
   email: string;
+  password?: string; // Le mot de passe est optionnel pour les anciens clients
   initialBalance: number;
   transactions: Transaction[];
   creationDate: string;
@@ -59,6 +60,7 @@ const addClientSchema = z.object({
   firstName: z.string().min(2, "Le prénom est requis."),
   lastName: z.string().min(2, "Le nom est requis."),
   email: z.string().email("Email invalide."),
+  password: z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères."),
   initialBalance: z.coerce.number().min(0, "Le solde initial doit être positif."),
 });
 
@@ -103,6 +105,44 @@ export async function getClientsAction(): Promise<{ data: Client[] | null; error
         return { data: null, error: error.message };
     }
 }
+
+const clientLoginSchema = z.object({
+  accountNumber: z.string().min(1, "Le numéro de compte est requis."),
+  password: z.string().min(1, "Le mot de passe est requis."),
+});
+
+export async function verifyClientLoginAction(values: z.infer<typeof clientLoginSchema>) {
+    const parsed = clientLoginSchema.safeParse(values);
+    if (!parsed.success) {
+        return { success: false, error: "Données de connexion invalides." };
+    }
+    
+    const { accountNumber, password } = parsed.data;
+
+    try {
+        const clients = await readDb();
+        const client = clients.find(c => c.accountNumber === accountNumber);
+
+        if (!client) {
+            return { success: false, error: "Numéro de compte ou mot de passe incorrect." };
+        }
+
+        // Pour les anciens clients sans mot de passe, on refuse la connexion
+        if (!client.password) {
+            return { success: false, error: "Ce compte n'a pas de mot de passe défini. Veuillez contacter le support." };
+        }
+
+        if (client.password !== password) {
+            return { success: false, error: "Numéro de compte ou mot de passe incorrect." };
+        }
+
+        return { success: true, data: client };
+    } catch (error: any) {
+        console.error(`Failed to verify client login for ${accountNumber}:`, error);
+        return { success: false, error: `Une erreur est survenue lors de la vérification: ${error.message}` };
+    }
+}
+
 
 export async function getClientByAccountNumberAction(accountNumber: string): Promise<{ data: Client | null; error: string | null; }> {
     if (!accountNumber) {
