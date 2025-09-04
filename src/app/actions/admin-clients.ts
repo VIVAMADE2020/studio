@@ -160,20 +160,30 @@ export async function getClientsAction(): Promise<{data: Client[] | null, error:
     }
 }
 
-export async function getClientDataAction(uid: string): Promise<{ data: Client | null, error: string | null }> {
-    if (!uid) {
-        return { data: null, error: "Utilisateur non authentifié." };
+export async function getClientDataAction(uid: string, idToken: string): Promise<{ data: Client | null, error: string | null }> {
+    if (!uid || !idToken) {
+        return { data: null, error: "Informations d'authentification manquantes." };
     }
     try {
+        // Verify the ID token to ensure the request is authenticated.
+        const decodedToken = await adminAuth.verifyIdToken(idToken);
+        // Check if the UID from the token matches the requested UID.
+        if (decodedToken.uid !== uid) {
+            return { data: null, error: "Non autorisé." };
+        }
+
         const docSnap = await adminDb.collection('clients').doc(uid).get();
         if (!docSnap.exists) {
             // This is not an error, it just means the profile doesn't exist.
-            return { data: null, error: null };
+            return { data: null, error: "Le profil client associé à votre compte est introuvable." };
         }
         const clientData = { id: docSnap.id, ...docSnap.data() } as Client;
         return { data: clientData, error: null };
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error getting client data (action):", error);
+        if (error.code === 'auth/id-token-expired') {
+            return { data: null, error: "Votre session a expiré. Veuillez vous reconnecter."};
+        }
         return { data: null, error: "Impossible de récupérer les données du profil." };
     }
 }
