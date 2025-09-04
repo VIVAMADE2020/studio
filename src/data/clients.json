@@ -29,7 +29,7 @@
         "date": "2025-09-04T12:50:42.083Z",
         "description": "Virement à Marie Dubois - hhhhhhhhhh",
         "amount": -11999.98,
-        "status": "PENDING",
+        "status": "COMPLETED",
         "estimatedCompletionDate": "2025-09-04T12:52:42.083Z",
         "beneficiary": {
           "name": "Marie Dubois",
@@ -44,6 +44,8 @@
     "transferSettings": {
       "duration": 2,
       "unit": "minutes"
-    }
+    },
+    "isBlocked": true,
+    "blockReason": "bbbb"
   }
 ]
