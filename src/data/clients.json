@@ -7,5 +7,17 @@
     "accountNumber": "FLEX-1ICQDT",
     "creationDate": "2025-09-04T10:20:46.495Z",
     "transactions": []
+  },
+  {
+    "firstName": "jokn",
+    "lastName": "voli",
+    "email": "aaa@gmail.com",
+    "password": "aaaaaa",
+    "initialBalance": 0,
+    "identificationNumber": "FLEX-9TZIKA",
+    "creationDate": "2025-09-04T10:32:50.002Z",
+    "transactions": [],
+    "iban": "FR76300020055015802155391",
+    "swiftCode": "FLEXFRPP"
   }
 ]
