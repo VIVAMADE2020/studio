@@ -19,16 +19,20 @@ import { ClientDashboardChart } from "@/components/client-dashboard-chart";
 const DashboardSkeleton = () => (
     <div className="space-y-8">
         <div className="flex justify-between items-center">
-            <Skeleton className="h-8 w-48" />
+            <div className="space-y-2">
+                <Skeleton className="h-8 w-48" />
+                <Skeleton className="h-4 w-64" />
+            </div>
             <Skeleton className="h-10 w-32" />
         </div>
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             <div className="lg:col-span-1 space-y-8">
-                <Card><CardContent className="p-6"><Skeleton className="h-24 w-full" /></CardContent></Card>
-                <Card><CardContent className="p-6"><Skeleton className="h-40 w-full" /></CardContent></Card>
+                <Card><CardContent className="p-6 space-y-4"><Skeleton className="h-10 w-3/4" /><Skeleton className="h-4 w-1/2" /><Skeleton className="h-4 w-1/2" /></CardContent></Card>
+                <Card><CardContent className="p-6 space-y-4"><Skeleton className="h-6 w-1/2 mb-4" /><Skeleton className="h-5 w-full" /><Skeleton className="h-5 w-full" /><Skeleton className="h-5 w-4/5" /></CardContent></Card>
+                <Card><CardContent className="p-6 space-y-4"><Skeleton className="h-6 w-1/2 mb-4" /><Skeleton className="h-5 w-full" /><Skeleton className="h-5 w-full" /></CardContent></Card>
             </div>
             <div className="lg:col-span-2 space-y-8">
-                <Card><CardContent className="p-6"><Skeleton className="h-64 w-full" /></CardContent></Card>
+                <Card><CardContent className="p-6"><Skeleton className="h-80 w-full" /></CardContent></Card>
                 <Card><CardContent className="p-6"><Skeleton className="h-48 w-full" /></CardContent></Card>
             </div>
         </div>
@@ -258,4 +262,3 @@ export default function ClientDashboardPage() {
     );
 }
 
-    
