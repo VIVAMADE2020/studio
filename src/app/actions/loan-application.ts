@@ -24,7 +24,7 @@ const formSchema = z.object({
   employmentStatus: z.string(),
   monthlyIncome: z.number(),
   monthlyExpenses: z.number().min(0),
-  housingStatus: z.string(),
+  housingStatus: z_string(),
   // On ne transmet plus les données Base64, juste les noms
   identityProof: z.string(),
   residenceProof: z.string(),

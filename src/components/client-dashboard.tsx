@@ -28,21 +28,19 @@ export function ClientDashboard() {
         if (user) {
             const fetchClientData = async () => {
                 setLoading(true);
+                setError(null);
                 try {
+                    // Force refresh of the token to get the latest one.
                     const idToken = await user.getIdToken(true);
+                    
                     const { data, error: fetchError } = await getClientDataAction(user.uid, idToken);
                     
                     if (fetchError) {
                         setError(fetchError);
-                        setClientData(null);
                     } else if (data) {
                         setClientData(data);
-                        setError(null);
                     } else {
-                        // This case handles when data is null but there is no error,
-                        // meaning the profile was not found.
                         setError("Le profil client associé à votre compte est introuvable.");
-                        setClientData(null);
                     }
                 } catch(e: any) {
                     setError("Une erreur est survenue lors de la récupération de votre session.");
@@ -52,7 +50,7 @@ export function ClientDashboard() {
             };
             fetchClientData();
         } else {
-            // User is not logged in, layout will handle redirection.
+            // User is not logged in, the layout will handle redirection.
             setLoading(false);
         }
     }, [user, authLoading]);
