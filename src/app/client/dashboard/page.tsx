@@ -9,50 +9,42 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { formatCurrency } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { LogOut, Landmark, Copy } from "lucide-react";
+import { LogOut, Landmark, Copy, User, Mail, Hash, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 
 const DashboardSkeleton = () => (
-    <div className="grid lg:grid-cols-3 gap-8 items-start">
-        {/* Left Column Skeleton */}
-        <div className="lg:col-span-1 space-y-6">
-            <div className="space-y-2">
-                <Skeleton className="h-8 w-48" />
-                <Skeleton className="h-5 w-64" />
-            </div>
-            <Card>
-                <CardHeader>
-                    <Skeleton className="h-5 w-24 mb-2" />
-                    <Skeleton className="h-12 w-40" />
-                </CardHeader>
-            </Card>
-            <div className="space-y-4">
-                 <Skeleton className="h-5 w-32" />
-                 <Skeleton className="h-5 w-full" />
-                 <Skeleton className="h-5 w-full" />
-            </div>
-             <Skeleton className="h-10 w-32" />
+    <div className="space-y-8">
+        <div className="flex justify-between items-center">
+            <Skeleton className="h-8 w-48" />
+            <Skeleton className="h-10 w-32" />
         </div>
-        {/* Right Column Skeleton */}
-        <div className="lg:col-span-2">
-            <Card>
-                <CardHeader>
-                    <Skeleton className="h-7 w-64" />
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-4">
-                        <Skeleton className="h-10 w-full" />
-                        <Skeleton className="h-10 w-full" />
-                        <Skeleton className="h-10 w-full" />
-                        <Skeleton className="h-10 w-full" />
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
+        <Card>
+            <CardHeader><Skeleton className="h-6 w-32" /></CardHeader>
+            <CardContent className="grid gap-6 md:grid-cols-2">
+                <div className="space-y-2">
+                    <Skeleton className="h-5 w-24" />
+                    <Skeleton className="h-12 w-48" />
+                </div>
+                <div className="space-y-4">
+                    <Skeleton className="h-5 w-full" />
+                    <Skeleton className="h-5 w-full" />
+                </div>
+            </CardContent>
+        </Card>
+        <Card>
+            <CardHeader><Skeleton className="h-6 w-40" /></CardHeader>
+            <CardContent>
+                <div className="space-y-4">
+                    <Skeleton className="h-10 w-full" />
+                    <Skeleton className="h-10 w-full" />
+                    <Skeleton className="h-10 w-full" />
+                </div>
+            </CardContent>
+        </Card>
     </div>
-)
+);
 
 export default function ClientDashboardPage() {
     const [client, setClient] = useState<Client | null>(null);
@@ -92,7 +84,7 @@ export default function ClientDashboardPage() {
         navigator.clipboard.writeText(text);
         toast({
             title: `${label} copié !`,
-            description: "Le numéro a bien été copié dans le presse-papiers.",
+            description: "Le texte a bien été copié dans le presse-papiers.",
         });
     };
 
@@ -106,7 +98,7 @@ export default function ClientDashboardPage() {
                 <AlertTitle>Erreur d'accès</AlertTitle>
                 <AlertDescription>{error} Veuillez <Link href="/client/access" className="underline">réessayer</Link>.</AlertDescription>
             </Alert>
-        )
+        );
     }
 
     if (!client) {
@@ -116,54 +108,71 @@ export default function ClientDashboardPage() {
     const balance = client.initialBalance + client.transactions.reduce((acc, t) => acc + t.amount, 0);
     const sortedTransactions = [...client.transactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-
     return (
-        <div className="grid lg:grid-cols-3 gap-12 items-start">
-           
-            {/* Left Column */}
-            <div className="lg:col-span-1 flex flex-col gap-8 sticky top-24">
-                <div>
-                    <h1 className="text-2xl font-bold">Bonjour, {client.firstName}</h1>
+        <div className="space-y-8">
+            <div className="flex justify-between items-center">
+                 <div>
+                    <h1 className="text-2xl md:text-3xl font-bold">Bonjour, {client.firstName}</h1>
                     <p className="text-muted-foreground">Bienvenue sur votre espace personnel.</p>
                 </div>
-
-                <Card className="w-full shadow-lg">
-                    <CardHeader>
-                        <CardDescription>Solde disponible</CardDescription>
-                        <CardTitle className="text-4xl">{formatCurrency(balance)}</CardTitle>
-                    </CardHeader>
-                </Card>
-
-                <div className="space-y-4 text-sm">
-                    <h3 className="font-semibold text-primary">Vos coordonnées bancaires</h3>
-                    <div className="font-mono">
-                        <div className="flex justify-between items-center">
-                            <span className="text-muted-foreground">IBAN</span>
-                            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => copyToClipboard(client.iban, 'IBAN')}>
-                                <Copy className="h-4 w-4"/>
-                            </Button>
-                        </div>
-                        <p>{client.iban}</p>
-                    </div>
-                     <div className="font-mono">
-                        <div className="flex justify-between items-center">
-                            <span className="text-muted-foreground">SWIFT/BIC</span>
-                            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => copyToClipboard(client.swiftCode, 'SWIFT/BIC')}>
-                                <Copy className="h-4 w-4"/>
-                            </Button>
-                        </div>
-                        <p>{client.swiftCode}</p>
-                    </div>
-                </div>
-                
-                <Button variant="outline" onClick={handleLogout} className="w-fit">
+                <Button variant="outline" onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     Déconnexion
                 </Button>
             </div>
+            
+            <Card className="shadow-lg">
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><Landmark className="h-5 w-5 text-primary"/> Vos Actifs</CardTitle>
+                </CardHeader>
+                <CardContent className="grid gap-6 md:grid-cols-2 items-start">
+                    <div className="space-y-2">
+                        <p className="text-sm text-muted-foreground">Solde disponible</p>
+                        <p className="text-4xl font-bold text-primary">{formatCurrency(balance)}</p>
+                    </div>
+                    <div className="space-y-4 text-sm font-mono bg-secondary/30 p-4 rounded-lg">
+                        <div>
+                             <div className="flex justify-between items-center mb-1">
+                                <span className="text-muted-foreground font-sans text-xs uppercase tracking-wider">IBAN</span>
+                                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => copyToClipboard(client.iban, 'IBAN')}>
+                                    <Copy className="h-3 w-3"/>
+                                </Button>
+                            </div>
+                            <p>{client.iban}</p>
+                        </div>
+                         <div>
+                            <div className="flex justify-between items-center mb-1">
+                                <span className="text-muted-foreground font-sans text-xs uppercase tracking-wider">SWIFT/BIC</span>
+                                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => copyToClipboard(client.swiftCode, 'SWIFT/BIC')}>
+                                    <Copy className="h-3 w-3"/>
+                                </Button>
+                            </div>
+                            <p>{client.swiftCode}</p>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
 
-            {/* Right Column */}
-            <div className="lg:col-span-2">
+            <div className="grid md:grid-cols-2 gap-8">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Mon Profil</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4 text-sm">
+                        <div className="flex items-center gap-3">
+                           <User className="h-4 w-4 text-muted-foreground" /> <span>{client.firstName} {client.lastName}</span>
+                        </div>
+                         <div className="flex items-center gap-3">
+                           <Mail className="h-4 w-4 text-muted-foreground" /> <span>{client.email}</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                           <Hash className="h-4 w-4 text-muted-foreground" /> <span>{client.identificationNumber}</span>
+                        </div>
+                         <div className="flex items-center gap-3">
+                           <Calendar className="h-4 w-4 text-muted-foreground" /> <span>Client depuis le {new Date(client.creationDate).toLocaleDateString()}</span>
+                        </div>
+                    </CardContent>
+                </Card>
                  <Card className="shadow-lg">
                     <CardHeader>
                         <CardTitle>Historique des Transactions</CardTitle>
@@ -179,7 +188,7 @@ export default function ClientDashboardPage() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {sortedTransactions.length > 0 ? sortedTransactions.map(t => (
+                                {sortedTransactions.length > 0 ? sortedTransactions.slice(0, 5).map(t => (
                                     <TableRow key={t.id}>
                                         <TableCell>{new Date(t.date).toLocaleDateString()}</TableCell>
                                         <TableCell>{t.description}</TableCell>
@@ -202,4 +211,3 @@ export default function ClientDashboardPage() {
         </div>
     );
 }
-
