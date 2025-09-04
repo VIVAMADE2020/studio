@@ -50,6 +50,8 @@ async function callGoogleScript(action: string, payload: object) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ action, ...payload }),
+            // Ne pas mettre en cache les requêtes POST pour s'assurer d'avoir les données à jour
+            cache: 'no-store',
         });
 
         if (!response.ok) {
@@ -60,6 +62,7 @@ async function callGoogleScript(action: string, payload: object) {
         const result = await response.json();
         
         if (result.status === 'error') {
+            // Propage l'erreur venant du script pour l'afficher dans l'UI
             throw new Error(result.message || 'An unknown error occurred in Google Script.');
         }
 
@@ -67,7 +70,8 @@ async function callGoogleScript(action: string, payload: object) {
 
     } catch (error: any) {
         console.error(`Error calling Google Script action '${action}':`, error.message);
-        throw new Error(`Failed to execute action ${action}.`);
+        // Rethrow l'erreur pour qu'elle soit attrapée par les actions serveur
+        throw new Error(error.message || `Failed to execute action ${action}.`);
     }
 }
 
@@ -108,7 +112,7 @@ export async function getClientByAccountNumberAction(accountNumber: string): Pro
         return { data: client, error: null };
     } catch (error: any) {
         console.error(`Failed to get client ${accountNumber}:`, error);
-        return { data: null, error: "Impossible de récupérer les informations du client." };
+        return { data: null, error: `Impossible de récupérer les informations du client: ${error.message}` };
     }
 }
 

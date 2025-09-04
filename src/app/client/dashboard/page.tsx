@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const DashboardSkeleton = () => (
     <div className="space-y-8">
