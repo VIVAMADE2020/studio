@@ -7,7 +7,7 @@ import { getClientByIdentificationNumberAction, Client, Transaction } from "@/ap
 import { formatCurrency } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { LogOut, Landmark, Copy, User, Mail, Hash, Calendar, Wallet, History, Send, FileText, MessageSquare, CircleDollarSign, CheckCircle, Fingerprint, Banknote } from "lucide-react";
+import { LogOut, Landmark, Copy, User, Mail, Hash, Calendar, Wallet, History, Send, FileText, MessageSquare, CircleDollarSign, CheckCircle, Fingerprint, Banknote, AlertTriangle, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
@@ -17,6 +17,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { TransactionProgress } from "@/components/client-transaction-progress";
 import { LoanDetailsCard } from "@/components/client-loan-details-card";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 
 const StatCard = ({ icon, title, value, description }: { icon: React.ReactNode, title: string, value: string, description: string }) => (
@@ -122,6 +123,7 @@ export default function ClientDashboardPage() {
     const totalExpenses = completedTransactions.filter(t => t.amount < 0).reduce((acc, t) => acc + t.amount, 0);
 
     return (
+        <TooltipProvider>
         <div className="space-y-8">
              <motion.div 
                 initial={{ opacity: 0, y: -20 }}
@@ -261,7 +263,23 @@ export default function ClientDashboardPage() {
                                                     {t.status === 'COMPLETED' ? (
                                                         <Badge variant="secondary" className="bg-green-100 text-green-800"><CheckCircle className="h-3 w-3 mr-1" /> Terminé</Badge>
                                                     ) : t.status === 'FAILED' ? (
-                                                        <Badge variant="destructive">Échoué</Badge>
+                                                         <div className="flex items-center gap-2">
+                                                            <Badge variant="destructive"><AlertTriangle className="h-3 w-3 mr-1" /> Échoué</Badge>
+                                                            {t.failureReason && (
+                                                                <Tooltip>
+                                                                    <TooltipTrigger asChild>
+                                                                        <Info className="h-4 w-4 text-muted-foreground cursor-pointer"/>
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent className="max-w-xs text-center">
+                                                                        <p className="font-bold">Motif de l'échec</p>
+                                                                        <p>{t.failureReason}</p>
+                                                                        <Button asChild size="sm" className="mt-2">
+                                                                            <Link href="/contact">Nous contacter</Link>
+                                                                        </Button>
+                                                                    </TooltipContent>
+                                                                </Tooltip>
+                                                            )}
+                                                         </div>
                                                     ) : (
                                                         <TransactionProgress 
                                                             transaction={t}
@@ -290,5 +308,6 @@ export default function ClientDashboardPage() {
                 </div>
             </div>
         </div>
+        </TooltipProvider>
     );
 }

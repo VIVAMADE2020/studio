@@ -40,6 +40,8 @@ export interface Client {
     duration: number;
     unit: TransferDurationUnit;
   };
+  isBlocked?: boolean;
+  blockReason?: string;
 }
 
 export interface Transaction {
@@ -49,6 +51,7 @@ export interface Transaction {
   amount: number;
   status: TransactionStatus;
   estimatedCompletionDate?: string;
+  failureReason?: string;
   beneficiary?: {
       name: string;
       accountNumber: string;
@@ -157,6 +160,12 @@ const updateTransferSettingsSchema = z.object({
     unit: z.enum(['minutes', 'hours', 'days']),
 });
 
+const updateBlockSettingsSchema = z.object({
+    identificationNumber: z.string(),
+    isBlocked: z.boolean(),
+    blockReason: z.string().optional(),
+});
+
 
 // --- Actions Serveur ---
 
@@ -180,6 +189,8 @@ export async function addClientAction(values: z.infer<typeof addClientSchema>) {
             iban,
             swiftCode: 'FLEXFRPP',
             transferSettings: { duration: 1, unit: 'days' },
+            isBlocked: false,
+            blockReason: "",
         };
         
         let newClient: Client;
@@ -282,16 +293,35 @@ export async function addTransactionAction(values: z.infer<typeof addTransaction
         if (clientIndex === -1) {
             return { success: false, error: "Client non trouvé." };
         }
-
-        const newTransaction: Transaction = {
+        
+        // This is a manual transaction, we will not process it, just add it as completed.
+        const completedTransaction: Transaction = {
             id: `TXN-${new Date().getTime()}`,
             date: new Date().toISOString(),
             description: parsed.data.description,
             amount: parsed.data.amount,
-            status: 'COMPLETED', // Direct transactions are always completed
+            status: 'COMPLETED',
         };
 
-        clients[clientIndex].transactions.push(newTransaction);
+        // We also need to process pending transactions for the client if the amount is a credit
+        if (completedTransaction.amount > 0) {
+            // This is a simplified logic. In a real-world scenario, you would have a more complex system to handle this.
+            // For now, we will just mark the oldest pending transaction as completed if the balance allows it.
+            const pendingTransactions = clients[clientIndex].transactions.filter(t => t.status === 'PENDING').sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+            let currentBalance = clients[clientIndex].initialBalance + clients[clientIndex].transactions.filter(t => t.status === 'COMPLETED').reduce((acc, t) => acc + t.amount, 0) + completedTransaction.amount;
+            
+            for(const pending of pendingTransactions) {
+                if(currentBalance >= Math.abs(pending.amount)) {
+                    const pendingIndex = clients[clientIndex].transactions.findIndex(t => t.id === pending.id);
+                    if(pendingIndex !== -1) {
+                        clients[clientIndex].transactions[pendingIndex].status = 'COMPLETED';
+                        currentBalance += pending.amount; // amount is negative
+                    }
+                }
+            }
+        }
+        
+        clients[clientIndex].transactions.push(completedTransaction);
         await writeDb(clients);
 
         revalidatePath(`/admin/dashboard/${parsed.data.identificationNumber}`);
@@ -328,16 +358,49 @@ export async function transferFundsAction(values: z.infer<typeof transferFundsSc
         }
 
         const sender = clients[senderIndex];
+        const initiationDate = new Date();
+
+        // 1. Check if the client is blocked
+        if (sender.isBlocked) {
+             const failedTransaction: Transaction = {
+                id: `TXN-F-${initiationDate.getTime()}`,
+                date: initiationDate.toISOString(),
+                description: `Virement à ${beneficiaryName} - ${description}`,
+                amount: -amount,
+                status: 'FAILED',
+                failureReason: sender.blockReason || 'Votre compte est actuellement restreint. Veuillez contacter le support.',
+                beneficiary: { name: beneficiaryName, accountNumber: beneficiaryAccountNumber, iban: beneficiaryIban, bankName: beneficiaryBankName, swiftCode: beneficiarySwiftCode }
+            };
+            clients[senderIndex].transactions.push(failedTransaction);
+            await writeDb(clients);
+            revalidatePath('/client/dashboard');
+            return { success: true, message: "Virement échoué en raison d'un blocage." };
+        }
+
+
+        // 2. Check for sufficient balance
         const completedTransactions = sender.transactions.filter(t => t.status === 'COMPLETED');
         const senderBalance = sender.initialBalance + completedTransactions.reduce((acc, t) => acc + t.amount, 0);
 
         if (senderBalance < amount) {
+            // Not enough balance now, so fail it right away
+            const failedTransaction: Transaction = {
+                id: `TXN-F-${initiationDate.getTime()}`,
+                date: initiationDate.toISOString(),
+                description: `Virement à ${beneficiaryName} - ${description}`,
+                amount: -amount,
+                status: 'FAILED',
+                failureReason: 'Solde insuffisant.',
+                beneficiary: { name: beneficiaryName, accountNumber: beneficiaryAccountNumber, iban: beneficiaryIban, bankName: beneficiaryBankName, swiftCode: beneficiarySwiftCode }
+            };
+            clients[senderIndex].transactions.push(failedTransaction);
+            await writeDb(clients);
+            revalidatePath('/client/dashboard');
             return { success: false, error: "Solde insuffisant pour effectuer ce virement." };
         }
 
-        // Calculate estimated completion date
+        // 3. Create a PENDING transaction if not blocked and balance is sufficient
         const { duration = 1, unit = 'days' } = sender.transferSettings || {};
-        const initiationDate = new Date();
         const estimatedCompletionDate = new Date(initiationDate);
         if (unit === 'minutes') {
             estimatedCompletionDate.setMinutes(initiationDate.getMinutes() + duration);
@@ -347,39 +410,30 @@ export async function transferFundsAction(values: z.infer<typeof transferFundsSc
             estimatedCompletionDate.setDate(initiationDate.getDate() + duration);
         }
 
-        // Create the debit transaction for the sender
-        const debitTransaction: Transaction = {
-            id: `TXN-D-${new Date().getTime()}`,
+        const pendingTransaction: Transaction = {
+            id: `TXN-D-${initiationDate.getTime()}`,
             date: initiationDate.toISOString(),
             description: `Virement à ${beneficiaryName} - ${description}`,
             amount: -amount,
             status: 'PENDING',
             estimatedCompletionDate: estimatedCompletionDate.toISOString(),
-            beneficiary: {
-                name: beneficiaryName,
-                accountNumber: beneficiaryAccountNumber,
-                iban: beneficiaryIban,
-                bankName: beneficiaryBankName,
-                swiftCode: beneficiarySwiftCode,
-            }
+            beneficiary: { name: beneficiaryName, accountNumber: beneficiaryAccountNumber, iban: beneficiaryIban, bankName: beneficiaryBankName, swiftCode: beneficiarySwiftCode }
         };
-        clients[senderIndex].transactions.push(debitTransaction);
+        clients[senderIndex].transactions.push(pendingTransaction);
         
-        // In a real app, you would have a cron job to update statuses. Here we don't.
-        // We also don't handle the beneficiary credit side for external banks.
-
         await writeDb(clients);
         
         revalidatePath('/client/dashboard');
         revalidatePath(`/client/dashboard/transfer`);
         
-        return { success: true };
+        return { success: true, message: "Virement initié avec succès." };
 
     } catch (error: any) {
         console.error("Erreur lors du virement:", error);
         return { success: false, error: `Une erreur est survenue: ${error.message}` };
     }
 }
+
 
 export async function updateClientTransferSettingsAction(values: z.infer<typeof updateTransferSettingsSchema>) {
     const parsed = updateTransferSettingsSchema.safeParse(values);
@@ -399,6 +453,32 @@ export async function updateClientTransferSettingsAction(values: z.infer<typeof 
             duration: parsed.data.duration,
             unit: parsed.data.unit,
         };
+
+        await writeDb(clients);
+        revalidatePath(`/admin/dashboard/${parsed.data.identificationNumber}`);
+        return { success: true };
+    } catch (error: any) {
+        return { success: false, error: error.message };
+    }
+}
+
+export async function updateClientBlockSettingsAction(values: z.infer<typeof updateBlockSettingsSchema>) {
+    const parsed = updateBlockSettingsSchema.safeParse(values);
+    if (!parsed.success) {
+        return { success: false, error: "Données invalides." };
+    }
+
+    try {
+        const clients = await readDb();
+        const clientIndex = clients.findIndex(c => c.identificationNumber === parsed.data.identificationNumber);
+
+        if (clientIndex === -1) {
+            return { success: false, error: "Client non trouvé." };
+        }
+
+        clients[clientIndex].isBlocked = parsed.data.isBlocked;
+        clients[clientIndex].blockReason = parsed.data.blockReason || (parsed.data.isBlocked ? 'Compte bloqué par l\'administration.' : '');
+
 
         await writeDb(clients);
         revalidatePath(`/admin/dashboard/${parsed.data.identificationNumber}`);

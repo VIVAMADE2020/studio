@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency } from "@/lib/utils";
-import { ArrowLeft, Landmark, Settings, Banknote } from "lucide-react";
+import { ArrowLeft, Landmark, Settings, Banknote, ShieldBan } from "lucide-react";
 import Link from "next/link";
+import { AdminBlockSettingsForm } from "@/components/admin-block-settings-form";
 
 export default async function AdminClientDetailPage({ params }: { params: { accountNumber: string } }) {
     const { data: client, error } = await getClientByIdentificationNumberAction(params.accountNumber);
@@ -88,7 +89,7 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
                                             <TableCell>{new Date(t.date).toLocaleDateString()}</TableCell>
                                             <TableCell>{t.description}</TableCell>
                                             <TableCell>
-                                                <span className={`px-2 py-1 text-xs rounded-full ${
+                                                <span className={`px-2 py-1 text-xs rounded-full font-medium ${
                                                     t.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
                                                     t.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
                                                     t.status === 'PROCESSING' ? 'bg-blue-100 text-blue-800' :
@@ -132,6 +133,19 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
                                 identificationNumber={client.identificationNumber}
                                 currentSettings={client.transferSettings}
                            />
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2"><ShieldBan className="h-5 w-5"/> Blocage des Virements</CardTitle>
+                            <CardDescription>Activez le blocage pour empêcher les virements sortants.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <AdminBlockSettingsForm 
+                                identificationNumber={client.identificationNumber}
+                                isBlocked={client.isBlocked || false}
+                                blockReason={client.blockReason || ''}
+                            />
                         </CardContent>
                     </Card>
                     <Card>
