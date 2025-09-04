@@ -26,10 +26,10 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 interface AddTransactionFormProps {
-  accountNumber: string;
+  identificationNumber: string;
 }
 
-export function AddTransactionForm({ accountNumber }: AddTransactionFormProps) {
+export function AddTransactionForm({ identificationNumber }: AddTransactionFormProps) {
   const { toast } = useToast();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -40,7 +40,7 @@ export function AddTransactionForm({ accountNumber }: AddTransactionFormProps) {
   });
 
   async function onSubmit(values: FormValues) {
-    const result = await addTransactionAction({ ...values, accountNumber });
+    const result = await addTransactionAction({ ...values, identificationNumber });
 
     if (result.success) {
       toast({

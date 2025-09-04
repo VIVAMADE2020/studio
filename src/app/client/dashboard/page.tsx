@@ -3,13 +3,13 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getClientByAccountNumberAction, Client, Transaction } from "@/app/actions/clients";
+import { getClientByIdentificationNumberAction, Client } from "@/app/actions/clients";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { LogOut } from "lucide-react";
+import { LogOut, Landmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -45,18 +45,18 @@ export default function ClientDashboardPage() {
     const router = useRouter();
 
     useEffect(() => {
-        const accountNumber = sessionStorage.getItem('accountNumber');
-        if (!accountNumber) {
+        const identificationNumber = sessionStorage.getItem('identificationNumber');
+        if (!identificationNumber) {
             router.push('/client/access');
             return;
         }
 
         const fetchClientData = async () => {
             setIsLoading(true);
-            const result = await getClientByAccountNumberAction(accountNumber);
+            const result = await getClientByIdentificationNumberAction(identificationNumber);
             if (result.error || !result.data) {
                 setError(result.error || "Impossible de charger les données.");
-                sessionStorage.removeItem('accountNumber');
+                sessionStorage.removeItem('identificationNumber');
             } else {
                 setClient(result.data);
             }
@@ -67,7 +67,7 @@ export default function ClientDashboardPage() {
     }, [router]);
 
     const handleLogout = () => {
-        sessionStorage.removeItem('accountNumber');
+        sessionStorage.removeItem('identificationNumber');
         router.push('/');
     }
 
@@ -109,8 +109,8 @@ export default function ClientDashboardPage() {
                 </Card>
                  <Card>
                     <CardHeader>
-                        <CardTitle>Numéro de Compte</CardTitle>
-                        <CardDescription className="text-xl font-semibold text-muted-foreground pt-2">{client.accountNumber}</CardDescription>
+                        <CardTitle>N° d'identification</CardTitle>
+                        <CardDescription className="text-xl font-semibold text-muted-foreground pt-2">{client.identificationNumber}</CardDescription>
                     </CardHeader>
                 </Card>
                 <Card>
@@ -126,6 +126,23 @@ export default function ClientDashboardPage() {
                     </CardHeader>
                 </Card>
             </div>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><Landmark className="h-5 w-5"/> Vos Coordonnées Bancaires</CardTitle>
+                    <CardDescription>Utilisez ces informations pour recevoir des virements.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2 font-mono text-sm">
+                    <div>
+                        <p className="font-semibold text-muted-foreground">IBAN</p>
+                        <p className="text-foreground">{client.iban}</p>
+                    </div>
+                    <div>
+                        <p className="font-semibold text-muted-foreground">SWIFT/BIC</p>
+                        <p className="text-foreground">{client.swiftCode}</p>
+                    </div>
+                </CardContent>
+            </Card>
 
             <Card>
                 <CardHeader>

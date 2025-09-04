@@ -68,7 +68,7 @@ export function AdminClientList({ initialClients }: AdminClientListProps) {
               <DialogHeader>
                 <DialogTitle>Créer un nouveau client</DialogTitle>
                 <DialogDescription>
-                  Un numéro de compte sera généré automatiquement.
+                  Un numéro d'identification et des coordonnées bancaires seront générés automatiquement.
                 </DialogDescription>
               </DialogHeader>
               <AddClientForm onClientAdded={onClientAdded} />
@@ -81,7 +81,7 @@ export function AdminClientList({ initialClients }: AdminClientListProps) {
           <TableHeader>
             <TableRow>
               <TableHead>Nom</TableHead>
-              <TableHead>Numéro de compte</TableHead>
+              <TableHead>N° d'identification</TableHead>
               <TableHead>Email</TableHead>
               <TableHead className="text-right">Solde</TableHead>
               <TableHead className="text-center">Actions</TableHead>
@@ -92,14 +92,14 @@ export function AdminClientList({ initialClients }: AdminClientListProps) {
               clients.map((client) => {
                  const balance = client.initialBalance + client.transactions.reduce((acc, t) => acc + t.amount, 0);
                  return (
-                    <TableRow key={client.accountNumber}>
+                    <TableRow key={client.identificationNumber}>
                       <TableCell className="font-medium">{client.firstName} {client.lastName}</TableCell>
-                      <TableCell>{client.accountNumber}</TableCell>
+                      <TableCell>{client.identificationNumber}</TableCell>
                       <TableCell>{client.email}</TableCell>
                       <TableCell className="text-right">{formatCurrency(balance)}</TableCell>
                       <TableCell className="text-center">
                         <Button asChild variant="ghost" size="icon">
-                            <Link href={`/admin/dashboard/${client.accountNumber}`}>
+                            <Link href={`/admin/dashboard/${client.identificationNumber}`}>
                                 <Eye className="h-4 w-4" />
                             </Link>
                         </Button>

@@ -13,7 +13,7 @@ import { verifyClientLoginAction } from "@/app/actions/clients";
 
 
 export default function ClientAccessPage() {
-    const [accountNumber, setAccountNumber] = useState("");
+    const [identificationNumber, setIdentificationNumber] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -24,19 +24,19 @@ export default function ClientAccessPage() {
         e.preventDefault();
         setIsLoading(true);
 
-        if (!accountNumber || !password) {
+        if (!identificationNumber || !password) {
             toast({ variant: "destructive", title: "Erreur", description: "Veuillez remplir tous les champs." });
             setIsLoading(false);
             return;
         }
 
-        const result = await verifyClientLoginAction({ accountNumber, password });
+        const result = await verifyClientLoginAction({ identificationNumber, password });
 
         if (result.success && result.data) {
-            sessionStorage.setItem('accountNumber', result.data.accountNumber);
+            sessionStorage.setItem('identificationNumber', result.data.identificationNumber);
             router.push('/client/dashboard');
         } else {
-            toast({ variant: "destructive", title: "Accès refusé", description: result.error || "Numéro de compte ou mot de passe incorrect." });
+            toast({ variant: "destructive", title: "Accès refusé", description: result.error || "Numéro d'identification ou mot de passe incorrect." });
         }
 
         setIsLoading(false);
@@ -52,13 +52,13 @@ export default function ClientAccessPage() {
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-2">
-                            <Label htmlFor="accountNumber">Numéro de Compte</Label>
+                            <Label htmlFor="identificationNumber">Numéro d'identification</Label>
                             <Input
-                                id="accountNumber"
+                                id="identificationNumber"
                                 type="text"
                                 placeholder="FLEX-123456"
-                                value={accountNumber}
-                                onChange={(e) => setAccountNumber(e.target.value)}
+                                value={identificationNumber}
+                                onChange={(e) => setIdentificationNumber(e.target.value)}
                                 required
                                 disabled={isLoading}
                             />

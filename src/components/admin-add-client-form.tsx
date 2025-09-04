@@ -47,10 +47,10 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
 
   async function onSubmit(values: FormValues) {
     const result = await addClientAction(values);
-    if (result.success) {
+    if (result.success && result.data) {
       toast({
         title: "Client ajouté !",
-        description: `Le client ${values.firstName} ${values.lastName} a été créé.`,
+        description: `Le client ${values.firstName} ${values.lastName} a été créé avec le N° d'identification ${result.data.identificationNumber}.`,
       });
       form.reset();
       onClientAdded();
@@ -123,6 +123,9 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
             </FormItem>
           )}
         />
+        <p className="text-xs text-muted-foreground pt-1">
+            Le numéro d'identification, l'IBAN et le code SWIFT seront générés automatiquement.
+        </p>
         <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
            {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Créer le client

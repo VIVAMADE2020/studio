@@ -1,15 +1,15 @@
 
-import { getClientByAccountNumberAction, addTransactionAction } from "@/app/actions/clients";
+import { getClientByIdentificationNumberAction } from "@/app/actions/clients";
 import { AddTransactionForm } from "@/components/admin-add-transaction-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency } from "@/lib/utils";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Landmark } from "lucide-react";
 import Link from "next/link";
 
 export default async function AdminClientDetailPage({ params }: { params: { accountNumber: string } }) {
-    const { data: client, error } = await getClientByAccountNumberAction(params.accountNumber);
+    const { data: client, error } = await getClientByIdentificationNumberAction(params.accountNumber);
 
     if (error) {
         return <div className="container py-8 text-red-500">Erreur: {error}</div>;
@@ -39,9 +39,18 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
                         </CardHeader>
                         <CardContent className="text-sm space-y-2">
                             <p><strong>Nom:</strong> {client.firstName} {client.lastName}</p>
-                            <p><strong>Numéro de compte:</strong> {client.accountNumber}</p>
+                            <p><strong>N° d'identification:</strong> {client.identificationNumber}</p>
                             <p><strong>Email:</strong> {client.email}</p>
                             <p><strong>Client depuis:</strong> {new Date(client.creationDate).toLocaleDateString()}</p>
+                        </CardContent>
+                    </Card>
+                     <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2"><Landmark className="h-5 w-5"/> Informations Bancaires</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-sm space-y-2 font-mono">
+                            <p><strong>IBAN:</strong> {client.iban}</p>
+                            <p><strong>SWIFT/BIC:</strong> {client.swiftCode}</p>
                         </CardContent>
                     </Card>
                      <Card>
@@ -92,7 +101,7 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
                             <CardDescription>Créditez ou débitez le compte.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                           <AddTransactionForm accountNumber={client.accountNumber} />
+                           <AddTransactionForm identificationNumber={client.identificationNumber} />
                         </CardContent>
                     </Card>
                 </div>

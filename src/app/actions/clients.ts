@@ -11,14 +11,16 @@ const DB_PATH = path.resolve(process.cwd(), 'src', 'data', 'clients.json');
 
 // --- Types ---
 export interface Client {
-  accountNumber: string;
+  identificationNumber: string;
   firstName: string;
   lastName: string;
   email: string;
-  password?: string; // Le mot de passe est optionnel pour les anciens clients
+  password?: string;
   initialBalance: number;
   transactions: Transaction[];
   creationDate: string;
+  iban: string;
+  swiftCode: string;
 }
 
 export interface Transaction {
@@ -54,6 +56,17 @@ async function writeDb(data: Client[]): Promise<void> {
     }
 }
 
+// --- Fonctions utilitaires ---
+function generateIban() {
+    const countryCode = 'FR';
+    const bankCode = '30002'; // Code banque fictif
+    const branchCode = '00550'; // Code guichet fictif
+    const accountNumber = Math.random().toString().slice(2, 13).padStart(11, '0');
+    const bban = `${bankCode}${branchCode}${accountNumber}`;
+    const checkDigits = '76'; // Clé RIB fictive
+    return `${countryCode}${checkDigits}${bban}`;
+}
+
 // --- Schémas de validation ---
 
 const addClientSchema = z.object({
@@ -65,7 +78,7 @@ const addClientSchema = z.object({
 });
 
 const addTransactionSchema = z.object({
-    accountNumber: z.string(),
+    identificationNumber: z.string(),
     description: z.string().min(3, "Description trop courte."),
     amount: z.coerce.number(),
 });
@@ -82,15 +95,17 @@ export async function addClientAction(values: z.infer<typeof addClientSchema>) {
         const clients = await readDb();
         const newClient: Client = {
             ...parsed.data,
-            accountNumber: `FLEX-${Math.random().toString(36).substr(2, 6).toUpperCase()}`,
+            identificationNumber: `FLEX-${Math.random().toString(36).substr(2, 6).toUpperCase()}`,
             creationDate: new Date().toISOString(),
             transactions: [],
+            iban: generateIban(),
+            swiftCode: 'FLEXFRPP',
         };
         clients.push(newClient);
         await writeDb(clients);
         
         revalidatePath('/admin/dashboard');
-        return { success: true };
+        return { success: true, data: newClient };
     } catch (error: any) {
         return { success: false, error: error.message };
     }
@@ -107,7 +122,7 @@ export async function getClientsAction(): Promise<{ data: Client[] | null; error
 }
 
 const clientLoginSchema = z.object({
-  accountNumber: z.string().min(1, "Le numéro de compte est requis."),
+  identificationNumber: z.string().min(1, "Le numéro d'identification est requis."),
   password: z.string().min(1, "Le mot de passe est requis."),
 });
 
@@ -117,46 +132,45 @@ export async function verifyClientLoginAction(values: z.infer<typeof clientLogin
         return { success: false, error: "Données de connexion invalides." };
     }
     
-    const { accountNumber, password } = parsed.data;
+    const { identificationNumber, password } = parsed.data;
 
     try {
         const clients = await readDb();
-        const client = clients.find(c => c.accountNumber === accountNumber);
+        const client = clients.find(c => c.identificationNumber === identificationNumber);
 
         if (!client) {
-            return { success: false, error: "Numéro de compte ou mot de passe incorrect." };
+            return { success: false, error: "Numéro d'identification ou mot de passe incorrect." };
         }
 
-        // Pour les anciens clients sans mot de passe, on refuse la connexion
         if (!client.password) {
             return { success: false, error: "Ce compte n'a pas de mot de passe défini. Veuillez contacter le support." };
         }
 
         if (client.password !== password) {
-            return { success: false, error: "Numéro de compte ou mot de passe incorrect." };
+            return { success: false, error: "Numéro d'identification ou mot de passe incorrect." };
         }
 
         return { success: true, data: client };
     } catch (error: any) {
-        console.error(`Failed to verify client login for ${accountNumber}:`, error);
+        console.error(`Failed to verify client login for ${identificationNumber}:`, error);
         return { success: false, error: `Une erreur est survenue lors de la vérification: ${error.message}` };
     }
 }
 
 
-export async function getClientByAccountNumberAction(accountNumber: string): Promise<{ data: Client | null; error: string | null; }> {
-    if (!accountNumber) {
-        return { data: null, error: "Numéro de compte non fourni." };
+export async function getClientByIdentificationNumberAction(identificationNumber: string): Promise<{ data: Client | null; error: string | null; }> {
+    if (!identificationNumber) {
+        return { data: null, error: "Numéro d'identification non fourni." };
     }
     try {
         const clients = await readDb();
-        const client = clients.find(c => c.accountNumber === accountNumber) || null;
+        const client = clients.find(c => c.identificationNumber === identificationNumber) || null;
         if (!client) {
             return { data: null, error: "Client non trouvé." };
         }
         return { data: client, error: null };
     } catch (error: any) {
-        console.error(`Failed to get client ${accountNumber}:`, error);
+        console.error(`Failed to get client ${identificationNumber}:`, error);
         return { data: null, error: `Impossible de récupérer les informations du client: ${error.message}` };
     }
 }
@@ -169,7 +183,7 @@ export async function addTransactionAction(values: z.infer<typeof addTransaction
 
     try {
         const clients = await readDb();
-        const clientIndex = clients.findIndex(c => c.accountNumber === parsed.data.accountNumber);
+        const clientIndex = clients.findIndex(c => c.identificationNumber === parsed.data.identificationNumber);
 
         if (clientIndex === -1) {
             return { success: false, error: "Client non trouvé." };
@@ -185,7 +199,7 @@ export async function addTransactionAction(values: z.infer<typeof addTransaction
         clients[clientIndex].transactions.push(newTransaction);
         await writeDb(clients);
 
-        revalidatePath(`/admin/dashboard/${parsed.data.accountNumber}`);
+        revalidatePath(`/admin/dashboard/${parsed.data.identificationNumber}`);
         revalidatePath('/client/dashboard');
         return { success: true };
     } catch (error: any) {
