@@ -19,7 +19,6 @@ export async function verifyAdminPassword(values: z.infer<typeof loginSchema>) {
     if (password === adminPassword) {
         return { success: true };
     } else {
-        console.log("Admin password from env:", adminPassword);
         return { success: false, error: "Mot de passe incorrect." };
     }
 }
