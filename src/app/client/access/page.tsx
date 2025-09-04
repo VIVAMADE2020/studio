@@ -30,14 +30,19 @@ export default function ClientAccessPage() {
             return;
         }
 
-        const result = await verifyClientLoginAction({ identificationNumber, password });
+        try {
+            const result = await verifyClientLoginAction({ identificationNumber, password });
 
-        if (result.success && result.data) {
-            sessionStorage.setItem('identificationNumber', result.data.identificationNumber);
-            router.push('/client/dashboard');
-        } else {
-            toast({ variant: "destructive", title: "Accès refusé", description: result.error || "Numéro d'identification ou mot de passe incorrect." });
+            if (result.success && result.data) {
+                sessionStorage.setItem('identificationNumber', result.data.identificationNumber);
+                router.push('/client/dashboard');
+            } else {
+                toast({ variant: "destructive", title: "Accès refusé", description: result.error || "Numéro d'identification ou mot de passe incorrect." });
+            }
+        } catch (error) {
+            toast({ variant: "destructive", title: "Erreur", description: "Une erreur de communication est survenue." });
         }
+
 
         setIsLoading(false);
     };
@@ -96,3 +101,5 @@ export default function ClientAccessPage() {
         </div>
     );
 }
+
+    

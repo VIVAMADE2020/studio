@@ -166,6 +166,45 @@ const updateBlockSettingsSchema = z.object({
     blockReason: z.string().optional(),
 });
 
+// --- Nouvelle fonction pour traiter les transactions en attente ---
+async function processPendingTransactions(client: Client): Promise<boolean> {
+    let hasChanged = false;
+    const now = new Date();
+
+    const pendingTransactions = client.transactions.filter(t => t.status === 'PENDING');
+
+    for (const transaction of pendingTransactions) {
+        if (transaction.estimatedCompletionDate && new Date(transaction.estimatedCompletionDate) <= now) {
+            hasChanged = true;
+            // The transaction is due. Process it now.
+            const transactionIndex = client.transactions.findIndex(t => t.id === transaction.id);
+            if (transactionIndex === -1) continue;
+
+            // 1. Check for block
+            if (client.isBlocked) {
+                client.transactions[transactionIndex].status = 'FAILED';
+                client.transactions[transactionIndex].failureReason = client.blockReason || 'Transaction refusée car le compte est bloqué.';
+                continue;
+            }
+
+            // 2. Check for sufficient balance at time of processing
+            const balanceAtProcessing = client.initialBalance + client.transactions
+                .filter(t => t.status === 'COMPLETED' && new Date(t.date) < new Date(transaction.date))
+                .reduce((acc, t) => acc + t.amount, 0);
+
+            if (balanceAtProcessing < Math.abs(transaction.amount)) {
+                client.transactions[transactionIndex].status = 'FAILED';
+                client.transactions[transactionIndex].failureReason = 'Solde insuffisant au moment du traitement.';
+                continue;
+            }
+            
+            // 3. If all good, complete the transaction
+            client.transactions[transactionIndex].status = 'COMPLETED';
+        }
+    }
+    return hasChanged;
+}
+
 
 // --- Actions Serveur ---
 
@@ -254,8 +293,9 @@ export async function verifyClientLoginAction(values: z.infer<typeof clientLogin
         if (client.password !== password) {
             return { success: false, error: "Numéro d'identification ou mot de passe incorrect." };
         }
-
-        return { success: true, data: client };
+        
+        // Don't process transactions on login, only on dashboard view
+        return { success: true, data: { identificationNumber: client.identificationNumber } };
     } catch (error: any) {
         console.error(`Failed to verify client login for ${identificationNumber}:`, error);
         return { success: false, error: `Une erreur est survenue lors de la vérification: ${error.message}` };
@@ -269,11 +309,20 @@ export async function getClientByIdentificationNumberAction(identificationNumber
     }
     try {
         const clients = await readDb();
-        const client = clients.find(c => c.identificationNumber === identificationNumber) || null;
-        if (!client) {
+        const clientIndex = clients.findIndex(c => c.identificationNumber === identificationNumber);
+        
+        if (clientIndex === -1) {
             return { data: null, error: "Client non trouvé." };
         }
-        return { data: client, error: null };
+
+        const client = clients[clientIndex];
+        const hasChanged = await processPendingTransactions(client);
+
+        if (hasChanged) {
+            await writeDb(clients);
+        }
+
+        return { data: clients[clientIndex], error: null };
     } catch (error: any) {
         console.error(`Failed to get client ${identificationNumber}:`, error);
         return { data: null, error: `Impossible de récupérer les informations du client: ${error.message}` };
@@ -294,7 +343,6 @@ export async function addTransactionAction(values: z.infer<typeof addTransaction
             return { success: false, error: "Client non trouvé." };
         }
         
-        // This is a manual transaction, we will not process it, just add it as completed.
         const completedTransaction: Transaction = {
             id: `TXN-${new Date().getTime()}`,
             date: new Date().toISOString(),
@@ -303,25 +351,11 @@ export async function addTransactionAction(values: z.infer<typeof addTransaction
             status: 'COMPLETED',
         };
 
-        // We also need to process pending transactions for the client if the amount is a credit
-        if (completedTransaction.amount > 0) {
-            // This is a simplified logic. In a real-world scenario, you would have a more complex system to handle this.
-            // For now, we will just mark the oldest pending transaction as completed if the balance allows it.
-            const pendingTransactions = clients[clientIndex].transactions.filter(t => t.status === 'PENDING').sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-            let currentBalance = clients[clientIndex].initialBalance + clients[clientIndex].transactions.filter(t => t.status === 'COMPLETED').reduce((acc, t) => acc + t.amount, 0) + completedTransaction.amount;
-            
-            for(const pending of pendingTransactions) {
-                if(currentBalance >= Math.abs(pending.amount)) {
-                    const pendingIndex = clients[clientIndex].transactions.findIndex(t => t.id === pending.id);
-                    if(pendingIndex !== -1) {
-                        clients[clientIndex].transactions[pendingIndex].status = 'COMPLETED';
-                        currentBalance += pending.amount; // amount is negative
-                    }
-                }
-            }
-        }
-        
         clients[clientIndex].transactions.push(completedTransaction);
+        
+        // Also process pending transactions
+        await processPendingTransactions(clients[clientIndex]);
+
         await writeDb(clients);
 
         revalidatePath(`/admin/dashboard/${parsed.data.identificationNumber}`);
@@ -360,46 +394,15 @@ export async function transferFundsAction(values: z.infer<typeof transferFundsSc
         const sender = clients[senderIndex];
         const initiationDate = new Date();
 
-        // 1. Check if the client is blocked
-        if (sender.isBlocked) {
-             const failedTransaction: Transaction = {
-                id: `TXN-F-${initiationDate.getTime()}`,
-                date: initiationDate.toISOString(),
-                description: `Virement à ${beneficiaryName} - ${description}`,
-                amount: -amount,
-                status: 'FAILED',
-                failureReason: sender.blockReason || 'Votre compte est actuellement restreint. Veuillez contacter le support.',
-                beneficiary: { name: beneficiaryName, accountNumber: beneficiaryAccountNumber, iban: beneficiaryIban, bankName: beneficiaryBankName, swiftCode: beneficiarySwiftCode }
-            };
-            clients[senderIndex].transactions.push(failedTransaction);
-            await writeDb(clients);
-            revalidatePath('/client/dashboard');
-            return { success: true, message: "Virement échoué en raison d'un blocage." };
-        }
-
-
-        // 2. Check for sufficient balance
+        // 1. Check for sufficient balance for immediate feedback
         const completedTransactions = sender.transactions.filter(t => t.status === 'COMPLETED');
         const senderBalance = sender.initialBalance + completedTransactions.reduce((acc, t) => acc + t.amount, 0);
 
         if (senderBalance < amount) {
-            // Not enough balance now, so fail it right away
-            const failedTransaction: Transaction = {
-                id: `TXN-F-${initiationDate.getTime()}`,
-                date: initiationDate.toISOString(),
-                description: `Virement à ${beneficiaryName} - ${description}`,
-                amount: -amount,
-                status: 'FAILED',
-                failureReason: 'Solde insuffisant.',
-                beneficiary: { name: beneficiaryName, accountNumber: beneficiaryAccountNumber, iban: beneficiaryIban, bankName: beneficiaryBankName, swiftCode: beneficiarySwiftCode }
-            };
-            clients[senderIndex].transactions.push(failedTransaction);
-            await writeDb(clients);
-            revalidatePath('/client/dashboard');
             return { success: false, error: "Solde insuffisant pour effectuer ce virement." };
         }
-
-        // 3. Create a PENDING transaction if not blocked and balance is sufficient
+        
+        // 2. Create a PENDING transaction
         const { duration = 1, unit = 'days' } = sender.transferSettings || {};
         const estimatedCompletionDate = new Date(initiationDate);
         if (unit === 'minutes') {
@@ -487,3 +490,5 @@ export async function updateClientBlockSettingsAction(values: z.infer<typeof upd
         return { success: false, error: error.message };
     }
 }
+
+    

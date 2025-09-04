@@ -29,14 +29,19 @@ export default function AdminLoginPage() {
             return;
         }
 
-        const result = await verifyAdminPassword({ password });
+        try {
+            const result = await verifyAdminPassword({ password });
 
-        if (result.success) {
-            sessionStorage.setItem('adminLoggedIn', 'true');
-            router.push('/admin/dashboard');
-        } else {
-            toast({ variant: "destructive", title: "Accès refusé", description: result.error || "Mot de passe incorrect." });
+            if (result.success) {
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                router.push('/admin/dashboard');
+            } else {
+                toast({ variant: "destructive", title: "Accès refusé", description: result.error || "Mot de passe incorrect." });
+            }
+        } catch (error) {
+             toast({ variant: "destructive", title: "Erreur", description: "Une erreur de communication est survenue." });
         }
+
 
         setIsLoading(false);
     };
@@ -87,3 +92,4 @@ export default function AdminLoginPage() {
     );
 }
 
+    
