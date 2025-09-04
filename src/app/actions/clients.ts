@@ -49,12 +49,15 @@ async function readDb(): Promise<Client[]> {
 
 async function writeDb(data: Client[]): Promise<void> {
     try {
+        const dataDir = path.dirname(DB_PATH);
+        await fs.mkdir(dataDir, { recursive: true });
         await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
     } catch (error) {
         console.error("Erreur d'écriture dans la base de données:", error);
         throw new Error("Impossible d'écrire dans la base de données locale.");
     }
 }
+
 
 // --- Fonctions utilitaires ---
 function generateIban() {
@@ -63,7 +66,9 @@ function generateIban() {
     const branchCode = '00550'; // Code guichet fictif
     const accountNumber = Math.random().toString().slice(2, 13).padStart(11, '0');
     const bban = `${bankCode}${branchCode}${accountNumber}`;
-    const checkDigits = '76'; // Clé RIB fictive
+    // Calcul simple de la clé RIB (non conforme à la norme)
+    const ribKey = 97 - (parseInt(bban.replace(/./g, char => char.charCodeAt(0) - 'A'.charCodeAt(0) + 10), 10) % 97);
+    const checkDigits = String(ribKey).padStart(2, '0');
     return `${countryCode}${checkDigits}${bban}`;
 }
 
