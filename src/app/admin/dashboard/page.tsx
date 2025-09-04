@@ -12,9 +12,16 @@ export default async function AdminDashboardPage() {
         return (
              <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Configuration Requise</AlertTitle>
+                <AlertTitle>Configuration Manquante</AlertTitle>
                 <AlertDescription>
-                    Les URLs de vos scripts Google ne sont pas configurées. Veuillez vous rendre sur la page de <Link href="/admin/dashboard/setup" className="underline font-semibold">Configuration</Link> pour finaliser l'installation.
+                    <p>Une ou plusieurs URLs de Google Script ne sont pas configurées dans vos variables d'environnement.</p>
+                    <p className="mt-2">Veuillez créer un fichier `.env.local` à la racine de votre projet et y ajouter les lignes suivantes avec vos URLs :</p>
+                    <pre className="mt-2 bg-muted p-2 rounded-md text-xs">
+                        <code>
+                            GOOGLE_SCRIPT_WEB_APP_URL=VOTRE_URL_FORMULAIRES<br/>
+                            GOOGLE_SCRIPT_DB_URL=VOTRE_URL_BASE_DE_DONNEES
+                        </code>
+                    </pre>
                 </AlertDescription>
             </Alert>
         )
@@ -29,7 +36,7 @@ export default async function AdminDashboardPage() {
                 <AlertTitle>Erreur de chargement des clients</AlertTitle>
                 <AlertDescription>
                     {error}
-                    <p className="mt-2 text-xs">Assurez-vous que l'URL du script de base de données est correcte dans la page de <Link href="/admin/dashboard/setup" className="underline font-semibold">Configuration</Link> et que le script est bien déployé avec un accès pour "Tout le monde".</p>
+                    <p className="mt-2 text-xs">Assurez-vous que l'URL du script de base de données est correcte et que le script est bien déployé avec un accès pour "Tout le monde".</p>
                 </AlertDescription>
             </Alert>
         )
