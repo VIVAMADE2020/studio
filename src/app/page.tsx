@@ -1,3 +1,4 @@
+
 import { HeroSection } from '@/components/sections/hero-section';
 import { ServicesSection } from '@/components/sections/services-section';
 import { AboutSection } from '@/components/sections/about-section';
@@ -9,7 +10,7 @@ import { CtaSection } from '@/components/sections/cta-section';
 
 export default function Home() {
   return (
-    <>
+    <div className="-mt-20">
       <HeroSection />
       <ServicesSection />
       <AboutSection />
@@ -18,6 +19,6 @@ export default function Home() {
       <PartnersSection />
       <FaqSection />
       <CtaSection />
-    </>
+    </div>
   );
 }

@@ -6,6 +6,8 @@ import { Menu, Landmark, User } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "/", label: "Accueil" },
@@ -16,27 +18,32 @@ const navLinks = [
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === '/';
 
   return (
-    <header className="sticky top-0 z-50 w-full">
+    <header className={cn(
+        "sticky top-0 z-50 w-full",
+        isHome ? "bg-transparent" : "bg-secondary"
+    )}>
       <div className="container flex h-20 max-w-screen-2xl items-center">
         <Link href="/" className="mr-6 flex items-center space-x-2">
           <Landmark className="h-6 w-6 text-primary" />
-          <span className="font-bold text-lg text-primary hidden sm:inline-block">FLEXFOND</span>
+          <span className={cn("font-bold text-lg hidden sm:inline-block", isHome ? "text-white" : "text-primary")}>FLEXFOND</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="font-medium text-white/80 transition-colors hover:text-white"
+              className={cn("font-medium transition-colors", isHome ? "text-white/80 hover:text-white" : "text-secondary-foreground/80 hover:text-secondary-foreground")}
             >
               {link.label}
             </Link>
           ))}
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-2">
-          <Button variant="ghost" asChild className="text-white/80 hover:text-white hover:bg-white/10">
+          <Button variant="ghost" asChild className={cn(isHome ? "text-white/80 hover:text-white hover:bg-white/10" : "text-secondary-foreground/80 hover:text-secondary-foreground")}>
             <Link href="/client/access">
               <User className="mr-2 h-4 w-4" />
               Espace Client
@@ -47,7 +54,7 @@ export function Header() {
           </Button>
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="text-white/80 hover:text-white hover:bg-white/10">
+              <Button variant="ghost" size="icon" className={cn(isHome ? "text-white/80 hover:text-white hover:bg-white/10" : "text-secondary-foreground/80 hover:text-secondary-foreground")}>
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Ouvrir le menu</span>
               </Button>
