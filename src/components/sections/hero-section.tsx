@@ -14,7 +14,7 @@ export function HeroSection() {
           fill
           priority
           className="object-cover"
-          data-ai-hint="business meeting"
+          data-ai-hint="woman phone"
         />
         <div className="absolute inset-0 bg-black/60"></div>
       </div>
