@@ -3,5 +3,5 @@
 // By putting the hero image URL here, it's easy to change it in the future
 // without having to hunt through component files.
 export const siteConfig = {
-  heroImage: "https://picsum.photos/1920/1080",
+  heroImage: "https://i.postimg.cc/ZKwnrFQb/smiley-femme-parlant-au-telephone-coup-moyen-1.png",
 };
