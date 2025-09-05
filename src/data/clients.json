@@ -53,6 +53,22 @@
           "swiftCode": "BNPAFRPP"
         },
         "failureReason": "bbbb"
+      },
+      {
+        "id": "TXN-D-1757032101180",
+        "date": "2025-09-05T00:28:21.180Z",
+        "description": "Virement à bvv - VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV",
+        "amount": -12,
+        "status": "FAILED",
+        "estimatedCompletionDate": "2025-09-05T00:30:21.180Z",
+        "beneficiary": {
+          "name": "bvv",
+          "accountNumber": "(è3456778899",
+          "iban": "FR76 3000 4005 5512 3456 7890 183",
+          "bankName": "bb",
+          "swiftCode": "BNPAFRPP"
+        },
+        "failureReason": "bbbb"
       }
     ],
     "iban": "FR76300020055015802155391",

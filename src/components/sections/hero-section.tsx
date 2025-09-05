@@ -2,22 +2,24 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Typewriter } from "@/components/typewriter";
 import Image from "next/image";
+import { siteConfig } from "@/config/site";
 
 export function HeroSection() {
   return (
-    <section className="relative w-full flex items-center justify-center bg-secondary/50 py-24 sm:py-32 lg:py-40">
+    <section className="relative w-full h-screen flex items-center justify-center">
       <div className="absolute inset-0">
         <Image 
-          src="https://picsum.photos/1920/1080"
+          src={siteConfig.heroImage}
           alt="Background"
           fill
+          priority
           className="object-cover"
           data-ai-hint="business meeting"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+        <div className="absolute inset-0 bg-black/60"></div>
       </div>
       <div className="container relative z-10 text-center px-4">
-        <h1 className="text-4xl md:text-6xl font-bold text-primary tracking-tight">
+        <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
           <Typewriter
             texts={[
               "Solutions financières sur-mesure.",
@@ -26,14 +28,14 @@ export function HeroSection() {
             ]}
           />
         </h1>
-        <p className="mt-6 max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground">
+        <p className="mt-6 max-w-2xl mx-auto text-lg md:text-xl text-white/80">
           Que ce soit pour un projet personnel, un investissement immobilier ou l'achat d'un véhicule, FLEXFOND vous accompagne avec des solutions de financement et de banque en ligne adaptées et transparentes.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
             <Link href="/services">Découvrir nos services</Link>
           </Button>
-          <Button asChild size="lg" variant="outline">
+          <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white hover:text-primary">
             <Link href="/contact">Nous contacter</Link>
           </Button>
         </div>
