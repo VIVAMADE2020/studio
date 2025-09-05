@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import { ConferenceSpeaker } from '@/components/illustrations';
 import { Flag, Building, Users, Target, Eye, Handshake, Globe, Banknote } from 'lucide-react';
 import React from 'react';
 
@@ -83,14 +83,7 @@ export default function AboutPage() {
                             { name: 'Thomas Bernard', role: 'Directeur des Opérations' },
                          ].map(member => (
                             <div key={member.name} className="p-6 bg-card rounded-lg shadow-md flex flex-col items-center">
-                                <Image
-                                    src={`https://api.dicebear.com/8.x/bottts-neutral/png?seed=${member.name.replace(/\s+/g, '')}&size=96`}
-                                    alt={`Portrait de ${member.name}`}
-                                    width={96}
-                                    height={96}
-                                    className="rounded-full mb-4 bg-primary/10"
-                                    data-ai-hint="illustration avatar"
-                                />
+                                <ConferenceSpeaker className="w-24 h-24 text-accent mb-4" />
                                 <h4 className="text-xl font-semibold text-primary">{member.name}</h4>
                                 <p className="text-muted-foreground mt-2">{member.role}</p>
                             </div>
