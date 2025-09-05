@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Flag, Building, Users, Target, Eye, Handshake, Globe, Banknote } from 'lucide-react';
 import React from 'react';
+import { ConferenceSpeaker } from '@/components/illustrations';
 
 const timelineEvents = [
     { year: "2015", title: "Fondation", description: "FLEXFOND est créé avec l'ambition de rendre les services financiers plus accessibles et transparents.", icon: <Flag /> },
@@ -82,9 +83,10 @@ export default function AboutPage() {
                             { name: 'Isabelle Dubois', role: 'Directrice Financière' },
                             { name: 'Thomas Bernard', role: 'Directeur des Opérations' },
                          ].map(member => (
-                            <div key={member.name} className="p-6 bg-card rounded-lg shadow-md">
+                            <div key={member.name} className="p-6 bg-card rounded-lg shadow-md flex flex-col items-center">
+                                <ConferenceSpeaker className="h-24 w-24 text-accent mb-4" />
                                 <h4 className="text-xl font-semibold text-primary">{member.name}</h4>
-                                <p className="text-accent mt-2">{member.role}</p>
+                                <p className="text-muted-foreground mt-2">{member.role}</p>
                             </div>
                          ))}
                      </div>
