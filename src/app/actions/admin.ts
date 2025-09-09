@@ -15,8 +15,8 @@ export async function verifyAdminPassword(values: z.infer<typeof loginSchema>) {
 
     const { password } = parsed.data;
 
-    // Next.js charge automatiquement les variables depuis .env.local
-    if (password === process.env.ADMIN_PASSWORD) {
+    // Utilisation de la variable d'environnement publique
+    if (password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
         return { success: true };
     } else {
         return { success: false, error: "Mot de passe incorrect." };
