@@ -188,11 +188,11 @@ async function processPendingTransactions(client: Client): Promise<boolean> {
             }
 
             // 2. Check for sufficient balance at time of processing
-            const balanceAtProcessing = client.initialBalance + client.transactions
-                .filter(t => t.status === 'COMPLETED' && new Date(t.date) < new Date(transaction.date))
-                .reduce((acc, t) => acc + t.amount, 0);
+            const completedTransactions = client.transactions.filter(t => t.status === 'COMPLETED' && new Date(t.date) < now);
+            const balanceAtProcessing = client.initialBalance + completedTransactions.reduce((acc, t) => acc + t.amount, 0);
 
-            if (balanceAtProcessing < Math.abs(transaction.amount)) {
+
+            if (balanceAtProcessing + transaction.amount < 0) {
                 client.transactions[transactionIndex].status = 'FAILED';
                 client.transactions[transactionIndex].failureReason = 'Solde insuffisant au moment du traitement.';
                 continue;
@@ -490,5 +490,3 @@ export async function updateClientBlockSettingsAction(values: z.infer<typeof upd
         return { success: false, error: error.message };
     }
 }
-
-    
