@@ -1,26 +1,45 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, User, Home, Car } from "lucide-react";
+import { ArrowRight, User, Home, Car, Building, Briefcase, GraduationCap } from "lucide-react";
 import Link from "next/link";
+import React from "react";
 
 const services = [
   {
-    icon: <User className="h-10 w-10 text-accent" />,
+    icon: <User className="h-8 w-8 text-accent" />,
     title: "Prêt Personnel",
-    description: "Financez vos projets personnels, voyages, ou études avec un prêt flexible et profitez de notre taux fixe avantageux de 2%.",
+    description: "Financez vos projets personnels, voyages, ou études avec un prêt flexible.",
     link: "/services/pret-personnel",
   },
   {
-    icon: <Home className="h-10 w-10 text-accent" />,
+    icon: <Home className="h-8 w-8 text-accent" />,
     title: "Prêt Immobilier",
-    description: "Devenez propriétaire ou investissez dans l'immobilier avec nos solutions de financement sur-mesure, toujours à un taux fixe de 2%.",
+    description: "Devenez propriétaire ou investissez dans l'immobilier avec nos solutions sur-mesure.",
     link: "/services/pret-immobilier",
   },
   {
-    icon: <Car className="h-10 w-10 text-accent" />,
+    icon: <Car className="h-8 w-8 text-accent" />,
     title: "Prêt Auto",
-    description: "Achetez le véhicule de vos rêves, neuf ou d'occasion, grâce à nos offres de crédit auto avantageuses à un taux fixe de 2%.",
+    description: "Achetez le véhicule de vos rêves, neuf ou d'occasion, grâce à nos offres de crédit.",
     link: "/services/pret-auto",
+  },
+  {
+    icon: <Building className="h-8 w-8 text-accent" />,
+    title: "Prêt Professionnel",
+    description: "Développez votre activité avec nos solutions de financement pour entreprises.",
+    link: "/services/pret-professionnel",
+  },
+  {
+    icon: <Briefcase className="h-8 w-8 text-accent" />,
+    title: "Rachat de Crédits",
+    description: "Regroupez vos prêts en un seul pour alléger vos mensualités et simplifier votre budget.",
+    link: "/services/rachat-de-credits",
+  },
+  {
+    icon: <GraduationCap className="h-8 w-8 text-accent" />,
+    title: "Prêt Étudiant",
+    description: "Financez vos études et préparez votre avenir en toute sérénité avec un prêt adapté.",
+    link: "/services/pret-etudiant",
   },
 ];
 
@@ -32,7 +51,7 @@ export function ServicesSection() {
         <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
           Découvrez une gamme complète de services conçus pour répondre à chacun de vos besoins financiers.
         </p>
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
             <Card key={index} className="flex flex-col text-left hover:shadow-xl transition-shadow duration-300">
               <CardHeader>
