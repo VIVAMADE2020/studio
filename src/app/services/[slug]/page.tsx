@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, Quote } from 'lucide-react';
@@ -10,6 +11,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import React from 'react';
 import Image from 'next/image';
 import { siteConfig } from '@/config/site';
+import Autoplay from "embla-carousel-autoplay";
 
 
 // Mock data for services
@@ -161,10 +163,14 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
     notFound();
   }
 
+  const plugin = React.useRef(
+    Autoplay({ delay: 2000, stopOnInteraction: true })
+  );
+
   return (
-    <div className="bg-background">
+    <div className="-mt-20">
       {/* Hero */}
-      <section className="relative py-20 md:py-32 bg-secondary/50 h-[50vh] flex items-center justify-center text-center text-white">
+      <section className="relative h-screen flex items-center justify-center text-center text-white">
         <div className="absolute inset-0">
           <Image 
             src={service.image}
@@ -182,7 +188,7 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
       </section>
 
       {/* Content */}
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-24 bg-background">
         <div className="container">
           <div className="grid lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2">
@@ -265,10 +271,13 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
                 Découvrez ce que nos clients disent de notre service de {service.title}.
             </p>
              <Carousel
+                plugins={[plugin.current]}
                 opts={{
                     align: "start",
                     loop: true,
                 }}
+                onMouseEnter={plugin.current.stop}
+                onMouseLeave={plugin.current.reset}
                 className="w-full max-w-4xl mx-auto mt-12"
             >
                 <CarouselContent>
