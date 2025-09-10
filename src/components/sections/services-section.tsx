@@ -64,23 +64,22 @@ export function ServicesSection() {
         </p>
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <Card key={index} className="relative flex flex-col text-left hover:shadow-xl transition-shadow duration-300 overflow-hidden text-white group">
-                <div className="absolute inset-0 z-0">
+            <Card key={index} className="flex flex-col text-left hover:shadow-xl transition-shadow duration-300 overflow-hidden group">
+                <div className="relative w-full h-48 overflow-hidden">
                     <Image 
                         src={service.image}
                         alt={service.title}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition-colors"></div>
                 </div>
-                <div className="relative z-10 flex flex-col flex-grow p-6">
-                    <div className="w-16 h-16 rounded-lg bg-white/10 text-white flex items-center justify-center mb-4">
+                <div className="flex flex-col flex-grow p-6">
+                    <div className="w-16 h-16 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4">
                         {service.icon}
                     </div>
-                    <CardTitle className="text-2xl text-white">{service.title}</CardTitle>
-                    <p className="text-white/80 mt-2 flex-grow">{service.description}</p>
-                    <Button asChild variant="link" className="p-0 h-auto justify-start mt-4 text-white font-semibold">
+                    <CardTitle className="text-2xl text-foreground">{service.title}</CardTitle>
+                    <p className="text-muted-foreground mt-2 flex-grow">{service.description}</p>
+                    <Button asChild variant="link" className="p-0 h-auto justify-start mt-4 text-primary font-semibold">
                       <Link href={service.link}>
                         En savoir plus <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
