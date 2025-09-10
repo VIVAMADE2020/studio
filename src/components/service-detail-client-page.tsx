@@ -44,6 +44,16 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
             {service.title}
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-white/80">{service.tagline}</p>
+           {service.keyResults && (
+            <div className="mt-8 flex flex-wrap justify-center gap-4 md:gap-8">
+              {service.keyResults.map((result: any, index: number) => (
+                <div key={index} className="flex items-center gap-2 text-base font-medium">
+                  {result.icon}
+                  <span>{result.text}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

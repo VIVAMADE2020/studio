@@ -2,7 +2,7 @@
 import { notFound } from 'next/navigation';
 import { siteConfig } from '@/config/site';
 import { ServiceDetailClientPage } from '@/components/service-detail-client-page';
-import { User, Home, Car, Briefcase, GraduationCap, Building } from 'lucide-react';
+import { User, Home, Car, Briefcase, GraduationCap, Building, Star, Clock, Percent, Euro, Users, CarFront, BriefcaseMedical, TrendingDown, BookOpen } from 'lucide-react';
 import React from 'react';
 
 // Mock data for services - kept here for data fetching
@@ -14,6 +14,11 @@ const serviceData: { [key: string]: any } = {
     image: siteConfig.services[0].image,
     description: 'Le prêt personnel est une solution de financement polyvalente qui vous permet de concrétiser vos envies sans avoir à justifier de l\'utilisation des fonds. Mariage, voyage, équipement, études... vous êtes libre de l\'utiliser comme bon vous semble, en profitant d\'un taux fixe avantageux de 2%.',
     features: ['Taux fixe exceptionnel de 2%', 'Flexibilité d\'utilisation', 'Mensualités constantes', 'Réponse de principe rapide', 'Aucun apport personnel exigé'],
+    keyResults: [
+        { icon: <Star className="h-5 w-5"/>, text: "98% Satisfaction" },
+        { icon: <Clock className="h-5 w-5"/>, text: "Réponse en 24h" },
+        { icon: <Percent className="h-5 w-5"/>, text: "Taux fixe 2%" },
+    ],
     steps: [
         { title: 'Simulation en ligne', description: 'Utilisez notre simulateur pour définir le montant et la durée de votre prêt.' },
         { title: 'Demande simplifiée', description: 'Remplissez notre formulaire en quelques minutes et téléchargez vos pièces justificatives.' },
@@ -37,6 +42,11 @@ const serviceData: { [key: string]: any } = {
     image: siteConfig.services[1].image,
     description: 'Que ce soit pour l\'achat de votre résidence principale, secondaire ou un investissement locatif, notre prêt immobilier vous offre les meilleures conditions pour réaliser votre projet de vie. Nos experts vous accompagnent à chaque étape, avec la garantie d\'un taux fixe de 2%.',
     features: ['Taux fixe garanti de 2%', 'Accompagnement personnalisé', 'Flexibilité des remboursements', 'Assurance emprunteur optimisée'],
+    keyResults: [
+        { icon: <Euro className="h-5 w-5"/>, text: "1.2 Md€ financés" },
+        { icon: <Users className="h-5 w-5"/>, text: "Conseiller dédié" },
+        { icon: <Percent className="h-5 w-5"/>, text: "Taux fixe 2%" },
+    ],
     steps: [
         { title: 'Étude de votre capacité d\'emprunt', description: 'Nos conseillers évaluent avec vous votre budget et votre projet.' },
         { title: 'Montage du dossier de financement', description: 'Nous vous aidons à constituer un dossier solide pour maximiser vos chances de succès.' },
@@ -60,6 +70,11 @@ const serviceData: { [key: string]: any } = {
     image: siteConfig.services[2].image,
     description: 'Financez l\'achat de votre voiture neuve ou d\'occasion avec un crédit auto simple et avantageux. Nous vous proposons des solutions adaptées à votre budget pour que vous puissiez conduire en toute tranquillité, grâce à notre taux fixe de 2%.',
     features: ['Taux d\'intérêt fixe de 2%', 'Pour véhicules neufs ou d\'occasion', 'Sans apport personnel obligatoire', 'Mensualités fixes', 'Processus 100% en ligne'],
+    keyResults: [
+        { icon: <CarFront className="h-5 w-5"/>, text: "35,000+ véhicules" },
+        { icon: <Clock className="h-5 w-5"/>, text: "Acceptation rapide" },
+        { icon: <Percent className="h-5 w-5"/>, text: "Taux fixe 2%" },
+    ],
     steps: [
         { title: 'Choisissez votre véhicule', description: 'Trouvez la voiture qui vous correspond chez le concessionnaire de votre choix.' },
         { title: 'Faites votre demande de prêt', description: 'Simulez et soumettez votre demande en quelques clics sur notre site.' },
@@ -83,6 +98,11 @@ const serviceData: { [key: string]: any } = {
     image: siteConfig.services[3].image,
     description: 'Que vous soyez entrepreneur, artisan, commerçant ou profession libérale, nous avons des solutions de financement adaptées à vos besoins : création d\'entreprise, achat de matériel, besoin de trésorerie, etc. Profitez de notre expertise pour faire grandir votre activité.',
     features: ['Solutions sur-mesure pour tous les professionnels', 'Analyse rapide de votre dossier', 'Conseiller dédié à votre projet', 'Flexibilité des remboursements'],
+    keyResults: [
+        { icon: <BriefcaseMedical className="h-5 w-5"/>, text: "5,000+ entreprises" },
+        { icon: <Users className="h-5 w-5"/>, text: "Conseiller dédié" },
+        { icon: <Clock className="h-5 w-5"/>, text: "Analyse rapide" },
+    ],
     steps: [
         { title: 'Analyse de votre besoin', description: 'Un de nos conseillers spécialisés étudie avec vous votre projet et vos besoins de financement.' },
         { title: 'Proposition personnalisée', description: 'Nous vous proposons une offre de prêt adaptée à votre situation et à votre capacité de remboursement.' },
@@ -106,6 +126,11 @@ const serviceData: { [key: string]: any } = {
     image: siteConfig.services[4].image,
     description: 'Le rachat de crédits consiste à regrouper l\'ensemble de vos prêts en cours (crédit immobilier, prêts à la consommation, etc.) en un seul et unique crédit. Vous n\'avez plus qu\'une seule mensualité à rembourser, souvent réduite, ce qui simplifie la gestion de votre budget et peut vous redonner du pouvoir d\'achat.',
     features: ['Un seul crédit, une seule mensualité', 'Baisse possible de vos mensualités', 'Pas de changement de banque', 'Financement d\'un nouveau projet possible'],
+    keyResults: [
+        { icon: <TrendingDown className="h-5 w-5"/>, text: "Jusqu'à -60%" },
+        { icon: <Users className="h-5 w-5"/>, text: "Étude gratuite" },
+        { icon: <Star className="h-5 w-5"/>, text: "Budget simplifié" },
+    ],
     steps: [
         { title: 'Étude gratuite et sans engagement', description: 'Faites le point sur votre situation avec un de nos conseillers pour évaluer la faisabilité de votre projet.' },
         { title: 'Montage de votre dossier', description: 'Nous nous occupons de toutes les démarches administratives auprès de nos partenaires financiers.' },
@@ -129,6 +154,11 @@ const serviceData: { [key: string]: any } = {
     image: siteConfig.services[5].image,
     description: 'Le prêt étudiant est une solution de financement conçue pour vous aider à couvrir vos frais de scolarité, votre logement, votre matériel informatique et toutes les dépenses liées à votre vie étudiante. Profitez de conditions avantageuses avec un remboursement différé pour vous concentrer sur ce qui compte vraiment : votre réussite.',
     features: ['Taux avantageux pour les étudiants', 'Remboursement différé possible', 'Finance tous types de formations', 'Procédure simplifiée'],
+    keyResults: [
+        { icon: <BookOpen className="h-5 w-5"/>, text: "Toutes formations" },
+        { icon: <Users className="h-5 w-5"/>, text: "10,000+ étudiants" },
+        { icon: <Clock className="h-5 w-5"/>, text: "Remboursement différé" },
+    ],
      steps: [
         { title: 'Définissez votre besoin', description: 'Évaluez le montant dont vous avez besoin pour toute la durée de vos études (frais de scolarité, logement, etc.).' },
         { title: 'Constituez votre dossier', description: 'Rassemblez les pièces nécessaires : certificat de scolarité, pièce d\'identité, et si besoin, les informations d\'un garant.' },
