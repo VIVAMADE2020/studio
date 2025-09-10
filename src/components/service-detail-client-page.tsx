@@ -12,7 +12,6 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import React from 'react';
 import Image from 'next/image';
 import Autoplay from "embla-carousel-autoplay";
-import { Typewriter } from './typewriter';
 
 interface ServiceDetailClientPageProps {
     service: any;
@@ -35,17 +34,14 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
             priority
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-black/60"></div>
+          <div className="absolute inset-0 bg-black/30"></div>
         </div>
         <div className="container relative z-10">
+          <div className="w-24 h-24 mx-auto mb-6 bg-white/10 text-white flex items-center justify-center rounded-full backdrop-blur-sm border border-white/20">
+            {service.icon && React.cloneElement(service.icon, { className: 'w-12 h-12' })}
+          </div>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-            <Typewriter
-                texts={[
-                    service.title,
-                    "Une solution sur-mesure.",
-                    "FLEXFOND vous accompagne.",
-                ]}
-            />
+            {service.title}
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-white/80">{service.tagline}</p>
         </div>
