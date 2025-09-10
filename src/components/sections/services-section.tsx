@@ -72,12 +72,15 @@ export function ServicesSection() {
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                </div>
-                <div className="flex flex-col flex-grow p-6">
-                    <div className="w-16 h-16 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4">
-                        {service.icon}
+                    <div className="absolute inset-0 bg-black/50"></div>
+                     <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
+                        <div className="w-16 h-16 rounded-lg bg-white/10 text-white flex items-center justify-center mb-4 backdrop-blur-sm border border-white/20">
+                            {service.icon}
+                        </div>
+                        <CardTitle className="text-2xl">{service.title}</CardTitle>
                     </div>
-                    <CardTitle className="text-2xl text-foreground">{service.title}</CardTitle>
+                </div>
+                <div className="p-6 flex flex-col flex-grow">
                     <p className="text-muted-foreground mt-2 flex-grow">{service.description}</p>
                     <Button asChild variant="link" className="p-0 h-auto justify-start mt-4 text-primary font-semibold">
                       <Link href={service.link}>
