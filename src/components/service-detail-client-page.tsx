@@ -56,7 +56,10 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
         <div className="container">
           <div className="grid lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2">
-              <h2 className="text-2xl font-bold text-primary">Qu'est-ce que le {service.title} ?</h2>
+              <h2 className="text-2xl font-bold text-primary flex items-center gap-3">
+                {service.icon && React.cloneElement(service.icon, { className: 'w-8 h-8' })}
+                <span>Qu'est-ce que le {service.title} ?</span>
+              </h2>
               <div className="prose prose-lg max-w-none text-muted-foreground mt-4 leading-relaxed" dangerouslySetInnerHTML={{ __html: service.description }} />
 
               <h3 className="text-xl font-bold text-primary mt-12">Les avantages FLEXFOND</h3>

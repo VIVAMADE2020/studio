@@ -1,11 +1,15 @@
+
 import { notFound } from 'next/navigation';
 import { siteConfig } from '@/config/site';
 import { ServiceDetailClientPage } from '@/components/service-detail-client-page';
+import { User, Home, Car, Briefcase, GraduationCap, Building } from 'lucide-react';
+import React from 'react';
 
 // Mock data for services - kept here for data fetching
 const serviceData: { [key: string]: any } = {
   'pret-personnel': {
     title: 'Prêt Personnel',
+    icon: <User />,
     tagline: 'Financez tous vos projets, sans contraintes, à un taux fixe de 2%.',
     image: siteConfig.services[0].image,
     description: 'Le prêt personnel est une solution de financement polyvalente qui vous permet de concrétiser vos envies sans avoir à justifier de l\'utilisation des fonds. Mariage, voyage, équipement, études... vous êtes libre de l\'utiliser comme bon vous semble, en profitant d\'un taux fixe avantageux de 2%.',
@@ -28,6 +32,7 @@ const serviceData: { [key: string]: any } = {
   },
   'pret-immobilier': {
     title: 'Prêt Immobilier',
+    icon: <Home />,
     tagline: 'Devenez propriétaire en toute sérénité avec notre taux fixe de 2%.',
     image: siteConfig.services[1].image,
     description: 'Que ce soit pour l\'achat de votre résidence principale, secondaire ou un investissement locatif, notre prêt immobilier vous offre les meilleures conditions pour réaliser votre projet de vie. Nos experts vous accompagnent à chaque étape, avec la garantie d\'un taux fixe de 2%.',
@@ -50,6 +55,7 @@ const serviceData: { [key: string]: any } = {
   },
    'pret-auto': {
     title: 'Prêt Auto',
+    icon: <Car />,
     tagline: 'Prenez la route avec le véhicule de vos rêves à un taux fixe de 2%.',
     image: siteConfig.services[2].image,
     description: 'Financez l\'achat de votre voiture neuve ou d\'occasion avec un crédit auto simple et avantageux. Nous vous proposons des solutions adaptées à votre budget pour que vous puissiez conduire en toute tranquillité, grâce à notre taux fixe de 2%.',
@@ -72,6 +78,7 @@ const serviceData: { [key: string]: any } = {
   },
   'pret-professionnel': {
     title: 'Prêt Professionnel',
+    icon: <Building />,
     tagline: 'Donnez un nouvel élan à votre entreprise avec nos solutions de financement.',
     image: siteConfig.services[3].image,
     description: 'Que vous soyez entrepreneur, artisan, commerçant ou profession libérale, nous avons des solutions de financement adaptées à vos besoins : création d\'entreprise, achat de matériel, besoin de trésorerie, etc. Profitez de notre expertise pour faire grandir votre activité.',
@@ -94,6 +101,7 @@ const serviceData: { [key: string]: any } = {
   },
    'rachat-de-credits': {
     title: 'Rachat de Crédits',
+    icon: <Briefcase />,
     tagline: 'Simplifiez votre budget et réduisez vos mensualités.',
     image: siteConfig.services[4].image,
     description: 'Le rachat de crédits consiste à regrouper l\'ensemble de vos prêts en cours (crédit immobilier, prêts à la consommation, etc.) en un seul et unique crédit. Vous n\'avez plus qu\'une seule mensualité à rembourser, souvent réduite, ce qui simplifie la gestion de votre budget et peut vous redonner du pouvoir d\'achat.',
@@ -116,6 +124,7 @@ const serviceData: { [key: string]: any } = {
   },
   'pret-etudiant': {
     title: 'Prêt Étudiant',
+    icon: <GraduationCap />,
     tagline: 'Financez vos études et préparez votre avenir en toute sérénité.',
     image: siteConfig.services[5].image,
     description: 'Le prêt étudiant est une solution de financement conçue pour vous aider à couvrir vos frais de scolarité, votre logement, votre matériel informatique et toutes les dépenses liées à votre vie étudiante. Profitez de conditions avantageuses avec un remboursement différé pour vous concentrer sur ce qui compte vraiment : votre réussite.',
