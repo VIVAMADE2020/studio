@@ -72,7 +72,7 @@ export function ServicesSection() {
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-black/50"></div>
+                    <div className="absolute inset-0 bg-black/60"></div>
                      <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
                         <div className="w-16 h-16 rounded-lg bg-white/10 text-white flex items-center justify-center mb-4 backdrop-blur-sm border border-white/20">
                             {service.icon}
