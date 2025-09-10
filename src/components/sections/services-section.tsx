@@ -1,52 +1,53 @@
 
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, User, Home, Car, Building, Briefcase, GraduationCap } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
+import { siteConfig } from "@/config/site";
 
 const services = [
   {
     icon: <User className="w-8 h-8" />,
-    image: "https://i.postimg.cc/ygK2jzJZ/pexels-shvetsa-3727513.jpg",
+    image: siteConfig.services[0].image,
     title: "Prêt Personnel",
     description: "Financez vos projets personnels, voyages, ou études avec un prêt flexible.",
     link: "/services/pret-personnel",
   },
   {
     icon: <Home className="w-8 h-8" />,
-    image: "https://i.postimg.cc/bsFchM57/pexels-jakubzerdzicki-29799518.jpg",
+    image: siteConfig.services[1].image,
     title: "Prêt Immobilier",
     description: "Devenez propriétaire ou investissez dans l'immobilier avec nos solutions sur-mesure.",
     link: "/services/pret-immobilier",
   },
   {
     icon: <Car className="w-8 h-8" />,
-    image: "https://i.postimg.cc/t1WLFggb/pexels-pixabay-210019.jpg",
+    image: siteConfig.services[2].image,
     title: "Prêt Auto",
     description: "Achetez le véhicule de vos rêves, neuf ou d'occasion, grâce à nos offres de crédit.",
     link: "/services/pret-auto",
   },
   {
     icon: <Building className="w-8 h-8" />,
-    image: "https://i.postimg.cc/H8sRG49W/pret-entreprise.jpg",
+    image: siteConfig.services[3].image,
     title: "Prêt Professionnel",
     description: "Développez votre activité avec nos solutions de financement pour entreprises.",
     link: "/services/pret-professionnel",
   },
   {
     icon: <Briefcase className="w-8 h-8" />,
-    image: "https://i.postimg.cc/fVt4TCnJ/pexels-vlada-karpovich-7434025.jpg",
+    image: siteConfig.services[4].image,
     title: "Rachat de Crédits",
     description: "Regroupez vos prêts en un seul pour alléger vos mensualités et simplifier votre budget.",
     link: "/services/rachat-de-credits",
   },
   {
     icon: <GraduationCap className="w-8 h-8" />,
-    image: "https://i.postimg.cc/ZCqtXZwP/pexels-julia-m-cameron-4143798.jpg",
+    image: siteConfig.services[5].image,
     title: "Prêt Étudiant",
     description: "Financez vos études et préparez votre avenir en toute sérénité avec un prêt adapté.",
     link: "/services/pret-etudiant",
