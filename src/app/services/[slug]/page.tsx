@@ -8,6 +8,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import React from 'react';
+import Image from 'next/image';
+import { siteConfig } from '@/config/site';
 
 
 // Mock data for services
@@ -15,6 +17,7 @@ const serviceData: { [key: string]: any } = {
   'pret-personnel': {
     title: 'Prêt Personnel',
     tagline: 'Financez tous vos projets, sans contraintes, à un taux fixe de 2%.',
+    image: siteConfig.services[0].image,
     description: 'Le prêt personnel est une solution de financement polyvalente qui vous permet de concrétiser vos envies sans avoir à justifier de l\'utilisation des fonds. Mariage, voyage, équipement, études... vous êtes libre de l\'utiliser comme bon vous semble, en profitant d\'un taux fixe avantageux de 2%.',
     features: ['Taux fixe exceptionnel de 2%', 'Flexibilité d\'utilisation', 'Mensualités constantes', 'Réponse de principe rapide', 'Aucun apport personnel exigé'],
     steps: [
@@ -36,6 +39,7 @@ const serviceData: { [key: string]: any } = {
   'pret-immobilier': {
     title: 'Prêt Immobilier',
     tagline: 'Devenez propriétaire en toute sérénité avec notre taux fixe de 2%.',
+    image: siteConfig.services[1].image,
     description: 'Que ce soit pour l\'achat de votre résidence principale, secondaire ou un investissement locatif, notre prêt immobilier vous offre les meilleures conditions pour réaliser votre projet de vie. Nos experts vous accompagnent à chaque étape, avec la garantie d\'un taux fixe de 2%.',
     features: ['Taux fixe garanti de 2%', 'Accompagnement personnalisé', 'Flexibilité des remboursements', 'Assurance emprunteur optimisée'],
     steps: [
@@ -57,6 +61,7 @@ const serviceData: { [key: string]: any } = {
    'pret-auto': {
     title: 'Prêt Auto',
     tagline: 'Prenez la route avec le véhicule de vos rêves à un taux fixe de 2%.',
+    image: siteConfig.services[2].image,
     description: 'Financez l\'achat de votre voiture neuve ou d\'occasion avec un crédit auto simple et avantageux. Nous vous proposons des solutions adaptées à votre budget pour que vous puissiez conduire en toute tranquillité, grâce à notre taux fixe de 2%.',
     features: ['Taux d\'intérêt fixe de 2%', 'Pour véhicules neufs ou d\'occasion', 'Sans apport personnel obligatoire', 'Mensualités fixes', 'Processus 100% en ligne'],
     steps: [
@@ -78,6 +83,7 @@ const serviceData: { [key: string]: any } = {
   'pret-professionnel': {
     title: 'Prêt Professionnel',
     tagline: 'Donnez un nouvel élan à votre entreprise avec nos solutions de financement.',
+    image: siteConfig.services[3].image,
     description: 'Que vous soyez entrepreneur, artisan, commerçant ou profession libérale, nous avons des solutions de financement adaptées à vos besoins : création d\'entreprise, achat de matériel, besoin de trésorerie, etc. Profitez de notre expertise pour faire grandir votre activité.',
     features: ['Solutions sur-mesure pour tous les professionnels', 'Analyse rapide de votre dossier', 'Conseiller dédié à votre projet', 'Flexibilité des remboursements'],
     steps: [
@@ -99,6 +105,7 @@ const serviceData: { [key: string]: any } = {
    'rachat-de-credits': {
     title: 'Rachat de Crédits',
     tagline: 'Simplifiez votre budget et réduisez vos mensualités.',
+    image: siteConfig.services[4].image,
     description: 'Le rachat de crédits consiste à regrouper l\'ensemble de vos prêts en cours (crédit immobilier, prêts à la consommation, etc.) en un seul et unique crédit. Vous n\'avez plus qu\'une seule mensualité à rembourser, souvent réduite, ce qui simplifie la gestion de votre budget et peut vous redonner du pouvoir d\'achat.',
     features: ['Un seul crédit, une seule mensualité', 'Baisse possible de vos mensualités', 'Pas de changement de banque', 'Financement d\'un nouveau projet possible'],
     steps: [
@@ -120,6 +127,7 @@ const serviceData: { [key: string]: any } = {
   'pret-etudiant': {
     title: 'Prêt Étudiant',
     tagline: 'Financez vos études et préparez votre avenir en toute sérénité.',
+    image: siteConfig.services[5].image,
     description: 'Le prêt étudiant est une solution de financement conçue pour vous aider à couvrir vos frais de scolarité, votre logement, votre matériel informatique et toutes les dépenses liées à votre vie étudiante. Profitez de conditions avantageuses avec un remboursement différé pour vous concentrer sur ce qui compte vraiment : votre réussite.',
     features: ['Taux avantageux pour les étudiants', 'Remboursement différé possible', 'Finance tous types de formations', 'Procédure simplifiée'],
      steps: [
@@ -156,10 +164,20 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
   return (
     <div className="bg-background">
       {/* Hero */}
-      <section className="relative py-20 md:py-32 bg-secondary/50">
-        <div className="container relative text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-primary">{service.title}</h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">{service.tagline}</p>
+      <section className="relative py-20 md:py-32 bg-secondary/50 h-[50vh] flex items-center justify-center text-center text-white">
+        <div className="absolute inset-0">
+          <Image 
+            src={service.image}
+            alt={service.title}
+            fill
+            priority
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+        <div className="container relative z-10">
+          <h1 className="text-4xl md:text-6xl font-bold">{service.title}</h1>
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-white/80">{service.tagline}</p>
         </div>
       </section>
 
