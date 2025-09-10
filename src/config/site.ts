@@ -21,7 +21,7 @@ export const siteConfig = {
         image: "/service-debt-consolidation.jpg",
       },
       {
-        image: "/service-student-loan.jpg",
+        image: "https://i.postimg.cc/XqR7dZ7Z/service-student-loan-jpg.jpg",
       }
   ]
 };
