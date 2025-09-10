@@ -15,7 +15,7 @@ export const siteConfig = {
         image: "https://i.postimg.cc/QMyhG9GF/pexels-pixabay-210019.jpg",
       },
       {
-        image: "/service-business-loan.jpg",
+        image: "https://i.postimg.cc/Fzj4LTfS/pret-entreprise.jpg",
       },
       {
         image: "https://i.postimg.cc/SxVmd1g7/pexels-vlada-karpovich-7434025.jpg",
