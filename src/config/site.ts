@@ -12,7 +12,7 @@ export const siteConfig = {
         image: "/service-mortgage-loan.jpg",
       },
       {
-        image: "/service-car-loan.jpg",
+        image: "https://i.postimg.cc/QMyhG9GF/pexels-pixabay-210019.jpg",
       },
       {
         image: "/service-business-loan.jpg",
