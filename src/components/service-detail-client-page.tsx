@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import React from 'react';
 import Image from 'next/image';
 import Autoplay from "embla-carousel-autoplay";
+import { Typewriter } from './typewriter';
 
 interface ServiceDetailClientPageProps {
     service: any;
@@ -37,7 +38,15 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
           <div className="absolute inset-0 bg-black/60"></div>
         </div>
         <div className="container relative z-10">
-          <h1 className="text-4xl md:text-6xl font-bold">{service.title}</h1>
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+            <Typewriter
+                texts={[
+                    service.title,
+                    "Une solution sur-mesure.",
+                    "FLEXFOND vous accompagne.",
+                ]}
+            />
+          </h1>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-white/80">{service.tagline}</p>
         </div>
       </section>
