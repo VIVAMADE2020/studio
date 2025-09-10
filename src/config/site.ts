@@ -6,7 +6,7 @@ export const siteConfig = {
   heroImage: "/hero-background.png",
   services: [
       {
-        image: "/service-personal-loan.jpg",
+        image: "https://i.postimg.cc/bvVGdwbn/service-personal-loan.jpg",
       },
       {
         image: "https://i.postimg.cc/SxmyWbfx/pexels-jakubzerdzicki-29799518.jpg",
