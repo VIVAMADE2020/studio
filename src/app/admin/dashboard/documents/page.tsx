@@ -11,6 +11,7 @@ import { SolvencyCertificateForm } from '@/components/doc-forms/solvency-cert-fo
 import { GuaranteeAgreementForm } from '@/components/doc-forms/guarantee-agreement-form';
 import { DebtAcknowledgementForm } from '@/components/doc-forms/debt-ack-form';
 import { InsuranceCertificateForm } from '@/components/doc-forms/insurance-cert-form';
+import { InsuranceNoticeForm } from "@/components/doc-forms/insurance-notice-form";
 
 import { FeeInvoiceTemplate } from "@/components/doc-templates/fee-invoice-template";
 import { SolvencyCertificateTemplate } from "@/components/doc-templates/solvency-cert-template";
@@ -18,10 +19,12 @@ import { LoanContractTemplate } from "@/components/doc-templates/loan-contract-t
 import { GuaranteeAgreementTemplate } from "@/components/doc-templates/guarantee-agreement-template";
 import { DebtAcknowledgementTemplate } from "@/components/doc-templates/debt-ack-template";
 import { InsuranceCertificateTemplate } from "@/components/doc-templates/insurance-cert-template";
+import { InsuranceNoticeTemplate } from "@/components/doc-templates/insurance-notice-template";
 
 const documentTypes = [
   { value: 'feeInvoice', label: 'Facture Frais', FormComponent: FeeInvoiceForm, TemplateComponent: FeeInvoiceTemplate },
   { value: 'solvencyCert', label: 'Certif. Solvabilité', FormComponent: SolvencyCertificateForm, TemplateComponent: SolvencyCertificateTemplate },
+  { value: 'insuranceNotice', label: 'Notice Assurance', FormComponent: InsuranceNoticeForm, TemplateComponent: InsuranceNoticeTemplate },
   { value: 'insuranceCert', label: 'Attest. Assurance', FormComponent: InsuranceCertificateForm, TemplateComponent: InsuranceCertificateTemplate },
   { value: 'loanContract', label: 'Contrat de Prêt', FormComponent: LoanContractForm, TemplateComponent: LoanContractTemplate },
   { value: 'guaranteeAgreement', label: 'Acte Cautionnement', FormComponent: GuaranteeAgreementForm, TemplateComponent: GuaranteeAgreementTemplate },
@@ -44,7 +47,7 @@ export default function AdminDocumentsPage() {
                 <div className="grid lg:grid-cols-2 gap-8 items-start">
                     <div>
                         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                            <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-3 h-auto">
+                            <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-4 h-auto">
                                 {documentTypes.map(doc => (
                                     <TabsTrigger key={doc.value} value={doc.value} className="text-xs md:text-sm">{doc.label}</TabsTrigger>
                                 ))}
