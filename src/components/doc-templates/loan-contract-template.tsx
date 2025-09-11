@@ -83,7 +83,7 @@ export const LoanContractTemplate: React.FC<LoanContractTemplateProps> = ({ data
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Article 6 : Assurance Emprunteur Obligatoire</h2>
-        <p>L'octroi de ce prêt est conditionné à la souscription par l'Emprunteur d'une assurance couvrant les risques de Décès, Perte Totale et Irréversible d'Autonomie (PTIA), et Incapacité de Travail (IT). Le coût de cette assurance est inclus dans les mensualités ou facturé séparément, selon les termes convenus. L'Emprunteur reconnaît avoir reçu et accepté les conditions de cette assurance, qui font l'objet d'une attestation d'assurance distincte fournie par FLEXFOND ou ses partenaires assureurs.</p>
+        <p>L'octroi de ce prêt est conditionné à la souscription préalable par l'Emprunteur d'une assurance couvrant les risques de Décès, Perte Totale et Irréversible d'Autonomie (PTIA), et Incapacité de Travail (IT). L'Emprunteur reconnaît avoir reçu, lu et accepté les conditions de cette assurance, qui font l'objet d'une attestation d'assurance distincte fournie par FLEXFOND ou ses partenaires assureurs avant la signature du présent contrat.</p>
       </div>
 
       <div style={styles.section}>
