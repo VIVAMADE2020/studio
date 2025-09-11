@@ -18,48 +18,28 @@ import { motion } from "framer-motion";
 const carouselSlides = [
     {
         imageSrc: "https://i.postimg.cc/mrt3kGjL/pexels-divinetechygirl-1181406.jpg",
-        title: "Devenez Propriétaire de Vos Rêves",
-        description: "Avec notre prêt immobilier à taux fixe de 2%, l'achat de votre maison n'a jamais été aussi simple et accessible.",
-        button1_text: "Découvrir le Prêt Immo",
-        button1_link: "/services/pret-immobilier",
-        button2_text: "Simuler mon prêt",
-        button2_link: "/#loan-calculator"
+        title: "Solutions Financières sur Mesure",
+        description: "Que vous soyez un particulier ou un professionnel, nous avons la solution de financement adaptée à vos ambitions.",
     },
     {
         imageSrc: "https://i.postimg.cc/fTDxXdCg/pexels-liza-summer-6347720.jpg",
-        title: "Prenez la Route en Toute Sérénité",
-        description: "Financez votre nouveau véhicule, neuf ou d'occasion, avec des conditions exceptionnelles et une réponse rapide.",
-        button1_text: "Explorer le Prêt Auto",
-        button1_link: "/services/pret-auto",
-        button2_text: "Faire une demande",
-        button2_link: "/demande-pret"
+        title: "Réalisez Vos Projets avec Confiance",
+        description: "Nous vous accompagnons à chaque étape pour transformer vos rêves en réalité, en toute sérénité.",
     },
     {
         imageSrc: "https://i.postimg.cc/8cPzkTdw/pexels-n-voitkevich-7172858.jpg",
-        title: "Boostez Votre Carrière Professionnelle",
-        description: "Nos solutions de financement sont conçues pour les entrepreneurs et les entreprises qui visent la croissance.",
-        button1_text: "Solutions Pro",
-        button1_link: "/services/pret-professionnel",
-        button2_text: "Nous contacter",
-        button2_link: "/contact"
+        title: "Un Partenaire Fiable pour Votre Avenir",
+        description: "Bénéficiez de notre expertise et de nos conditions avantageuses pour tous vos besoins financiers.",
     },
     {
         imageSrc: "https://i.postimg.cc/KzmZQmWF/pexels-cottonbro-3943716.jpg",
-        title: "Investissez dans Votre Avenir",
-        description: "Financez vos études ou celles de vos enfants avec des prêts étudiants flexibles et des taux avantageux.",
-        button1_text: "Voir le Prêt Étudiant",
-        button1_link: "/services/pret-etudiant",
-        button2_text: "Faire une demande",
-        button2_link: "/demande-pret"
+        title: "Le Financement Simplifié",
+        description: "Découvrez une expérience de financement simple, rapide et transparente, conçue pour vous.",
     },
     {
         imageSrc: "https://i.postimg.cc/LspR6H2f/pexels-clickerhappy-12619.jpg",
-        title: "Réalisez Tous Vos Projets Personnels",
-        description: "Voyage, mariage, rénovations... Donnez vie à vos envies avec un prêt personnel adapté à vos besoins.",
-        button1_text: "Nos Prêts Personnels",
-        button1_link: "/services/pret-personnel",
-        button2_text: "Simuler mon prêt",
-        button2_link: "/#loan-calculator"
+        title: "Votre Vision, Notre Mission",
+        description: "De l'idée à la concrétisation, FLEXFOND est à vos côtés pour vous donner les moyens de réussir.",
     }
 ];
 
@@ -103,10 +83,10 @@ export function HeroSection() {
                             </p>
                             <div className="mt-8 flex flex-wrap justify-center gap-4">
                               <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-                                <Link href={slide.button1_link}>{slide.button1_text}</Link>
+                                <Link href="/services">Découvrir nos services</Link>
                               </Button>
                               <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white hover:text-primary">
-                                <Link href={slide.button2_link}>{slide.button2_text}</Link>
+                                <Link href="/demande-pret">Faire une demande</Link>
                               </Button>
                             </div>
                        </motion.div>
