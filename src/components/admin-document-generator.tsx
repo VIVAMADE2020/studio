@@ -1,6 +1,7 @@
 
 "use client";
 
+import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LoanContractForm } from './doc-forms/loan-contract-form';
 import { FeeInvoiceForm } from './doc-forms/fee-invoice-form';
@@ -19,39 +20,34 @@ const documentTypes = [
 ];
 
 interface DocumentGeneratorProps {
-    activeTab: string;
-    setActiveTab: (tab: string) => void;
-    onFormChange: (data: any) => void;
+    children: (activeTab: string, formData: any) => React.ReactNode;
 }
 
-export function DocumentGenerator({ activeTab, setActiveTab, onFormChange }: DocumentGeneratorProps) {
+export function DocumentGenerator({ children }: DocumentGeneratorProps) {
+  const [activeTab, setActiveTab] = useState(documentTypes[0].value);
+  const [formData, setFormData] = useState<any>({});
   
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-      <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-6 h-auto">
-        {documentTypes.map(doc => (
-          <TabsTrigger key={doc.value} value={doc.value} className="text-xs md:text-sm">{doc.label}</TabsTrigger>
-        ))}
-      </TabsList>
-      
-      <TabsContent value="feeInvoice">
-        <FeeInvoiceForm onFormChange={onFormChange} />
-      </TabsContent>
-      <TabsContent value="solvencyCert">
-        <SolvencyCertificateForm onFormChange={onFormChange} />
-      </TabsContent>
-      <TabsContent value="loanContract">
-        <LoanContractForm onFormChange={onFormChange} />
-      </TabsContent>
-      <TabsContent value="guaranteeAgreement">
-        <GuaranteeAgreementForm onFormChange={onFormChange} />
-      </TabsContent>
-       <TabsContent value="debtAcknowledgement">
-        <DebtAcknowledgementForm onFormChange={onFormChange} />
-      </TabsContent>
-      <TabsContent value="insuranceCert">
-        <InsuranceCertificateForm onFormChange={onFormChange} />
-      </TabsContent>
-    </Tabs>
+    <div className="grid lg:grid-cols-2 gap-8 items-start">
+        <div>
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-3 h-auto">
+                {documentTypes.map(doc => (
+                <TabsTrigger key={doc.value} value={doc.value} className="text-xs md:text-sm">{doc.label}</TabsTrigger>
+                ))}
+            </TabsList>
+            
+            <TabsContent value="feeInvoice"><FeeInvoiceForm setFormData={setFormData} /></TabsContent>
+            <TabsContent value="solvencyCert"><SolvencyCertificateForm setFormData={setFormData} /></TabsContent>
+            <TabsContent value="loanContract"><LoanContractForm setFormData={setFormData} /></TabsContent>
+            <TabsContent value="guaranteeAgreement"><GuaranteeAgreementForm setFormData={setFormData} /></TabsContent>
+            <TabsContent value="debtAcknowledgement"><DebtAcknowledgementForm setFormData={setFormData} /></TabsContent>
+            <TabsContent value="insuranceCert"><InsuranceCertificateForm setFormData={setFormData} /></TabsContent>
+            </Tabs>
+        </div>
+        <div>
+            {children(activeTab, formData)}
+        </div>
+    </div>
   );
 }

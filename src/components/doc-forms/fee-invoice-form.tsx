@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { usePDFGenerator } from '@/hooks/use-pdf-generator';
@@ -21,10 +21,10 @@ const formSchema = z.object({
 });
 
 interface FeeInvoiceFormProps {
-    onFormChange: (data: any) => void;
+    setFormData: (data: any) => void;
 }
 
-export function FeeInvoiceForm({ onFormChange }: FeeInvoiceFormProps) {
+export function FeeInvoiceForm({ setFormData }: FeeInvoiceFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,8 +42,8 @@ export function FeeInvoiceForm({ onFormChange }: FeeInvoiceFormProps) {
   const formData = form.watch();
 
   useEffect(() => {
-    onFormChange(formData);
-  }, [formData, onFormChange]);
+    setFormData(formData);
+  }, [formData, setFormData]);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     generatePDF(

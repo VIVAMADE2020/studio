@@ -4,11 +4,10 @@ import React, { useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { usePDFGenerator } from '@/hooks/use-pdf-generator';
-import { DebtAcknowledgementTemplate } from '../doc-templates/debt-ack-template';
 
 const formSchema = z.object({
   debtorName: z.string().min(1, 'Requis'),
@@ -20,10 +19,10 @@ const formSchema = z.object({
 });
 
 interface DebtAcknowledgementFormProps {
-    onFormChange: (data: any) => void;
+    setFormData: (data: any) => void;
 }
 
-export function DebtAcknowledgementForm({ onFormChange }: DebtAcknowledgementFormProps) {
+export function DebtAcknowledgementForm({ setFormData }: DebtAcknowledgementFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,8 +39,8 @@ export function DebtAcknowledgementForm({ onFormChange }: DebtAcknowledgementFor
   const formData = form.watch();
 
   useEffect(() => {
-    onFormChange(formData);
-  }, [formData, onFormChange]);
+    setFormData(formData);
+  }, [formData, setFormData]);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     generatePDF(
