@@ -13,6 +13,7 @@ import { Textarea } from '../ui/textarea';
 const formSchema = z.object({
   clientName: z.string().min(1, 'Requis'),
   clientAddress: z.string().min(1, 'Requis'),
+  clientIdNumber: z.string().min(1, 'Requis'),
   accountNumber: z.string().min(1, 'Requis'),
   balance: z.coerce.number(),
   certDate: z.string().min(1, 'Requis'),
@@ -28,6 +29,7 @@ export function SolvencyCertificateForm({ setFormData }: SolvencyCertificateForm
     defaultValues: {
       clientName: '',
       clientAddress: '',
+      clientIdNumber: '',
       accountNumber: '',
       balance: 0,
       certDate: new Date().toISOString().split('T')[0],
@@ -54,9 +56,10 @@ export function SolvencyCertificateForm({ setFormData }: SolvencyCertificateForm
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-6">
         <FormField name="clientName" render={({ field }) => ( <FormItem> <FormLabel>Nom du Client</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+        <FormField name="clientIdNumber" render={({ field }) => ( <FormItem> <FormLabel>N° Pièce d'Identité</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField name="clientAddress" render={({ field }) => ( <FormItem> <FormLabel>Adresse du Client</FormLabel> <FormControl><Textarea rows={3} {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField name="accountNumber" render={({ field }) => ( <FormItem> <FormLabel>Numéro de Compte</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-        <FormField name="balance" render={({ field }) => ( <FormItem> <FormLabel>Solde du compte (€)</FormLabel> <FormControl><Input type="number" step="0.01" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+        <FormField name="balance" render={({ field }) => ( <FormItem> <FormLabel>Montant d'éligibilité (€)</FormLabel> <FormControl><Input type="number" step="0.01" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField name="certDate" render={({ field }) => ( <FormItem> <FormLabel>Date du Certificat</FormLabel> <FormControl><Input type="date" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <Button type="submit" disabled={isGenerating}>{isGenerating ? 'Génération...' : 'Générer et Télécharger PDF'}</Button>
       </form>
