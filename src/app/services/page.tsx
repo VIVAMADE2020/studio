@@ -1,8 +1,10 @@
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, User, Home, Car, Building, Briefcase, GraduationCap, Banknote } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import Image from "next/image";
 
 const allServices = [
   { icon: <User />, title: "Prêt Personnel", description: "Financez vos projets personnels, voyages, ou études.", link: "/services/pret-personnel" },
@@ -17,10 +19,17 @@ const allServices = [
 export default function ServicesPage() {
     return (
         <div className="bg-background text-foreground">
-            <section className="py-20 md:py-32 text-center bg-secondary/50">
-                <div className="container">
-                    <h1 className="text-4xl md:text-6xl font-bold text-primary">Nos Services</h1>
-                    <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">Des solutions de financement pensées pour chaque étape de votre vie.</p>
+            <section className="relative py-20 md:py-32 text-center text-white">
+                <Image 
+                    src="https://i.postimg.cc/KzmZQmWF/pexels-cottonbro-3943716.jpg"
+                    alt="Nos services"
+                    fill
+                    className="object-cover"
+                />
+                <div className="absolute inset-0 bg-black/50" />
+                <div className="container relative z-10">
+                    <h1 className="text-4xl md:text-6xl font-bold">Nos Services</h1>
+                    <p className="mt-4 max-w-3xl mx-auto text-lg text-white/90">Des solutions de financement pensées pour chaque étape de votre vie.</p>
                 </div>
             </section>
             
