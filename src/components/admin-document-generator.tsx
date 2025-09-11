@@ -1,7 +1,6 @@
 
 "use client";
 
-import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LoanContractForm } from './doc-forms/loan-contract-form';
 import { FeeInvoiceForm } from './doc-forms/fee-invoice-form';
@@ -19,9 +18,14 @@ const documentTypes = [
   { value: 'insuranceCert', label: 'Attest. Assurance' },
 ];
 
-export function DocumentGenerator() {
-  const [activeTab, setActiveTab] = useState(documentTypes[0].value);
+interface DocumentGeneratorProps {
+    activeTab: string;
+    setActiveTab: (tab: string) => void;
+    onFormChange: (data: any) => void;
+}
 
+export function DocumentGenerator({ activeTab, setActiveTab, onFormChange }: DocumentGeneratorProps) {
+  
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
       <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-6 h-auto">
@@ -31,22 +35,22 @@ export function DocumentGenerator() {
       </TabsList>
       
       <TabsContent value="feeInvoice">
-        <FeeInvoiceForm />
+        <FeeInvoiceForm onFormChange={onFormChange} />
       </TabsContent>
       <TabsContent value="solvencyCert">
-        <SolvencyCertificateForm />
+        <SolvencyCertificateForm onFormChange={onFormChange} />
       </TabsContent>
       <TabsContent value="loanContract">
-        <LoanContractForm />
+        <LoanContractForm onFormChange={onFormChange} />
       </TabsContent>
       <TabsContent value="guaranteeAgreement">
-        <GuaranteeAgreementForm />
+        <GuaranteeAgreementForm onFormChange={onFormChange} />
       </TabsContent>
        <TabsContent value="debtAcknowledgement">
-        <DebtAcknowledgementForm />
+        <DebtAcknowledgementForm onFormChange={onFormChange} />
       </TabsContent>
       <TabsContent value="insuranceCert">
-        <InsuranceCertificateForm />
+        <InsuranceCertificateForm onFormChange={onFormChange} />
       </TabsContent>
     </Tabs>
   );

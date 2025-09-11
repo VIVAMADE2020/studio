@@ -1,6 +1,6 @@
 
 "use client";
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { usePDFGenerator } from '@/hooks/use-pdf-generator';
-import { DebtAcknowledgementTemplate, DebtAcknowledgementData } from '../doc-templates/debt-ack-template';
+import { DebtAcknowledgementTemplate } from '../doc-templates/debt-ack-template';
 
 const formSchema = z.object({
   debtorName: z.string().min(1, 'Requis'),
@@ -19,7 +19,11 @@ const formSchema = z.object({
   ackDate: z.string().min(1, 'Requis'),
 });
 
-export function DebtAcknowledgementForm() {
+interface DebtAcknowledgementFormProps {
+    onFormChange: (data: any) => void;
+}
+
+export function DebtAcknowledgementForm({ onFormChange }: DebtAcknowledgementFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,10 +37,14 @@ export function DebtAcknowledgementForm() {
   });
 
   const { isGenerating, generatePDF } = usePDFGenerator();
+  const formData = form.watch();
+
+  useEffect(() => {
+    onFormChange(formData);
+  }, [formData, onFormChange]);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     generatePDF(
-        <DebtAcknowledgementTemplate data={data} />,
         `reconnaissance-dette-${data.debtorName.replace(/\s/g, '_')}.pdf`
     );
   };

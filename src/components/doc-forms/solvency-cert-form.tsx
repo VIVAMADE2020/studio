@@ -1,6 +1,6 @@
 
 "use client";
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { usePDFGenerator } from '@/hooks/use-pdf-generator';
-import { SolvencyCertificateTemplate, SolvencyCertificateData } from '../doc-templates/solvency-cert-template';
+import { SolvencyCertificateTemplate } from '../doc-templates/solvency-cert-template';
 
 const formSchema = z.object({
   clientName: z.string().min(1, 'Requis'),
@@ -18,7 +18,11 @@ const formSchema = z.object({
   certDate: z.string().min(1, 'Requis'),
 });
 
-export function SolvencyCertificateForm() {
+interface SolvencyCertificateFormProps {
+    onFormChange: (data: any) => void;
+}
+
+export function SolvencyCertificateForm({ onFormChange }: SolvencyCertificateFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,10 +35,14 @@ export function SolvencyCertificateForm() {
   });
 
   const { isGenerating, generatePDF } = usePDFGenerator();
+  const formData = form.watch();
+
+  useEffect(() => {
+    onFormChange(formData);
+  }, [formData, onFormChange]);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     generatePDF(
-        <SolvencyCertificateTemplate data={data} />,
         `certificat-solvabilite-${data.clientName.replace(/\s/g, '_')}.pdf`
     );
   };

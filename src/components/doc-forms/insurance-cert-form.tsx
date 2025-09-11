@@ -1,6 +1,6 @@
 
 "use client";
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { usePDFGenerator } from '@/hooks/use-pdf-generator';
-import { InsuranceCertificateTemplate, InsuranceCertificateData } from '../doc-templates/insurance-cert-template';
+import { InsuranceCertificateTemplate } from '../doc-templates/insurance-cert-template';
 
 const formSchema = z.object({
   policyholderName: z.string().min(1, 'Requis'),
@@ -20,7 +20,11 @@ const formSchema = z.object({
   certDate: z.string().min(1, 'Requis'),
 });
 
-export function InsuranceCertificateForm() {
+interface InsuranceCertificateFormProps {
+    onFormChange: (data: any) => void;
+}
+
+export function InsuranceCertificateForm({ onFormChange }: InsuranceCertificateFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,10 +39,14 @@ export function InsuranceCertificateForm() {
   });
 
   const { isGenerating, generatePDF } = usePDFGenerator();
+  const formData = form.watch();
+
+  useEffect(() => {
+    onFormChange(formData);
+  }, [formData, onFormChange]);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     generatePDF(
-        <InsuranceCertificateTemplate data={data} />,
         `attestation-assurance-${data.policyholderName.replace(/\s/g, '_')}.pdf`
     );
   };

@@ -1,6 +1,6 @@
 
 "use client";
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { usePDFGenerator } from '@/hooks/use-pdf-generator';
-import { FeeInvoiceTemplate, FeeInvoiceData } from '../doc-templates/fee-invoice-template';
+import { Textarea } from '../ui/textarea';
 
 const formSchema = z.object({
   invoiceNumber: z.string().min(1, 'Requis'),
@@ -17,9 +17,14 @@ const formSchema = z.object({
   clientAddress: z.string().min(1, 'Requis'),
   serviceDescription: z.string().min(1, 'Requis'),
   amount: z.coerce.number().positive('Montant positif requis'),
+  paymentTerms: z.string().min(1, 'Requis'),
 });
 
-export function FeeInvoiceForm() {
+interface FeeInvoiceFormProps {
+    onFormChange: (data: any) => void;
+}
+
+export function FeeInvoiceForm({ onFormChange }: FeeInvoiceFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -29,14 +34,19 @@ export function FeeInvoiceForm() {
       clientAddress: '',
       serviceDescription: 'Frais de dossier pour prêt personnel',
       amount: 0,
+      paymentTerms: 'Paiement dû à réception. Virement sur le compte IBAN : FRXX XXXX XXXX XXXX XXXX XXXX XXX.',
     },
   });
 
   const { isGenerating, generatePDF } = usePDFGenerator();
+  const formData = form.watch();
+
+  useEffect(() => {
+    onFormChange(formData);
+  }, [formData, onFormChange]);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     generatePDF(
-        <FeeInvoiceTemplate data={data} />, 
         `facture-frais-${data.invoiceNumber}.pdf`
     );
   };
@@ -50,6 +60,7 @@ export function FeeInvoiceForm() {
         <FormField name="clientAddress" render={({ field }) => ( <FormItem> <FormLabel>Adresse du Client</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField name="serviceDescription" render={({ field }) => ( <FormItem> <FormLabel>Description du Service</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField name="amount" render={({ field }) => ( <FormItem> <FormLabel>Montant (€)</FormLabel> <FormControl><Input type="number" step="0.01" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+        <FormField name="paymentTerms" render={({ field }) => ( <FormItem> <FormLabel>Modalités de Paiement</FormLabel> <FormControl><Textarea {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <Button type="submit" disabled={isGenerating}>{isGenerating ? 'Génération...' : 'Générer et Télécharger PDF'}</Button>
       </form>
     </FormProvider>

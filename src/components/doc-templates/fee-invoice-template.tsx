@@ -10,6 +10,7 @@ export interface FeeInvoiceData {
   clientAddress: string;
   serviceDescription: string;
   amount: number;
+  paymentTerms: string;
 }
 
 interface FeeInvoiceTemplateProps {
@@ -62,7 +63,7 @@ export const FeeInvoiceTemplate: React.FC<FeeInvoiceTemplateProps> = ({ data }) 
 
         <div style={{ ...styles.section, marginTop: '40px' }}>
             <p><strong>Modalités de paiement :</strong></p>
-            <p>Le paiement est dû à réception de cette facture. Veuillez effectuer le virement sur le compte IBAN : FR76 XXXX XXXX XXXX XXXX XXXX XXX.</p>
+            <p style={{whiteSpace: 'pre-wrap'}}>{data.paymentTerms}</p>
         </div>
     </DocumentWrapper>
   );

@@ -1,6 +1,6 @@
 
 "use client";
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { usePDFGenerator } from '@/hooks/use-pdf-generator';
-import { GuaranteeAgreementTemplate, GuaranteeAgreementData } from '../doc-templates/guarantee-agreement-template';
+import { GuaranteeAgreementTemplate } from '../doc-templates/guarantee-agreement-template';
 import { Textarea } from '../ui/textarea';
 
 const formSchema = z.object({
@@ -20,7 +20,11 @@ const formSchema = z.object({
   agreementDate: z.string().min(1, 'Requis'),
 });
 
-export function GuaranteeAgreementForm() {
+interface GuaranteeAgreementFormProps {
+    onFormChange: (data: any) => void;
+}
+
+export function GuaranteeAgreementForm({ onFormChange }: GuaranteeAgreementFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,10 +38,14 @@ export function GuaranteeAgreementForm() {
   });
 
   const { isGenerating, generatePDF } = usePDFGenerator();
+  const formData = form.watch();
+
+  useEffect(() => {
+    onFormChange(formData);
+  }, [formData, onFormChange]);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     generatePDF(
-        <GuaranteeAgreementTemplate data={data} />,
         `acte-cautionnement-${data.guarantorName.replace(/\s/g, '_')}.pdf`
     );
   };

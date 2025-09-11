@@ -1,6 +1,6 @@
 
 "use client";
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { usePDFGenerator } from '@/hooks/use-pdf-generator';
-import { LoanContractTemplate, LoanContractData } from '../doc-templates/loan-contract-template';
+import { LoanContractTemplate } from '../doc-templates/loan-contract-template';
 
 const formSchema = z.object({
   borrowerName: z.string().min(1, 'Requis'),
@@ -21,7 +21,11 @@ const formSchema = z.object({
   contractDate: z.string().min(1, 'Date requise'),
 });
 
-export function LoanContractForm() {
+interface LoanContractFormProps {
+    onFormChange: (data: any) => void;
+}
+
+export function LoanContractForm({ onFormChange }: LoanContractFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,10 +41,14 @@ export function LoanContractForm() {
   });
 
   const { isGenerating, generatePDF } = usePDFGenerator();
+  const formData = form.watch();
+
+  useEffect(() => {
+    onFormChange(formData);
+  }, [formData, onFormChange]);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     generatePDF(
-        <LoanContractTemplate data={data} />, 
         `contrat-pret-${data.borrowerName.replace(/\s/g, '_')}.pdf`
     );
   };

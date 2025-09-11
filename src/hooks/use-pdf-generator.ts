@@ -1,29 +1,20 @@
 
 "use client";
 
-import { useState, useRef, ReactElement } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
+import { useState } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
 export function usePDFGenerator() {
   const [isGenerating, setIsGenerating] = useState(false);
   
-  const generatePDF = async (component: ReactElement, filename: string) => {
+  const generatePDF = async (filename: string, elementId = 'pdf-preview') => {
     setIsGenerating(true);
 
-    const docContainer = document.createElement('div');
-    docContainer.style.position = 'fixed';
-    docContainer.style.left = '-9999px';
-    docContainer.style.top = '0';
-    docContainer.innerHTML = renderToStaticMarkup(component);
-    document.body.appendChild(docContainer);
-
-    const elementToCapture = docContainer.firstChild as HTMLElement;
+    const elementToCapture = document.getElementById(elementId);
     if (!elementToCapture) {
-      console.error("PDF generation failed: No element to capture.");
+      console.error(`PDF generation failed: Element with id "${elementId}" not found.`);
       setIsGenerating(false);
-      document.body.removeChild(docContainer);
       return;
     }
     
@@ -55,14 +46,30 @@ export function usePDFGenerator() {
           imgWidth = imgHeight * ratio;
       }
 
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      // Add a small margin
+      const margin = 5;
+      const effectiveWidth = pdfWidth - (margin * 2);
+      const effectiveHeight = pdfHeight - (margin * 2);
+
+      let finalWidth = effectiveWidth;
+      let finalHeight = finalWidth / ratio;
+      
+      if (finalHeight > effectiveHeight) {
+          finalHeight = effectiveHeight;
+          finalWidth = finalHeight * ratio;
+      }
+
+      const x = (pdfWidth - finalWidth) / 2;
+      const y = (pdfHeight - finalHeight) / 2;
+
+
+      pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
       pdf.save(filename);
 
     } catch (error) {
         console.error("Error generating PDF:", error);
     } finally {
         setIsGenerating(false);
-        document.body.removeChild(docContainer);
     }
   };
 
