@@ -22,10 +22,10 @@ import { InsuranceCertificateTemplate } from "@/components/doc-templates/insuran
 const documentTypes = [
   { value: 'feeInvoice', label: 'Facture Frais', FormComponent: FeeInvoiceForm, TemplateComponent: FeeInvoiceTemplate },
   { value: 'solvencyCert', label: 'Certif. Solvabilité', FormComponent: SolvencyCertificateForm, TemplateComponent: SolvencyCertificateTemplate },
+  { value: 'insuranceCert', label: 'Attest. Assurance', FormComponent: InsuranceCertificateForm, TemplateComponent: InsuranceCertificateTemplate },
   { value: 'loanContract', label: 'Contrat de Prêt', FormComponent: LoanContractForm, TemplateComponent: LoanContractTemplate },
   { value: 'guaranteeAgreement', label: 'Acte Cautionnement', FormComponent: GuaranteeAgreementForm, TemplateComponent: GuaranteeAgreementTemplate },
   { value: 'debtAcknowledgement', label: 'Reconn. de Dette', FormComponent: DebtAcknowledgementForm, TemplateComponent: DebtAcknowledgementTemplate },
-  { value: 'insuranceCert', label: 'Attest. Assurance', FormComponent: InsuranceCertificateForm, TemplateComponent: InsuranceCertificateTemplate },
 ];
 
 export default function AdminDocumentsPage() {
