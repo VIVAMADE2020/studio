@@ -82,8 +82,8 @@ export function HeroSection() {
                                 {slide.description}
                             </p>
                             <div className="mt-8 flex flex-wrap justify-center gap-4">
-                              <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-                                <Link href="/services">Découvrir nos services</Link>
+                              <Button asChild size="lg" className="bg-orange-web text-white hover:bg-orange-web/90">
+                                <Link href="/#services">Découvrir nos services</Link>
                               </Button>
                               <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white hover:text-primary">
                                 <Link href="/demande-pret">Faire une demande</Link>

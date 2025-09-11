@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "/", label: "Accueil" },
-  { href: "/services", label: "Services" },
+  { href: "/#services", label: "Services" },
   { href: "/about", label: "À Propos" },
   { href: "/contact", label: "Contact" },
 ];
@@ -36,20 +36,20 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className={cn("font-medium transition-colors", isTransparentPage ? "text-white/80 hover:text-white" : "text-secondary-foreground/80 hover:text-secondary-foreground")}
+              className="font-medium text-orange-web transition-colors hover:text-orange-web/80"
             >
               {link.label}
             </Link>
           ))}
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-2">
-          <Button variant="ghost" asChild className={cn(isTransparentPage ? "text-white/80 hover:text-white hover:bg-white/10" : "text-secondary-foreground/80 hover:text-secondary-foreground")}>
+          <Button variant="ghost" asChild className="text-orange-web hover:text-orange-web/80">
             <Link href="/client/access">
               <User className="mr-2 h-4 w-4" />
               Espace Client
             </Link>
           </Button>
-          <Button asChild>
+          <Button asChild className="bg-orange-web text-white hover:bg-orange-web/90">
             <Link href="/demande-pret">Faire une demande</Link>
           </Button>
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
