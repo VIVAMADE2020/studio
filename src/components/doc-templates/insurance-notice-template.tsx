@@ -36,13 +36,13 @@ export const InsuranceNoticeTemplate: React.FC<InsuranceNoticeTemplateProps> = (
       <div style={{...styles.section, textAlign: 'right', marginBottom: '30px' }}>
         <p>Document établi le : {formatDate(data.noticeDate)}</p>
         <p>Destinataire : {data.borrowerName || '[Nom de l\'adhérent]'}</p>
-        <p>Concerne le prêt n° : {data.contractNumber || '[Numéro de contrat]'}</p>
+        <p>Concerne le projet de prêt n° : {data.contractNumber || '[Numéro de contrat]'}</p>
       </div>
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>1. Objet de la présente notice</h2>
         <p>
-          La présente notice a pour objet de vous informer des conditions, modalités, garanties et exclusions du contrat d'assurance collectif souscrit par FLEXFOND auprès de son partenaire assureur, auquel vous demandez votre adhésion. Nous vous invitons à la lire attentivement avant de signer votre demande d'adhésion et de la conserver. Elle constitue un élément essentiel de votre protection financière.
+          La présente notice a pour objet de vous informer des conditions, modalités, garanties et exclusions du contrat d'assurance collectif souscrit par FLEXFOND auprès de son partenaire assureur, auquel vous demandez votre adhésion. <strong>Nous vous invitons à la lire attentivement avant de signer votre demande d'adhésion et à la conserver.</strong> Elle constitue un élément essentiel de votre protection financière.
         </p>
       </div>
 
@@ -63,7 +63,7 @@ export const InsuranceNoticeTemplate: React.FC<InsuranceNoticeTemplateProps> = (
         </p>
          <div style={{ padding: '15px', border: '1px solid #fee2e2', backgroundColor: '#fff7f7', borderRadius: '4px', marginTop: '15px' }}>
             {renderList(data.exclusions)}
-            <p style={{marginTop: '15px', fontSize: '9pt', fontStyle: 'italic', color: '#777'}}>Cette liste n'est pas exhaustive. Pour le détail complet des exclusions, veuillez vous référer aux Conditions Générales du contrat d'assurance.</p>
+            <p style={{marginTop: '15px', fontSize: '9pt', fontStyle: 'italic', color: '#777'}}>Cette liste n'est pas exhaustive. Pour le détail complet des exclusions, veuillez vous référer aux Conditions Générales du contrat d'assurance qui vous seront remises.</p>
         </div>
       </div>
       

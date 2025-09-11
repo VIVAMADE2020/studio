@@ -23,6 +23,7 @@ const formSchema = z.object({
   loanAmount: z.coerce.number().positive('Montant positif requis'),
   coverageDuration: z.coerce.number().positive('Durée positive requise'),
   monthlyPremium: z.coerce.number().min(0, 'Coût positif requis'),
+  groupPolicyNumber: z.string().min(1, 'Requis'),
 });
 
 interface InsuranceCertificateFormProps {
@@ -44,6 +45,7 @@ export function InsuranceCertificateForm({ setFormData }: InsuranceCertificateFo
       loanAmount: 10000,
       coverageDuration: 60,
       monthlyPremium: 15.50,
+      groupPolicyNumber: 'FLEX-ASSUR-GR-001',
     },
   });
 
@@ -71,6 +73,7 @@ export function InsuranceCertificateForm({ setFormData }: InsuranceCertificateFo
             <FormField name="certNumber" render={({ field }) => ( <FormItem> <FormLabel>N° de Certificat</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
             <FormField name="certDate" render={({ field }) => ( <FormItem> <FormLabel>Date d'émission</FormLabel> <FormControl><Input type="date" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         </div>
+         <FormField name="groupPolicyNumber" render={({ field }) => ( <FormItem> <FormLabel>N° Police Groupe</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
 
         <h4 className="font-bold text-center pt-4 border-t">Informations Assuré</h4>
         <FormField name="insuredName" render={({ field }) => ( <FormItem> <FormLabel>Nom de l'Assuré</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />

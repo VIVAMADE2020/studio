@@ -15,6 +15,7 @@ export interface InsuranceCertificateData {
   loanAmount: number;
   coverageDuration: number;
   monthlyPremium: number;
+  groupPolicyNumber: string; // Ajout pour lier à la notice
 }
 
 
@@ -50,7 +51,7 @@ export const InsuranceCertificateTemplate: React.FC<InsuranceCertificateTemplate
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Objet de l'Attestation</h2>
-        <p>Nous soussignés, agissant pour le compte de notre partenaire assureur, certifions par la présente que l'assuré(e) susmentionné(e) est couvert(e) par le contrat d'assurance groupe n°789-456, souscrit par FLEXFOND dans le cadre de son prêt.</p>
+        <p>Nous soussignés, agissant pour le compte de notre partenaire assureur, certifions par la présente que l'assuré(e) susmentionné(e) est couvert(e) par le contrat d'assurance groupe <strong>n°{data.groupPolicyNumber || '[Numéro Police]'}</strong>, souscrit par FLEXFOND, dans le cadre de son prêt.</p>
       </div>
       
       <div style={styles.section}>
@@ -65,7 +66,7 @@ export const InsuranceCertificateTemplate: React.FC<InsuranceCertificateTemplate
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Garanties applicables</h2>
-        <p>Sous réserve des termes, conditions et exclusions stipulées dans la notice d'information du contrat d'assurance, l'assuré(e) bénéficie des garanties suivantes :</p>
+        <p>Sous réserve des termes, conditions et exclusions stipulées dans la notice d'information du contrat d'assurance qui vous a été remise, l'assuré(e) bénéficie des garanties suivantes :</p>
         <ul style={{listStyleType: 'disc', paddingLeft: '20px', marginTop: '10px'}}>
             <li><strong>Décès :</strong> Versement du capital restant dû à l'organisme prêteur.</li>
             <li><strong>Perte Totale et Irréversible d'Autonomie (PTIA) :</strong> Versement du capital restant dû à l'organisme prêteur.</li>
