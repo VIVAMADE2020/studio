@@ -1,21 +1,52 @@
+
+"use client"
+
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Typewriter } from "@/components/typewriter";
 import Image from "next/image";
-import { siteConfig } from "@/config/site";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel"
+import Autoplay from "embla-carousel-autoplay";
+import React from "react";
+
+const carouselImages = [
+    "https://i.postimg.cc/mrt3kGjL/pexels-divinetechygirl-1181406.jpg",
+    "https://i.postimg.cc/fTDxXdCg/pexels-liza-summer-6347720.jpg",
+    "https://i.postimg.cc/8cPzkTdw/pexels-n-voitkevich-7172858.jpg",
+    "https://i.postimg.cc/KzmZQmWF/pexels-cottonbro-3943716.jpg",
+    "https://i.postimg.cc/LspR6H2f/pexels-clickerhappy-12619.jpg"
+];
 
 export function HeroSection() {
+  const plugin = React.useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: true })
+  );
+
   return (
     <section className="relative w-full h-screen flex items-center justify-center">
       <div className="absolute inset-0">
-        <Image 
-          src={siteConfig.heroImage}
-          alt="Background"
-          fill
-          priority
-          className="object-cover"
-          data-ai-hint="woman phone"
-        />
+        <Carousel
+          plugins={[plugin.current]}
+          className="w-full h-full"
+        >
+          <CarouselContent>
+            {carouselImages.map((src, index) => (
+              <CarouselItem key={index}>
+                <Image
+                  src={src}
+                  alt={`Background Image ${index + 1}`}
+                  fill
+                  priority={index === 0}
+                  className="object-cover"
+                />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
         <div className="absolute inset-0 bg-black/60"></div>
       </div>
       <div className="container relative z-10 text-center px-4">
