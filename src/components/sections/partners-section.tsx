@@ -1,4 +1,3 @@
-import { Landmark } from "lucide-react";
 
 const partners = [
     { name: "Société Générale" },

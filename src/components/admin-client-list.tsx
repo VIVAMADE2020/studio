@@ -13,7 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatCurrency } from "@/lib/utils";
-import { PlusCircle, RefreshCw, User, Eye, Banknote, Landmark } from "lucide-react";
+import { PlusCircle, RefreshCw, User, Eye, Banknote, Building } from "lucide-react";
 import Link from "next/link";
 import {
   Dialog,
@@ -97,7 +97,7 @@ export function AdminClientList({ initialClients }: AdminClientListProps) {
                       <TableCell className="font-medium">{client.firstName} {client.lastName}</TableCell>
                       <TableCell>
                         <Badge variant={client.accountType === 'LOAN' ? "default" : "secondary"} className="text-xs">
-                          {client.accountType === 'LOAN' ? <Banknote className="mr-1 h-3 w-3"/> : <Landmark className="mr-1 h-3 w-3"/>}
+                          {client.accountType === 'LOAN' ? <Banknote className="mr-1 h-3 w-3"/> : <Building className="mr-1 h-3 w-3"/>}
                           {client.accountType === 'LOAN' ? 'Prêt' : 'Général'}
                         </Badge>
                       </TableCell>

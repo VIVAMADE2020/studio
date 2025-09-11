@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency } from "@/lib/utils";
-import { ArrowLeft, Landmark, Settings, Banknote, ShieldBan } from "lucide-react";
+import { ArrowLeft, Building, Settings, Banknote, ShieldBan } from "lucide-react";
 import Link from "next/link";
 import { AdminBlockSettingsForm } from "@/components/admin-block-settings-form";
 
@@ -51,7 +51,7 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
                     </Card>
                      <Card>
                         <CardHeader>
-                            <CardTitle className="flex items-center gap-2"><Landmark className="h-5 w-5"/> Informations Bancaires</CardTitle>
+                            <CardTitle className="flex items-center gap-2"><Building className="h-5 w-5"/> Informations Bancaires</CardTitle>
                         </CardHeader>
                         <CardContent className="text-sm space-y-2 font-mono">
                             <p><strong>N° de Compte:</strong> {client.accountNumber}</p>

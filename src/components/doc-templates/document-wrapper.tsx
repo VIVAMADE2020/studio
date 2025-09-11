@@ -1,5 +1,5 @@
 
-import { Landmark } from "lucide-react";
+import { LogoIcon } from "@/components/logo-icon";
 import React from "react";
 
 interface DocumentWrapperProps {
@@ -13,7 +13,7 @@ export const DocumentWrapper: React.FC<DocumentWrapperProps> = ({ title, subHead
     <div style={styles.page}>
       <header style={styles.header}>
         <div style={styles.logoContainer}>
-            <Landmark style={styles.logoIcon} />
+            <LogoIcon style={styles.logoIcon} />
             <span style={styles.logoText}>FLEXFOND</span>
         </div>
         <div style={styles.headerInfo}>

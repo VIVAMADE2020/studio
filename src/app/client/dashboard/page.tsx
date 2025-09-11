@@ -7,7 +7,7 @@ import { getClientByIdentificationNumberAction, Client, Transaction } from "@/ap
 import { formatCurrency } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { LogOut, Landmark, Copy, User, Mail, Hash, Calendar, Wallet, History, Send, FileText, MessageSquare, CircleDollarSign, CheckCircle, Fingerprint, Banknote, AlertTriangle, Info } from "lucide-react";
+import { LogOut, Building, Copy, User, Mail, Hash, Calendar, Wallet, History, Send, FileText, MessageSquare, CircleDollarSign, CheckCircle, Banknote, AlertTriangle, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
@@ -192,7 +192,7 @@ export default function ClientDashboardPage() {
                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
                         <Card>
                             <CardHeader>
-                                 <CardTitle className="flex items-center gap-2"><Landmark className="h-5 w-5 text-primary"/> Informations Bancaires</CardTitle>
+                                 <CardTitle className="flex items-center gap-2"><Building className="h-5 w-5 text-primary"/> Informations Bancaires</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4 text-sm font-mono">
                                  <div>
