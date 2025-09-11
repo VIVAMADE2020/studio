@@ -3,7 +3,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, Quote } from 'lucide-react';
+import { CheckCircle, Quote, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { LoanCalculator } from '@/components/loan-calculator';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -126,8 +126,39 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
         </div>
       </section>
 
+      {/* Key Documents Section */}
+      {service.documents && (
+        <section className="py-16 md:py-24 bg-background">
+          <div className="container">
+            <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold text-primary">Les Documents Clés de Votre Projet</h2>
+                <p className="mt-2 text-muted-foreground max-w-3xl mx-auto">
+                  La transparence est au cœur de notre démarche. Voici les documents essentiels qui jalonnent votre parcours de financement et leur rôle.
+                </p>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {service.documents.map((doc: any, index: number) => (
+                <Card key={index} className="flex flex-col">
+                  <CardHeader>
+                    <div className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-accent/10 text-accent flex items-center justify-center">
+                          <FileText className="w-6 h-6" />
+                      </div>
+                      <CardTitle className="text-xl">{doc.title}</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <p className="text-sm text-muted-foreground">{doc.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Loan Calculator */}
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-16 md:py-24 bg-secondary/50">
         <div className="container px-4">
             <div className="max-w-4xl mx-auto">
                  <LoanCalculator />
@@ -137,7 +168,7 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
 
       {/* Testimonials */}
       {service.testimonials && (
-      <section className="py-16 md:py-24 bg-secondary/50">
+      <section className="py-16 md:py-24 bg-background">
         <div className="container px-4 text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-primary">Avis de nos clients</h2>
             <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
@@ -185,7 +216,7 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
 
       {/* FAQ */}
       {service.faqs && (
-        <section className="py-16 md:py-24 bg-background">
+        <section className="py-16 md:py-24 bg-secondary/50">
             <div className="container px-4 max-w-3xl mx-auto">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl md:text-4xl font-bold text-primary">Questions fréquentes sur le {service.title}</h2>
