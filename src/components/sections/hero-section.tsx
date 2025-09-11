@@ -14,6 +14,7 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import React from "react";
 import { motion } from "framer-motion";
+import { Award, Clock, Users } from "lucide-react";
 
 const carouselSlides = [
     {
@@ -31,6 +32,12 @@ const carouselSlides = [
         title: "Le Financement Simplifié",
         description: "Découvrez une expérience de financement simple, rapide et transparente, conçue pour vous.",
     },
+];
+
+const keyResults = [
+    { icon: <Award className="w-8 h-8" />, value: "98%", label: "Satisfaction Client" },
+    { icon: <Clock className="w-8 h-8" />, value: "24h", label: "Réponse Garantie" },
+    { icon: <Users className="w-8 h-8" />, value: "+10k", label: "Clients Satisfaits" },
 ];
 
 export function HeroSection() {
@@ -57,13 +64,13 @@ export function HeroSection() {
                       className="object-cover"
                     />
                     <div className="absolute inset-0 bg-black/50"></div>
-                    <div className="relative z-10 flex items-center justify-center h-full text-center text-white">
+                    <div className="relative z-10 flex flex-col justify-center items-center h-full text-center text-white p-8">
                        <motion.div
                             key={index} // Force re-render on slide change
                             initial={{ opacity: 0, y: 50, scale: 0.9 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             transition={{ duration: 0.8, ease: "easeOut" }}
-                            className="container p-8"
+                            className="container flex-grow flex flex-col justify-center items-center"
                         >
                             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
                                 {slide.title}
@@ -80,6 +87,22 @@ export function HeroSection() {
                               </Button>
                             </div>
                        </motion.div>
+                        <motion.div 
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                            className="w-full max-w-4xl mx-auto mt-16"
+                        >
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                {keyResults.map((result, resultIndex) => (
+                                    <div key={resultIndex} className="glassmorphism-effect text-white p-4 text-center">
+                                        <div className="flex justify-center mb-2">{result.icon}</div>
+                                        <div className="text-3xl font-bold">{result.value}</div>
+                                        <div className="text-sm opacity-90">{result.label}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </motion.div>
                     </div>
                 </div>
               </CarouselItem>
