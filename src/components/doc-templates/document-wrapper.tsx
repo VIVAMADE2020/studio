@@ -1,14 +1,14 @@
 
 import { Landmark } from "lucide-react";
 import React from "react";
-import { formatCurrency } from "@/lib/utils";
 
 interface DocumentWrapperProps {
   title: string;
+  subHeader?: string;
   children: React.ReactNode;
 }
 
-export const DocumentWrapper: React.FC<DocumentWrapperProps> = ({ title, children }) => {
+export const DocumentWrapper: React.FC<DocumentWrapperProps> = ({ title, subHeader, children }) => {
   return (
     <div style={styles.page}>
       <header style={styles.header}>
@@ -22,6 +22,7 @@ export const DocumentWrapper: React.FC<DocumentWrapperProps> = ({ title, childre
         </div>
       </header>
       
+      {subHeader && <p style={styles.subHeader}>{subHeader}</p>}
       <h1 style={styles.title}>{title}</h1>
 
       <main style={styles.main}>
@@ -39,8 +40,8 @@ export const DocumentWrapper: React.FC<DocumentWrapperProps> = ({ title, childre
 export const styles: { [key: string]: React.CSSProperties } = {
   page: {
     fontFamily: 'Helvetica, Arial, sans-serif',
-    fontSize: '11pt',
-    lineHeight: 1.5,
+    fontSize: '10pt',
+    lineHeight: 1.6,
     backgroundColor: '#ffffff',
     color: '#333333',
     padding: '40px',
@@ -56,7 +57,7 @@ export const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'flex-start',
     borderBottom: '2px solid #eeeeee',
     paddingBottom: '20px',
-    marginBottom: '40px',
+    marginBottom: '20px',
   },
   logoContainer: {
     display: 'flex',
@@ -78,21 +79,29 @@ export const styles: { [key: string]: React.CSSProperties } = {
     fontSize: '9pt',
     color: '#718096',
   },
+  subHeader: {
+    textAlign: 'center',
+    fontSize: '8pt',
+    color: '#718096',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+    marginBottom: '20px',
+  },
   title: {
-    fontSize: '22pt',
+    fontSize: '18pt',
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#2D3748',
-    marginBottom: '40px',
+    marginBottom: '30px',
   },
   main: {
     flexGrow: 1,
   },
   section: {
-    marginBottom: '25px',
+    marginBottom: '20px',
   },
   sectionTitle: {
-    fontSize: '14pt',
+    fontSize: '12pt',
     fontWeight: 'bold',
     color: '#4A5568',
     borderBottom: '1px solid #dddddd',
@@ -126,12 +135,13 @@ export const styles: { [key: string]: React.CSSProperties } = {
     padding: '8px',
   },
   signatureSection: {
-    marginTop: '60px',
+    marginTop: '40px',
     display: 'flex',
     justifyContent: 'space-around',
+    alignItems: 'flex-start',
   },
   signatureBox: {
-    width: '40%',
+    width: '45%',
     textAlign: 'center',
   },
   signatureLine: {
@@ -150,9 +160,11 @@ export const styles: { [key: string]: React.CSSProperties } = {
 };
 
 export const formatDate = (dateString: string) => {
-    if (!dateString) return '';
+    if (!dateString) return '[Date non spécifiée]';
     try {
         const date = new Date(dateString);
+        // Add a day to correct for timezone issues
+        date.setDate(date.getDate() + 1);
         if (isNaN(date.getTime())) return dateString;
         return date.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
     } catch(e) {
