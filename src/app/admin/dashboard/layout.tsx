@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, Loader2 } from 'lucide-react';
+import { Home, Loader2, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -28,6 +28,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const navItems = [
     { href: '/admin/dashboard', label: 'Clients', icon: Home },
+    { href: '/admin/dashboard/documents', label: 'Documents', icon: FileText },
   ];
 
   if (isVerifying) {
