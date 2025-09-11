@@ -14,12 +14,10 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import React from "react";
 import { motion } from "framer-motion";
-import { Home, Car, Briefcase, GraduationCap, Banknote } from "lucide-react";
 
 const carouselSlides = [
     {
         imageSrc: "https://i.postimg.cc/mrt3kGjL/pexels-divinetechygirl-1181406.jpg",
-        icon: <Home className="h-16 w-16" />,
         title: "Devenez Propriétaire de Vos Rêves",
         description: "Avec notre prêt immobilier à taux fixe de 2%, l'achat de votre maison n'a jamais été aussi simple et accessible.",
         button1_text: "Découvrir le Prêt Immo",
@@ -29,7 +27,6 @@ const carouselSlides = [
     },
     {
         imageSrc: "https://i.postimg.cc/fTDxXdCg/pexels-liza-summer-6347720.jpg",
-        icon: <Car className="h-16 w-16" />,
         title: "Prenez la Route en Toute Sérénité",
         description: "Financez votre nouveau véhicule, neuf ou d'occasion, avec des conditions exceptionnelles et une réponse rapide.",
         button1_text: "Explorer le Prêt Auto",
@@ -39,7 +36,6 @@ const carouselSlides = [
     },
     {
         imageSrc: "https://i.postimg.cc/8cPzkTdw/pexels-n-voitkevich-7172858.jpg",
-        icon: <Briefcase className="h-16 w-16" />,
         title: "Boostez Votre Carrière Professionnelle",
         description: "Nos solutions de financement sont conçues pour les entrepreneurs et les entreprises qui visent la croissance.",
         button1_text: "Solutions Pro",
@@ -49,7 +45,6 @@ const carouselSlides = [
     },
     {
         imageSrc: "https://i.postimg.cc/KzmZQmWF/pexels-cottonbro-3943716.jpg",
-        icon: <GraduationCap className="h-16 w-16" />,
         title: "Investissez dans Votre Avenir",
         description: "Financez vos études ou celles de vos enfants avec des prêts étudiants flexibles et des taux avantageux.",
         button1_text: "Voir le Prêt Étudiant",
@@ -59,7 +54,6 @@ const carouselSlides = [
     },
     {
         imageSrc: "https://i.postimg.cc/LspR6H2f/pexels-clickerhappy-12619.jpg",
-        icon: <Banknote className="h-16 w-16" />,
         title: "Réalisez Tous Vos Projets Personnels",
         description: "Voyage, mariage, rénovations... Donnez vie à vos envies avec un prêt personnel adapté à vos besoins.",
         button1_text: "Nos Prêts Personnels",
@@ -101,9 +95,6 @@ export function HeroSection() {
                             transition={{ duration: 0.8, ease: "easeOut" }}
                             className="container p-8 glassmorphism-content"
                         >
-                            <div className="mb-4 text-accent">
-                                {slide.icon}
-                            </div>
                             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
                                 {slide.title}
                             </h1>
