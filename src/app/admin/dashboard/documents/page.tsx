@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DocumentGenerator } from "@/components/admin-document-generator";
 import { FeeInvoiceTemplate, FeeInvoiceData } from "@/components/doc-templates/fee-invoice-template";
@@ -24,6 +24,11 @@ const documentTypes = [
 export default function AdminDocumentsPage() {
     const [activeTab, setActiveTab] = useState(documentTypes[0].value);
     const [formData, setFormData] = useState<any>({});
+    const [tempFormData, setTempFormData] = useState<any>({});
+
+    useEffect(() => {
+        setFormData(tempFormData);
+    }, [tempFormData]);
 
     const renderPreview = () => {
         switch(activeTab) {
@@ -55,7 +60,7 @@ export default function AdminDocumentsPage() {
                     <DocumentGenerator 
                         activeTab={activeTab} 
                         setActiveTab={setActiveTab} 
-                        onFormChange={setFormData}
+                        onFormChange={setTempFormData}
                     />
                 </CardContent>
             </Card>
