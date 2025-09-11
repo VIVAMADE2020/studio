@@ -27,20 +27,10 @@ const carouselSlides = [
         description: "Nous vous accompagnons à chaque étape pour transformer vos rêves en réalité, en toute sérénité.",
     },
     {
-        imageSrc: "https://i.postimg.cc/8cPzkTdw/pexels-n-voitkevich-7172858.jpg",
-        title: "Un Partenaire Fiable pour Votre Avenir",
-        description: "Bénéficiez de notre expertise et de nos conditions avantageuses pour tous vos besoins financiers.",
-    },
-    {
         imageSrc: "https://i.postimg.cc/KzmZQmWF/pexels-cottonbro-3943716.jpg",
         title: "Le Financement Simplifié",
         description: "Découvrez une expérience de financement simple, rapide et transparente, conçue pour vous.",
     },
-    {
-        imageSrc: "https://i.postimg.cc/LspR6H2f/pexels-clickerhappy-12619.jpg",
-        title: "Votre Vision, Notre Mission",
-        description: "De l'idée à la concrétisation, FLEXFOND est à vos côtés pour vous donner les moyens de réussir.",
-    }
 ];
 
 export function HeroSection() {
