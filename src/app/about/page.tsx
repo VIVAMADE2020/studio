@@ -1,5 +1,7 @@
-import { ConferenceSpeaker } from '@/components/illustrations';
+
+import { teamMembers } from '@/data/team-data';
 import { Flag, Building, Users, Target, Eye, Handshake, Globe, Banknote } from 'lucide-react';
+import Image from 'next/image';
 import React from 'react';
 
 const timelineEvents = [
@@ -77,17 +79,22 @@ export default function AboutPage() {
                      <h2 className="text-3xl md:text-4xl font-bold text-primary">Notre Équipe Dirigeante</h2>
                      <p className="mt-2 text-muted-foreground max-w-2xl mx-auto">Des experts passionnés qui façonnent l'avenir de FLEXFOND.</p>
                      <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                         {[
-                            { name: 'Alexandre Martin', role: 'PDG & Fondateur' },
-                            { name: 'Isabelle Dubois', role: 'Directrice Financière' },
-                            { name: 'Thomas Bernard', role: 'Directeur des Opérations' },
-                         ].map(member => (
+                         {teamMembers.slice(0,3).map(member => (
                             <div key={member.name} className="p-6 bg-card rounded-lg shadow-md flex flex-col items-center">
-                                <ConferenceSpeaker className="w-24 h-24 text-accent mb-4" />
+                                <Image src={member.signatureUrl} alt={`Signature de ${member.name}`} width={180} height={90} className="mb-4" />
                                 <h4 className="text-xl font-semibold text-primary">{member.name}</h4>
                                 <p className="text-muted-foreground mt-2">{member.role}</p>
                             </div>
                          ))}
+                     </div>
+                     <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-8 lg:w-2/3 lg:mx-auto">
+                        {teamMembers.slice(3).map(member => (
+                             <div key={member.name} className="p-6 bg-card rounded-lg shadow-md flex flex-col items-center">
+                                <Image src={member.signatureUrl} alt={`Signature de ${member.name}`} width={180} height={90} className="mb-4" />
+                                <h4 className="text-xl font-semibold text-primary">{member.name}</h4>
+                                <p className="text-muted-foreground mt-2">{member.role}</p>
+                            </div>
+                        ))}
                      </div>
                 </div>
             </section>

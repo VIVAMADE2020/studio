@@ -2,6 +2,8 @@
 import React from 'react';
 import { DocumentWrapper, styles, formatDate } from './document-wrapper';
 import { formatCurrency } from '@/lib/utils';
+import { teamMembers } from '@/data/team-data';
+import Image from 'next/image';
 
 export interface LoanContractData {
   contractNumber: string;
@@ -27,6 +29,7 @@ interface LoanContractTemplateProps {
 }
 
 export const LoanContractTemplate: React.FC<LoanContractTemplateProps> = ({ data }) => {
+    const signer = teamMembers[1]; // Isabelle Dubois, Directrice Financière
   return (
     <DocumentWrapper 
         title={`Contrat de ${data.loanType || '[Type de Prêt]'}`}
@@ -102,8 +105,10 @@ export const LoanContractTemplate: React.FC<LoanContractTemplateProps> = ({ data
 
       <div style={styles.signatureSection}>
         <div style={styles.signatureBox}>
+          <img src={signer.signatureUrl} alt={`Signature de ${signer.name}`} style={{ width: '150px', height: 'auto', marginBottom: '-10px' }} />
           <div style={styles.signatureLine}></div>
           <p style={styles.label}>Signature du Prêteur (FLEXFOND)</p>
+          <p>{signer.name}, {signer.role}</p>
         </div>
         <div style={styles.signatureBox}>
           <div style={styles.signatureLine}></div>

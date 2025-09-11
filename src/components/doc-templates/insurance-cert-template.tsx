@@ -2,6 +2,8 @@
 import React from 'react';
 import { DocumentWrapper, styles, formatDate } from './document-wrapper';
 import { formatCurrency } from '@/lib/utils';
+import { teamMembers } from '@/data/team-data';
+import Image from 'next/image';
 
 export interface InsuranceCertificateData {
   certNumber: string;
@@ -24,6 +26,7 @@ interface InsuranceCertificateTemplateProps {
 }
 
 export const InsuranceCertificateTemplate: React.FC<InsuranceCertificateTemplateProps> = ({ data }) => {
+  const signer = teamMembers[3]; // Juliette Lambert, Directrice des Assurances
   return (
     <DocumentWrapper 
         title={`Attestation d'Assurance Emprunteur pour un ${data.loanType || '[Type de prêt]'}`}
@@ -86,10 +89,11 @@ export const InsuranceCertificateTemplate: React.FC<InsuranceCertificateTemplate
 
       <div style={{...styles.signatureSection, marginTop: '50px'}}>
         <div style={{...styles.signatureBox, width: '50%'}}>
-            <p style={{marginBottom: '60px'}}>Fait à Paris, le {formatDate(data.certDate)}</p>
+            <p style={{marginBottom: '20px'}}>Fait à Paris, le {formatDate(data.certDate)}</p>
+            <img src={signer.signatureUrl} alt={`Signature de ${signer.name}`} style={{ width: '150px', height: 'auto', marginBottom: '-10px' }} />
             <div style={styles.signatureLine}></div>
-            <p>Pour FLEXFOND</p>
-            <p>Le service des assurances</p>
+            <p>Pour FLEXFOND,</p>
+            <p>{signer.name},<br/>{signer.role}</p>
         </div>
       </div>
     </DocumentWrapper>

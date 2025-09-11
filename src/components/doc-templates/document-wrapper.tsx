@@ -138,7 +138,7 @@ export const styles: { [key: string]: React.CSSProperties } = {
   },
   signatureLine: {
     borderTop: '1px solid #333333',
-    marginTop: '60px',
+    marginTop: '10px',
     marginBottom: '10px',
   },
   footer: {
