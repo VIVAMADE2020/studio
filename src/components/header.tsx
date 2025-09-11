@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LogoIcon } from "@/components/logo-icon";
 
 const navLinks = [
   { href: "/", label: "Accueil" },
@@ -29,8 +28,7 @@ export function Header() {
     )}>
       <div className="container flex h-20 max-w-screen-2xl items-center">
         <Link href="/" className="mr-6 flex items-center space-x-2">
-          <LogoIcon className="h-6 w-6 text-primary" />
-          <span className={cn("font-bold text-lg hidden sm:inline-block", isTransparentPage ? "text-white" : "text-primary")}>FLEXFOND</span>
+          <span className={cn("font-bold text-xl", isTransparentPage ? "text-white" : "text-primary")}>FLEXFOND</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm">
           {navLinks.map((link) => (
@@ -64,7 +62,6 @@ export function Header() {
               <div className="flex flex-col h-full">
                 <div className="flex items-center p-4 border-b border-border">
                   <Link href="/" className="flex items-center gap-2" onClick={() => setIsOpen(false)}>
-                    <LogoIcon className="h-6 w-6 text-primary" />
                     <span className="font-bold text-lg text-primary">FLEXFOND</span>
                   </Link>
                 </div>

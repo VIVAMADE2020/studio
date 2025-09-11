@@ -1,5 +1,4 @@
 
-import { LogoIcon } from "@/components/logo-icon";
 import React from "react";
 
 interface DocumentWrapperProps {
@@ -13,7 +12,6 @@ export const DocumentWrapper: React.FC<DocumentWrapperProps> = ({ title, subHead
     <div style={styles.page}>
       <header style={styles.header}>
         <div style={styles.logoContainer}>
-            <LogoIcon style={styles.logoIcon} />
             <span style={styles.logoText}>FLEXFOND</span>
         </div>
         <div style={styles.headerInfo}>
@@ -63,16 +61,10 @@ export const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     alignItems: 'center',
   },
-  logoIcon: {
-      width: '32px',
-      height: '32px',
-      color: '#4A5568'
-  },
   logoText: {
     fontSize: '24pt',
     fontWeight: 'bold',
     color: '#2D3748',
-    marginLeft: '10px'
   },
   headerInfo: {
     textAlign: 'right',

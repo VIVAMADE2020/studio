@@ -1,7 +1,6 @@
 
 import Link from "next/link";
 import { Facebook, Twitter, Linkedin } from "lucide-react";
-import { LogoIcon } from "@/components/logo-icon";
 
 export function Footer() {
   return (
@@ -10,7 +9,6 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2">
-              <LogoIcon className="h-8 w-8 text-white" />
               <span className="font-bold text-xl text-white">FLEXFOND</span>
             </Link>
             <p className="text-sm">
