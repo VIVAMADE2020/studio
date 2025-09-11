@@ -43,7 +43,7 @@ export const SolvencyCertificateTemplate: React.FC<SolvencyCertificateTemplatePr
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Article 1 : Objet du Certificat</h2>
         <p>
-          FLEXFOND, agissant en tant qu'intermédiaire financier, certifie par la présente avoir procédé à une analyse préliminaire de la situation financière du bénéficiaire susmentionné. Sur la base des éléments déclaratifs fournis et en l'état actuel de nos critères d'évaluation des risques, le bénéficiaire est jugé éligible à un financement pour un montant maximum de :
+          FLEXFOND, agissant en tant qu'intermédiaire financier, certifie par la présente avoir procédé à une analyse approfondie de la situation financière du bénéficiaire susmentionné. Sur la base des documents fournis et des vérifications effectuées, le bénéficiaire est jugé éligible à un financement pour un montant maximum de :
         </p>
          <p style={{ fontSize: '16pt', fontWeight: 'bold', textAlign: 'center', margin: '20px 0', color: '#333' }}>
           {formatCurrency(data.balance || 0)}
@@ -54,16 +54,19 @@ export const SolvencyCertificateTemplate: React.FC<SolvencyCertificateTemplatePr
       </div>
       
       <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Article 2 : Portée et Limites</h2>
+        <h2 style={styles.sectionTitle}>Article 2 : Portée et Finalisation</h2>
         <p>
-          Ce certificat atteste d'une capacité de financement théorique et prévisionnelle au jour de son émission. <strong>Il ne constitue en aucun cas une offre de prêt ferme et définitive.</strong> L'octroi final de tout financement reste conditionné à la constitution d'un dossier de demande de prêt complet, à la vérification de l'ensemble des pièces justificatives (revenus, charges, identité, etc.), et à l'acceptation finale du dossier par nos partenaires prêteurs après une étude de solvabilité approfondie. FLEXFOND ne saurait être tenu responsable si un financement était refusé ultérieurement.
+          Ce certificat atteste de la pré-approbation de votre dossier de financement par FLEXFOND et constitue un document essentiel dans la procédure d'octroi de votre prêt. Il témoigne du succès de l'analyse de votre solvabilité.
+        </p>
+        <p>
+          L'étape finale pour le déblocage des fonds consistera en la signature du <strong>contrat de prêt officiel</strong>, qui formalisera l'ensemble des conditions et l'échéancier de remboursement. FLEXFOND s'engage à vous accompagner dans cette dernière démarche.
         </p>
       </div>
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Article 3 : Validité</h2>
         <p>
-          Le présent certificat est valable 30 jours calendaires à compter de sa date d'émission, soit jusqu'au {formatDate(expirationDate.toISOString())}. Passé ce délai, les conditions économiques ou la situation personnelle du bénéficiaire ayant pu évoluer, une nouvelle évaluation sera impérativement nécessaire pour confirmer l'éligibilité.
+          Le présent certificat est valable 30 jours calendaires à compter de sa date d'émission, soit jusqu'au {formatDate(expirationDate.toISOString())}. Cette période garantit la pertinence des conditions analysées. Passé ce délai, une simple mise à jour sera nécessaire pour confirmer le maintien de votre éligibilité.
         </p>
       </div>
 
