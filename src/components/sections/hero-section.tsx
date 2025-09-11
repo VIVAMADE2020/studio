@@ -93,7 +93,7 @@ export function HeroSection() {
                             initial={{ opacity: 0, y: 50, scale: 0.9 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             transition={{ duration: 0.8, ease: "easeOut" }}
-                            className="container p-8 glassmorphism-content"
+                            className="container p-8"
                         >
                             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
                                 {slide.title}
