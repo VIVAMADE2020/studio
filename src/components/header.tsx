@@ -19,7 +19,7 @@ const navLinks = [
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const isTransparentPage = pathname === '/' || pathname.startsWith('/services/');
+  const isTransparentPage = pathname === '/';
 
   return (
     <header className={cn(
