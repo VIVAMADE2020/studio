@@ -34,11 +34,14 @@ export function SolvencyCertificateForm({ setFormData }: SolvencyCertificateForm
   });
 
   const { isGenerating, generatePDF } = usePDFGenerator();
-  const formData = form.watch();
 
   useEffect(() => {
-    setFormData(formData);
-  }, [formData, setFormData]);
+    const subscription = form.watch((value) => {
+      setFormData(value);
+    });
+    setFormData(form.getValues());
+    return () => subscription.unsubscribe();
+  }, [form, setFormData]);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     generatePDF(
