@@ -32,7 +32,7 @@ export function GuaranteeAgreementForm({ setFormData }: GuaranteeAgreementFormPr
       borrowerName: '',
       loanAmount: 10000,
       loanPurpose: 'Prêt personnel',
-      agreementDate: new Date().toLocaleDateString('fr-CA'),
+      agreementDate: new Date().toISOString().split('T')[0],
     },
   });
 
@@ -56,10 +56,10 @@ export function GuaranteeAgreementForm({ setFormData }: GuaranteeAgreementFormPr
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-6">
         <FormField name="guarantorName" render={({ field }) => ( <FormItem> <FormLabel>Nom de la Caution</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-        <FormField name="guarantorAddress" render={({ field }) => ( <FormItem> <FormLabel>Adresse de la Caution</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+        <FormField name="guarantorAddress" render={({ field }) => ( <FormItem> <FormLabel>Adresse de la Caution</FormLabel> <FormControl><Textarea rows={3} {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField name="borrowerName" render={({ field }) => ( <FormItem> <FormLabel>Nom de l'Emprunteur</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField name="loanAmount" render={({ field }) => ( <FormItem> <FormLabel>Montant du Prêt Garanti (€)</FormLabel> <FormControl><Input type="number" step="0.01" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-        <FormField name="loanPurpose" render={({ field }) => ( <FormItem> <FormLabel>Objet du Prêt</FormLabel> <FormControl><Textarea {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+        <FormField name="loanPurpose" render={({ field }) => ( <FormItem> <FormLabel>Objet du Prêt</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField name="agreementDate" render={({ field }) => ( <FormItem> <FormLabel>Date de l'Acte</FormLabel> <FormControl><Input type="date" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <Button type="submit" disabled={isGenerating}>{isGenerating ? 'Génération...' : 'Générer et Télécharger PDF'}</Button>
       </form>

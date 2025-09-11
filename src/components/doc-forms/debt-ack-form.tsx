@@ -8,6 +8,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { usePDFGenerator } from '@/hooks/use-pdf-generator';
+import { Textarea } from '../ui/textarea';
 
 const formSchema = z.object({
   debtorName: z.string().min(1, 'Requis'),
@@ -31,7 +32,7 @@ export function DebtAcknowledgementForm({ setFormData }: DebtAcknowledgementForm
       creditorName: 'FLEXFOND',
       debtAmount: 0,
       repaymentTerms: 'Remboursement en 12 mensualités de X €.',
-      ackDate: new Date().toLocaleDateString('fr-CA'),
+      ackDate: new Date().toISOString().split('T')[0],
     },
   });
 
@@ -56,11 +57,11 @@ export function DebtAcknowledgementForm({ setFormData }: DebtAcknowledgementForm
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-6">
         <FormField name="debtorName" render={({ field }) => ( <FormItem> <FormLabel>Nom du Débiteur</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-        <FormField name="debtorAddress" render={({ field }) => ( <FormItem> <FormLabel>Adresse du Débiteur</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+        <FormField name="debtorAddress" render={({ field }) => ( <FormItem> <FormLabel>Adresse du Débiteur</FormLabel> <FormControl><Textarea rows={3} {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField name="creditorName" render={({ field }) => ( <FormItem> <FormLabel>Nom du Créancier</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField name="debtAmount" render={({ field }) => ( <FormItem> <FormLabel>Montant de la Dette (€)</FormLabel> <FormControl><Input type="number" step="0.01" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField name="repaymentTerms" render={({ field }) => ( <FormItem> <FormLabel>Modalités de Remboursement</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-        <FormField name="ackDate" render={({ field }) => ( <FormItem> <FormLabel>Date</FormLabel> <FormControl><Input type="date" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+        <FormField name="ackDate" render={({ field }) => ( <FormItem> <FormLabel>Date de Reconnaissance</FormLabel> <FormControl><Input type="date" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <Button type="submit" disabled={isGenerating}>{isGenerating ? 'Génération...' : 'Générer et Télécharger PDF'}</Button>
       </form>
     </FormProvider>

@@ -8,6 +8,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { usePDFGenerator } from '@/hooks/use-pdf-generator';
+import { Textarea } from '../ui/textarea';
 
 const formSchema = z.object({
   borrowerName: z.string().min(1, 'Requis'),
@@ -34,8 +35,8 @@ export function LoanContractForm({ setFormData }: LoanContractFormProps) {
       interestRate: 2.5,
       loanTerm: 60,
       monthlyPayment: 177.47,
-      startDate: new Date().toLocaleDateString('fr-CA'),
-      contractDate: new Date().toLocaleDateString('fr-CA'),
+      startDate: new Date().toISOString().split('T')[0],
+      contractDate: new Date().toISOString().split('T')[0],
     },
   });
 
@@ -59,7 +60,7 @@ export function LoanContractForm({ setFormData }: LoanContractFormProps) {
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-6">
         <FormField name="borrowerName" render={({ field }) => ( <FormItem> <FormLabel>Nom de l'Emprunteur</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-        <FormField name="borrowerAddress" render={({ field }) => ( <FormItem> <FormLabel>Adresse de l'Emprunteur</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+        <FormField name="borrowerAddress" render={({ field }) => ( <FormItem> <FormLabel>Adresse de l'Emprunteur</FormLabel> <FormControl><Textarea rows={3} {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField name="loanAmount" render={({ field }) => ( <FormItem> <FormLabel>Montant du Prêt (€)</FormLabel> <FormControl><Input type="number" step="0.01" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField name="interestRate" render={({ field }) => ( <FormItem> <FormLabel>Taux d'intérêt annuel (%)</FormLabel> <FormControl><Input type="number" step="0.01" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField name="loanTerm" render={({ field }) => ( <FormItem> <FormLabel>Durée du Prêt (mois)</FormLabel> <FormControl><Input type="number" {...field} /></FormControl> <FormMessage /> </FormItem> )} />

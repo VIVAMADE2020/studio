@@ -18,27 +18,28 @@ interface InsuranceCertificateTemplateProps {
 
 export const InsuranceCertificateTemplate: React.FC<InsuranceCertificateTemplateProps> = ({ data }) => {
   return (
-    <DocumentWrapper title="Attestation d'Assurance">
+    <DocumentWrapper title="Attestation d'Assurance Emprunteur">
       <div style={styles.section}>
-        <p>FLEXFOND, agissant en qualité de gestionnaire, atteste que la personne désignée ci-dessous est couverte par un contrat d'assurance emprunteur.</p>
+        <p>FLEXFOND, agissant en qualité de gestionnaire du contrat d'assurance groupe, atteste par la présente que la personne désignée ci-dessous est couverte au titre du prêt auquel cette assurance est adossée.</p>
       </div>
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Informations sur l'Assuré</h2>
-        <p><strong style={styles.label}>Nom :</strong> {data.policyholderName}</p>
+        <p><strong style={styles.label}>Nom et Prénom :</strong> {data.policyholderName}</p>
         <p><strong style={styles.label}>Adresse :</strong> {data.policyholderAddress}</p>
       </div>
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Détails de la Police d'Assurance</h2>
-        <p><strong style={styles.label}>Numéro de police :</strong> {data.policyNumber}</p>
+        <p><strong style={styles.label}>Numéro de police / Adhésion :</strong> {data.policyNumber}</p>
         <p><strong style={styles.label}>Date d'effet :</strong> {formatDate(data.effectiveDate)}</p>
         <p><strong style={styles.label}>Date d'expiration :</strong> {formatDate(data.expirationDate)}</p>
       </div>
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Détails de la Couverture</h2>
-        <p>{data.coverageDetails}</p>
+        <p>L'assuré bénéficie des garanties suivantes, conformément aux conditions générales et particulières du contrat :</p>
+        <p style={{whiteSpace: 'pre-wrap', marginTop: '10px'}}>{data.coverageDetails}</p>
       </div>
       
       <div style={{...styles.section, marginTop: '40px'}}>
@@ -47,6 +48,7 @@ export const InsuranceCertificateTemplate: React.FC<InsuranceCertificateTemplate
         <div style={{marginTop: '60px', width: '50%'}}>
             <div style={styles.signatureLine}></div>
             <p>Pour FLEXFOND</p>
+            <p>Le service des assurances</p>
         </div>
       </div>
     </DocumentWrapper>

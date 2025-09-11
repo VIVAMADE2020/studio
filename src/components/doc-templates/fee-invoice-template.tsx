@@ -24,12 +24,12 @@ export const FeeInvoiceTemplate: React.FC<FeeInvoiceTemplateProps> = ({ data }) 
         <table style={{ width: '100%', border: 'none' }}>
             <tbody>
                 <tr>
-                    <td style={{ width: '50%' }}>
-                        <p><strong>Facturé à :</strong></p>
-                        <p>{data.clientName}</p>
-                        <p>{data.clientAddress}</p>
+                    <td style={{ width: '50%', verticalAlign: 'top' }}>
+                        <p style={{...styles.sectionTitle, border: 'none', padding: 0, margin: 0, marginBottom: '10px' }}>Facturé à :</p>
+                        <p style={{margin: 0}}>{data.clientName}</p>
+                        <p style={{margin: 0, whiteSpace: 'pre-wrap'}}>{data.clientAddress}</p>
                     </td>
-                    <td style={{ width: '50%', textAlign: 'right' }}>
+                    <td style={{ width: '50%', textAlign: 'right', verticalAlign: 'top' }}>
                         <p><strong>Facture N° :</strong> {data.invoiceNumber}</p>
                         <p><strong>Date :</strong> {formatDate(data.invoiceDate)}</p>
                     </td>
@@ -43,27 +43,31 @@ export const FeeInvoiceTemplate: React.FC<FeeInvoiceTemplateProps> = ({ data }) 
             <thead>
                 <tr>
                     <th style={styles.th}>Description</th>
-                    <th style={{...styles.th, textAlign: 'right'}}>Montant</th>
+                    <th style={{...styles.th, textAlign: 'right', width: '150px'}}>Montant</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td style={styles.td}>{data.serviceDescription}</td>
-                    <td style={{...styles.td, textAlign: 'right'}}>{formatCurrency(data.amount)}</td>
+                    <td style={{...styles.td, textAlign: 'right'}}>{formatCurrency(data.amount || 0)}</td>
                 </tr>
             </tbody>
+            <tfoot>
+                <tr>
+                    <td style={{...styles.td, border: 'none', textAlign: 'right', fontWeight: 'bold', padding: '15px 8px'}}>Total à payer</td>
+                    <td style={{...styles.td, textAlign: 'right', fontWeight: 'bold', fontSize: '12pt'}}>{formatCurrency(data.amount || 0)}</td>
+                </tr>
+            </tfoot>
         </table>
       </div>
 
-       <div style={{ ...styles.section, textAlign: 'right', marginTop: '30px' }}>
-          <p style={{ fontSize: '14pt', fontWeight: 'bold' }}>
-            Total à payer : {formatCurrency(data.amount)}
-          </p>
+        <div style={{ ...styles.section, marginTop: '40px' }}>
+            <h2 style={styles.sectionTitle}>Modalités de paiement</h2>
+            <p style={{whiteSpace: 'pre-wrap'}}>{data.paymentTerms}</p>
         </div>
 
-        <div style={{ ...styles.section, marginTop: '40px' }}>
-            <p><strong>Modalités de paiement :</strong></p>
-            <p style={{whiteSpace: 'pre-wrap'}}>{data.paymentTerms}</p>
+        <div style={{...styles.section, marginTop: '50px', textAlign: 'center', fontSize: '10pt', color: '#718096'}}>
+            <p>Nous vous remercions de votre confiance.</p>
         </div>
     </DocumentWrapper>
   );

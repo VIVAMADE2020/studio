@@ -150,5 +150,12 @@ export const styles: { [key: string]: React.CSSProperties } = {
 };
 
 export const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
+    if (!dateString) return '';
+    try {
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return dateString;
+        return date.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
+    } catch(e) {
+        return dateString;
+    }
 };

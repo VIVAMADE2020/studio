@@ -33,15 +33,15 @@ export const GuaranteeAgreementTemplate: React.FC<GuaranteeAgreementTemplateProp
           pour le remboursement du prêt contracté auprès de FLEXFOND.
         </p>
         <p style={{marginTop: '15px'}}>
-          Ce cautionnement porte sur le prêt d'un montant de <strong>{formatCurrency(data.loanAmount)}</strong>, 
+          Ce cautionnement porte sur le prêt d'un montant de <strong>{formatCurrency(data.loanAmount || 0)}</strong>, 
           destiné à financer : {data.loanPurpose}.
         </p>
         <p style={{marginTop: '15px'}}>
           Je m'engage à rembourser au Créancier les sommes dues par le Débiteur en cas de défaillance de ce dernier,
           dans la limite du montant du prêt, augmenté des intérêts, frais et accessoires.
         </p>
-         <p style={{marginTop: '15px'}}>
-          Je reconnais avoir été informé(e) que je peux être poursuivi(e) en paiement sans que le Débiteur ne le soit au préalable.
+         <p style={{marginTop: '15px', fontWeight: 'bold'}}>
+          En me portant caution solidaire, je renonce au bénéfice de discussion qui m'autoriserait à exiger que le créancier poursuive d'abord le débiteur. Je reconnais avoir été informé(e) que je peux être poursuivi(e) en paiement sans que le Débiteur ne le soit au préalable.
         </p>
       </div>
 
@@ -49,7 +49,7 @@ export const GuaranteeAgreementTemplate: React.FC<GuaranteeAgreementTemplateProp
         <div style={styles.signatureBox}>
           <div style={styles.signatureLine}></div>
           <p>Signature de la Caution</p>
-          <p>(Précédée de la mention "Lu et approuvé, bon pour caution solidaire")</p>
+          <p>(Précédée de la mention manuscrite obligatoire et de la signature)</p>
         </div>
       </div>
       <p style={{textAlign: 'center', marginTop: '20px'}}>Fait à Paris, le {formatDate(data.agreementDate)}</p>

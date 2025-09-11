@@ -8,6 +8,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { usePDFGenerator } from '@/hooks/use-pdf-generator';
+import { Textarea } from '../ui/textarea';
 
 const formSchema = z.object({
   clientName: z.string().min(1, 'Requis'),
@@ -29,7 +30,7 @@ export function SolvencyCertificateForm({ setFormData }: SolvencyCertificateForm
       clientAddress: '',
       accountNumber: '',
       balance: 0,
-      certDate: new Date().toLocaleDateString('fr-CA'),
+      certDate: new Date().toISOString().split('T')[0],
     },
   });
 
@@ -53,7 +54,7 @@ export function SolvencyCertificateForm({ setFormData }: SolvencyCertificateForm
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-6">
         <FormField name="clientName" render={({ field }) => ( <FormItem> <FormLabel>Nom du Client</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-        <FormField name="clientAddress" render={({ field }) => ( <FormItem> <FormLabel>Adresse du Client</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+        <FormField name="clientAddress" render={({ field }) => ( <FormItem> <FormLabel>Adresse du Client</FormLabel> <FormControl><Textarea rows={3} {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField name="accountNumber" render={({ field }) => ( <FormItem> <FormLabel>Numéro de Compte</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField name="balance" render={({ field }) => ( <FormItem> <FormLabel>Solde du compte (€)</FormLabel> <FormControl><Input type="number" step="0.01" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
         <FormField name="certDate" render={({ field }) => ( <FormItem> <FormLabel>Date du Certificat</FormLabel> <FormControl><Input type="date" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
