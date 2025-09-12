@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 220 17% 98%; /* Light Gray for a clean look */
+    --background: 0 0% 100%; /* Pure White */
     --foreground: 224 71.4% 4.1%;
     --card: 0 0% 100%;
     --card-foreground: 224 71.4% 4.1%;
@@ -12,9 +12,9 @@
     --popover-foreground: 224 71.4% 4.1%;
     --primary: 215 39% 29%; /* Navy Blue for trust */
     --primary-foreground: 210 20% 98%;
-    --secondary: 220 14.3% 95.9%;
+    --secondary: 240 4.8% 95.9%; /* Lighter Gray for subtle contrast */
     --secondary-foreground: 220 8.9% 46.1%;
-    --muted: 220 14.3% 95.9%;
+    --muted: 240 4.8% 95.9%;
     --muted-foreground: 220 8.9% 46.1%;
     --accent: 160 57% 55%; /* Vivid Green for action */
     --accent-foreground: 210 20% 98%; /* Changed for better contrast */
