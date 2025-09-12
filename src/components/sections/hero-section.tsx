@@ -15,7 +15,8 @@ import Autoplay from "embla-carousel-autoplay";
 import React from "react";
 import { motion } from "framer-motion";
 import { Award, Clock, Users } from "lucide-react";
-import { FinancialChart } from "../illustrations/FinancialChart";
+import { FinancialChart } from "../illustrations";
+import { ConferenceSpeaker } from "../illustrations";
 
 const carouselSlides = [
     {
@@ -65,7 +66,7 @@ export function HeroSection() {
                             transition={{ duration: 0.8, ease: "easeOut" }}
                             className="text-left relative"
                         >
-                            <FinancialChart className="absolute -top-16 -left-12 w-24 h-24 text-primary/10 -z-10" />
+                            <ConferenceSpeaker className="absolute -top-16 -left-12 w-24 h-24 text-primary/10 -z-10" />
                             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-primary uppercase">
                                 {slide.title}
                             </h1>
