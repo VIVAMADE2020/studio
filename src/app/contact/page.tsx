@@ -10,14 +10,6 @@ export default function ContactPage() {
       <section className="py-20 md:py-32 bg-secondary/30">
         <div className="container">
           <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
-            <div className="text-left">
-              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-primary uppercase">
-                PRENDRE CONTACT
-              </h1>
-              <p className="mt-4 max-w-xl text-lg text-muted-foreground">
-                Une question ? Un projet ? Notre équipe d'experts est à votre entière disposition pour vous accompagner.
-              </p>
-            </div>
             <div className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl">
                 <Image
                     src="https://i.postimg.cc/NMjBjxSH/arlington-research-k-N-k-Vi-Dch-A0-unsplash.jpg"
@@ -25,6 +17,14 @@ export default function ContactPage() {
                     fill
                     className="object-cover"
                 />
+            </div>
+            <div className="text-left">
+              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-primary uppercase">
+                PRENDRE CONTACT
+              </h1>
+              <p className="mt-4 max-w-xl text-lg text-muted-foreground">
+                Une question ? Un projet ? Notre équipe d'experts est à votre entière disposition pour vous accompagner.
+              </p>
             </div>
           </div>
         </div>

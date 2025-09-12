@@ -35,14 +35,6 @@ export default function AboutPage() {
             <section className="py-20 md:py-32 bg-secondary/30">
                 <div className="container">
                     <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
-                        <div className="text-left">
-                            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-primary uppercase">
-                                NOTRE HISTOIRE
-                            </h1>
-                            <p className="mt-4 max-w-xl text-lg text-muted-foreground">
-                                Au cœur de la finance, une histoire de confiance et d'innovation.
-                            </p>
-                        </div>
                         <div className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl">
                             <Image
                                 src="https://i.postimg.cc/hGzZKQP0/pexels-olly-789822.jpg"
@@ -51,6 +43,14 @@ export default function AboutPage() {
                                 className="object-cover"
                                 priority
                             />
+                        </div>
+                        <div className="text-left">
+                            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-primary uppercase">
+                                NOTRE HISTOIRE
+                            </h1>
+                            <p className="mt-4 max-w-xl text-lg text-muted-foreground">
+                                Au cœur de la finance, une histoire de confiance et d'innovation.
+                            </p>
                         </div>
                     </div>
                 </div>

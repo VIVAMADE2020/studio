@@ -59,6 +59,21 @@ export function HeroSection() {
                 {carouselSlides.map((slide, index) => (
                   <CarouselItem key={index}>
                     <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
+                        <motion.div 
+                            key={index + 'image'} // Ensure re-animation on slide change
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl"
+                        >
+                            <Image
+                              src={slide.imageSrc}
+                              alt={slide.title}
+                              fill
+                              priority={index === 0}
+                              className="object-cover"
+                            />
+                        </motion.div>
                         <motion.div
                             key={index} // Ensure re-animation on slide change
                             initial={{ opacity: 0, x: -50 }}
@@ -93,21 +108,6 @@ export function HeroSection() {
                                     </div>
                                 ))}
                             </div>
-                        </motion.div>
-                         <motion.div 
-                            key={index + 'image'} // Ensure re-animation on slide change
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
-                            className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl"
-                        >
-                            <Image
-                              src={slide.imageSrc}
-                              alt={slide.title}
-                              fill
-                              priority={index === 0}
-                              className="object-cover"
-                            />
                         </motion.div>
                     </div>
                   </CarouselItem>
