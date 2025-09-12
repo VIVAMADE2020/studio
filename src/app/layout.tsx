@@ -6,6 +6,14 @@ import { Footer } from '@/components/footer';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components/theme-provider';
+import { Inter } from 'next/font/google';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
 
 export const metadata: Metadata = {
   title: 'FLEXFOND | Solutions Financières',
@@ -18,17 +26,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning className={inter.variable}>
       <head>
         <link rel="icon" href="https://i.postimg.cc/XJSfHfQt/Black-Vintage-badges-family-farm-logo-removebg-preview.png" type="image/png" />
         <link rel="shortcut icon" href="https://i.postimg.cc/XJSfHfQt/Black-Vintage-badges-family-farm-logo-removebg-preview.png" type="image/png" />
         <link rel="apple-touch-icon" href="https://i.postimg.cc/XJSfHfQt/Black-Vintage-badges-family-farm-logo-removebg-preview.png" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
       </head>
       <body className={cn('min-h-screen bg-background font-body antialiased', 'flex flex-col')}>
         <ThemeProvider

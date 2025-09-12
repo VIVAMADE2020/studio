@@ -15,13 +15,13 @@ export function Footer() {
               Solutions financières sur-mesure pour réaliser vos projets en toute confiance.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-primary-foreground/80 hover:text-white">
+              <a href="#" aria-label="Facebook" className="text-primary-foreground/80 hover:text-white">
                 <Facebook className="h-5 w-5" />
               </a>
-              <a href="#" className="text-primary-foreground/80 hover:text-white">
+              <a href="#" aria-label="Twitter" className="text-primary-foreground/80 hover:text-white">
                 <Twitter className="h-5 w-5" />
               </a>
-              <a href="#" className="text-primary-foreground/80 hover:text-white">
+              <a href="#" aria-label="LinkedIn" className="text-primary-foreground/80 hover:text-white">
                 <Linkedin className="h-5 w-5" />
               </a>
             </div>

@@ -71,6 +71,7 @@ export function ServicesSection() {
                         alt={service.title}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        priority={index < 3}
                     />
                     <div className="absolute inset-0 bg-black/30"></div>
                      <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
