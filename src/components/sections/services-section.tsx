@@ -58,7 +58,7 @@ export function ServicesSection() {
   return (
     <section id="services" className="py-16 md:py-24 bg-background scroll-mt-20">
       <div className="container px-4 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-primary">Nos Solutions de Financement</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-primary uppercase">Nos Solutions de Financement</h2>
         <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
           Découvrez une gamme complète de services conçus pour répondre à chacun de vos besoins financiers.
         </p>
@@ -79,7 +79,7 @@ export function ServicesSection() {
                       {service.icon}
                     </div>
                     <div className="flex-grow">
-                      <CardTitle className="text-xl">{service.title}</CardTitle>
+                      <CardTitle className="text-xl uppercase">{service.title}</CardTitle>
                     </div>
                 </CardHeader>
                 <CardContent className="flex flex-col flex-grow pt-0">

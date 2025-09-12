@@ -19,17 +19,17 @@ import { Award, Clock, Users } from "lucide-react";
 const carouselSlides = [
     {
         imageSrc: "https://i.postimg.cc/mrt3kGjL/pexels-divinetechygirl-1181406.jpg",
-        title: "Solutions Financières sur Mesure",
+        title: "SOLUTIONS FINANCIÈRES SUR MESURE",
         description: "Que vous soyez un particulier ou un professionnel, nous avons la solution de financement adaptée à vos ambitions.",
     },
     {
         imageSrc: "https://i.postimg.cc/fTDxXdCg/pexels-liza-summer-6347720.jpg",
-        title: "Réalisez Vos Projets avec Confiance",
+        title: "RÉALISEZ VOS PROJETS AVEC CONFIANCE",
         description: "Nous vous accompagnons à chaque étape pour transformer vos rêves en réalité, en toute sérénité.",
     },
     {
         imageSrc: "https://i.postimg.cc/KzmZQmWF/pexels-cottonbro-3943716.jpg",
-        title: "Le Financement Simplifié",
+        title: "LE FINANCEMENT SIMPLIFIÉ",
         description: "Découvrez une expérience de financement simple, rapide et transparente, conçue pour vous.",
     },
 ];
@@ -64,7 +64,7 @@ export function HeroSection() {
                             transition={{ duration: 0.8, ease: "easeOut" }}
                             className="text-left"
                         >
-                            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-primary">
+                            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-primary uppercase">
                                 {slide.title}
                             </h1>
                             <p className="mt-4 max-w-xl text-lg text-muted-foreground">

@@ -54,7 +54,7 @@ export function TestimonialsSection() {
     return (
         <section className="py-16 md:py-24 bg-secondary/50">
             <div className="container px-4 text-center">
-                <h2 className="text-3xl md:text-4xl font-bold text-primary">Ils nous font confiance à travers l'Europe</h2>
+                <h2 className="text-3xl md:text-4xl font-bold text-primary uppercase">Ils nous font confiance à travers l'Europe</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
                     La satisfaction de nos clients est notre plus grande récompense.
                 </p>

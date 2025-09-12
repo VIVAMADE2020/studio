@@ -8,7 +8,7 @@ export default function LoanApplicationPage() {
             <div className="mx-auto max-w-3xl">
                 <Card className="shadow-lg">
                     <CardHeader className="text-center">
-                        <CardTitle className="text-3xl font-bold text-primary">Demande de Prêt</CardTitle>
+                        <CardTitle className="text-3xl font-bold text-primary uppercase">Demande de Prêt</CardTitle>
                         <CardDescription className="text-lg">Remplissez notre formulaire sécurisé en quelques étapes.</CardDescription>
                     </CardHeader>
                     <CardContent>

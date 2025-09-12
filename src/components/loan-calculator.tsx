@@ -158,7 +158,7 @@ export function LoanCalculator({
 
       {amortizationSchedule.length > 0 && (
         <div className="mt-8 pt-6 border-t border-border">
-            <h3 className="text-lg font-semibold text-center mb-4">Tableau d'Amortissement</h3>
+            <h3 className="text-lg font-semibold text-center mb-4 uppercase">Tableau d'Amortissement</h3>
             <ScrollArea className="h-72 w-full rounded-md border">
                 <Table>
                     <TableHeader className="sticky top-0 bg-secondary">
@@ -197,7 +197,7 @@ export function LoanCalculator({
   return (
     <Card className="shadow-lg w-full max-w-3xl">
         <CardHeader>
-            <CardTitle>Simulateur de prêt</CardTitle>
+            <CardTitle className="uppercase">Simulateur de prêt</CardTitle>
             <CardDescription>Estimez vos mensualités et consultez votre plan de remboursement.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-8">

@@ -6,19 +6,19 @@ const timelineEvents = [
   {
     icon: <Flag className="h-5 w-5 text-accent" />,
     year: "2015",
-    title: "Fondation de FLEXFOND",
+    title: "FONDATION DE FLEXFOND",
     description: "Création avec la mission de simplifier l'accès au financement."
   },
   {
     icon: <Building className="h-5 w-5 text-accent" />,
     year: "2018",
-    title: "Expansion Nationale",
+    title: "EXPANSION NATIONALE",
     description: "Ouverture de nouveaux bureaux et élargissement de notre offre de services."
   },
   {
     icon: <Users className="h-5 w-5 text-accent" />,
     year: "2023",
-    title: "10,000 Clients Satisfaits",
+    title: "10,000 CLIENTS SATISFAITS",
     description: "Nous célébrons une étape majeure de confiance et de croissance."
   }
 ];
@@ -29,7 +29,7 @@ export function AboutSection() {
       <div className="container px-4">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-primary">Bâtir l'avenir, ensemble.</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-primary uppercase">Bâtir l'avenir, ensemble.</h2>
             <p className="mt-4 text-muted-foreground">
               Depuis 2015, FLEXFOND s'engage à offrir des services financiers transparents et personnalisés. Notre expertise et notre dévouement nous permettent de transformer vos ambitions en réalité.
             </p>
@@ -47,7 +47,7 @@ export function AboutSection() {
                   {event.icon}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-primary">{event.year} - {event.title}</h3>
+                  <h3 className="font-semibold text-primary uppercase">{event.year} - {event.title}</h3>
                   <p className="text-sm text-muted-foreground mt-1">{event.description}</p>
                 </div>
               </div>

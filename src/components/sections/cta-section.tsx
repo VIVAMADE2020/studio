@@ -6,7 +6,7 @@ export function CtaSection() {
   return (
     <section className="py-16 md:py-24 bg-primary/5">
       <div className="container px-4 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-primary">Prêt à démarrer votre projet ?</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-primary uppercase">Prêt à démarrer votre projet ?</h2>
         <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
           Simulez votre prêt ou déposez une demande en quelques clics. C'est simple, rapide et sécurisé.
         </p>

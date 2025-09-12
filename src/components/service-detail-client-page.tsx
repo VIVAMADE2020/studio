@@ -46,7 +46,7 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
                     {SectionIcon && React.cloneElement(SectionIcon, {className: "w-5 h-5"})}
                     <span>{service.title}</span>
                 </div>
-              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-primary">
+              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-primary uppercase">
                 {service.tagline}
               </h1>
               <p className="mt-4 max-w-xl text-lg text-muted-foreground">
@@ -71,13 +71,13 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
         <div className="container">
           <div className="grid lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2">
-              <h2 className="text-2xl font-bold text-primary flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-primary flex items-center gap-3 uppercase">
                 {SectionIcon}
                 <span>Qu'est-ce que le {service.title} ?</span>
               </h2>
               <div className="prose prose-lg max-w-none text-muted-foreground mt-4 leading-relaxed" dangerouslySetInnerHTML={{ __html: service.description }} />
 
-              <h3 className="text-xl font-bold text-primary mt-12">Les avantages FLEXFOND</h3>
+              <h3 className="text-xl font-bold text-primary mt-12 uppercase">Les avantages FLEXFOND</h3>
               <ul className="mt-6 space-y-4">
                 {service.features.map((feature: string, index: number) => (
                   <li key={index} className="flex items-start gap-3">
@@ -90,7 +90,7 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
             <div className="lg:col-span-1">
                 <Card className="shadow-lg sticky top-24">
                     <CardHeader>
-                        <CardTitle>Votre projet commence ici</CardTitle>
+                        <CardTitle className="uppercase">Votre projet commence ici</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <p className="text-sm text-muted-foreground">Prêt à vous lancer ? Simulez votre prêt ou contactez-nous.</p>
@@ -110,7 +110,7 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
       {/* Steps */}
        <section className="py-16 md:py-24 bg-secondary/50">
         <div className="container text-center">
-            <h2 className="text-3xl font-bold text-primary">Le processus en 3 étapes simples</h2>
+            <h2 className="text-3xl font-bold text-primary uppercase">Le processus en 3 étapes simples</h2>
             <p className="mt-2 text-muted-foreground">Obtenir votre financement n'a jamais été aussi facile.</p>
             <div className="mt-12 grid md:grid-cols-3 gap-8 text-left relative">
                 <div className="absolute top-8 left-0 w-full h-0.5 border-t-2 border-dashed border-border hidden md:block"></div>
@@ -122,7 +122,7 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
                                     <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xl font-bold">
                                         {index + 1}
                                     </div>
-                                    <CardTitle>{step.title}</CardTitle>
+                                    <CardTitle className="uppercase">{step.title}</CardTitle>
                                 </div>
                             </CardHeader>
                             <CardContent>
@@ -140,7 +140,7 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
         <section className="py-16 md:py-24 bg-background">
           <div className="container">
             <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-primary">Les Documents Clés de Votre Projet</h2>
+                <h2 className="text-3xl font-bold text-primary uppercase">Les Documents Clés de Votre Projet</h2>
                 <p className="mt-2 text-muted-foreground max-w-3xl mx-auto">
                   La transparence est au cœur de notre démarche. Voici les documents essentiels qui jalonnent votre parcours de financement et leur rôle.
                 </p>
@@ -153,7 +153,7 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
                       <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-accent/10 text-accent flex items-center justify-center">
                           <FileText className="w-6 h-6" />
                       </div>
-                      <CardTitle className="text-xl">{doc.title}</CardTitle>
+                      <CardTitle className="text-xl uppercase">{doc.title}</CardTitle>
                     </div>
                   </CardHeader>
                   <CardContent className="flex-grow">
@@ -179,7 +179,7 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
       {service.testimonials && (
       <section className="py-16 md:py-24 bg-background">
         <div className="container px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-primary">Avis de nos clients</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-primary uppercase">Avis de nos clients</h2>
             <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
                 Découvrez ce que nos clients disent de notre service de {service.title}.
             </p>
@@ -228,12 +228,12 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
         <section className="py-16 md:py-24 bg-secondary/50">
             <div className="container px-4 max-w-3xl mx-auto">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold text-primary">Questions fréquentes sur le {service.title}</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold text-primary uppercase">Questions fréquentes sur le {service.title}</h2>
                 </div>
                 <Accordion type="single" collapsible className="w-full">
                 {service.faqs.map((faq: any, index: number) => (
                     <AccordionItem value={`item-${index}`} key={index}>
-                    <AccordionTrigger className="text-left text-lg font-semibold">{faq.question}</AccordionTrigger>
+                    <AccordionTrigger className="text-left text-lg font-semibold uppercase">{faq.question}</AccordionTrigger>
                       <AccordionContent className="text-muted-foreground text-base">
                         {faq.answer}
                       </AccordionContent>
