@@ -1,10 +1,8 @@
 import { siteConfig } from "@/config/site";
-import { User, Home, Car, Building, Briefcase, GraduationCap, TrendingUp, HandCoins, ShieldCheck, FileCheck, CheckCircle } from "lucide-react";
-import React from 'react';
 
 export const servicesData = {
     "pret-personnel": {
-      icon: <User className="w-8 h-8" />,
+      icon: "User",
       image: siteConfig.services[0].image,
       title: "Prêt Personnel",
       tagline: "Donnez vie à tous vos projets, sans contraintes.",
@@ -30,7 +28,7 @@ export const servicesData = {
       ]
     },
     "pret-immobilier": {
-      icon: <Home className="w-8 h-8" />,
+      icon: "Home",
       image: siteConfig.services[1].image,
       title: "Prêt Immobilier",
       tagline: "Devenez propriétaire avec un financement adapté à votre avenir.",
@@ -57,7 +55,7 @@ export const servicesData = {
       ]
     },
     "pret-auto": {
-      icon: <Car className="w-8 h-8" />,
+      icon: "Car",
       image: siteConfig.services[2].image,
       title: "Prêt Auto",
       tagline: "Prenez la route avec le véhicule de vos rêves.",
@@ -84,7 +82,7 @@ export const servicesData = {
       ]
     },
     "pret-professionnel": {
-      icon: <Building className="w-8 h-8" />,
+      icon: "Building",
       image: siteConfig.services[3].image,
       title: "Prêt Professionnel",
       tagline: "Investissez dans la croissance de votre entreprise.",
@@ -111,7 +109,7 @@ export const servicesData = {
       ]
     },
     "rachat-de-credits": {
-      icon: <Briefcase className="w-8 h-8" />,
+      icon: "Briefcase",
       image: siteConfig.services[4].image,
       title: "Rachat de Crédits",
       tagline: "Simplifiez votre budget et retrouvez votre sérénité financière.",
@@ -137,7 +135,7 @@ export const servicesData = {
       ]
     },
     "pret-etudiant": {
-      icon: <GraduationCap className="w-8 h-8" />,
+      icon: "GraduationCap",
       image: siteConfig.services[5].image,
       title: "Prêt Étudiant",
       tagline: "Financez vos études et construisez votre avenir en toute tranquillité.",

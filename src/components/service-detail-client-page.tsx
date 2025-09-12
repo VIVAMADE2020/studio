@@ -3,7 +3,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, Quote, FileText } from 'lucide-react';
+import { CheckCircle, Quote, FileText, User, Home, Car, Building, Briefcase, GraduationCap } from 'lucide-react';
 import Link from 'next/link';
 import { LoanCalculator } from '@/components/loan-calculator';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -17,10 +17,24 @@ interface ServiceDetailClientPageProps {
     service: any;
 }
 
+const icons: { [key: string]: React.ElementType } = {
+  User,
+  Home,
+  Car,
+  Building,
+  Briefcase,
+  GraduationCap
+};
+
+
 export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProps) {
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
   );
+  
+  const ServiceIcon = service.icon && icons[service.icon] ? React.createElement(icons[service.icon], { className: 'w-12 h-12' }) : null;
+  const SectionIcon = service.icon && icons[service.icon] ? React.createElement(icons[service.icon], { className: 'w-8 h-8' }) : null;
+
 
   return (
     <div className="-mt-20">
@@ -38,7 +52,7 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
         </div>
         <div className="container relative z-10">
           <div className="w-24 h-24 mx-auto mb-6 bg-white/10 text-white flex items-center justify-center rounded-full backdrop-blur-sm border border-white/20">
-            {service.icon && React.cloneElement(service.icon, { className: 'w-12 h-12' })}
+            {ServiceIcon}
           </div>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
             {service.title}
@@ -63,7 +77,7 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
           <div className="grid lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2">
               <h2 className="text-2xl font-bold text-primary flex items-center gap-3">
-                {service.icon && React.cloneElement(service.icon, { className: 'w-8 h-8' })}
+                {SectionIcon}
                 <span>Qu'est-ce que le {service.title} ?</span>
               </h2>
               <div className="prose prose-lg max-w-none text-muted-foreground mt-4 leading-relaxed" dangerouslySetInnerHTML={{ __html: service.description }} />
