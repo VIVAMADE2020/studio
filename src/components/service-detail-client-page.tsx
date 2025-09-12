@@ -37,37 +37,17 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
 
 
   return (
-    <div className="-mt-20">
+    <div className="bg-background">
       {/* Hero */}
-      <section className="relative h-screen flex items-center justify-center text-center text-white">
-        <div className="absolute inset-0">
-          <Image 
-            src={service.image}
-            alt={service.title}
-            fill
-            priority
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-black/30"></div>
-        </div>
+      <section className="relative pt-32 pb-20 md:pt-48 md:pb-28 text-center bg-secondary/50">
         <div className="container relative z-10">
-          <div className="w-24 h-24 mx-auto mb-6 bg-white/10 text-white flex items-center justify-center rounded-full backdrop-blur-sm border border-white/20">
+          <div className="w-24 h-24 mx-auto mb-6 bg-primary/10 text-primary flex items-center justify-center rounded-full border border-primary/20">
             {ServiceIcon}
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-primary">
             {service.title}
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-white/80">{service.tagline}</p>
-           {service.keyResults && (
-            <div className="mt-8 flex flex-wrap justify-center gap-4 md:gap-8">
-              {service.keyResults.map((result: any, index: number) => (
-                <div key={index} className="flex items-center gap-2 text-base font-medium">
-                  {result.icon}
-                  <span>{result.text}</span>
-                </div>
-              ))}
-            </div>
-          )}
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">{service.tagline}</p>
         </div>
       </section>
 
