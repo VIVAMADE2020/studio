@@ -10,7 +10,7 @@ import { CtaSection } from '@/components/sections/cta-section';
 
 export default function Home() {
   return (
-    <div className="-mt-20">
+    <div>
       <HeroSection />
       <ServicesSection />
       <AboutSection />

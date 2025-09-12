@@ -35,9 +35,9 @@ const carouselSlides = [
 ];
 
 const keyResults = [
-    { icon: <Award className="w-8 h-8" />, value: "98%", label: "Satisfaction Client" },
-    { icon: <Clock className="w-8 h-8" />, value: "24h", label: "Réponse Garantie" },
-    { icon: <Users className="w-8 h-8" />, value: "+10k", label: "Clients Satisfaits" },
+    { icon: <Award className="w-6 h-6 text-accent" />, value: "98%", label: "Satisfaction Client" },
+    { icon: <Clock className="w-6 h-6 text-accent" />, value: "24h", label: "Réponse Garantie" },
+    { icon: <Users className="w-6 h-6 text-accent" />, value: "+10k", label: "Clients Satisfaits" },
 ];
 
 export function HeroSection() {
@@ -46,71 +46,76 @@ export function HeroSection() {
   );
 
   return (
-    <section className="relative w-full h-screen">
-        <Carousel
-          plugins={[plugin.current]}
-          className="w-full h-full"
-          opts={{ loop: true }}
-        >
-          <CarouselContent>
-            {carouselSlides.map((slide, index) => (
-              <CarouselItem key={index}>
-                <div className="relative w-full h-screen">
-                    <Image
-                      src={slide.imageSrc}
-                      alt={slide.title}
-                      fill
-                      priority={index === 0}
-                      className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/60"></div>
-                    <div className="relative z-10 flex flex-col justify-center items-center h-full text-center text-white p-4 md:p-8">
-                       <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
+    <section className="w-full py-20 md:py-32 lg:py-40 bg-secondary/30">
+        <div className="container">
+            <Carousel
+              plugins={[plugin.current]}
+              className="w-full"
+              opts={{ loop: true }}
+            >
+              <CarouselContent>
+                {carouselSlides.map((slide, index) => (
+                  <CarouselItem key={index}>
+                    <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
+                        <motion.div
+                            key={index} // Ensure re-animation on slide change
+                            initial={{ opacity: 0, x: -50 }}
+                            animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8, ease: "easeOut" }}
-                            className="container flex-grow flex flex-col justify-center items-center"
+                            className="text-left"
                         >
-                            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
+                            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-primary">
                                 {slide.title}
                             </h1>
-                            <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-white/90">
+                            <p className="mt-4 max-w-xl text-lg text-muted-foreground">
                                 {slide.description}
                             </p>
-                            <div className="mt-8 flex flex-wrap justify-center gap-4">
-                              <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
+                            <div className="mt-8 flex flex-wrap justify-start gap-4">
+                              <Button asChild size="lg">
                                 <Link href="/#services">Découvrir nos services</Link>
                               </Button>
-                              <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white hover:text-primary">
+                              <Button asChild size="lg" variant="outline">
                                 <Link href="/demande-pret">Faire une demande</Link>
                               </Button>
                             </div>
-                       </motion.div>
-                        <motion.div 
-                            initial={{ opacity: 0, y: 50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-                            className="w-full max-w-4xl mx-auto mt-8 md:mt-16"
-                        >
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+                             <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 gap-4 text-left">
                                 {keyResults.map((result, resultIndex) => (
-                                    <div key={resultIndex} className="bg-black/20 backdrop-blur-sm text-white p-4 text-center rounded-lg border border-white/20">
-                                        <div className="flex justify-center mb-2">{result.icon}</div>
-                                        <div className="text-2xl md:text-3xl font-bold">{result.value}</div>
-                                        <div className="text-sm opacity-90">{result.label}</div>
+                                    <div key={resultIndex}>
+                                        <div className="flex items-center gap-2">
+                                            {result.icon}
+                                            <div className="text-2xl font-bold text-primary">{result.value}</div>
+                                        </div>
+                                        <div className="text-sm text-muted-foreground mt-1">{result.label}</div>
                                     </div>
                                 ))}
                             </div>
                         </motion.div>
+                         <motion.div 
+                            key={index + 'image'} // Ensure re-animation on slide change
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl"
+                        >
+                            <Image
+                              src={slide.imageSrc}
+                              alt={slide.title}
+                              fill
+                              priority={index === 0}
+                              className="object-cover"
+                            />
+                        </motion.div>
                     </div>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-20 hidden md:flex" />
-          <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-20 hidden md:flex" />
-        </Carousel>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <div className="absolute -bottom-12 left-1/2 -translate-x-1/2">
+                <CarouselPrevious className="relative -left-2" />
+                <CarouselNext className="relative left-2"/>
+              </div>
+            </Carousel>
+        </div>
     </section>
   );
 }
