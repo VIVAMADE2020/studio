@@ -2,6 +2,7 @@ import { ContactForm } from '@/components/contact-form';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { ContactIllustration } from '@/components/illustrations/ContactIllustration';
+import Image from 'next/image';
 
 export default function ContactPage() {
   return (
@@ -18,7 +19,7 @@ export default function ContactPage() {
                 Une question ? Un projet ? Notre équipe d'experts est à votre entière disposition pour vous accompagner.
               </p>
             </div>
-            <div className="relative w-full h-64 md:h-80 flex items-center justify-center">
+            <div className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl flex items-center justify-center p-8 bg-white">
               <ContactIllustration className="w-full h-full text-primary" />
             </div>
           </div>
@@ -30,7 +31,7 @@ export default function ContactPage() {
         <div className="grid md:grid-cols-2 gap-12 items-start">
             <Card className="shadow-lg">
                 <CardHeader>
-                    <CardTitle className="uppercase">Envoyez-nous un message</CardTitle>
+                    <CardTitle className="uppercase">ENVOYEZ-NOUS UN MESSAGE</CardTitle>
                     <CardDescription>Nous vous répondrons dans les plus brefs délais.</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -38,13 +39,13 @@ export default function ContactPage() {
                 </CardContent>
             </Card>
             <div className="space-y-8 pt-4">
-                <h2 className="text-2xl font-bold text-primary uppercase">Nos coordonnées</h2>
+                <h2 className="text-2xl font-bold text-primary uppercase">NOS COORDONNÉES</h2>
                 <div className="flex items-start gap-4">
                     <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-accent/10 text-accent flex items-center justify-center">
                         <MapPin className="h-6 w-6" />
                     </div>
                     <div>
-                        <h3 className="font-semibold text-primary uppercase">Adresse</h3>
+                        <h3 className="font-semibold text-primary uppercase">ADRESSE</h3>
                         <p className="text-muted-foreground">123 Rue de la Finance<br/>75001 Paris, France</p>
                     </div>
                 </div>
@@ -53,7 +54,7 @@ export default function ContactPage() {
                         <Phone className="h-6 w-6" />
                     </div>
                     <div>
-                        <h3 className="font-semibold text-primary uppercase">Téléphone</h3>
+                        <h3 className="font-semibold text-primary uppercase">TÉLÉPHONE</h3>
                         <p className="text-muted-foreground">+33 1 23 45 67 89</p>
                     </div>
                 </div>
@@ -62,7 +63,7 @@ export default function ContactPage() {
                         <Mail className="h-6 w-6" />
                     </div>
                     <div>
-                        <h3 className="font-semibold text-primary uppercase">Email</h3>
+                        <h3 className="font-semibold text-primary uppercase">EMAIL</h3>
                         <p className="text-muted-foreground">contact@flexfond.com</p>
                     </div>
                 </div>
