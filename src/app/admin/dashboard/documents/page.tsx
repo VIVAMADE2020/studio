@@ -138,7 +138,7 @@ const documentTypes = [
   { value: 'loanContractIt', label: 'Contratto Prestito (IT)', FormComponent: LoanContractFormIt, TemplateComponent: LoanContractTemplateIt },
 
   { value: 'guaranteeAgreement', label: 'Acte Caution (FR)', FormComponent: GuaranteeAgreementForm, TemplateComponent: GuaranteeAgreementTemplate },
-  { value:g value: 'guaranteeAgreementEn', label: 'Guarantee Agmt. (EN)', FormComponent: GuaranteeAgreementFormEn, TemplateComponent: GuaranteeAgreementTemplateEn },
+  { value: 'guaranteeAgreementEn', label: 'Guarantee Agmt. (EN)', FormComponent: GuaranteeAgreementFormEn, TemplateComponent: GuaranteeAgreementTemplateEn },
   { value: 'guaranteeAgreementEs', label: 'Acuerdo Garantía (ES)', FormComponent: GuaranteeAgreementFormEs, TemplateComponent: GuaranteeAgreementTemplateEs },
   { value: 'guaranteeAgreementDe', label: 'Bürgschaft (DE)', FormComponent: GuaranteeAgreementFormDe, TemplateComponent: GuaranteeAgreementTemplateDe },
   { value: 'guaranteeAgreementPt', label: 'Acordo Garantia (PT)', FormComponent: GuaranteeAgreementFormPt, TemplateComponent: GuaranteeAgreementTemplatePt },
