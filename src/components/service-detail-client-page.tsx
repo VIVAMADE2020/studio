@@ -39,7 +39,14 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
   return (
     <div className="bg-background">
       {/* Hero */}
-      <section className="relative pt-32 pb-20 md:pt-48 md:pb-28 text-center bg-secondary/50">
+      <section className="relative pt-32 pb-20 md:pt-48 md:pb-28 text-center bg-secondary/50 overflow-hidden">
+        <Image
+            src={service.image}
+            alt={service.title}
+            fill
+            className="object-cover z-0 opacity-10"
+            priority
+        />
         <div className="container relative z-10">
           <div className="w-24 h-24 mx-auto mb-6 bg-primary/10 text-primary flex items-center justify-center rounded-full border border-primary/20">
             {ServiceIcon}
