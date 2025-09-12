@@ -1,18 +1,32 @@
 import { ContactForm } from '@/components/contact-form';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { ContactIllustration } from '@/components/illustrations/ContactIllustration';
 
 export default function ContactPage() {
   return (
     <div className="bg-background">
-      <div className="container py-16 md:py-24">
-        <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-primary uppercase">Contactez-nous</h1>
-            <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
-                Une question ? Un projet ? Notre équipe est à votre écoute.
-            </p>
+      {/* Hero Section */}
+      <section className="py-20 md:py-32 bg-secondary/30">
+        <div className="container">
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
+            <div className="text-left">
+              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-primary uppercase">
+                PRENDRE CONTACT
+              </h1>
+              <p className="mt-4 max-w-xl text-lg text-muted-foreground">
+                Une question ? Un projet ? Notre équipe d'experts est à votre entière disposition pour vous accompagner.
+              </p>
+            </div>
+            <div className="relative w-full h-64 md:h-80 flex items-center justify-center">
+              <ContactIllustration className="w-full h-full text-primary" />
+            </div>
+          </div>
         </div>
+      </section>
 
+      {/* Form & Details Section */}
+      <div className="container py-16 md:py-24">
         <div className="grid md:grid-cols-2 gap-12 items-start">
             <Card className="shadow-lg">
                 <CardHeader>
