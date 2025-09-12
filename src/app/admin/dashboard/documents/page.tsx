@@ -14,6 +14,10 @@ import { InsuranceCertificateForm } from '@/components/doc-forms/insurance-cert-
 import { InsuranceNoticeForm } from "@/components/doc-forms/insurance-notice-form";
 import { BlankDocumentForm } from "@/components/doc-forms/blank-doc-form";
 import { FeeInvoiceFormEn } from "@/components/doc-forms/fee-invoice-form-en";
+import { FeeInvoiceFormEs } from "@/components/doc-forms/fee-invoice-form-es";
+import { FeeInvoiceFormDe } from "@/components/doc-forms/fee-invoice-form-de";
+import { FeeInvoiceFormPt } from "@/components/doc-forms/fee-invoice-form-pt";
+import { FeeInvoiceFormIt } from "@/components/doc-forms/fee-invoice-form-it";
 
 import { FeeInvoiceTemplate } from "@/components/doc-templates/fee-invoice-template";
 import { SolvencyCertificateTemplate } from "@/components/doc-templates/solvency-cert-template";
@@ -24,11 +28,19 @@ import { InsuranceCertificateTemplate } from "@/components/doc-templates/insuran
 import { InsuranceNoticeTemplate } from "@/components/doc-templates/insurance-notice-template";
 import { BlankDocumentTemplate } from "@/components/doc-templates/blank-doc-template";
 import { FeeInvoiceTemplateEn } from "@/components/doc-templates/fee-invoice-template-en";
+import { FeeInvoiceTemplateEs } from "@/components/doc-templates/fee-invoice-template-es";
+import { FeeInvoiceTemplateDe } from "@/components/doc-templates/fee-invoice-template-de";
+import { FeeInvoiceTemplatePt } from "@/components/doc-templates/fee-invoice-template-pt";
+import { FeeInvoiceTemplateIt } from "@/components/doc-templates/fee-invoice-template-it";
 
 const documentTypes = [
   { value: 'blankDocument', label: 'Document Vierge', FormComponent: BlankDocumentForm, TemplateComponent: BlankDocumentTemplate },
   { value: 'feeInvoice', label: 'Facture Frais (FR)', FormComponent: FeeInvoiceForm, TemplateComponent: FeeInvoiceTemplate },
   { value: 'feeInvoiceEn', label: 'Fee Invoice (EN)', FormComponent: FeeInvoiceFormEn, TemplateComponent: FeeInvoiceTemplateEn },
+  { value: 'feeInvoiceEs', label: 'Factura (ES)', FormComponent: FeeInvoiceFormEs, TemplateComponent: FeeInvoiceTemplateEs },
+  { value: 'feeInvoiceDe', label: 'Rechnung (DE)', FormComponent: FeeInvoiceFormDe, TemplateComponent: FeeInvoiceTemplateDe },
+  { value: 'feeInvoicePt', label: 'Fatura (PT)', FormComponent: FeeInvoiceFormPt, TemplateComponent: FeeInvoiceTemplatePt },
+  { value: 'feeInvoiceIt', label: 'Fattura (IT)', FormComponent: FeeInvoiceFormIt, TemplateComponent: FeeInvoiceTemplateIt },
   { value: 'solvencyCert', label: 'Certif. Solvabilité', FormComponent: SolvencyCertificateForm, TemplateComponent: SolvencyCertificateTemplate },
   { value: 'insuranceNotice', label: 'Notice Assurance', FormComponent: InsuranceNoticeForm, TemplateComponent: InsuranceNoticeTemplate },
   { value: 'insuranceCert', label: 'Attest. Assurance', FormComponent: InsuranceCertificateForm, TemplateComponent: InsuranceCertificateTemplate },
