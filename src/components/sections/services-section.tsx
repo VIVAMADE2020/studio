@@ -1,7 +1,7 @@
 
 "use client";
 
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, User, Home, Car, Building, Briefcase, GraduationCap } from "lucide-react";
 import Link from "next/link";
@@ -73,22 +73,23 @@ export function ServicesSection() {
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         priority={index < 3}
                     />
-                    <div className="absolute inset-0 bg-black/30"></div>
-                     <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
-                        <div className="w-16 h-16 rounded-lg bg-white/10 text-white flex items-center justify-center mb-4 backdrop-blur-sm border border-white/20">
-                            {service.icon}
-                        </div>
-                        <CardTitle className="text-2xl">{service.title}</CardTitle>
-                    </div>
                 </div>
-                <div className="p-6 flex flex-col flex-grow">
+                <CardHeader className="flex flex-row items-start gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                      {service.icon}
+                    </div>
+                    <div className="flex-grow">
+                      <CardTitle className="text-xl">{service.title}</CardTitle>
+                    </div>
+                </CardHeader>
+                <CardContent className="flex flex-col flex-grow pt-0">
                     <p className="text-muted-foreground mt-2 flex-grow">{service.description}</p>
                     <Button asChild variant="link" className="p-0 h-auto justify-start mt-4 text-primary font-semibold">
                       <Link href={service.link}>
                         En savoir plus <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
-                </div>
+                </CardContent>
             </Card>
           ))}
         </div>
