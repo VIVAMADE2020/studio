@@ -20,6 +20,9 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <head>
+        <link rel="icon" href="https://i.postimg.cc/XJSfHfQt/Black-Vintage-badges-family-farm-logo-removebg-preview.png" type="image/png" />
+        <link rel="shortcut icon" href="https://i.postimg.cc/XJSfHfQt/Black-Vintage-badges-family-farm-logo-removebg-preview.png" type="image/png" />
+        <link rel="apple-touch-icon" href="https://i.postimg.cc/XJSfHfQt/Black-Vintage-badges-family-farm-logo-removebg-preview.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
         <link
