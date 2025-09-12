@@ -1,4 +1,6 @@
+
 import React from 'react';
+import { ConferenceSpeaker } from './ConferenceSpeaker';
 
 export const ContactIllustration = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -7,10 +9,8 @@ export const ContactIllustration = (props: React.SVGProps<SVGSVGElement>) => (
     {...props}
   >
     <g transform="translate(10, 10) scale(1.5)">
-      <path d="M16 16.0234C16 14.9624 15.5562 13.9453 14.7773 13.1664C13.9984 12.3875 13.0047 11.9438 11.9438 11.9438C10.8828 11.9438 9.88906 12.3875 9.11016 13.1664C8.33125 13.9453 7.8875 14.9624 7.8875 16.0234" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" opacity="0.7"/>
-      <path d="M11.9437 8.94375C13.5937 8.94375 14.9437 7.59375 14.9437 5.94375C14.9437 4.29375 13.5937 2.94375 11.9437 2.94375C10.2937 2.94375 8.94375 4.29375 8.94375 5.94375C8.94375 7.59375 10.2937 8.94375 11.9437 8.94375Z" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" opacity="0.7"/>
-      <path d="M5.3375,21C5.3375,19.3375 10.125,18.475 11.9375,18.475" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" opacity="0.7"/>
-      <path d="M17.4125 14.425C18.9 15.0625 20 16.275 20 17.75V19.25" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" opacity="0.7"/>
+      {/* Utilisation du composant ConferenceSpeaker pour représenter une équipe */}
+      <ConferenceSpeaker />
     </g>
     <g transform="translate(100, 20) scale(0.8)">
         <path d="M30 40L50 20L70 40" stroke="hsl(var(--accent))" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
@@ -33,3 +33,5 @@ export const ContactIllustration = (props: React.SVGProps<SVGSVGElement>) => (
     </g>
   </svg>
 );
+
+    
