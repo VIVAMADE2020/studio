@@ -32,29 +32,37 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
     Autoplay({ delay: 2000, stopOnInteraction: true })
   );
   
-  const ServiceIcon = service.icon && icons[service.icon] ? React.createElement(icons[service.icon], { className: 'w-12 h-12' }) : null;
   const SectionIcon = service.icon && icons[service.icon] ? React.createElement(icons[service.icon], { className: 'w-8 h-8' }) : null;
 
 
   return (
     <div className="bg-background">
       {/* Hero */}
-      <section className="relative pt-32 pb-20 md:pt-48 md:pb-28 text-center bg-secondary/50 overflow-hidden">
-        <Image
-            src={service.image}
-            alt={service.title}
-            fill
-            className="object-cover z-0 opacity-10"
-            priority
-        />
-        <div className="container relative z-10">
-          <div className="w-24 h-24 mx-auto mb-6 bg-primary/10 text-primary flex items-center justify-center rounded-full border border-primary/20">
-            {ServiceIcon}
+       <section className="py-20 md:py-32 bg-secondary/50">
+        <div className="container">
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
+            <div className="text-left">
+               <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+                    {SectionIcon && React.cloneElement(SectionIcon, {className: "w-5 h-5"})}
+                    <span>{service.title}</span>
+                </div>
+              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-primary">
+                {service.tagline}
+              </h1>
+              <p className="mt-4 max-w-xl text-lg text-muted-foreground">
+                Découvrez comment nous pouvons vous aider à financer ce projet important avec une solution simple et transparente.
+              </p>
+            </div>
+            <div className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl">
+              <Image
+                src={service.image}
+                alt={service.title}
+                fill
+                priority
+                className="object-cover"
+              />
+            </div>
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-primary">
-            {service.title}
-          </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">{service.tagline}</p>
         </div>
       </section>
 
