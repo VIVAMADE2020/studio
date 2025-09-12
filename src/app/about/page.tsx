@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import React from 'react';
 
 const timelineEvents = [
     { year: "2015", title: "FONDATION", description: "FLEXFOND est créé avec l'ambition de rendre les services financiers plus accessibles et transparents.", icon: <Flag /> },
@@ -42,12 +43,12 @@ export default function AboutPage() {
                                 Au cœur de la finance, une histoire de confiance et d'innovation.
                             </p>
                         </div>
-                        <div className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl">
+                        <div className="relative w-full h-64 md:h-96">
                             <Image
                                 src="https://i.postimg.cc/7LFPmzWG/undraw-engineering-team-13ax.png"
                                 alt="Notre histoire"
                                 fill
-                                className="object-cover"
+                                className="object-contain"
                                 priority
                             />
                         </div>
@@ -165,3 +166,5 @@ export default function AboutPage() {
         </div>
     );
 }
+
+    
