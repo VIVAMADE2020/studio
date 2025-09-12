@@ -43,12 +43,12 @@ export default function AboutPage() {
                                 Au cœur de la finance, une histoire de confiance et d'innovation.
                             </p>
                         </div>
-                        <div className="relative w-full h-64 md:h-96">
+                        <div className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl">
                             <Image
-                                src="https://i.postimg.cc/7LFPmzWG/undraw-engineering-team-13ax.png"
+                                src="https://i.postimg.cc/hGzZKQP0/pexels-olly-789822.jpg"
                                 alt="Notre histoire"
                                 fill
-                                className="object-contain"
+                                className="object-cover"
                                 priority
                             />
                         </div>
