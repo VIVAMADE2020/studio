@@ -26,7 +26,7 @@ export function Header() {
         "sticky top-0 z-50 w-full",
         isTransparentPage ? "bg-transparent" : "bg-secondary"
     )}>
-      <div className="container flex h-20 max-w-screen-2xl items-center">
+      <div className="container flex h-20 max-w-screen-2xl items-center px-4 md:px-8">
         <Link href="/" className="mr-6 flex items-center space-x-2">
           <span className={cn("font-bold text-xl", isTransparentPage ? "text-white" : "text-primary")}>FLEXFOND</span>
         </Link>
@@ -35,21 +35,21 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="font-medium text-orange-web transition-colors hover:text-orange-web/80"
+              className={cn("font-medium transition-colors hover:text-accent", isTransparentPage ? "text-white/80 hover:text-white" : "text-foreground")}
             >
               {link.label}
             </Link>
           ))}
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-2">
-          <Button variant="ghost" asChild className="text-orange-web hover:text-orange-web/80">
+          <Button variant="ghost" asChild className={cn("hidden sm:inline-flex", isTransparentPage ? "text-white/80 hover:text-white hover:bg-white/10" : "text-foreground hover:bg-accent/80")}>
             <Link href="/client/access">
               <User className="mr-2 h-4 w-4" />
               Espace Client
             </Link>
           </Button>
-          <Button asChild className="bg-orange-web text-white hover:bg-orange-web/90">
-            <Link href="/demande-pret">Faire une demande</Link>
+          <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+            <Link href="/demande-pret">Demander un prêt</Link>
           </Button>
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
@@ -78,7 +78,7 @@ export function Header() {
                   ))}
                 </nav>
                 <div className="mt-auto p-4 flex flex-col gap-4 border-t border-border">
-                  <Button asChild className="w-full justify-start text-lg">
+                   <Button asChild className="w-full justify-start text-lg" variant="outline">
                      <Link href="/client/access" onClick={() => setIsOpen(false)}>
                        <User className="mr-2 h-5 w-5" />
                        Espace Client

@@ -40,10 +40,8 @@ export function LoanCalculator({
   const [monthlyPayment, setMonthlyPayment] = useState(0);
   const [amortizationSchedule, setAmortizationSchedule] = useState<AmortizationRow[]>([]);
   
-  // Try to get form context if available
   const form = useFormContext();
 
-  // Sync with props if they change
   useEffect(() => {
     if (initialAmount !== undefined) setAmount(initialAmount);
   }, [initialAmount]);
@@ -52,7 +50,6 @@ export function LoanCalculator({
     if (initialDuration !== undefined) setDuration(initialDuration);
   }, [initialDuration]);
 
-  // Perform calculation when amount or duration changes
   useEffect(() => {
     const parsedAmount = isNaN(Number(_amount)) ? 0 : Number(_amount);
     const parsedDuration = isNaN(Number(_duration)) ? 0 : Number(_duration);
@@ -81,7 +78,6 @@ export function LoanCalculator({
         setMonthlyPayment(0);
     }
     
-    // Calculate amortization schedule
     if (payment > 0 && isFinite(payment)) {
         const schedule: AmortizationRow[] = [];
         let remainingBalance = parsedAmount;
@@ -152,7 +148,7 @@ export function LoanCalculator({
 
       <div className="mt-8 pt-6 border-t border-border text-center">
         <p className="text-muted-foreground">Votre mensualité estimée</p>
-        <p className="text-4xl font-bold text-accent mt-2">
+        <p className="text-3xl md:text-4xl font-bold text-accent mt-2">
           {formatCurrency(monthlyPayment)}
         </p>
         <p className="text-xs text-muted-foreground mt-2">
@@ -199,7 +195,7 @@ export function LoanCalculator({
   }
 
   return (
-    <Card className="shadow-lg w-full">
+    <Card className="shadow-lg w-full max-w-3xl">
         <CardHeader>
             <CardTitle>Simulateur de prêt</CardTitle>
             <CardDescription>Estimez vos mensualités et consultez votre plan de remboursement.</CardDescription>

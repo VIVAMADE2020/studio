@@ -63,23 +63,23 @@ export function HeroSection() {
                       priority={index === 0}
                       className="object-cover"
                     />
-                    <div className="absolute inset-0 bg-black/50"></div>
-                    <div className="relative z-10 flex flex-col justify-center items-center h-full text-center text-white p-8">
+                    <div className="absolute inset-0 bg-black/60"></div>
+                    <div className="relative z-10 flex flex-col justify-center items-center h-full text-center text-white p-4 md:p-8">
                        <motion.div
-                            key={index} // Force re-render on slide change
+                            key={index}
                             initial={{ opacity: 0, y: 50, scale: 0.9 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             transition={{ duration: 0.8, ease: "easeOut" }}
                             className="container flex-grow flex flex-col justify-center items-center"
                         >
-                            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+                            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
                                 {slide.title}
                             </h1>
-                            <p className="mt-4 max-w-2xl mx-auto text-lg text-white/90">
+                            <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-white/90">
                                 {slide.description}
                             </p>
                             <div className="mt-8 flex flex-wrap justify-center gap-4">
-                              <Button asChild size="lg" className="bg-orange-web text-white hover:bg-orange-web/90">
+                              <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
                                 <Link href="/#services">Découvrir nos services</Link>
                               </Button>
                               <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white hover:text-primary">
@@ -91,13 +91,13 @@ export function HeroSection() {
                             initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-                            className="w-full max-w-4xl mx-auto mt-16"
+                            className="w-full max-w-4xl mx-auto mt-8 md:mt-16"
                         >
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 {keyResults.map((result, resultIndex) => (
-                                    <div key={resultIndex} className="glassmorphism-effect text-white p-4 text-center">
+                                    <div key={resultIndex} className="bg-black/20 backdrop-blur-sm text-white p-4 text-center rounded-lg border border-white/20">
                                         <div className="flex justify-center mb-2">{result.icon}</div>
-                                        <div className="text-3xl font-bold">{result.value}</div>
+                                        <div className="text-2xl md:text-3xl font-bold">{result.value}</div>
                                         <div className="text-sm opacity-90">{result.label}</div>
                                     </div>
                                 ))}
