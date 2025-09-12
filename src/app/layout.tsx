@@ -40,7 +40,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Header />
-          <main className="flex-grow">{children}</main>
+          <main className="flex-grow w-full">{children}</main>
           <Footer />
           <Toaster />
         </ThemeProvider>

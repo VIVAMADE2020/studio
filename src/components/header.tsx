@@ -23,7 +23,7 @@ export function Header() {
   return (
     <header className={cn(
         "sticky top-0 z-50 w-full",
-        "bg-secondary"
+        "bg-background/95 backdrop-blur-sm border-b border-border/50"
     )}>
       <div className="container flex h-20 max-w-screen-2xl items-center px-4 md:px-8">
         <Link href="/" className="mr-6 flex items-center space-x-2">
@@ -52,12 +52,12 @@ export function Header() {
           </Button>
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className={cn("text-secondary-foreground/80 hover:text-secondary-foreground")}>
+              <Button variant="ghost" size="icon" className={cn("text-foreground hover:text-accent")}>
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Ouvrir le menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="p-0 bg-secondary">
+            <SheetContent side="left" className="p-0 bg-background">
               <div className="flex flex-col h-full">
                 <div className="flex items-center p-4 border-b border-border">
                   <Link href="/" className="flex items-center gap-2" onClick={() => setIsOpen(false)}>
@@ -70,7 +70,7 @@ export function Header() {
                       key={link.href}
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className="text-lg font-medium text-secondary-foreground hover:text-primary transition-colors"
+                      className="text-lg font-medium text-foreground hover:text-primary transition-colors"
                     >
                       {link.label}
                     </Link>
