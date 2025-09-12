@@ -12,6 +12,7 @@ import { GuaranteeAgreementForm } from '@/components/doc-forms/guarantee-agreeme
 import { DebtAcknowledgementForm } from '@/components/doc-forms/debt-ack-form';
 import { InsuranceCertificateForm } from '@/components/doc-forms/insurance-cert-form';
 import { InsuranceNoticeForm } from "@/components/doc-forms/insurance-notice-form";
+import { BlankDocumentForm } from "@/components/doc-forms/blank-doc-form";
 
 import { FeeInvoiceTemplate } from "@/components/doc-templates/fee-invoice-template";
 import { SolvencyCertificateTemplate } from "@/components/doc-templates/solvency-cert-template";
@@ -20,8 +21,10 @@ import { GuaranteeAgreementTemplate } from "@/components/doc-templates/guarantee
 import { DebtAcknowledgementTemplate } from "@/components/doc-templates/debt-ack-template";
 import { InsuranceCertificateTemplate } from "@/components/doc-templates/insurance-cert-template";
 import { InsuranceNoticeTemplate } from "@/components/doc-templates/insurance-notice-template";
+import { BlankDocumentTemplate } from "@/components/doc-templates/blank-doc-template";
 
 const documentTypes = [
+  { value: 'blankDocument', label: 'Document Vierge', FormComponent: BlankDocumentForm, TemplateComponent: BlankDocumentTemplate },
   { value: 'feeInvoice', label: 'Facture Frais', FormComponent: FeeInvoiceForm, TemplateComponent: FeeInvoiceTemplate },
   { value: 'solvencyCert', label: 'Certif. Solvabilité', FormComponent: SolvencyCertificateForm, TemplateComponent: SolvencyCertificateTemplate },
   { value: 'insuranceNotice', label: 'Notice Assurance', FormComponent: InsuranceNoticeForm, TemplateComponent: InsuranceNoticeTemplate },
