@@ -13,6 +13,7 @@ import { DebtAcknowledgementForm } from '@/components/doc-forms/debt-ack-form';
 import { InsuranceCertificateForm } from '@/components/doc-forms/insurance-cert-form';
 import { InsuranceNoticeForm } from "@/components/doc-forms/insurance-notice-form";
 import { BlankDocumentForm } from "@/components/doc-forms/blank-doc-form";
+import { FeeInvoiceFormEn } from "@/components/doc-forms/fee-invoice-form-en";
 
 import { FeeInvoiceTemplate } from "@/components/doc-templates/fee-invoice-template";
 import { SolvencyCertificateTemplate } from "@/components/doc-templates/solvency-cert-template";
@@ -22,10 +23,12 @@ import { DebtAcknowledgementTemplate } from "@/components/doc-templates/debt-ack
 import { InsuranceCertificateTemplate } from "@/components/doc-templates/insurance-cert-template";
 import { InsuranceNoticeTemplate } from "@/components/doc-templates/insurance-notice-template";
 import { BlankDocumentTemplate } from "@/components/doc-templates/blank-doc-template";
+import { FeeInvoiceTemplateEn } from "@/components/doc-templates/fee-invoice-template-en";
 
 const documentTypes = [
   { value: 'blankDocument', label: 'Document Vierge', FormComponent: BlankDocumentForm, TemplateComponent: BlankDocumentTemplate },
-  { value: 'feeInvoice', label: 'Facture Frais', FormComponent: FeeInvoiceForm, TemplateComponent: FeeInvoiceTemplate },
+  { value: 'feeInvoice', label: 'Facture Frais (FR)', FormComponent: FeeInvoiceForm, TemplateComponent: FeeInvoiceTemplate },
+  { value: 'feeInvoiceEn', label: 'Fee Invoice (EN)', FormComponent: FeeInvoiceFormEn, TemplateComponent: FeeInvoiceTemplateEn },
   { value: 'solvencyCert', label: 'Certif. Solvabilité', FormComponent: SolvencyCertificateForm, TemplateComponent: SolvencyCertificateTemplate },
   { value: 'insuranceNotice', label: 'Notice Assurance', FormComponent: InsuranceNoticeForm, TemplateComponent: InsuranceNoticeTemplate },
   { value: 'insuranceCert', label: 'Attest. Assurance', FormComponent: InsuranceCertificateForm, TemplateComponent: InsuranceCertificateTemplate },
