@@ -1,10 +1,12 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 import { LoanContractForm } from '@/components/doc-forms/loan-contract-form';
 import { FeeInvoiceForm } from '@/components/doc-forms/fee-invoice-form';
 import { SolvencyCertificateForm } from '@/components/doc-forms/solvency-cert-form';
@@ -18,6 +20,36 @@ import { FeeInvoiceFormEs } from "@/components/doc-forms/fee-invoice-form-es";
 import { FeeInvoiceFormDe } from "@/components/doc-forms/fee-invoice-form-de";
 import { FeeInvoiceFormPt } from "@/components/doc-forms/fee-invoice-form-pt";
 import { FeeInvoiceFormIt } from "@/components/doc-forms/fee-invoice-form-it";
+import { SolvencyCertificateFormEn } from "@/components/doc-forms/solvency-cert-form-en";
+import { SolvencyCertificateFormEs } from "@/components/doc-forms/solvency-cert-form-es";
+import { SolvencyCertificateFormDe } from "@/components/doc-forms/solvency-cert-form-de";
+import { SolvencyCertificateFormPt } from "@/components/doc-forms/solvency-cert-form-pt";
+import { SolvencyCertificateFormIt } from "@/components/doc-forms/solvency-cert-form-it";
+import { InsuranceNoticeFormEn } from "@/components/doc-forms/insurance-notice-form-en";
+import { InsuranceNoticeFormEs } from "@/components/doc-forms/insurance-notice-form-es";
+import { InsuranceNoticeFormDe } from "@/components/doc-forms/insurance-notice-form-de";
+import { InsuranceNoticeFormPt } from "@/components/doc-forms/insurance-notice-form-pt";
+import { InsuranceNoticeFormIt } from "@/components/doc-forms/insurance-notice-form-it";
+import { InsuranceCertificateFormEn } from "@/components/doc-forms/insurance-cert-form-en";
+import { InsuranceCertificateFormEs } from "@/components/doc-forms/insurance-cert-form-es";
+import { InsuranceCertificateFormDe } from "@/components/doc-forms/insurance-cert-form-de";
+import { InsuranceCertificateFormPt } from "@/components/doc-forms/insurance-cert-form-pt";
+import { InsuranceCertificateFormIt } from "@/components/doc-forms/insurance-cert-form-it";
+import { LoanContractFormEn } from "@/components/doc-forms/loan-contract-form-en";
+import { LoanContractFormEs } from "@/components/doc-forms/loan-contract-form-es";
+import { LoanContractFormDe } from "@/components/doc-forms/loan-contract-form-de";
+import { LoanContractFormPt } from "@/components/doc-forms/loan-contract-form-pt";
+import { LoanContractFormIt } from "@/components/doc-forms/loan-contract-form-it";
+import { GuaranteeAgreementFormEn } from "@/components/doc-forms/guarantee-agreement-form-en";
+import { GuaranteeAgreementFormEs } from "@/components/doc-forms/guarantee-agreement-form-es";
+import { GuaranteeAgreementFormDe } from "@/components/doc-forms/guarantee-agreement-form-de";
+import { GuaranteeAgreementFormPt } from "@/components/doc-forms/guarantee-agreement-form-pt";
+import { GuaranteeAgreementFormIt } from "@/components/doc-forms/guarantee-agreement-form-it";
+import { DebtAcknowledgementFormEn } from "@/components/doc-forms/debt-ack-form-en";
+import { DebtAcknowledgementFormEs } from "@/components/doc-forms/debt-ack-form-es";
+import { DebtAcknowledgementFormDe } from "@/components/doc-forms/debt-ack-form-de";
+import { DebtAcknowledgementFormPt } from "@/components/doc-forms/debt-ack-form-pt";
+import { DebtAcknowledgementFormIt } from "@/components/doc-forms/debt-ack-form-it";
 
 import { FeeInvoiceTemplate } from "@/components/doc-templates/fee-invoice-template";
 import { SolvencyCertificateTemplate } from "@/components/doc-templates/solvency-cert-template";
@@ -32,131 +64,144 @@ import { FeeInvoiceTemplateEs } from "@/components/doc-templates/fee-invoice-tem
 import { FeeInvoiceTemplateDe } from "@/components/doc-templates/fee-invoice-template-de";
 import { FeeInvoiceTemplatePt } from "@/components/doc-templates/fee-invoice-template-pt";
 import { FeeInvoiceTemplateIt } from "@/components/doc-templates/fee-invoice-template-it";
-
-import { SolvencyCertificateFormEn } from "@/components/doc-forms/solvency-cert-form-en";
 import { SolvencyCertificateTemplateEn } from "@/components/doc-templates/solvency-cert-template-en";
-import { SolvencyCertificateFormEs } from "@/components/doc-forms/solvency-cert-form-es";
 import { SolvencyCertificateTemplateEs } from "@/components/doc-templates/solvency-cert-template-es";
-import { SolvencyCertificateFormDe } from "@/components/doc-forms/solvency-cert-form-de";
 import { SolvencyCertificateTemplateDe } from "@/components/doc-templates/solvency-cert-template-de";
-import { SolvencyCertificateFormPt } from "@/components/doc-forms/solvency-cert-form-pt";
 import { SolvencyCertificateTemplatePt } from "@/components/doc-templates/solvency-cert-template-pt";
-import { SolvencyCertificateFormIt } from "@/components/doc-forms/solvency-cert-form-it";
 import { SolvencyCertificateTemplateIt } from "@/components/doc-templates/solvency-cert-template-it";
-
-import { InsuranceNoticeFormEn } from "@/components/doc-forms/insurance-notice-form-en";
 import { InsuranceNoticeTemplateEn } from "@/components/doc-templates/insurance-notice-template-en";
-import { InsuranceNoticeFormEs } from "@/components/doc-forms/insurance-notice-form-es";
 import { InsuranceNoticeTemplateEs } from "@/components/doc-templates/insurance-notice-template-es";
-import { InsuranceNoticeFormDe } from "@/components/doc-forms/insurance-notice-form-de";
 import { InsuranceNoticeTemplateDe } from "@/components/doc-templates/insurance-notice-template-de";
-import { InsuranceNoticeFormPt } from "@/components/doc-forms/insurance-notice-form-pt";
 import { InsuranceNoticeTemplatePt } from "@/components/doc-templates/insurance-notice-template-pt";
-import { InsuranceNoticeFormIt } from "@/components/doc-forms/insurance-notice-form-it";
 import { InsuranceNoticeTemplateIt } from "@/components/doc-templates/insurance-notice-template-it";
-
-import { InsuranceCertificateFormEn } from "@/components/doc-forms/insurance-cert-form-en";
 import { InsuranceCertificateTemplateEn } from "@/components/doc-templates/insurance-cert-template-en";
-import { InsuranceCertificateFormEs } from "@/components/doc-forms/insurance-cert-form-es";
 import { InsuranceCertificateTemplateEs } from "@/components/doc-templates/insurance-cert-template-es";
-import { InsuranceCertificateFormDe } from "@/components/doc-forms/insurance-cert-form-de";
 import { InsuranceCertificateTemplateDe } from "@/components/doc-templates/insurance-cert-template-de";
-import { InsuranceCertificateFormPt } from "@/components/doc-forms/insurance-cert-form-pt";
 import { InsuranceCertificateTemplatePt } from "@/components/doc-templates/insurance-cert-template-pt";
-import { InsuranceCertificateFormIt } from "@/components/doc-forms/insurance-cert-form-it";
 import { InsuranceCertificateTemplateIt } from "@/components/doc-templates/insurance-cert-template-it";
-
-import { LoanContractFormEn } from "@/components/doc-forms/loan-contract-form-en";
 import { LoanContractTemplateEn } from "@/components/doc-templates/loan-contract-template-en";
-import { LoanContractFormEs } from "@/components/doc-forms/loan-contract-form-es";
 import { LoanContractTemplateEs } from "@/components/doc-templates/loan-contract-template-es";
-import { LoanContractFormDe } from "@/components/doc-forms/loan-contract-form-de";
 import { LoanContractTemplateDe } from "@/components/doc-templates/loan-contract-template-de";
-import { LoanContractFormPt } from "@/components/doc-forms/loan-contract-form-pt";
 import { LoanContractTemplatePt } from "@/components/doc-templates/loan-contract-template-pt";
-import { LoanContractFormIt } from "@/components/doc-forms/loan-contract-form-it";
 import { LoanContractTemplateIt } from "@/components/doc-templates/loan-contract-template-it";
-
-import { GuaranteeAgreementFormEn } from "@/components/doc-forms/guarantee-agreement-form-en";
 import { GuaranteeAgreementTemplateEn } from "@/components/doc-templates/guarantee-agreement-template-en";
-import { GuaranteeAgreementFormEs } from "@/components/doc-forms/guarantee-agreement-form-es";
 import { GuaranteeAgreementTemplateEs } from "@/components/doc-templates/guarantee-agreement-template-es";
-import { GuaranteeAgreementFormDe } from "@/components/doc-forms/guarantee-agreement-form-de";
 import { GuaranteeAgreementTemplateDe } from "@/components/doc-templates/guarantee-agreement-template-de";
-import { GuaranteeAgreementFormPt } from "@/components/doc-forms/guarantee-agreement-form-pt";
 import { GuaranteeAgreementTemplatePt } from "@/components/doc-templates/guarantee-agreement-template-pt";
-import { GuaranteeAgreementFormIt } from "@/components/doc-forms/guarantee-agreement-form-it";
 import { GuaranteeAgreementTemplateIt } from "@/components/doc-templates/guarantee-agreement-template-it";
-
-import { DebtAcknowledgementFormEn } from "@/components/doc-forms/debt-ack-form-en";
 import { DebtAcknowledgementTemplateEn } from "@/components/doc-templates/debt-ack-template-en";
-import { DebtAcknowledgementFormEs } from "@/components/doc-forms/debt-ack-form-es";
 import { DebtAcknowledgementTemplateEs } from "@/components/doc-templates/debt-ack-template-es";
-import { DebtAcknowledgementFormDe } from "@/components/doc-forms/debt-ack-form-de";
 import { DebtAcknowledgementTemplateDe } from "@/components/doc-templates/debt-ack-template-de";
-import { DebtAcknowledgementFormPt } from "@/components/doc-forms/debt-ack-form-pt";
 import { DebtAcknowledgementTemplatePt } from "@/components/doc-templates/debt-ack-template-pt";
-import { DebtAcknowledgementFormIt } from "@/components/doc-forms/debt-ack-form-it";
 import { DebtAcknowledgementTemplateIt } from "@/components/doc-templates/debt-ack-template-it";
 
-const documentTypes = [
-  { value: 'blankDocument', label: 'Document Vierge', FormComponent: BlankDocumentForm, TemplateComponent: BlankDocumentTemplate },
-  
-  { value: 'feeInvoice', label: 'Facture Frais (FR)', FormComponent: FeeInvoiceForm, TemplateComponent: FeeInvoiceTemplate },
-  { value: 'feeInvoiceEn', label: 'Fee Invoice (EN)', FormComponent: FeeInvoiceFormEn, TemplateComponent: FeeInvoiceTemplateEn },
-  { value: 'feeInvoiceEs', label: 'Factura (ES)', FormComponent: FeeInvoiceFormEs, TemplateComponent: FeeInvoiceTemplateEs },
-  { value: 'feeInvoiceDe', label: 'Rechnung (DE)', FormComponent: FeeInvoiceFormDe, TemplateComponent: FeeInvoiceTemplateDe },
-  { value: 'feeInvoicePt', label: 'Fatura (PT)', FormComponent: FeeInvoiceFormPt, TemplateComponent: FeeInvoiceTemplatePt },
-  { value: 'feeInvoiceIt', label: 'Fattura (IT)', FormComponent: FeeInvoiceFormIt, TemplateComponent: FeeInvoiceTemplateIt },
-  
-  { value: 'solvencyCert', label: 'Certif. Solvabilité (FR)', FormComponent: SolvencyCertificateForm, TemplateComponent: SolvencyCertificateTemplate },
-  { value: 'solvencyCertEn', label: 'Solvency Cert. (EN)', FormComponent: SolvencyCertificateFormEn, TemplateComponent: SolvencyCertificateTemplateEn },
-  { value: 'solvencyCertEs', label: 'Cert. Solvencia (ES)', FormComponent: SolvencyCertificateFormEs, TemplateComponent: SolvencyCertificateTemplateEs },
-  { value: 'solvencyCertDe', label: 'Bonitätszert. (DE)', FormComponent: SolvencyCertificateFormDe, TemplateComponent: SolvencyCertificateTemplateDe },
-  { value: 'solvencyCertPt', label: 'Cert. Solvência (PT)', FormComponent: SolvencyCertificateFormPt, TemplateComponent: SolvencyCertificateTemplatePt },
-  { value: 'solvencyCertIt', label: 'Cert. Solvibilità (IT)', FormComponent: SolvencyCertificateFormIt, TemplateComponent: SolvencyCertificateTemplateIt },
-  
-  { value: 'insuranceNotice', label: 'Notice Assurance (FR)', FormComponent: InsuranceNoticeForm, TemplateComponent: InsuranceNoticeTemplate },
-  { value: 'insuranceNoticeEn', label: 'Insurance Notice (EN)', FormComponent: InsuranceNoticeFormEn, TemplateComponent: InsuranceNoticeTemplateEn },
-  { value: 'insuranceNoticeEs', label: 'Noticia Seguro (ES)', FormComponent: InsuranceNoticeFormEs, TemplateComponent: InsuranceNoticeTemplateEs },
-  { value: 'insuranceNoticeDe', label: 'Vers.-Info (DE)', FormComponent: InsuranceNoticeFormDe, TemplateComponent: InsuranceNoticeTemplateDe },
-  { value: 'insuranceNoticePt', label: 'Aviso de Seguro (PT)', FormComponent: InsuranceNoticeFormPt, TemplateComponent: InsuranceNoticeTemplatePt },
-  { value: 'insuranceNoticeIt', label: 'Avviso Assic. (IT)', FormComponent: InsuranceNoticeFormIt, TemplateComponent: InsuranceNoticeTemplateIt },
+const documentGroups = {
+  blankDocument: {
+    groupLabel: 'Document Vierge',
+    versions: { fr: { label: 'FR', FormComponent: BlankDocumentForm, TemplateComponent: BlankDocumentTemplate } },
+  },
+  feeInvoice: {
+    groupLabel: 'Facture de Frais',
+    versions: {
+      fr: { label: 'FR', FormComponent: FeeInvoiceForm, TemplateComponent: FeeInvoiceTemplate },
+      en: { label: 'EN', FormComponent: FeeInvoiceFormEn, TemplateComponent: FeeInvoiceTemplateEn },
+      es: { label: 'ES', FormComponent: FeeInvoiceFormEs, TemplateComponent: FeeInvoiceTemplateEs },
+      de: { label: 'DE', FormComponent: FeeInvoiceFormDe, TemplateComponent: FeeInvoiceTemplateDe },
+      pt: { label: 'PT', FormComponent: FeeInvoiceFormPt, TemplateComponent: FeeInvoiceTemplatePt },
+      it: { label: 'IT', FormComponent: FeeInvoiceFormIt, TemplateComponent: FeeInvoiceTemplateIt },
+    },
+  },
+  solvencyCert: {
+    groupLabel: 'Certificat de Solvabilité',
+    versions: {
+      fr: { label: 'FR', FormComponent: SolvencyCertificateForm, TemplateComponent: SolvencyCertificateTemplate },
+      en: { label: 'EN', FormComponent: SolvencyCertificateFormEn, TemplateComponent: SolvencyCertificateTemplateEn },
+      es: { label: 'ES', FormComponent: SolvencyCertificateFormEs, TemplateComponent: SolvencyCertificateTemplateEs },
+      de: { label: 'DE', FormComponent: SolvencyCertificateFormDe, TemplateComponent: SolvencyCertificateTemplateDe },
+      pt: { label: 'PT', FormComponent: SolvencyCertificateFormPt, TemplateComponent: SolvencyCertificateTemplatePt },
+      it: { label: 'IT', FormComponent: SolvencyCertificateFormIt, TemplateComponent: SolvencyCertificateTemplateIt },
+    },
+  },
+  insuranceNotice: {
+    groupLabel: 'Notice d\'Assurance',
+    versions: {
+      fr: { label: 'FR', FormComponent: InsuranceNoticeForm, TemplateComponent: InsuranceNoticeTemplate },
+      en: { label: 'EN', FormComponent: InsuranceNoticeFormEn, TemplateComponent: InsuranceNoticeTemplateEn },
+      es: { label: 'ES', FormComponent: InsuranceNoticeFormEs, TemplateComponent: InsuranceNoticeTemplateEs },
+      de: { label: 'DE', FormComponent: InsuranceNoticeFormDe, TemplateComponent: InsuranceNoticeTemplateDe },
+      pt: { label: 'PT', FormComponent: InsuranceNoticeFormPt, TemplateComponent: InsuranceNoticeTemplatePt },
+      it: { label: 'IT', FormComponent: InsuranceNoticeFormIt, TemplateComponent: InsuranceNoticeTemplateIt },
+    },
+  },
+  insuranceCert: {
+    groupLabel: 'Attestation d\'Assurance',
+    versions: {
+      fr: { label: 'FR', FormComponent: InsuranceCertificateForm, TemplateComponent: InsuranceCertificateTemplate },
+      en: { label: 'EN', FormComponent: InsuranceCertificateFormEn, TemplateComponent: InsuranceCertificateTemplateEn },
+      es: { label: 'ES', FormComponent: InsuranceCertificateFormEs, TemplateComponent: InsuranceCertificateTemplateEs },
+      de: { label: 'DE', FormComponent: InsuranceCertificateFormDe, TemplateComponent: InsuranceCertificateTemplateDe },
+      pt: { label: 'PT', FormComponent: InsuranceCertificateFormPt, TemplateComponent: InsuranceCertificateTemplatePt },
+      it: { label: 'IT', FormComponent: InsuranceCertificateFormIt, TemplateComponent: InsuranceCertificateTemplateIt },
+    },
+  },
+  loanContract: {
+    groupLabel: 'Contrat de Prêt',
+    versions: {
+      fr: { label: 'FR', FormComponent: LoanContractForm, TemplateComponent: LoanContractTemplate },
+      en: { label: 'EN', FormComponent: LoanContractFormEn, TemplateComponent: LoanContractTemplateEn },
+      es: { label: 'ES', FormComponent: LoanContractFormEs, TemplateComponent: LoanContractTemplateEs },
+      de: { label: 'DE', FormComponent: LoanContractFormDe, TemplateComponent: LoanContractTemplateDe },
+      pt: { label: 'PT', FormComponent: LoanContractFormPt, TemplateComponent: LoanContractTemplatePt },
+      it: { label: 'IT', FormComponent: LoanContractFormIt, TemplateComponent: LoanContractTemplateIt },
+    },
+  },
+  guaranteeAgreement: {
+    groupLabel: 'Acte de Cautionnement',
+    versions: {
+      fr: { label: 'FR', FormComponent: GuaranteeAgreementForm, TemplateComponent: GuaranteeAgreementTemplate },
+      en: { label: 'EN', FormComponent: GuaranteeAgreementFormEn, TemplateComponent: GuaranteeAgreementTemplateEn },
+      es: { label: 'ES', FormComponent: GuaranteeAgreementFormEs, TemplateComponent: GuaranteeAgreementTemplateEs },
+      de: { label: 'DE', FormComponent: GuaranteeAgreementFormDe, TemplateComponent: GuaranteeAgreementTemplateDe },
+      pt: { label: 'PT', FormComponent: GuaranteeAgreementFormPt, TemplateComponent: GuaranteeAgreementTemplatePt },
+      it: { label: 'IT', FormComponent: GuaranteeAgreementFormIt, TemplateComponent: GuaranteeAgreementTemplateIt },
+    },
+  },
+  debtAcknowledgement: {
+    groupLabel: 'Reconnaissance de Dette',
+    versions: {
+      fr: { label: 'FR', FormComponent: DebtAcknowledgementForm, TemplateComponent: DebtAcknowledgementTemplate },
+      en: { label: 'EN', FormComponent: DebtAcknowledgementFormEn, TemplateComponent: DebtAcknowledgementTemplateEn },
+      es: { label: 'ES', FormComponent: DebtAcknowledgementFormEs, TemplateComponent: DebtAcknowledgementTemplateEs },
+      de: { label: 'DE', FormComponent: DebtAcknowledgementFormDe, TemplateComponent: DebtAcknowledgementTemplateDe },
+      pt: { label: 'PT', FormComponent: DebtAcknowledgementFormPt, TemplateComponent: DebtAcknowledgementTemplatePt },
+      it: { label: 'IT', FormComponent: DebtAcknowledgementFormIt, TemplateComponent: DebtAcknowledgementTemplateIt },
+    },
+  },
+};
 
-  { value: 'insuranceCert', label: 'Attest. Assurance (FR)', FormComponent: InsuranceCertificateForm, TemplateComponent: InsuranceCertificateTemplate },
-  { value: 'insuranceCertEn', label: 'Insurance Cert. (EN)', FormComponent: InsuranceCertificateFormEn, TemplateComponent: InsuranceCertificateTemplateEn },
-  { value: 'insuranceCertEs', label: 'Cert. Seguro (ES)', FormComponent: InsuranceCertificateFormEs, TemplateComponent: InsuranceCertificateTemplateEs },
-  { value: 'insuranceCertDe', label: 'Vers.-Bestät. (DE)', FormComponent: InsuranceCertificateFormDe, TemplateComponent: InsuranceCertificateTemplateDe },
-  { value: 'insuranceCertPt', label: 'Cert. Seguro (PT)', FormComponent: InsuranceCertificateFormPt, TemplateComponent: InsuranceCertificateTemplatePt },
-  { value: 'insuranceCertIt', label: 'Cert. Assic. (IT)', FormComponent: InsuranceCertificateFormIt, TemplateComponent: InsuranceCertificateTemplateIt },
+type DocumentGroupKey = keyof typeof documentGroups;
+type LanguageKey<T extends DocumentGroupKey> = keyof (typeof documentGroups)[T]['versions'];
 
-  { value: 'loanContract', label: 'Contrat de Prêt (FR)', FormComponent: LoanContractForm, TemplateComponent: LoanContractTemplate },
-  { value: 'loanContractEn', label: 'Loan Agreement (EN)', FormComponent: LoanContractFormEn, TemplateComponent: LoanContractTemplateEn },
-  { value: 'loanContractEs', label: 'Contrato Préstamo (ES)', FormComponent: LoanContractFormEs, TemplateComponent: LoanContractTemplateEs },
-  { value: 'loanContractDe', label: 'Kreditvertrag (DE)', FormComponent: LoanContractFormDe, TemplateComponent: LoanContractTemplateDe },
-  { value: 'loanContractPt', label: 'Contrato Crédito (PT)', FormComponent: LoanContractFormPt, TemplateComponent: LoanContractTemplatePt },
-  { value: 'loanContractIt', label: 'Contratto Prestito (IT)', FormComponent: LoanContractFormIt, TemplateComponent: LoanContractTemplateIt },
-
-  { value: 'guaranteeAgreement', label: 'Acte Caution (FR)', FormComponent: GuaranteeAgreementForm, TemplateComponent: GuaranteeAgreementTemplate },
-  { value: 'guaranteeAgreementEn', label: 'Guarantee Agmt. (EN)', FormComponent: GuaranteeAgreementFormEn, TemplateComponent: GuaranteeAgreementTemplateEn },
-  { value: 'guaranteeAgreementEs', label: 'Acuerdo Garantía (ES)', FormComponent: GuaranteeAgreementFormEs, TemplateComponent: GuaranteeAgreementTemplateEs },
-  { value: 'guaranteeAgreementDe', label: 'Bürgschaft (DE)', FormComponent: GuaranteeAgreementFormDe, TemplateComponent: GuaranteeAgreementTemplateDe },
-  { value: 'guaranteeAgreementPt', label: 'Acordo Garantia (PT)', FormComponent: GuaranteeAgreementFormPt, TemplateComponent: GuaranteeAgreementTemplatePt },
-  { value: 'guaranteeAgreementIt', label: 'Atto Fideiussione (IT)', FormComponent: GuaranteeAgreementFormIt, TemplateComponent: GuaranteeAgreementTemplateIt },
-
-  { value: 'debtAcknowledgement', label: 'Reconn. de Dette (FR)', FormComponent: DebtAcknowledgementForm, TemplateComponent: DebtAcknowledgementTemplate },
-  { value: 'debtAcknowledgementEn', label: 'Debt Ack. (EN)', FormComponent: DebtAcknowledgementFormEn, TemplateComponent: DebtAcknowledgementTemplateEn },
-  { value: 'debtAcknowledgementEs', label: 'Recon. Deuda (ES)', FormComponent: DebtAcknowledgementFormEs, TemplateComponent: DebtAcknowledgementTemplateEs },
-  { value: 'debtAcknowledgementDe', label: 'Schuldanerk. (DE)', FormComponent: DebtAcknowledgementFormDe, TemplateComponent: DebtAcknowledgementTemplateDe },
-  { value: 'debtAcknowledgementPt', label: 'Recon. Dívida (PT)', FormComponent: DebtAcknowledgementFormPt, TemplateComponent: DebtAcknowledgementTemplatePt },
-  { value: 'debtAcknowledgementIt', label: 'Ricon. Debito (IT)', FormComponent: DebtAcknowledgementFormIt, TemplateComponent: DebtAcknowledgementTemplateIt },
-];
 
 export default function AdminDocumentsPage() {
-    const [activeTab, setActiveTab] = useState(documentTypes[0].value);
+    const [selectedGroupKey, setSelectedGroupKey] = useState<DocumentGroupKey>(Object.keys(documentGroups)[0] as DocumentGroupKey);
+    const [selectedLangKey, setSelectedLangKey] = useState<string>('fr');
     const [formData, setFormData] = useState<any>({});
 
-    const ActiveTemplate = documentTypes.find(d => d.value === activeTab)?.TemplateComponent;
+    const handleGroupChange = (value: string) => {
+        const key = value as DocumentGroupKey;
+        setSelectedGroupKey(key);
+        // Reset to default language 'fr' or the first available one
+        const availableLangs = Object.keys(documentGroups[key].versions);
+        setSelectedLangKey(availableLangs.includes('fr') ? 'fr' : availableLangs[0]);
+    };
+    
+    const { FormComponent, TemplateComponent } = useMemo(() => {
+        const group = documentGroups[selectedGroupKey];
+        const lang = selectedLangKey as LanguageKey<typeof selectedGroupKey>;
+        return group.versions[lang] || group.versions['fr' as LanguageKey<typeof selectedGroupKey>];
+    }, [selectedGroupKey, selectedLangKey]);
+
 
     return (
         <Card>
@@ -167,19 +212,34 @@ export default function AdminDocumentsPage() {
             <CardContent>
                 <div className="grid lg:grid-cols-2 gap-8 items-start">
                     <div>
-                        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                            <TabsList className="grid w-full grid-cols-3 md:grid-cols-4 lg:grid-cols-5 h-auto">
-                                {documentTypes.map(doc => (
-                                    <TabsTrigger key={doc.value} value={doc.value} className="text-xs md:text-sm">{doc.label}</TabsTrigger>
-                                ))}
-                            </TabsList>
-                            
-                            {documentTypes.map(doc => (
-                                <TabsContent key={doc.value} value={doc.value}>
-                                    <doc.FormComponent setFormData={setFormData} />
-                                </TabsContent>
-                            ))}
-                        </Tabs>
+                        <div className="space-y-4">
+                            <Select onValueChange={handleGroupChange} value={selectedGroupKey}>
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Sélectionnez un type de document" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {Object.entries(documentGroups).map(([key, group]) => (
+                                        <SelectItem key={key} value={key}>{group.groupLabel}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+
+                            {selectedGroupKey && (
+                                <Tabs value={selectedLangKey} onValueChange={setSelectedLangKey} className="w-full">
+                                    <TabsList>
+                                        {Object.entries(documentGroups[selectedGroupKey].versions).map(([langKey, version]) => (
+                                            <TabsTrigger key={langKey} value={langKey}>{(version as any).label}</TabsTrigger>
+                                        ))}
+                                    </TabsList>
+                                    
+                                     {Object.keys(documentGroups[selectedGroupKey].versions).map(langKey => (
+                                        <TabsContent key={langKey} value={langKey}>
+                                             {selectedLangKey === langKey && <FormComponent setFormData={setFormData} />}
+                                        </TabsContent>
+                                     ))}
+                                </Tabs>
+                            )}
+                        </div>
                     </div>
                     <div>
                         <Card className="sticky top-24">
@@ -190,7 +250,7 @@ export default function AdminDocumentsPage() {
                             <CardContent>
                                 <ScrollArea className="h-[70vh] w-full rounded-md border bg-secondary/50 p-2">
                                     <div id="pdf-preview" className="bg-white shadow-lg mx-auto">
-                                        {ActiveTemplate ? <ActiveTemplate data={formData as any} /> : <p>Sélectionnez un document pour voir l'aperçu.</p>}
+                                        {TemplateComponent ? <TemplateComponent data={formData as any} /> : <p>Sélectionnez un document pour voir l'aperçu.</p>}
                                     </div>
                                 </ScrollArea>
                             </CardContent>
@@ -201,3 +261,4 @@ export default function AdminDocumentsPage() {
         </Card>
     );
 }
+
