@@ -26,7 +26,7 @@ export const ContactIllustration = (props: React.SVGProps<SVGSVGElement>) => (
      <g transform="translate(140, 60) scale(0.4)">
       <path d="M21.5 12H18.5C18.2239 12 18 11.7761 18 11.5V2.5C18 2.22386 18.2239 2 18.5 2H21.5C21.7761 2 22 2.22386 22 2.5V11.5C22 11.7761 21.7761 12 21.5 12Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
       <path d="M18 7H16.5C16.2239 7 16 7.22386 16 7.5V11.5C16 11.7761 16.2239 12 16.5 12H18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M16 9H14.5C14.2239 9 14 9.22386 14 9.5V11.5C14 11.7761 14.2239 12 14.5 12H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M14 9H14.5C14.2239 9 14 9.22386 14 9.5V11.5C14 11.7761 14.2239 12 14.5 12H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
       <path d="M2 17H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
       <path d="M2 12H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
       <path d="M2 7H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
