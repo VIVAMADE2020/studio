@@ -41,7 +41,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="bg-secondary/30 min-h-screen">
-      <div className="container mx-auto py-8">
+      <div className="container ml-auto mr-0 py-8">
         <div className="grid lg:grid-cols-[240px_1fr] gap-8">
           <aside>
             <nav className="flex flex-col gap-2">

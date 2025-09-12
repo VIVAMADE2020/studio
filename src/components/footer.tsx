@@ -5,7 +5,7 @@ import { Facebook, Twitter, Linkedin } from "lucide-react";
 export function Footer() {
   return (
     <footer className="bg-primary text-primary-foreground">
-      <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div className="container ml-auto mr-0 py-12 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2">
