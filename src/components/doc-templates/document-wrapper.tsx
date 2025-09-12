@@ -38,7 +38,7 @@ export const DocumentWrapper: React.FC<DocumentWrapperProps> = ({ title, subHead
 export const styles: { [key: string]: React.CSSProperties } = {
   page: {
     fontFamily: 'Helvetica, Arial, sans-serif',
-    fontSize: '10pt',
+    fontSize: '12pt',
     lineHeight: 1.6,
     backgroundColor: '#ffffff',
     color: '#333333',
@@ -68,19 +68,19 @@ export const styles: { [key: string]: React.CSSProperties } = {
   },
   headerInfo: {
     textAlign: 'right',
-    fontSize: '9pt',
+    fontSize: '10pt',
     color: '#718096',
   },
   subHeader: {
     textAlign: 'center',
-    fontSize: '8pt',
+    fontSize: '9pt',
     color: '#718096',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
     marginBottom: '20px',
   },
   title: {
-    fontSize: '18pt',
+    fontSize: '20pt',
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#2D3748',
@@ -90,10 +90,10 @@ export const styles: { [key: string]: React.CSSProperties } = {
     flexGrow: 1,
   },
   section: {
-    marginBottom: '20px',
+    marginBottom: '25px',
   },
   sectionTitle: {
-    fontSize: '12pt',
+    fontSize: '14pt',
     fontWeight: 'bold',
     color: '#4A5568',
     borderBottom: '1px solid #dddddd',
@@ -114,17 +114,18 @@ export const styles: { [key: string]: React.CSSProperties } = {
     width: '100%',
     borderCollapse: 'collapse',
     marginTop: '20px',
+    fontSize: '11pt',
   },
   th: {
     border: '1px solid #dddddd',
-    padding: '8px',
+    padding: '10px',
     textAlign: 'left',
     backgroundColor: '#f2f2f2',
     fontWeight: 'bold',
   },
   td: {
     border: '1px solid #dddddd',
-    padding: '8px',
+    padding: '10px',
   },
   signatureSection: {
     marginTop: '40px',
@@ -146,7 +147,7 @@ export const styles: { [key: string]: React.CSSProperties } = {
     paddingTop: '20px',
     marginTop: '40px',
     textAlign: 'center',
-    fontSize: '8pt',
+    fontSize: '9pt',
     color: '#a0aec0',
   },
 };
