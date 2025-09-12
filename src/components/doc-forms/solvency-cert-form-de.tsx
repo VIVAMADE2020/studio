@@ -1,0 +1,68 @@
+
+"use client";
+import React, { useEffect } from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { usePDFGenerator } from '@/hooks/use-pdf-generator';
+import { Textarea } from '../ui/textarea';
+
+const formSchema = z.object({
+  clientName: z.string().min(1, 'Erforderlich'),
+  clientAddress: z.string().min(1, 'Erforderlich'),
+  clientIdNumber: z.string().min(1, 'Erforderlich'),
+  accountNumber: z.string().min(1, 'Erforderlich'),
+  balance: z.coerce.number(),
+  certDate: z.string().min(1, 'Erforderlich'),
+});
+
+interface SolvencyCertificateFormDeProps {
+    setFormData: (data: any) => void;
+}
+
+export function SolvencyCertificateFormDe({ setFormData }: SolvencyCertificateFormDeProps) {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      clientName: '',
+      clientAddress: '',
+      clientIdNumber: '',
+      accountNumber: '',
+      balance: 0,
+      certDate: new Date().toISOString().split('T')[0],
+    },
+  });
+
+  const { isGenerating, generatePDF } = usePDFGenerator();
+
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+      setFormData(value);
+    });
+    setFormData(form.getValues());
+    return () => subscription.unsubscribe();
+  }, [form, setFormData]);
+
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
+    generatePDF(
+        `bonitaetszertifikat-${data.clientName.replace(/\s/g, '_')}.pdf`
+    );
+  };
+
+  return (
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-6">
+        <FormField name="clientName" render={({ field }) => ( <FormItem> <FormLabel>Name des Kunden</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+        <FormField name="clientIdNumber" render={({ field }) => ( <FormItem> <FormLabel>Ausweisnummer</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+        <FormField name="clientAddress" render={({ field }) => ( <FormItem> <FormLabel>Anschrift des Kunden</FormLabel> <FormControl><Textarea rows={3} {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+        <FormField name="accountNumber" render={({ field }) => ( <FormItem> <FormLabel>Kontonummer</FormLabel> <FormControl><Input {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+        <FormField name="balance" render={({ field }) => ( <FormItem> <FormLabel>Förderfähiger Betrag (€)</FormLabel> <FormControl><Input type="number" step="0.01" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+        <FormField name="certDate" render={({ field }) => ( <FormItem> <FormLabel>Datum des Zertifikats</FormLabel> <FormControl><Input type="date" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+        <Button type="submit" disabled={isGenerating}>{isGenerating ? 'Wird generiert...' : 'PDF Generieren & Herunterladen'}</Button>
+      </form>
+    </FormProvider>
+  );
+}
