@@ -1,7 +1,6 @@
 import { ContactForm } from '@/components/contact-form';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Mail, Phone, MapPin } from 'lucide-react';
-import { ContactIllustration } from '@/components/illustrations/ContactIllustration';
 import Image from 'next/image';
 
 export default function ContactPage() {
@@ -19,8 +18,13 @@ export default function ContactPage() {
                 Une question ? Un projet ? Notre équipe d'experts est à votre entière disposition pour vous accompagner.
               </p>
             </div>
-            <div className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl flex items-center justify-center p-8 bg-white">
-              <ContactIllustration className="w-full h-full text-primary" />
+            <div className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl">
+                <Image
+                    src="https://i.postimg.cc/NMjBjxSH/arlington-research-k-N-k-Vi-Dch-A0-unsplash.jpg"
+                    alt="Équipe de contact"
+                    fill
+                    className="object-cover"
+                />
             </div>
           </div>
         </div>
