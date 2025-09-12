@@ -33,7 +33,7 @@ export default function AboutPage() {
             {/* Hero Section */}
             <section className="relative h-[50vh] flex items-center justify-center text-center text-white">
                 <Image 
-                    src="https://i.postimg.cc/SxmyWbfx/pexels-jakubzerdzicki-29799518.jpg" 
+                    src="https://i.postimg.cc/7LFPmzWG/undraw-engineering-team-13ax.png" 
                     alt="Notre histoire" 
                     fill 
                     className="object-cover" 
