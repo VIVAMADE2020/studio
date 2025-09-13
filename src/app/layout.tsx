@@ -28,9 +28,6 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning className={inter.variable}>
       <head>
-        <link rel="icon" href="https://i.postimg.cc/XJSfHfQt/Black-Vintage-badges-family-farm-logo-removebg-preview.png" type="image/png" />
-        <link rel="shortcut icon" href="https://i.postimg.cc/XJSfHfQt/Black-Vintage-badges-family-farm-logo-removebg-preview.png" type="image/png" />
-        <link rel="apple-touch-icon" href="https://i.postimg.cc/XJSfHfQt/Black-Vintage-badges-family-farm-logo-removebg-preview.png" />
       </head>
       <body className={cn('min-h-screen bg-background font-body antialiased', 'flex flex-col')}>
         <ThemeProvider

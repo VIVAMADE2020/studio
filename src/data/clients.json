@@ -69,6 +69,20 @@
           "swiftCode": "BNPAFRPP"
         },
         "failureReason": "bbbb"
+      },
+      {
+        "id": "TXN-1757707850527",
+        "date": "2025-09-12T20:10:50.527Z",
+        "description": "virement entrant",
+        "amount": 300,
+        "status": "COMPLETED"
+      },
+      {
+        "id": "TXN-1757707882180",
+        "date": "2025-09-12T20:11:22.180Z",
+        "description": "virement SORTANT",
+        "amount": -60,
+        "status": "COMPLETED"
       }
     ],
     "iban": "FR76300020055015802155391",
