@@ -74,11 +74,6 @@ export const FeeInvoiceTemplatePt: React.FC<FeeInvoiceTemplatePtProps> = ({ data
             <h2 style={styles.sectionTitle}>Condições de Pagamento</h2>
             <p style={{whiteSpace: 'pre-wrap'}}>{data.paymentTerms || 'Pagamento devido no recebimento.'}</p>
         </div>
-
-        <div style={{...styles.section, marginTop: '50px', textAlign: 'center', fontSize: '10pt', color: '#718096'}}>
-            <p>Em caso de atraso no pagamento, será aplicada uma indemnização fixa de 40 € por custos de cobrança.
-            <br/>Obrigado pela sua confiança.</p>
-        </div>
     </DocumentWrapper>
   );
 };

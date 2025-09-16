@@ -74,11 +74,6 @@ export const FeeInvoiceTemplate: React.FC<FeeInvoiceTemplateProps> = ({ data }) 
             <h2 style={styles.sectionTitle}>Modalités de paiement</h2>
             <p style={{whiteSpace: 'pre-wrap'}}>{data.paymentTerms || 'Paiement dû à réception.'}</p>
         </div>
-
-        <div style={{...styles.section, marginTop: '50px', textAlign: 'center', fontSize: '10pt', color: '#718096'}}>
-            <p>En cas de retard de paiement, une indemnité forfaitaire pour frais de recouvrement de 40 € sera appliquée.
-            <br/>Nous vous remercions de votre confiance.</p>
-        </div>
     </DocumentWrapper>
   );
 };

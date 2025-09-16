@@ -74,11 +74,6 @@ export const FeeInvoiceTemplateIt: React.FC<FeeInvoiceTemplateItProps> = ({ data
             <h2 style={styles.sectionTitle}>Termini di Pagamento</h2>
             <p style={{whiteSpace: 'pre-wrap'}}>{data.paymentTerms || 'Pagamento dovuto al ricevimento.'}</p>
         </div>
-
-        <div style={{...styles.section, marginTop: '50px', textAlign: 'center', fontSize: '10pt', color: '#718096'}}>
-            <p>In caso di ritardo nel pagamento, verrà applicato un indennizzo forfettario di 40 € per le spese di recupero.
-            <br/>Grazie per la vostra fiducia.</p>
-        </div>
     </DocumentWrapper>
   );
 };

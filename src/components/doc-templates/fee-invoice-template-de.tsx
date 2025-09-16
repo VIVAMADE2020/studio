@@ -74,11 +74,6 @@ export const FeeInvoiceTemplateDe: React.FC<FeeInvoiceTemplateDeProps> = ({ data
             <h2 style={styles.sectionTitle}>Zahlungsbedingungen</h2>
             <p style={{whiteSpace: 'pre-wrap'}}>{data.paymentTerms || 'Zahlung bei Erhalt fällig.'}</p>
         </div>
-
-        <div style={{...styles.section, marginTop: '50px', textAlign: 'center', fontSize: '10pt', color: '#718096'}}>
-            <p>Bei Zahlungsverzug wird eine pauschale Entschädigung von 40 € für Beitreibungskosten erhoben.
-            <br/>Vielen Dank für Ihr Vertrauen.</p>
-        </div>
     </DocumentWrapper>
   );
 };

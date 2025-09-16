@@ -74,11 +74,6 @@ export const FeeInvoiceTemplateEs: React.FC<FeeInvoiceTemplateEsProps> = ({ data
             <h2 style={styles.sectionTitle}>Condiciones de Pago</h2>
             <p style={{whiteSpace: 'pre-wrap'}}>{data.paymentTerms || 'Pago a la recepción.'}</p>
         </div>
-
-        <div style={{...styles.section, marginTop: '50px', textAlign: 'center', fontSize: '10pt', color: '#718096'}}>
-            <p>En caso de retraso en el pago, se aplicará una compensación fija de 40 € por gastos de recobro.
-            <br/>Gracias por su confianza.</p>
-        </div>
     </DocumentWrapper>
   );
 };

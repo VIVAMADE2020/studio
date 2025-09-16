@@ -74,11 +74,6 @@ export const FeeInvoiceTemplateEn: React.FC<FeeInvoiceTemplateEnProps> = ({ data
             <h2 style={styles.sectionTitle}>Payment Terms</h2>
             <p style={{whiteSpace: 'pre-wrap'}}>{data.paymentTerms || 'Payment due upon receipt.'}</p>
         </div>
-
-        <div style={{...styles.section, marginTop: '50px', textAlign: 'center', fontSize: '10pt', color: '#718096'}}>
-            <p>In case of late payment, a fixed compensation of €40 for recovery costs will be applied.
-            <br/>Thank you for your trust.</p>
-        </div>
     </DocumentWrapper>
   );
 };
