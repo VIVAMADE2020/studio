@@ -3,7 +3,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, Quote, FileText, User, Home, Car, Building, Briefcase, GraduationCap } from 'lucide-react';
+import { CheckCircle, Quote, FileText, User, Home, Car, Building, Briefcase, GraduationCap, Rocket, ShieldCheck, Zap, KeyRound, TrendingUp, Gem, GaugeCircle, Leaf, Wallet, Activity, RefreshCw, Target, ArrowDownWideNarrow, PlusCircle, BookOpen, Clock, Globe } from 'lucide-react';
 import Link from 'next/link';
 import { LoanCalculator } from '@/components/loan-calculator';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -23,7 +23,24 @@ const icons: { [key: string]: React.ElementType } = {
   Car,
   Building,
   Briefcase,
-  GraduationCap
+  GraduationCap,
+  Rocket,
+  ShieldCheck,
+  Zap,
+  KeyRound,
+  TrendingUp,
+  Gem,
+  GaugeCircle,
+  Leaf,
+  Wallet,
+  Activity,
+  RefreshCw,
+  Target,
+  ArrowDownWideNarrow,
+  PlusCircle,
+  BookOpen,
+  Clock,
+  Globe
 };
 
 
@@ -108,14 +125,29 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
       </section>
 
       {/* Why Subscribe Section */}
-      {service.whySubscribe && (
+      {service.whySubscribe && service.whySubscribe.points && (
         <section className="py-16 md:py-24 bg-primary/5">
           <div className="container">
-            <div className="max-w-3xl mx-auto text-center">
+            <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-3xl font-bold text-primary uppercase">{service.whySubscribe.title}</h2>
-              <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
-                {service.whySubscribe.description}
-              </p>
+            </div>
+            <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {service.whySubscribe.points.map((point: any, index: number) => {
+                const PointIcon = icons[point.icon] || FileText;
+                return (
+                  <Card key={index} className="text-center">
+                    <CardHeader>
+                      <div className="mx-auto w-16 h-16 rounded-full bg-accent/10 text-accent flex items-center justify-center">
+                        <PointIcon className="w-8 h-8" />
+                      </div>
+                      <CardTitle className="mt-4">{point.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground">{point.description}</p>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         </section>
