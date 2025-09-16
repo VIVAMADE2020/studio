@@ -6,6 +6,12 @@ const partners = [
     { name: "Allianz" },
     { name: "Crédit Mutuel" },
     { name: "Visa" },
+    { name: "BNP Paribas" },
+    { name: "Cetelem" },
+    { name: "Boursorama" },
+    { name: "Cofidis" },
+    { name: "Groupama" },
+    { name: "Mastercard" },
 ];
 
 export function PartnersSection() {
