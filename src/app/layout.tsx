@@ -27,10 +27,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const faviconSvg = "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22hsl(215, 39%, 29%)%22 /><text y=%22.9em%22 x=%2250%%22 text-anchor=%22middle%22 font-size=%2260%22 font-family=%22Arial%22 fill=%22hsl(210, 20%, 98%)%22>F</text></svg>";
   return (
     <html lang="fr" suppressHydrationWarning className={inter.variable}>
       <head>
-      <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22hsl(215, 39%, 29%)%22 /><text y=%22.9em%22 x=%2250%%22 text-anchor=%22middle%22 font-size=%2260%22 font-family=%22Arial%22 fill=%22hsl(210, 20%, 98%)%22>F</text></svg>" />
+        <link rel="icon" href={faviconSvg} />
+        <link rel="apple-touch-icon" href={faviconSvg} />
       </head>
       <body className={cn('min-h-screen bg-background font-body antialiased', 'flex flex-col')}>
         <ThemeProvider
