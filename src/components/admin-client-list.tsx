@@ -51,16 +51,16 @@ export function AdminClientList({ initialClients }: AdminClientListProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-xl font-semibold">Clients ({clients.length})</h2>
-        <div className="flex items-center gap-2">
-           <Button variant="outline" size="sm" onClick={refreshClients} disabled={isLoading}>
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+           <Button variant="outline" size="sm" onClick={refreshClients} disabled={isLoading} className="flex-grow sm:flex-grow-0">
             <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
             Actualiser
           </Button>
           <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
             <DialogTrigger asChild>
-              <Button size="sm">
+              <Button size="sm" className="flex-grow sm:flex-grow-0">
                 <PlusCircle className="mr-2 h-4 w-4" />
                 Ajouter un client
               </Button>
@@ -77,13 +77,13 @@ export function AdminClientList({ initialClients }: AdminClientListProps) {
           </Dialog>
         </div>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md border overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Nom</TableHead>
-              <TableHead>Type de Compte</TableHead>
-              <TableHead>Email</TableHead>
+              <TableHead className="hidden md:table-cell">Type de Compte</TableHead>
+              <TableHead className="hidden sm:table-cell">Email</TableHead>
               <TableHead className="text-right">Solde</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
@@ -94,15 +94,18 @@ export function AdminClientList({ initialClients }: AdminClientListProps) {
                  const balance = client.initialBalance + client.transactions.reduce((acc, t) => acc + t.amount, 0);
                  return (
                     <TableRow key={client.email}>
-                      <TableCell className="font-medium">{client.firstName} {client.lastName}</TableCell>
-                      <TableCell>
+                      <TableCell className="font-medium whitespace-nowrap">
+                        <div>{client.firstName} {client.lastName}</div>
+                        <div className="sm:hidden text-xs text-muted-foreground">{client.email}</div>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell">
                         <Badge variant={client.accountType === 'LOAN' ? "default" : "secondary"} className="text-xs">
                           {client.accountType === 'LOAN' ? <Banknote className="mr-1 h-3 w-3"/> : <Building className="mr-1 h-3 w-3"/>}
                           {client.accountType === 'LOAN' ? 'Prêt' : 'Général'}
                         </Badge>
                       </TableCell>
-                      <TableCell>{client.email}</TableCell>
-                      <TableCell className="text-right">{formatCurrency(balance)}</TableCell>
+                      <TableCell className="hidden sm:table-cell">{client.email}</TableCell>
+                      <TableCell className="text-right whitespace-nowrap">{formatCurrency(balance)}</TableCell>
                       <TableCell className="text-center">
                         <Button asChild variant="ghost" size="icon">
                             <Link href={`/admin/dashboard/${client.identificationNumber}`}>

@@ -53,7 +53,7 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2"><Building className="h-5 w-5"/> Informations Bancaires</CardTitle>
                         </CardHeader>
-                        <CardContent className="text-sm space-y-2 font-mono">
+                        <CardContent className="text-sm space-y-2 font-mono break-all">
                             <p><strong>N° de Compte:</strong> {client.accountNumber}</p>
                             <p><strong>IBAN:</strong> {client.iban}</p>
                             <p><strong>SWIFT/BIC:</strong> {client.swiftCode}</p>
@@ -74,41 +74,43 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
                             <CardTitle>Historique des Transactions</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Date</TableHead>
-                                        <TableHead>Description</TableHead>
-                                        <TableHead>Statut</TableHead>
-                                        <TableHead className="text-right">Montant</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {client.transactions.length > 0 ? client.transactions.map(t => (
-                                        <TableRow key={t.id}>
-                                            <TableCell>{new Date(t.date).toLocaleDateString()}</TableCell>
-                                            <TableCell>{t.description}</TableCell>
-                                            <TableCell>
-                                                <span className={`px-2 py-1 text-xs rounded-full font-medium ${
-                                                    t.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
-                                                    t.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
-                                                    t.status === 'PROCESSING' ? 'bg-blue-100 text-blue-800' :
-                                                    'bg-red-100 text-red-800'
-                                                }`}>
-                                                    {t.status}
-                                                </span>
-                                            </TableCell>
-                                            <TableCell className={`text-right font-medium ${t.amount >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                {formatCurrency(t.amount)}
-                                            </TableCell>
-                                        </TableRow>
-                                    )) : (
+                            <div className="w-full overflow-x-auto">
+                                <Table>
+                                    <TableHeader>
                                         <TableRow>
-                                            <TableCell colSpan={4} className="text-center text-muted-foreground">Aucune transaction.</TableCell>
+                                            <TableHead>Date</TableHead>
+                                            <TableHead>Description</TableHead>
+                                            <TableHead>Statut</TableHead>
+                                            <TableHead className="text-right">Montant</TableHead>
                                         </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {client.transactions.length > 0 ? client.transactions.map(t => (
+                                            <TableRow key={t.id}>
+                                                <TableCell className="whitespace-nowrap">{new Date(t.date).toLocaleDateString()}</TableCell>
+                                                <TableCell>{t.description}</TableCell>
+                                                <TableCell>
+                                                    <span className={`px-2 py-1 text-xs rounded-full font-medium ${
+                                                        t.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
+                                                        t.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
+                                                        t.status === 'PROCESSING' ? 'bg-blue-100 text-blue-800' :
+                                                        'bg-red-100 text-red-800'
+                                                    }`}>
+                                                        {t.status}
+                                                    </span>
+                                                </TableCell>
+                                                <TableCell className={`text-right font-medium ${t.amount >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                    {formatCurrency(t.amount)}
+                                                </TableCell>
+                                            </TableRow>
+                                        )) : (
+                                            <TableRow>
+                                                <TableCell colSpan={4} className="text-center text-muted-foreground">Aucune transaction.</TableCell>
+                                            </TableRow>
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </div>
                         </CardContent>
                     </Card>
                 </div>

@@ -141,13 +141,13 @@ export default function ClientDashboardPage() {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="flex justify-between items-start"
+                className="flex flex-col sm:flex-row justify-between items-start gap-4"
             >
                  <div>
                     <h1 className="text-2xl md:text-3xl font-bold">Bonjour, {client.firstName}</h1>
                     <p className="text-muted-foreground">Bienvenue sur votre espace personnel.</p>
                 </div>
-                <Button variant="outline" onClick={handleLogout}>
+                <Button variant="outline" onClick={handleLogout} className="w-full sm:w-auto">
                     <LogOut className="mr-2 h-4 w-4" />
                     Déconnexion
                 </Button>
@@ -194,7 +194,7 @@ export default function ClientDashboardPage() {
                             <CardHeader>
                                  <CardTitle className="flex items-center gap-2"><Building className="h-5 w-5 text-primary"/> Informations Bancaires</CardTitle>
                             </CardHeader>
-                            <CardContent className="space-y-4 text-sm font-mono">
+                            <CardContent className="space-y-4 text-sm font-mono break-all">
                                  <div>
                                     <div className="flex justify-between items-center mb-1">
                                         <span className="text-muted-foreground font-sans text-xs uppercase tracking-wider">N° de Compte</span>
@@ -243,10 +243,10 @@ export default function ClientDashboardPage() {
                     )}
                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }}>
                         <h3 className="text-lg font-semibold mb-4">Raccourcis</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <Button asChild variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2"><Link href="/client/dashboard/transfer"><Send /><span>Faire un virement</span></Link></Button>
-                            <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2"><FileText /><span>Demander un relevé</span></Button>
-                            <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2"><MessageSquare /><span>Contacter mon conseiller</span></Button>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <Button asChild variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2 text-center"><Link href="/client/dashboard/transfer"><Send /><span>Faire un virement</span></Link></Button>
+                            <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2 text-center"><FileText /><span>Demander un relevé</span></Button>
+                            <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-2 text-center"><MessageSquare /><span>Contacter mon conseiller</span></Button>
                         </div>
                     </motion.div>
                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }}>
@@ -256,6 +256,7 @@ export default function ClientDashboardPage() {
                                 <History className="h-5 w-5 text-muted-foreground" />
                             </CardHeader>
                             <CardContent>
+                                <div className="w-full overflow-x-auto">
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
@@ -268,7 +269,7 @@ export default function ClientDashboardPage() {
                                         {sortedTransactions.length > 0 ? sortedTransactions.slice(0, 10).map((t: Transaction) => (
                                             <TableRow key={t.id}>
                                                 <TableCell>
-                                                    <div>{t.description}</div>
+                                                    <div className="min-w-[150px]">{t.description}</div>
                                                     <div className="text-xs text-muted-foreground">{new Date(t.date).toLocaleString('fr-FR')}</div>
                                                 </TableCell>
                                                 <TableCell>
@@ -299,7 +300,7 @@ export default function ClientDashboardPage() {
                                                     )}
                                                 </TableCell>
                                                 <TableCell className={`text-right font-medium ${t.amount >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                    <div className="flex items-center justify-end gap-2">
+                                                    <div className="flex items-center justify-end gap-2 whitespace-nowrap">
                                                         <CircleDollarSign className="h-4 w-4 opacity-70" />
                                                         <span>{t.amount >= 0 ? '+' : ''}{formatCurrency(t.amount)}</span>
                                                     </div>
@@ -314,6 +315,7 @@ export default function ClientDashboardPage() {
                                         )}
                                     </TableBody>
                                 </Table>
+                                </div>
                             </CardContent>
                         </Card>
                     </motion.div>
