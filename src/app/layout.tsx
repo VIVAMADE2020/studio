@@ -7,6 +7,8 @@ import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
+
 
 const inter = Inter({
   subsets: ['latin'],
@@ -40,6 +42,11 @@ export default function RootLayout({
           <main className="flex-grow w-full">{children}</main>
           <Footer />
           <Toaster />
+           <div className="gtranslate_wrapper"></div>
+           <Script id="gtranslate-settings">
+            {`window.gtranslateSettings = {"default_language":"fr","native_language_names":true,"languages":["fr","it","es","de","en","pt"],"wrapper_selector":".gtranslate_wrapper","switcher_horizontal_position":"right"}`}
+          </Script>
+          <Script src="https://cdn.gtranslate.net/widgets/latest/float.js" strategy="lazyOnload" />
         </ThemeProvider>
       </body>
     </html>
