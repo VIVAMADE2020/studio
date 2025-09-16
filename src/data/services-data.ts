@@ -8,6 +8,10 @@ export const servicesData = {
       title: "Prêt Personnel",
       tagline: "Donnez vie à tous vos projets, sans contraintes.",
       description: "<p>Le prêt personnel FLEXFOND est une solution de financement polyvalente conçue pour vous aider à concrétiser une grande variété de projets sans avoir à justifier leur nature. Que ce soit pour un voyage, l'achat d'équipement, le financement d'un mariage ou pour faire face à un imprévu, le prêt personnel vous offre la liberté et la flexibilité dont vous avez besoin.</p>",
+      whySubscribe: {
+        title: "Pourquoi souscrire un Prêt Personnel ?",
+        description: "C'est la solution idéale pour financer un projet de vie sans contraintes. Vous disposez des fonds librement pour un voyage, un mariage, ou l'achat d'un bien, avec des mensualités fixes et un taux connu à l'avance, ce qui vous assure une gestion de budget sereine et sans surprises."
+      },
       features: [
         "Financement de 1 000€ à 75 000€.",
         "Taux fixe et mensualités constantes sur toute la durée.",
@@ -33,7 +37,11 @@ export const servicesData = {
       image: siteConfig.services[1].image,
       title: "Prêt Immobilier",
       tagline: "Devenez propriétaire avec un financement adapté à votre avenir.",
-      description: "<p>Le prêt immobilier FLEXFOND est la clé pour réaliser votre rêve d'accession à la propriété. Que ce soit pour l'achat de votre résidence principale, secondaire ou un investissement locatif, nous structurons une solution de financement sur-mesure. Notre expertise nous permet de négocier les meilleures conditions pour vous, en tenant compte de votre apport, de la durée souhaitée et de votre profil.</p>",
+      description: "<p>Le prêt immobilier FLEXFOND est la clé pour réaliser votre rêve d'accession à la propriété. Que ce soit pour l'achat de votre résidence principale, secondaire ou un investissement locatif, nous structurons une solution de financement sur-mesure. Notre expertise nous permet de négocier les meilleures conditions pour vous, en tenant compte de votre apport, de la durée souhaitée и de votre profil.</p>",
+      whySubscribe: {
+        title: "Pourquoi souscrire un Prêt Immobilier ?",
+        description: "C'est l'étape incontournable pour devenir propriétaire et construire votre patrimoine. En profitant des taux d'intérêt actuels, vous investissez dans un actif durable qui sécurise votre avenir et celui de votre famille, tout en vous offrant un lieu de vie qui vous ressemble."
+      },
       features: [
         "Accompagnement personnalisé par un expert dédié.",
         "Recherche des meilleures conditions de taux du marché.",
@@ -61,6 +69,10 @@ export const servicesData = {
       title: "Prêt Auto",
       tagline: "Prenez la route avec le véhicule de vos rêves.",
       description: "<p>Le prêt auto FLEXFOND vous permet de financer l'achat de votre véhicule, qu'il soit neuf ou d'occasion, thermique, hybride ou électrique. Nous vous proposons une solution simple et rapide pour que vous puissiez prendre le volant sans attendre. Nos offres sont claires, sans frais cachés, et avec des mensualités adaptées à votre budget pour un achat en toute sérénité.</p>",
+      whySubscribe: {
+        title: "Pourquoi souscrire un Prêt Auto ?",
+        description: "Il vous permet d'acquérir immédiatement le véhicule dont vous avez besoin sans impacter votre épargne. C'est la solution pour accéder à un modèle plus récent, plus sûr ou plus écologique, tout en étalant la dépense sur une durée qui correspond à votre budget."
+      },
       features: [
         "Financement jusqu'à 100% du prix d'achat du véhicule.",
         "Adapté pour les voitures, motos et scooters, neufs ou d'occasion.",
@@ -88,6 +100,10 @@ export const servicesData = {
       title: "Prêt Professionnel",
       tagline: "Investissez dans la croissance de votre entreprise.",
       description: "<p>Le prêt professionnel FLEXFOND est dédié aux entrepreneurs, artisans, commerçants et professions libérales qui souhaitent investir dans leur activité. Que ce soit pour l'acquisition de matériel, l'achat de locaux, le financement de stocks ou le renforcement de votre fonds de roulement, nous vous apportons une solution adaptée aux défis de votre entreprise.</p>",
+      whySubscribe: {
+        title: "Pourquoi souscrire un Prêt Professionnel ?",
+        description: "C'est un levier stratégique essentiel pour la croissance de votre activité. Il vous donne les moyens d'investir dans de nouveaux équipements, de vous développer sur de nouveaux marchés ou de gérer votre trésorerie avec plus de souplesse, transformant ainsi vos ambitions en succès commercial."
+      },
       features: [
         "Solutions pour la création, la reprise ou le développement d'entreprise.",
         "Analyse de votre business plan par nos experts.",
@@ -115,6 +131,10 @@ export const servicesData = {
       title: "Rachat de Crédits",
       tagline: "Simplifiez votre budget et retrouvez votre sérénité financière.",
       description: "<p>Le rachat de crédits consiste à regrouper l'ensemble de vos prêts en cours (crédit immobilier, prêts à la consommation, etc.) en une seule et unique mensualité. Cette opération vous permet de réduire votre taux d'endettement, de simplifier la gestion de votre budget et, souvent, d'obtenir une trésorerie supplémentaire pour un nouveau projet. C'est une solution efficace pour retrouver une meilleure visibilité et plus de souplesse financière.</p>",
+      whySubscribe: {
+        title: "Pourquoi opter pour un Rachat de Crédits ?",
+        description: "C'est la solution pour reprendre le contrôle de vos finances. En regroupant tous vos prêts en un seul, vous réduisez vos mensualités, baissez votre taux d'endettement et simplifiez votre gestion. C'est l'opportunité de repartir sur des bases saines et de financer, si besoin, un nouveau projet."
+      },
       features: [
         "Réduction de vos mensualités jusqu'à -60%.",
         "Un seul prêt, une seule mensualité, un seul interlocuteur.",
@@ -141,6 +161,10 @@ export const servicesData = {
       title: "Prêt Étudiant",
       tagline: "Financez vos études et construisez votre avenir en toute tranquillité.",
       description: "<p>Le prêt étudiant FLEXFOND est spécialement conçu pour vous aider à financer vos frais de scolarité, votre logement, votre matériel informatique ou un séjour d'études à l'étranger. Avec des conditions avantageuses et un remboursement différé, vous pouvez vous concentrer sur votre réussite sans vous soucier de l'aspect financier. C'est un investissement sur votre avenir, avec un partenaire qui croit en votre potentiel.</p>",
+      whySubscribe: {
+        title: "Pourquoi choisir un Prêt Étudiant ?",
+        description: "Il vous permet d'investir dans votre avenir sans compromettre votre présent. Grâce au remboursement différé, vous pouvez vous concentrer pleinement sur vos études et ne commencer à rembourser qu'une fois entré dans la vie active. C'est la garantie d'étudier dans les meilleures conditions."
+      },
       features: [
         "Taux d'intérêt avantageux réservés aux étudiants.",
         "Remboursement différé : commencez à rembourser après la fin de vos études.",

@@ -41,7 +41,7 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
        <section className="py-20 md:py-32 bg-secondary/50">
         <div className="container">
           <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
-            <div className="text-left md:order-1">
+            <div className="text-left md:order-1 order-2">
                <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
                     {SectionIcon && React.cloneElement(SectionIcon, {className: "w-5 h-5"})}
                     <span>{service.title}</span>
@@ -53,7 +53,7 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
                 Découvrez comment nous pouvons vous aider à financer ce projet important avec une solution simple et transparente.
               </p>
             </div>
-            <div className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl md:order-2">
+            <div className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl md:order-2 order-1">
               <Image
                 src={service.image}
                 alt={service.title}
@@ -106,6 +106,20 @@ export function ServiceDetailClientPage({ service }: ServiceDetailClientPageProp
           </div>
         </div>
       </section>
+
+      {/* Why Subscribe Section */}
+      {service.whySubscribe && (
+        <section className="py-16 md:py-24 bg-primary/5">
+          <div className="container">
+            <div className="max-w-3xl mx-auto text-center">
+              <h2 className="text-3xl font-bold text-primary uppercase">{service.whySubscribe.title}</h2>
+              <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
+                {service.whySubscribe.description}
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
       
       {/* Steps */}
        <section className="py-16 md:py-24 bg-secondary/50">
