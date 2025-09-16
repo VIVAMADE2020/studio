@@ -15,7 +15,6 @@ import Autoplay from "embla-carousel-autoplay";
 import React from "react";
 import { motion } from "framer-motion";
 import { Award, Clock, Users } from "lucide-react";
-import { FinancialChart } from "../illustrations";
 import { ConferenceSpeaker } from "../illustrations";
 
 const carouselSlides = [
@@ -59,27 +58,12 @@ export function HeroSection() {
                 {carouselSlides.map((slide, index) => (
                   <CarouselItem key={index}>
                     <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
-                        <motion.div 
-                            key={index + 'image'} // Ensure re-animation on slide change
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
-                            className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl"
-                        >
-                            <Image
-                              src={slide.imageSrc}
-                              alt={slide.title}
-                              fill
-                              priority={index === 0}
-                              className="object-cover"
-                            />
-                        </motion.div>
                         <motion.div
                             key={index} // Ensure re-animation on slide change
                             initial={{ opacity: 0, x: -50 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8, ease: "easeOut" }}
-                            className="text-left relative"
+                            className="text-left relative md:order-1"
                         >
                             <ConferenceSpeaker className="absolute -top-16 -left-12 w-24 h-24 text-primary/10 -z-10" />
                             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-primary uppercase">
@@ -108,6 +92,21 @@ export function HeroSection() {
                                     </div>
                                 ))}
                             </div>
+                        </motion.div>
+                        <motion.div 
+                            key={index + 'image'} // Ensure re-animation on slide change
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl md:order-2"
+                        >
+                            <Image
+                              src={slide.imageSrc}
+                              alt={slide.title}
+                              fill
+                              priority={index === 0}
+                              className="object-cover"
+                            />
                         </motion.div>
                     </div>
                   </CarouselItem>
