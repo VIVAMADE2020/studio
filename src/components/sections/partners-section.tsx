@@ -1,12 +1,9 @@
 
 const partners = [
-    { name: "Société Générale" },
     { name: "Crédit Agricole" },
     { name: "AXA" },
     { name: "Allianz" },
-    { name: "Crédit Mutuel" },
     { name: "Visa" },
-    { name: "BNP Paribas" },
     { name: "Cetelem" },
     { name: "Boursorama" },
     { name: "Cofidis" },
@@ -23,7 +20,7 @@ export function PartnersSection() {
                     Nous collaborons avec les plus grandes institutions financières pour vous offrir les meilleures solutions.
                 </p>
                 <div className="mt-12">
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-8 items-center">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-8 items-center">
                         {partners.map((partner, index) => (
                             <div key={index} className="flex justify-center">
                                 <span className="text-xl font-semibold text-muted-foreground transition-colors duration-300 hover:text-primary">
