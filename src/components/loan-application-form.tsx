@@ -68,9 +68,9 @@ const financialInfoSchema = z.object({
 });
 
 const documentsSchema = z.object({
-    identityProof: z.string().min(1, "Veuillez indiquer le nom du fichier."),
-    residenceProof: z.string().min(1, "Veuillez indiquer le nom du fichier."),
-    incomeProof: z.string().min(1, "Veuillez indiquer le nom du fichier."),
+    identityProof: z.any().refine(file => file?.[0], "La pièce d'identité est requise."),
+    residenceProof: z.any().refine(file => file?.[0], "Le justificatif de domicile est requis."),
+    incomeProof: z.any().refine(file => file?.[0], "Le justificatif de revenus est requis."),
 });
 
 const legalSchema = z.object({
@@ -115,9 +115,9 @@ export function LoanApplicationForm() {
       monthlyIncome: 2500,
       monthlyExpenses: 0,
       housingStatus: undefined,
-      identityProof: "",
-      residenceProof: "",
-      incomeProof: "",
+      identityProof: undefined,
+      residenceProof: undefined,
+      incomeProof: undefined,
       legalConsent: false,
     },
   });
@@ -146,9 +146,9 @@ export function LoanApplicationForm() {
         const dataToSend = {
             ...values,
             birthDate,
-            identityProof: values.identityProof,
-            residenceProof: values.residenceProof,
-            incomeProof: values.incomeProof,
+            identityProof: values.identityProof[0].name,
+            residenceProof: values.residenceProof[0].name,
+            incomeProof: values.incomeProof[0].name,
         };
 
         const result = await submitLoanApplication(dataToSend);
@@ -186,7 +186,8 @@ export function LoanApplicationForm() {
       );
   }
 
-  const DocumentNameField = ({name, label}: {name: "identityProof" | "residenceProof" | "incomeProof", label: string}) => {
+  const DocumentUploadField = ({name, label}: {name: "identityProof" | "residenceProof" | "incomeProof", label: string}) => {
+    const fileRef = form.register(name);
     return (
         <FormField
             control={form.control}
@@ -195,14 +196,10 @@ export function LoanApplicationForm() {
                 <FormItem>
                     <FormLabel>{label}</FormLabel>
                     <FormControl>
-                        <div className="relative">
-                             <Input
-                                type="text"
-                                placeholder="ex: cni.pdf, justif_domicile.png..."
-                                {...field}
-                            />
-                            {field.value && <FileCheck className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green-500 pointer-events-none" />}
-                        </div>
+                        <Input
+                            type="file"
+                            {...fileRef}
+                        />
                     </FormControl>
                     <FormMessage />
                 </FormItem>
@@ -288,9 +285,9 @@ export function LoanApplicationForm() {
                <div>
                 <Label>Date de naissance</Label>
                 <div className="grid grid-cols-3 gap-3 mt-2">
-                    <FormField control={form.control} name="birthDay" render={({ field }) => (<FormItem><FormControl><Input type="number" placeholder="Jour" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name="birthMonth" render={({ field }) => (<FormItem><FormControl><Input type="number" placeholder="Mois" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name="birthYear" render={({ field }) => (<FormItem><FormControl><Input type="number" placeholder="Année" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="birthDay" render={({ field }) => (<FormItem><FormControl><Input type="number" placeholder="Jour" value={field.value ?? ''} onChange={field.onChange} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="birthMonth" render={({ field }) => (<FormItem><FormControl><Input type="number" placeholder="Mois" value={field.value ?? ''} onChange={field.onChange} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="birthYear" render={({ field }) => (<FormItem><FormControl><Input type="number" placeholder="Année" value={field.value ?? ''} onChange={field.onChange} /></FormControl><FormMessage /></FormItem>)} />
                 </div>
               </div>
               <FormField control={form.control} name="address" render={({ field }) => (<FormItem><FormLabel>Adresse</FormLabel><FormControl><Input placeholder="123 rue de Paris" {...field} /></FormControl><FormMessage /></FormItem>)} />
@@ -351,19 +348,12 @@ export function LoanApplicationForm() {
           {currentStep === 3 && (
             <div className="space-y-6">
                 <h3 className="text-xl font-semibold text-center">{steps[3].title}</h3>
-                <p className="text-center text-muted-foreground">Veuillez préparer ces documents. Vous devrez nous les transmettre ultérieurement.</p>
+                <p className="text-center text-muted-foreground">Veuillez téléverser les documents requis. Un conseiller vous contactera pour vérifier les pièces.</p>
                 <div className="space-y-4">
-                    <DocumentNameField name="identityProof" label="Pièce d'identité (Recto/Verso)" />
-                    <DocumentNameField name="residenceProof" label="Justificatif de domicile (- de 3 mois)" />
-                    <DocumentNameField name="incomeProof" label="Justificatif de revenus (3 derniers bulletins)" />
+                    <DocumentUploadField name="identityProof" label="Pièce d'identité (Recto/Verso)" />
+                    <DocumentUploadField name="residenceProof" label="Justificatif de domicile (- de 3 mois)" />
+                    <DocumentUploadField name="incomeProof" label="Justificatif de revenus (3 derniers bulletins)" />
                 </div>
-                <Alert>
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>Comment transmettre vos documents ?</AlertTitle>
-                    <AlertDescription>
-                        Après avoir soumis cette demande, un conseiller vous contactera pour vous indiquer la procédure sécurisée pour nous envoyer vos fichiers. Ne les envoyez pas par email non-sécurisé.
-                    </AlertDescription>
-                </Alert>
             </div>
           )}
 
@@ -418,11 +408,11 @@ export function LoanApplicationForm() {
                             <div><strong className="text-primary">Charges mensuelles:</strong> {formatCurrency(formData.monthlyExpenses)}</div>
                             <div><strong className="text-primary">Logement:</strong> {formData.housingStatus}</div>
                             <div className="md:col-span-2 pt-4 mt-4 border-t">
-                                <strong className="text-primary">Documents à fournir :</strong>
+                                <strong className="text-primary">Documents fournis :</strong>
                                 <ul className="list-disc pl-5 mt-2 space-y-1">
-                                    <li>Pièce d'identité: <span className="text-muted-foreground">{formData.identityProof || "Non indiqué"}</span></li>
-                                    <li>Justificatif de domicile: <span className="text-muted-foreground">{formData.residenceProof || "Non indiqué"}</span></li>
-                                    <li>Justificatif de revenus: <span className="text-muted-foreground">{formData.incomeProof || "Non indiqué"}</span></li>
+                                    <li>Pièce d'identité: <span className="text-muted-foreground">{formData.identityProof?.[0]?.name || "Non fourni"}</span></li>
+                                    <li>Justificatif de domicile: <span className="text-muted-foreground">{formData.residenceProof?.[0]?.name || "Non fourni"}</span></li>
+                                    <li>Justificatif de revenus: <span className="text-muted-foreground">{formData.incomeProof?.[0]?.name || "Non fourni"}</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -468,7 +458,7 @@ const steps = [
   { id: 'loanDetails', title: 'Détails et Simulation', fields: ['loanType', 'loanReason', 'loanAmount', 'loanDuration'] },
   { id: 'personalInfo', title: 'Informations Personnelles', fields: ['firstName', 'lastName', 'email', 'phone', 'whatsapp', 'birthDay', 'birthMonth', 'birthYear', 'maritalStatus', 'address', 'city', 'country', 'childrenCount'] },
   { id: 'financialInfo', title: 'Situation Financière', fields: ['employmentStatus', 'monthlyIncome', 'monthlyExpenses', 'housingStatus'] },
-  { id: 'documents', title: 'Préparation des Documents', fields: ['identityProof', 'residenceProof', 'incomeProof'] },
+  { id: 'documents', title: 'Téléversement des Documents', fields: ['identityProof', 'residenceProof', 'incomeProof'] },
   { id: 'legal', title: 'Consentement', fields: ['legalConsent'] },
   { id: 'summary', title: 'Récapitulatif' },
 ];
