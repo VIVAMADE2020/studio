@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -187,18 +186,18 @@ export function LoanApplicationForm() {
   }
 
   const DocumentUploadField = ({name, label}: {name: "identityProof" | "residenceProof" | "incomeProof", label: string}) => {
-    const fileRef = form.register(name);
     return (
         <FormField
             control={form.control}
             name={name}
-            render={({ field }) => (
+            render={({ field: { onChange, value, ...rest } }) => (
                 <FormItem>
                     <FormLabel>{label}</FormLabel>
                     <FormControl>
                         <Input
                             type="file"
-                            {...fileRef}
+                            onChange={(e) => onChange(e.target.files)}
+                            {...rest}
                         />
                     </FormControl>
                     <FormMessage />
