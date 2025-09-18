@@ -49,7 +49,9 @@ const personalInfoSchema = z.object({
   email: z.string().email("Veuillez entrer une adresse email valide."),
   phone: z.string().min(10, "Veuillez entrer un numéro de téléphone valide."),
   whatsapp: z.string().min(10, "Le numéro WhatsApp est obligatoire."),
-  birthDate: z.string().regex(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/, "Veuillez entrer une date valide (JJ/MM/AAAA)."),
+  birthDay: z.coerce.number().min(1, "Jour invalide").max(31, "Jour invalide"),
+  birthMonth: z.coerce.number().min(1, "Mois invalide").max(12, "Mois invalide"),
+  birthYear: z.coerce.number().min(new Date().getFullYear() - 100, "Année invalide").max(new Date().getFullYear() - 18, "Vous devez être majeur."),
   maritalStatus: z.string({ required_error: "Veuillez sélectionner votre situation familiale." }),
   address: z.string().min(5, "L'adresse est requise."),
   city: z.string().min(2, "La ville est requise."),
@@ -112,7 +114,6 @@ export function LoanApplicationForm() {
       email: "",
       phone: "",
       whatsapp: "",
-      birthDate: "",
       maritalStatus: undefined,
       address: "",
       city: "",
@@ -148,13 +149,20 @@ export function LoanApplicationForm() {
     setIsSubmitting(true);
 
     try {
+        const birthDate = `${String(values.birthDay).padStart(2, '0')}/${String(values.birthMonth).padStart(2, '0')}/${values.birthYear}`;
+
         const dataToSend = {
             ...values,
+            birthDate,
             // On envoie uniquement les noms des fichiers
             identityProof: values.identityProof.name,
             residenceProof: values.residenceProof.name,
             incomeProof: values.incomeProof.name,
         };
+        
+        // delete dataToSend.birthDay;
+        // delete dataToSend.birthMonth;
+        // delete dataToSend.birthYear;
 
         const result = await submitLoanApplication(dataToSend);
         setIsSubmitting(false);
@@ -291,7 +299,14 @@ export function LoanApplicationForm() {
                 <FormField control={form.control} name="phone" render={({ field }) => (<FormItem><FormLabel>Téléphone</FormLabel><FormControl><Input type="tel" placeholder="0612345678" {...field} /></FormControl><FormMessage /></FormItem>)} />
                 <FormField control={form.control} name="whatsapp" render={({ field }) => (<FormItem><FormLabel>WhatsApp</FormLabel><FormControl><Input type="tel" placeholder="0612345678" {...field} /></FormControl><FormMessage /></FormItem>)} />
               </div>
-              <FormField control={form.control} name="birthDate" render={({ field }) => (<FormItem><FormLabel>Date de naissance</FormLabel><FormControl><Input type="text" placeholder="JJ/MM/AAAA" {...field} /></FormControl><FormMessage /></FormItem>)} />
+               <div>
+                <Label>Date de naissance</Label>
+                <div className="grid grid-cols-3 gap-3 mt-2">
+                    <FormField control={form.control} name="birthDay" render={({ field }) => (<FormItem><FormControl><Input type="number" placeholder="Jour" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="birthMonth" render={({ field }) => (<FormItem><FormControl><Input type="number" placeholder="Mois" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="birthYear" render={({ field }) => (<FormItem><FormControl><Input type="number" placeholder="Année" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                </div>
+              </div>
               <FormField control={form.control} name="address" render={({ field }) => (<FormItem><FormLabel>Adresse</FormLabel><FormControl><Input placeholder="123 rue de Paris" {...field} /></FormControl><FormMessage /></FormItem>)} />
               <div className="grid md:grid-cols-2 gap-6">
                 <FormField control={form.control} name="city" render={({ field }) => (<FormItem><FormLabel>Ville</FormLabel><FormControl><Input placeholder="Paris" {...field} /></FormControl><FormMessage /></FormItem>)} />
@@ -408,7 +423,7 @@ export function LoanApplicationForm() {
                             <div><strong className="text-primary">Email:</strong> {formData.email}</div>
                             <div><strong className="text-primary">Téléphone:</strong> {formData.phone}</div>
                             <div><strong className="text-primary">WhatsApp:</strong> {formData.whatsapp}</div>
-                            <div><strong className="text-primary">Date de naissance:</strong> {formData.birthDate}</div>
+                            <div><strong className="text-primary">Date de naissance:</strong> {`${String(formData.birthDay).padStart(2, '0')}/${String(formData.birthMonth).padStart(2, '0')}/${formData.birthYear}`}</div>
                             <div className="md:col-span-2"><strong className="text-primary">Adresse:</strong> {`${formData.address}, ${formData.city}, ${formData.country}`}</div>
                             <div><strong className="text-primary">Situation familiale:</strong> {formData.maritalStatus}</div>
                             <div><strong className="text-primary">Enfants à charge:</strong> {formData.childrenCount}</div>
@@ -465,9 +480,10 @@ export function LoanApplicationForm() {
 
 const steps = [
   { id: 'loanDetails', title: 'Détails et Simulation', fields: ['loanType', 'loanReason', 'loanAmount', 'loanDuration'] },
-  { id: 'personalInfo', title: 'Informations Personnelles', fields: ['firstName', 'lastName', 'email', 'phone', 'whatsapp', 'birthDate', 'maritalStatus', 'address', 'city', 'country', 'childrenCount'] },
+  { id: 'personalInfo', title: 'Informations Personnelles', fields: ['firstName', 'lastName', 'email', 'phone', 'whatsapp', 'birthDay', 'birthMonth', 'birthYear', 'maritalStatus', 'address', 'city', 'country', 'childrenCount'] },
   { id: 'financialInfo', title: 'Situation Financière', fields: ['employmentStatus', 'monthlyIncome', 'monthlyExpenses', 'housingStatus'] },
   { id: 'documents', title: 'Vos Documents', fields: ['identityProof', 'residenceProof', 'incomeProof'] },
   { id: 'legal', title: 'Consentement', fields: ['legalConsent'] },
   { id: 'summary', title: 'Récapitulatif' },
 ];
+
