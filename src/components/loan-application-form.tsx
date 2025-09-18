@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -35,6 +34,7 @@ import { LoanCalculator } from "./loan-calculator";
 import { Checkbox } from "./ui/checkbox";
 import Link from "next/link";
 import { Textarea } from "./ui/textarea";
+import { Label } from "./ui/label";
 
 const loanDetailsSchema = z.object({
   loanType: z.string({ required_error: "Veuillez sélectionner un type de prêt." }),
