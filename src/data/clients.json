@@ -93,5 +93,33 @@
     },
     "isBlocked": true,
     "blockReason": "bbbb"
+  },
+  {
+    "firstName": "ggg",
+    "lastName": "ggg",
+    "email": "ggg@gmail.com",
+    "password": "gggggggg",
+    "initialBalance": 0,
+    "accountType": "GENERAL",
+    "identificationNumber": "FLEX-LNS8XK",
+    "creationDate": "2025-09-18T21:21:59.267Z",
+    "transactions": [
+      {
+        "id": "TXN-1758230655759",
+        "date": "2025-09-18T21:24:15.759Z",
+        "description": "virement entrant",
+        "amount": 12000,
+        "status": "COMPLETED"
+      }
+    ],
+    "accountNumber": "22901872673",
+    "iban": "FR21300020055022901872673",
+    "swiftCode": "FLEXFRPP",
+    "transferSettings": {
+      "duration": 1,
+      "unit": "minutes"
+    },
+    "isBlocked": true,
+    "blockReason": "gggg"
   }
 ]
