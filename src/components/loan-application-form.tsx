@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -114,6 +115,9 @@ export function LoanApplicationForm() {
       email: "",
       phone: "",
       whatsapp: "",
+      birthDay: undefined,
+      birthMonth: undefined,
+      birthYear: undefined,
       maritalStatus: undefined,
       address: "",
       city: "",
@@ -486,4 +490,3 @@ const steps = [
   { id: 'legal', title: 'Consentement', fields: ['legalConsent'] },
   { id: 'summary', title: 'Récapitulatif' },
 ];
-
