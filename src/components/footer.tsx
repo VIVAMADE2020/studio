@@ -43,7 +43,6 @@ export function Footer() {
               <li><Link href="/legal/mentions-legales" className="text-sm text-primary-foreground/80 hover:text-white">Mentions Légales</Link></li>
               <li><Link href="/legal/politique-de-confidentialite" className="text-sm text-primary-foreground/80 hover:text-white">Politique de confidentialité</Link></li>
               <li><Link href="/legal/conditions-dutilisation" className="text-sm text-primary-foreground/80 hover:text-white">Conditions d'utilisation</Link></li>
-              <li><Link href="/details-techniques" className="text-sm text-primary-foreground/80 hover:text-white">Détails Techniques</Link></li>
             </ul>
           </div>
 
