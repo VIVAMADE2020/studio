@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -25,11 +26,10 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, ArrowRight, Send, Loader2, AlertCircle, FileCheck } from "lucide-react";
+import { ArrowLeft, ArrowRight, Send, Loader2 } from "lucide-react";
 import { submitLoanApplication } from "@/app/actions/loan-application";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { formatCurrency } from "@/lib/utils";
-import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { LoanCalculator } from "./loan-calculator";
 import { Checkbox } from "./ui/checkbox";
 import Link from "next/link";
@@ -78,7 +78,6 @@ const legalSchema = z.object({
     })
 });
 
-// Schéma complet utilisé par le formulaire côté client
 const formClientSchema = loanDetailsSchema.merge(personalInfoSchema).merge(financialInfoSchema).merge(documentsSchema).merge(legalSchema);
 
 type FormValues = z.infer<typeof formClientSchema>;
@@ -185,29 +184,6 @@ export function LoanApplicationForm() {
       );
   }
 
-  const DocumentUploadField = ({name, label}: {name: "identityProof" | "residenceProof" | "incomeProof", label: string}) => {
-    return (
-        <FormField
-            control={form.control}
-            name={name}
-            render={({ field: { onChange, value, ...rest } }) => (
-                <FormItem>
-                    <FormLabel>{label}</FormLabel>
-                    <FormControl>
-                        <Input
-                            type="file"
-                            onChange={(e) => onChange(e.target.files)}
-                            {...rest}
-                        />
-                    </FormControl>
-                    <FormMessage />
-                </FormItem>
-            )}
-        />
-    );
-  }
-
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 overflow-hidden">
@@ -273,30 +249,30 @@ export function LoanApplicationForm() {
             <div className="space-y-6">
               <h3 className="text-xl font-semibold text-center">{steps[1].title}</h3>
               <div className="grid md:grid-cols-2 gap-6">
-                <FormField control={form.control} name="firstName" render={({ field }) => (<FormItem><FormLabel>Prénom</FormLabel><FormControl><Input placeholder="Jean" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                <FormField control={form.control} name="lastName" render={({ field }) => (<FormItem><FormLabel>Nom</FormLabel><FormControl><Input placeholder="Dupont" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="firstName" render={({ field }) => (<FormItem><FormLabel>Prénom</FormLabel><FormControl><Input placeholder="Jean" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="lastName" render={({ field }) => (<FormItem><FormLabel>Nom</FormLabel><FormControl><Input placeholder="Dupont" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
               </div>
-              <FormField control={form.control} name="email" render={({ field }) => (<FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" placeholder="jean.dupont@email.com" {...field} /></FormControl><FormMessage /></FormItem>)} />
+              <FormField control={form.control} name="email" render={({ field }) => (<FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" placeholder="jean.dupont@email.com" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
               <div className="grid md:grid-cols-2 gap-6">
-                <FormField control={form.control} name="phone" render={({ field }) => (<FormItem><FormLabel>Téléphone</FormLabel><FormControl><Input type="tel" placeholder="0612345678" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                <FormField control={form.control} name="whatsapp" render={({ field }) => (<FormItem><FormLabel>WhatsApp</FormLabel><FormControl><Input type="tel" placeholder="0612345678" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="phone" render={({ field }) => (<FormItem><FormLabel>Téléphone</FormLabel><FormControl><Input type="tel" placeholder="0612345678" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="whatsapp" render={({ field }) => (<FormItem><FormLabel>WhatsApp</FormLabel><FormControl><Input type="tel" placeholder="0612345678" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
               </div>
                <div>
                 <Label>Date de naissance</Label>
                 <div className="grid grid-cols-3 gap-3 mt-2">
-                    <FormField control={form.control} name="birthDay" render={({ field }) => (<FormItem><FormControl><Input type="number" placeholder="Jour" value={field.value ?? ''} onChange={field.onChange} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name="birthMonth" render={({ field }) => (<FormItem><FormControl><Input type="number" placeholder="Mois" value={field.value ?? ''} onChange={field.onChange} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name="birthYear" render={({ field }) => (<FormItem><FormControl><Input type="number" placeholder="Année" value={field.value ?? ''} onChange={field.onChange} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="birthDay" render={({ field }) => (<FormItem><FormControl><Input type="number" placeholder="Jour" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="birthMonth" render={({ field }) => (<FormItem><FormControl><Input type="number" placeholder="Mois" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="birthYear" render={({ field }) => (<FormItem><FormControl><Input type="number" placeholder="Année" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                 </div>
               </div>
-              <FormField control={form.control} name="address" render={({ field }) => (<FormItem><FormLabel>Adresse</FormLabel><FormControl><Input placeholder="123 rue de Paris" {...field} /></FormControl><FormMessage /></FormItem>)} />
+              <FormField control={form.control} name="address" render={({ field }) => (<FormItem><FormLabel>Adresse</FormLabel><FormControl><Input placeholder="123 rue de Paris" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
               <div className="grid md:grid-cols-2 gap-6">
-                <FormField control={form.control} name="city" render={({ field }) => (<FormItem><FormLabel>Ville</FormLabel><FormControl><Input placeholder="Paris" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                <FormField control={form.control} name="country" render={({ field }) => (<FormItem><FormLabel>Pays</FormLabel><FormControl><Input placeholder="France" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="city" render={({ field }) => (<FormItem><FormLabel>Ville</FormLabel><FormControl><Input placeholder="Paris" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="country" render={({ field }) => (<FormItem><FormLabel>Pays</FormLabel><FormControl><Input placeholder="France" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
               </div>
                <div className="grid md:grid-cols-2 gap-6">
                 <FormField control={form.control} name="maritalStatus" render={({ field }) => (<FormItem><FormLabel>Situation familiale</FormLabel><Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Sélectionnez votre situation" /></SelectTrigger></FormControl><SelectContent><SelectItem value="single">Célibataire</SelectItem><SelectItem value="married">Marié(e)</SelectItem><SelectItem value="divorced">Divorcé(e)</SelectItem><SelectItem value="widowed">Veuf(ve)</SelectItem></SelectContent></Select><FormMessage /></FormItem>)} />
-                <FormField control={form.control} name="childrenCount" render={({ field }) => (<FormItem><FormLabel>Nombre d'enfants à charge</FormLabel><FormControl><Input type="number" placeholder="ex: 2" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="childrenCount" render={({ field }) => (<FormItem><FormLabel>Nombre d'enfants à charge</FormLabel><FormControl><Input type="number" placeholder="ex: 2" {...field} value={field.value ?? 0} /></FormControl><FormMessage /></FormItem>)} />
               </div>
             </div>
           )}
@@ -310,14 +286,14 @@ export function LoanApplicationForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Profession</FormLabel>
-                      <FormControl><Input placeholder="ex: Développeur Web" {...field} /></FormControl>
+                      <FormControl><Input placeholder="ex: Développeur Web" {...field} value={field.value ?? ''} /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 <div className="grid md:grid-cols-2 gap-6">
-                  <FormField control={form.control} name="monthlyIncome" render={({ field }) => (<FormItem><FormLabel>Revenu mensuel net (€)</FormLabel><FormControl><Input type="number" placeholder="ex: 2500" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                  <FormField control={form.control} name="monthlyExpenses" render={({ field }) => (<FormItem><FormLabel>Charges mensuelles (€)</FormLabel><FormControl><Input type="number" placeholder="ex: 800" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="monthlyIncome" render={({ field }) => (<FormItem><FormLabel>Revenu mensuel net (€)</FormLabel><FormControl><Input type="number" placeholder="ex: 2500" {...field} value={field.value ?? 0} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="monthlyExpenses" render={({ field }) => (<FormItem><FormLabel>Charges mensuelles (€)</FormLabel><FormControl><Input type="number" placeholder="ex: 800" {...field} value={field.value ?? 0} /></FormControl><FormMessage /></FormItem>)} />
                 </div>
                  <FormField
                   control={form.control}
@@ -349,9 +325,27 @@ export function LoanApplicationForm() {
                 <h3 className="text-xl font-semibold text-center">{steps[3].title}</h3>
                 <p className="text-center text-muted-foreground">Veuillez téléverser les documents requis. Un conseiller vous contactera pour vérifier les pièces.</p>
                 <div className="space-y-4">
-                    <DocumentUploadField name="identityProof" label="Pièce d'identité (Recto/Verso)" />
-                    <DocumentUploadField name="residenceProof" label="Justificatif de domicile (- de 3 mois)" />
-                    <DocumentUploadField name="incomeProof" label="Justificatif de revenus (3 derniers bulletins)" />
+                    <FormItem>
+                        <FormLabel>Pièce d'identité (Recto/Verso)</FormLabel>
+                        <FormControl>
+                            <Input type="file" {...form.register("identityProof")} />
+                        </FormControl>
+                        <FormMessage>{form.formState.errors.identityProof?.message?.toString()}</FormMessage>
+                    </FormItem>
+                    <FormItem>
+                        <FormLabel>Justificatif de domicile (- de 3 mois)</FormLabel>
+                        <FormControl>
+                            <Input type="file" {...form.register("residenceProof")} />
+                        </FormControl>
+                        <FormMessage>{form.formState.errors.residenceProof?.message?.toString()}</FormMessage>
+                    </FormItem>
+                    <FormItem>
+                        <FormLabel>Justificatif de revenus (3 derniers bulletins)</FormLabel>
+                        <FormControl>
+                            <Input type="file" {...form.register("incomeProof")} />
+                        </FormControl>
+                        <FormMessage>{form.formState.errors.incomeProof?.message?.toString()}</FormMessage>
+                    </FormItem>
                 </div>
             </div>
           )}
@@ -461,3 +455,5 @@ const steps = [
   { id: 'legal', title: 'Consentement', fields: ['legalConsent'] },
   { id: 'summary', title: 'Récapitulatif' },
 ];
+
+    
