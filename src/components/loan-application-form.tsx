@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, ArrowRight, Send, Loader2, Upload, AlertCircle, FileCheck } from "lucide-react";
+import { ArrowLeft, ArrowRight, Send, Loader2, AlertCircle, FileCheck } from "lucide-react";
 import { submitLoanApplication } from "@/app/actions/loan-application";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/card";
 import { formatCurrency } from "@/lib/utils";
@@ -50,9 +50,9 @@ const personalInfoSchema = z.object({
   email: z.string().email("Veuillez entrer une adresse email valide."),
   phone: z.string().min(10, "Veuillez entrer un numéro de téléphone valide."),
   whatsapp: z.string().min(10, "Le numéro WhatsApp est obligatoire."),
-  birthDay: z.coerce.number().min(1, "Jour invalide").max(31, "Jour invalide"),
-  birthMonth: z.coerce.number().min(1, "Mois invalide").max(12, "Mois invalide"),
-  birthYear: z.coerce.number().min(new Date().getFullYear() - 100, "Année invalide").max(new Date().getFullYear() - 18, "Vous devez être majeur."),
+  birthDay: z.coerce.number({invalid_type_error: "Jour requis"}).min(1, "Jour invalide").max(31, "Jour invalide"),
+  birthMonth: z.coerce.number({invalid_type_error: "Mois requis"}).min(1, "Mois invalide").max(12, "Mois invalide"),
+  birthYear: z.coerce.number({invalid_type_error: "Année requise"}).min(new Date().getFullYear() - 100, "Année invalide").max(new Date().getFullYear() - 18, "Vous devez être majeur."),
   maritalStatus: z.string({ required_error: "Veuillez sélectionner votre situation familiale." }),
   address: z.string().min(5, "L'adresse est requise."),
   city: z.string().min(2, "La ville est requise."),
@@ -67,22 +67,10 @@ const financialInfoSchema = z.object({
   housingStatus: z.string({ required_error: "Veuillez sélectionner votre situation de logement." }),
 });
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ACCEPTED_FILE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp", "application/pdf"];
-
-// Le schéma de validation des fichiers est simplifié pour le client
-const fileClientSchema = z.any()
-  .refine((file) => file, "Ce document est requis.")
-  .refine((file) => file?.size <= MAX_FILE_SIZE, `Taille max : 5MB.`)
-  .refine(
-    (file) => ACCEPTED_FILE_TYPES.includes(file?.type),
-    "Formats supportés: .jpg, .jpeg, .png, .webp et .pdf"
-  );
-  
 const documentsSchema = z.object({
-    identityProof: fileClientSchema,
-    residenceProof: fileClientSchema,
-    incomeProof: fileClientSchema,
+    identityProof: z.string().min(1, "Veuillez indiquer le nom du fichier."),
+    residenceProof: z.string().min(1, "Veuillez indiquer le nom du fichier."),
+    incomeProof: z.string().min(1, "Veuillez indiquer le nom du fichier."),
 });
 
 const legalSchema = z.object({
@@ -127,9 +115,9 @@ export function LoanApplicationForm() {
       monthlyIncome: 2500,
       monthlyExpenses: 0,
       housingStatus: undefined,
-      identityProof: undefined,
-      residenceProof: undefined,
-      incomeProof: undefined,
+      identityProof: "",
+      residenceProof: "",
+      incomeProof: "",
       legalConsent: false,
     },
   });
@@ -158,15 +146,10 @@ export function LoanApplicationForm() {
         const dataToSend = {
             ...values,
             birthDate,
-            // On envoie uniquement les noms des fichiers
-            identityProof: values.identityProof.name,
-            residenceProof: values.residenceProof.name,
-            incomeProof: values.incomeProof.name,
+            identityProof: values.identityProof,
+            residenceProof: values.residenceProof,
+            incomeProof: values.incomeProof,
         };
-        
-        // delete dataToSend.birthDay;
-        // delete dataToSend.birthMonth;
-        // delete dataToSend.birthYear;
 
         const result = await submitLoanApplication(dataToSend);
         setIsSubmitting(false);
@@ -197,14 +180,13 @@ export function LoanApplicationForm() {
             <CardTitle className="text-2xl mt-4">Demande Envoyée !</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground">Merci pour votre demande. Un conseiller FLEXFOND vous contactera dans les plus brefs délais pour discuter de votre projet.</p>
+            <p className="text-muted-foreground">Merci pour votre demande. Un conseiller FLEXFOND vous contactera dans les plus brefs délais pour discuter de votre projet et vous indiquer comment transmettre vos documents en toute sécurité.</p>
           </CardContent>
         </Card>
       );
   }
 
-  const FileInputField = ({name, label}: {name: "identityProof" | "residenceProof" | "incomeProof", label: string}) => {
-    const file = form.watch(name);
+  const DocumentNameField = ({name, label}: {name: "identityProof" | "residenceProof" | "incomeProof", label: string}) => {
     return (
         <FormField
             control={form.control}
@@ -215,11 +197,11 @@ export function LoanApplicationForm() {
                     <FormControl>
                         <div className="relative">
                              <Input
-                                type="file"
-                                onChange={(e) => field.onChange(e.target.files ? e.target.files[0] : undefined)}
-                                className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+                                type="text"
+                                placeholder="ex: cni.pdf, justif_domicile.png..."
+                                {...field}
                             />
-                            {file && <FileCheck className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green-500 pointer-events-none" />}
+                            {field.value && <FileCheck className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green-500 pointer-events-none" />}
                         </div>
                     </FormControl>
                     <FormMessage />
@@ -369,17 +351,17 @@ export function LoanApplicationForm() {
           {currentStep === 3 && (
             <div className="space-y-6">
                 <h3 className="text-xl font-semibold text-center">{steps[3].title}</h3>
-                <p className="text-center text-muted-foreground">Veuillez fournir les documents requis pour l'étude de votre dossier.</p>
+                <p className="text-center text-muted-foreground">Veuillez préparer ces documents. Vous devrez nous les transmettre ultérieurement.</p>
                 <div className="space-y-4">
-                    <FileInputField name="identityProof" label="Pièce d'identité (Recto/Verso)" />
-                    <FileInputField name="residenceProof" label="Justificatif de domicile (- de 3 mois)" />
-                    <FileInputField name="incomeProof" label="Justificatif de revenus (3 derniers bulletins)" />
+                    <DocumentNameField name="identityProof" label="Pièce d'identité (Recto/Verso)" />
+                    <DocumentNameField name="residenceProof" label="Justificatif de domicile (- de 3 mois)" />
+                    <DocumentNameField name="incomeProof" label="Justificatif de revenus (3 derniers bulletins)" />
                 </div>
                 <Alert>
                     <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>Information importante</AlertTitle>
+                    <AlertTitle>Comment transmettre vos documents ?</AlertTitle>
                     <AlertDescription>
-                        Si votre dossier est accepté après étude de ces documents, vos informations bancaires vous seront demandées pour finaliser le contrat de prêt.
+                        Après avoir soumis cette demande, un conseiller vous contactera pour vous indiquer la procédure sécurisée pour nous envoyer vos fichiers. Ne les envoyez pas par email non-sécurisé.
                     </AlertDescription>
                 </Alert>
             </div>
@@ -436,11 +418,11 @@ export function LoanApplicationForm() {
                             <div><strong className="text-primary">Charges mensuelles:</strong> {formatCurrency(formData.monthlyExpenses)}</div>
                             <div><strong className="text-primary">Logement:</strong> {formData.housingStatus}</div>
                             <div className="md:col-span-2 pt-4 mt-4 border-t">
-                                <strong className="text-primary">Documents fournis :</strong>
+                                <strong className="text-primary">Documents à fournir :</strong>
                                 <ul className="list-disc pl-5 mt-2 space-y-1">
-                                    <li>Pièce d'identité: <span className="text-muted-foreground">{formData.identityProof?.name || "Non fourni"}</span></li>
-                                    <li>Justificatif de domicile: <span className="text-muted-foreground">{formData.residenceProof?.name || "Non fourni"}</span></li>
-                                    <li>Justificatif de revenus: <span className="text-muted-foreground">{formData.incomeProof?.name || "Non fourni"}</span></li>
+                                    <li>Pièce d'identité: <span className="text-muted-foreground">{formData.identityProof || "Non indiqué"}</span></li>
+                                    <li>Justificatif de domicile: <span className="text-muted-foreground">{formData.residenceProof || "Non indiqué"}</span></li>
+                                    <li>Justificatif de revenus: <span className="text-muted-foreground">{formData.incomeProof || "Non indiqué"}</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -486,7 +468,7 @@ const steps = [
   { id: 'loanDetails', title: 'Détails et Simulation', fields: ['loanType', 'loanReason', 'loanAmount', 'loanDuration'] },
   { id: 'personalInfo', title: 'Informations Personnelles', fields: ['firstName', 'lastName', 'email', 'phone', 'whatsapp', 'birthDay', 'birthMonth', 'birthYear', 'maritalStatus', 'address', 'city', 'country', 'childrenCount'] },
   { id: 'financialInfo', title: 'Situation Financière', fields: ['employmentStatus', 'monthlyIncome', 'monthlyExpenses', 'housingStatus'] },
-  { id: 'documents', title: 'Vos Documents', fields: ['identityProof', 'residenceProof', 'incomeProof'] },
+  { id: 'documents', title: 'Préparation des Documents', fields: ['identityProof', 'residenceProof', 'incomeProof'] },
   { id: 'legal', title: 'Consentement', fields: ['legalConsent'] },
   { id: 'summary', title: 'Récapitulatif' },
 ];

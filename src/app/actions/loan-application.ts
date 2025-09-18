@@ -71,4 +71,3 @@ export async function submitLoanApplication(values: z.infer<typeof formSchema>) 
 
   return { success: true };
 }
-
