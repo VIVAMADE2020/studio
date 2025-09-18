@@ -33,12 +33,10 @@ import { formatCurrency } from "@/lib/utils";
 import { LoanCalculator } from "./loan-calculator";
 import { Checkbox } from "./ui/checkbox";
 import Link from "next/link";
-import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
 
 const loanDetailsSchema = z.object({
   loanType: z.string({ required_error: "Veuillez sélectionner un type de prêt." }),
-  loanReason: z.string().min(10, "Veuillez décrire brièvement la raison de votre prêt."),
   loanAmount: z.coerce.number().min(1000, "Le montant minimum est de 1000€.").max(500000, "Le montant maximum est de 500 000€."),
   loanDuration: z.coerce.number().min(12, "La durée minimale est de 12 mois.").max(360, "La durée maximale est de 30 ans (360 mois)."),
 });
@@ -93,7 +91,6 @@ export function LoanApplicationForm() {
     mode: "onBlur",
     defaultValues: {
       loanType: undefined,
-      loanReason: "",
       loanAmount: 50000,
       loanDuration: 120,
       firstName: "",
@@ -143,6 +140,7 @@ export function LoanApplicationForm() {
 
         const dataToSend = {
             ...values,
+            loanReason: "Non spécifié", // Valeur par défaut
             birthDate,
             identityProof: values.identityProof[0].name,
             residenceProof: values.residenceProof[0].name,
@@ -218,19 +216,6 @@ export function LoanApplicationForm() {
                         <SelectItem value="student">Prêt Étudiant</SelectItem>
                       </SelectContent>
                     </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="loanReason"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Raison du prêt</FormLabel>
-                    <FormControl>
-                      <Textarea placeholder="Décrivez brièvement la raison de votre demande (ex: achat d'un véhicule, travaux de rénovation, etc.)" {...field} />
-                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -385,7 +370,6 @@ export function LoanApplicationForm() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
                             <div><strong className="text-primary">Type de prêt:</strong> {formData.loanType || "N/A"}</div>
                             <div><strong className="text-primary">Montant:</strong> {formatCurrency(formData.loanAmount)}</div>
-                            <div className="md:col-span-2"><strong className="text-primary">Raison du prêt:</strong> {formData.loanReason}</div>
                             <div><strong className="text-primary">Durée:</strong> {formData.loanDuration} mois</div>
                             <div><strong className="text-primary">Prénom:</strong> {formData.firstName}</div>
                             <div><strong className="text-primary">Nom:</strong> {formData.lastName}</div>
@@ -448,12 +432,10 @@ export function LoanApplicationForm() {
 }
 
 const steps = [
-  { id: 'loanDetails', title: 'Détails et Simulation', fields: ['loanType', 'loanReason', 'loanAmount', 'loanDuration'] },
+  { id: 'loanDetails', title: 'Détails et Simulation', fields: ['loanType', 'loanAmount', 'loanDuration'] },
   { id: 'personalInfo', title: 'Informations Personnelles', fields: ['firstName', 'lastName', 'email', 'phone', 'whatsapp', 'birthDay', 'birthMonth', 'birthYear', 'maritalStatus', 'address', 'city', 'country', 'childrenCount'] },
   { id: 'financialInfo', title: 'Situation Financière', fields: ['employmentStatus', 'monthlyIncome', 'monthlyExpenses', 'housingStatus'] },
   { id: 'documents', title: 'Téléversement des Documents', fields: ['identityProof', 'residenceProof', 'incomeProof'] },
   { id: 'legal', title: 'Consentement', fields: ['legalConsent'] },
   { id: 'summary', title: 'Récapitulatif' },
 ];
-
-    
