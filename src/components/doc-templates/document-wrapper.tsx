@@ -12,7 +12,7 @@ export const DocumentWrapper: React.FC<DocumentWrapperProps> = ({ title, subHead
     <div style={styles.page}>
       <header style={styles.header}>
         <div style={styles.logoContainer}>
-            <img src="https://i.postimg.cc/XJSfHfQt/Black-Vintage-badges-family-farm-logo-removebg-preview.png" alt="Sceau FLEXFOND" style={{ width: '100px', height: 'auto' }} />
+            <div style={styles.logoText}>FLEXFOND</div>
         </div>
         <div style={styles.headerInfo}>
           <p>123 Rue de la Finance, 75001 Paris</p>
