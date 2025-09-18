@@ -110,6 +110,22 @@
         "description": "virement entrant",
         "amount": 12000,
         "status": "COMPLETED"
+      },
+      {
+        "id": "TXN-D-1758233972215",
+        "date": "2025-09-18T22:19:32.215Z",
+        "description": "Virement à vv - vvvvvvvvv",
+        "amount": -60,
+        "status": "FAILED",
+        "estimatedCompletionDate": "2025-09-18T22:20:32.215Z",
+        "beneficiary": {
+          "name": "vv",
+          "accountNumber": "FR7630004005551234567890183",
+          "iban": "FR7630004005551234567890183",
+          "bankName": "ccv",
+          "swiftCode": "BNPAFRPP"
+        },
+        "failureReason": "gggg"
       }
     ],
     "accountNumber": "22901872673",

@@ -276,21 +276,12 @@ export default function ClientDashboardPage() {
                                                     {t.status === 'COMPLETED' ? (
                                                         <Badge variant="secondary" className="bg-green-100 text-green-800"><CheckCircle className="h-3 w-3 mr-1" /> Terminé</Badge>
                                                     ) : t.status === 'FAILED' ? (
-                                                         <div className="flex items-center gap-2">
+                                                         <div>
                                                             <Badge variant="destructive"><AlertTriangle className="h-3 w-3 mr-1" /> Échoué</Badge>
                                                             {t.failureReason && (
-                                                                <Tooltip>
-                                                                    <TooltipTrigger asChild>
-                                                                        <Info className="h-4 w-4 text-muted-foreground cursor-pointer"/>
-                                                                    </TooltipTrigger>
-                                                                    <TooltipContent className="max-w-xs text-center">
-                                                                        <p className="font-bold">Motif de l'échec</p>
-                                                                        <p>{t.failureReason}</p>
-                                                                        <Button asChild size="sm" className="mt-2">
-                                                                            <Link href="/contact">Nous contacter</Link>
-                                                                        </Button>
-                                                                    </TooltipContent>
-                                                                </Tooltip>
+                                                                <div className="text-xs text-destructive mt-1 italic">
+                                                                    {t.failureReason}
+                                                                </div>
                                                             )}
                                                          </div>
                                                     ) : (
