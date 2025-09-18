@@ -51,7 +51,7 @@ export function Footer() {
             <ul className="mt-4 space-y-2 text-sm text-primary-foreground/80">
               <li>123 Rue de la Finance, 75001 Paris</li>
               <li>contact@flexfond.com</li>
-              <li>+33 1 23 45 67 89</li>
+              <li>+33 7 51 24 47 10</li>
             </ul>
           </div>
         </div>

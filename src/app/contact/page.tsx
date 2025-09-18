@@ -59,7 +59,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                         <h3 className="font-semibold text-primary uppercase">TÉLÉPHONE</h3>
-                        <p className="text-muted-foreground">+33 1 23 45 67 89</p>
+                        <p className="text-muted-foreground">+33 7 51 24 47 10</p>
                     </div>
                 </div>
                 <div className="flex items-start gap-4">

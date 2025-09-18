@@ -16,7 +16,7 @@ export const DocumentWrapper: React.FC<DocumentWrapperProps> = ({ title, subHead
         </div>
         <div style={styles.headerInfo}>
           <p>123 Rue de la Finance, 75001 Paris</p>
-          <p>contact@flexfond.com | +33 1 23 45 67 89</p>
+          <p>contact@flexfond.com | +33 7 51 24 47 10</p>
         </div>
       </header>
       
