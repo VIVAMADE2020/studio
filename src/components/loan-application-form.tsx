@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -83,8 +84,8 @@ type FormValues = z.infer<typeof formClientSchema>;
 export function LoanApplicationForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formClientSchema),
@@ -140,7 +141,6 @@ export function LoanApplicationForm() {
 
         const dataToSend = {
             ...values,
-            loanReason: "Non spécifié", // Valeur par défaut
             birthDate,
             identityProof: values.identityProof[0].name,
             residenceProof: values.residenceProof[0].name,
@@ -148,10 +148,9 @@ export function LoanApplicationForm() {
         };
 
         const result = await submitLoanApplication(dataToSend);
-        setIsSubmitting(false);
-
+        
         if (result.success) {
-            setIsSubmitted(true);
+            router.push('/demande-pret/merci');
         } else {
             toast({
                 variant: "destructive",
@@ -162,25 +161,12 @@ export function LoanApplicationForm() {
     } catch (error) {
         console.error("Error processing form:", error);
         toast({ variant: "destructive", title: "Erreur du formulaire", description: "Impossible de traiter le formulaire."});
+    } finally {
         setIsSubmitting(false);
     }
   }
   
   const progress = ((currentStep + 1) / (steps.length + 1)) * 100;
-  
-  if (isSubmitted) {
-      return (
-        <Card className="text-center p-8 border-green-500">
-          <CardHeader>
-            <Send className="mx-auto h-12 w-12 text-green-500"/>
-            <CardTitle className="text-2xl mt-4">Demande Envoyée !</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">Merci pour votre demande. Un conseiller FLEXFOND vous contactera dans les plus brefs délais pour discuter de votre projet et vous indiquer comment transmettre vos documents en toute sécurité.</p>
-          </CardContent>
-        </Card>
-      );
-  }
 
   return (
     <Form {...form}>
@@ -439,3 +425,5 @@ const steps = [
   { id: 'legal', title: 'Consentement', fields: ['legalConsent'] },
   { id: 'summary', title: 'Récapitulatif' },
 ];
+
+    
