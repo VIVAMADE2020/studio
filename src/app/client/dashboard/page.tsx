@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -17,7 +18,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { TransactionProgress } from "@/components/client-transaction-progress";
 import { LoanDetailsCard } from "@/components/client-loan-details-card";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 
 const StatCard = ({ icon, title, value, description }: { icon: React.ReactNode, title: string, value: string, description: string }) => (
@@ -135,7 +136,6 @@ export default function ClientDashboardPage() {
     const totalExpenses = completedTransactions.filter(t => t.amount < 0).reduce((acc, t) => acc + t.amount, 0);
 
     return (
-        <TooltipProvider>
         <div className="space-y-8">
              <motion.div 
                 initial={{ opacity: 0, y: -20 }}
@@ -267,36 +267,64 @@ export default function ClientDashboardPage() {
                                     </TableHeader>
                                     <TableBody>
                                         {sortedTransactions.length > 0 ? sortedTransactions.slice(0, 10).map((t: Transaction) => (
-                                            <TableRow key={t.id}>
-                                                <TableCell>
-                                                    <div className="min-w-[150px]">{t.description}</div>
-                                                    <div className="text-xs text-muted-foreground">{new Date(t.date).toLocaleString('fr-FR')}</div>
-                                                </TableCell>
-                                                <TableCell>
-                                                    {t.status === 'COMPLETED' ? (
-                                                        <Badge variant="secondary" className="bg-green-100 text-green-800"><CheckCircle className="h-3 w-3 mr-1" /> Terminé</Badge>
-                                                    ) : t.status === 'FAILED' ? (
-                                                         <div>
-                                                            <Badge variant="destructive"><AlertTriangle className="h-3 w-3 mr-1" /> Échoué</Badge>
-                                                            {t.failureReason && (
-                                                                <div className="text-xs text-destructive mt-1 italic">
-                                                                    {t.failureReason}
+                                           <Dialog key={t.id}>
+                                                <DialogTrigger asChild>
+                                                    <TableRow className="cursor-pointer">
+                                                        <TableCell>
+                                                            <div className="min-w-[150px]">{t.description}</div>
+                                                            <div className="text-xs text-muted-foreground">{new Date(t.date).toLocaleString('fr-FR')}</div>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            {t.status === 'COMPLETED' ? (
+                                                                <Badge variant="secondary" className="bg-green-100 text-green-800"><CheckCircle className="h-3 w-3 mr-1" /> Terminé</Badge>
+                                                            ) : t.status === 'FAILED' ? (
+                                                                <div>
+                                                                    <Badge variant="destructive"><AlertTriangle className="h-3 w-3 mr-1" /> Échoué</Badge>
+                                                                    {t.failureReason && (
+                                                                        <div className="text-xs text-destructive mt-1 italic">
+                                                                            {t.failureReason}
+                                                                        </div>
+                                                                    )}
+                                                                    <Button asChild variant="link" size="sm" className="p-0 h-auto text-xs mt-1">
+                                                                        <Link href="/contact">Nous contacter</Link>
+                                                                    </Button>
                                                                 </div>
+                                                            ) : (
+                                                                <TransactionProgress transaction={t} />
                                                             )}
-                                                         </div>
-                                                    ) : (
-                                                        <TransactionProgress 
-                                                            transaction={t}
-                                                        />
-                                                    )}
-                                                </TableCell>
-                                                <TableCell className={`text-right font-medium ${t.amount >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                    <div className="flex items-center justify-end gap-2 whitespace-nowrap">
-                                                        <CircleDollarSign className="h-4 w-4 opacity-70" />
-                                                        <span>{t.amount >= 0 ? '+' : ''}{formatCurrency(t.amount)}</span>
+                                                        </TableCell>
+                                                        <TableCell className={`text-right font-medium ${t.amount >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                            <div className="flex items-center justify-end gap-2 whitespace-nowrap">
+                                                                <CircleDollarSign className="h-4 w-4 opacity-70" />
+                                                                <span>{t.amount >= 0 ? '+' : ''}{formatCurrency(t.amount)}</span>
+                                                            </div>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                </DialogTrigger>
+                                                <DialogContent>
+                                                    <DialogHeader>
+                                                        <DialogTitle>Détails de la transaction</DialogTitle>
+                                                        <DialogDescription>{t.description}</DialogDescription>
+                                                    </DialogHeader>
+                                                    <div className="text-sm space-y-2">
+                                                        <p><strong>ID de Transaction:</strong> {t.id}</p>
+                                                        <p><strong>Date d'initiation:</strong> {new Date(t.date).toLocaleString('fr-FR')}</p>
+                                                        <p><strong>Montant:</strong> <span className={t.amount >= 0 ? 'text-green-600' : 'text-red-600'}>{formatCurrency(t.amount)}</span></p>
+                                                        <p><strong>Statut:</strong> {t.status}</p>
+                                                        {t.estimatedCompletionDate && <p><strong>Date d'arrivée prévue:</strong> {new Date(t.estimatedCompletionDate).toLocaleString('fr-FR')}</p>}
+                                                        {t.failureReason && <p><strong>Motif de l'échec:</strong> {t.failureReason}</p>}
+                                                        {t.beneficiary && (
+                                                            <div className="pt-4 mt-4 border-t">
+                                                                <h4 className="font-semibold">Bénéficiaire</h4>
+                                                                <p><strong>Nom:</strong> {t.beneficiary.name}</p>
+                                                                <p><strong>IBAN:</strong> {t.beneficiary.iban}</p>
+                                                                <p><strong>Banque:</strong> {t.beneficiary.bankName}</p>
+                                                                <p><strong>SWIFT/BIC:</strong> {t.beneficiary.swiftCode}</p>
+                                                            </div>
+                                                        )}
                                                     </div>
-                                                </TableCell>
-                                            </TableRow>
+                                                </DialogContent>
+                                           </Dialog>
                                         )) : (
                                             <TableRow>
                                                 <TableCell colSpan={3} className="text-center text-muted-foreground py-12">
@@ -313,6 +341,8 @@ export default function ClientDashboardPage() {
                 </div>
             </div>
         </div>
-        </TooltipProvider>
     );
 }
+
+
+    
