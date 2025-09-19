@@ -147,9 +147,9 @@ const transferFundsSchema = z.object({
     senderIdentificationNumber: z.string(),
     beneficiaryName: z.string().min(2, "Le nom du titulaire est requis."),
     beneficiaryAccountNumber: z.string().min(5, "Le numéro de compte est invalide."),
-    beneficiaryIban: z.string().min(14, "L'IBAN du bénéficiaire est invalide."),
+    beneficiaryIban: z.string().min(14, "L'IBAN du bénéficiaire est invalide.").max(34, "L'IBAN est trop long."),
     beneficiaryBankName: z.string().min(2, "Le nom de la banque est requis."),
-    beneficiarySwiftCode: z.string().min(8, "Le code SWIFT/BIC est invalide."),
+    beneficiarySwiftCode: z.string().min(8, "Le code SWIFT/BIC est invalide.").max(11, "Le code SWIFT/BIC est trop long."),
     amount: z.coerce.number().positive("Le montant doit être positif."),
     description: z.string().min(3, "La description est trop courte."),
 });
@@ -490,3 +490,5 @@ export async function updateClientBlockSettingsAction(values: z.infer<typeof upd
         return { success: false, error: error.message };
     }
 }
+
+    

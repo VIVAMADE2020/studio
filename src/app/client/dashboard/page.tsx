@@ -8,7 +8,7 @@ import { getClientByIdentificationNumberAction, Client, Transaction } from "@/ap
 import { formatCurrency } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { LogOut, Building, Copy, User, Mail, Hash, Calendar, Wallet, History, Send, FileText, MessageSquare, CircleDollarSign, CheckCircle, Banknote, AlertTriangle, Info } from "lucide-react";
+import { LogOut, Building, Copy, User, Mail, Hash, Calendar, Wallet, History, Send, FileText, MessageSquare, CircleDollarSign, CheckCircle, Banknote, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
@@ -344,5 +344,7 @@ export default function ClientDashboardPage() {
     );
 }
 
+
+    
 
     
