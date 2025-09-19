@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 const navLinks = [
   { href: "/", label: "Accueil" },
   { href: "/#services", label: "Services" },
+  { href: "/blog", label: "Blog" },
   { href: "/about", label: "À Propos" },
   { href: "/contact", label: "Contact" },
 ];
@@ -34,7 +35,9 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className={cn("font-medium transition-colors hover:text-accent", "text-foreground")}
+              className={cn("font-medium transition-colors hover:text-accent", 
+                pathname.startsWith(link.href) && link.href !== "/" && link.href !== "/#services" ? "text-accent" : "text-foreground"
+              )}
             >
               {link.label}
             </Link>

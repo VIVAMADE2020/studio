@@ -7,6 +7,7 @@ import { TestimonialsSection } from '@/components/sections/testimonials-section'
 import { PartnersSection } from '@/components/sections/partners-section';
 import { FaqSection } from '@/components/sections/faq-section';
 import { CtaSection } from '@/components/sections/cta-section';
+import { BlogSection } from '@/components/sections/blog-section';
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <ServicesSection />
       <AboutSection />
       <LoanCalculatorSection />
+      <BlogSection />
       <TestimonialsSection />
       <PartnersSection />
       <FaqSection />
