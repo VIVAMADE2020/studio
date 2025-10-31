@@ -1,3 +1,6 @@
+
+"use client";
+
 import { LoanApplicationForm } from "@/components/loan-application-form";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ShieldCheck } from "lucide-react";
