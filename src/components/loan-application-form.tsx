@@ -1,5 +1,7 @@
+
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,8 +33,7 @@ export function LoanApplicationForm() {
       <input type="hidden" name="_subject" value="Nouvelle Demande de Prêt" />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="false" />
-      <input type="hidden" name="_next" value="https://votre-site.com/merci" /> {/* Optionnel: rediriger vers une page de remerciement */}
-
+       
       <div className="grid md:grid-cols-2 gap-6">
         <div className="space-y-2">
           <Label htmlFor="firstName">Prénom</Label>
