@@ -1,0 +1,16 @@
+# Fichier de configuration pour Netlify
+
+[build]
+  # Commande pour construire le site Next.js
+  command = "next build"
+  
+  # Répertoire où se trouve le site construit
+  publish = ".next"
+
+[functions]
+  # Répertoire où se trouvent les fonctions serverless (générées par Next.js)
+  directory = ".next/functions"
+
+[images]
+  # Active l'optimisation des images de Netlify
+  remote_images = ["https://picsum.photos/.*", "https://i.postimg.cc/.*", "https://api.dicebear.com/.*"]
