@@ -7,10 +7,7 @@
   # Répertoire où se trouve le site construit
   publish = ".next"
 
-[functions]
-  # Répertoire où se trouvent les fonctions serverless (générées par Next.js)
-  directory = ".next/functions"
-
-[images]
-  # Active l'optimisation des images de Netlify
-  remote_images = ["https://picsum.photos/.*", "https://i.postimg.cc/.*", "https://api.dicebear.com/.*"]
+# Ce plugin est essentiel pour que Netlify comprenne comment gérer
+# les redirections, les pages statiques et les fonctions serveur de Next.js.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
