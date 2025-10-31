@@ -23,7 +23,7 @@ export function PartnersSection() {
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-8 items-center">
                         {partners.map((partner, index) => (
                             <div key={index} className="flex justify-center">
-                                <span className="text-xl font-semibold text-muted-foreground transition-colors duration-300 hover:text-primary">
+                                <span className="text-xl font-semibold text-primary/80 transition-colors duration-300 hover:text-primary">
                                     {partner.name}
                                 </span>
                             </div>
