@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -12,9 +13,11 @@ export function ContactForm() {
       method="POST"
       className="space-y-6"
     >
+      {/* Configuration FormSubmit */}
       <input type="hidden" name="_subject" value="Nouveau message depuis le formulaire de contact" />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="false" />
+      <input type="hidden" name="_next" value="https://www.vylscapital.com/contact/merci" />
        
       <div className="space-y-2">
         <Label htmlFor="name">Nom complet</Label>
