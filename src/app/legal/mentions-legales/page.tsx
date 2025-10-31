@@ -13,9 +13,9 @@ export default function MentionsLegalesPage() {
       <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">1. Éditeur du site</h2>
       <p>Le site internet VylsCapital, accessible à l'adresse www.vylscapital.com, est édité par VylsCapital, une institution privée dont le siège social est situé au 123 Rue de la Finance, 75001 Paris, France.</p>
       <ul className="list-disc pl-5 mt-4 space-y-1">
-        <li><strong>SIRET :</strong> 123 456 789 00010 (Numéro fictif pour démonstration)</li>
-        <li><strong>RCS Paris :</strong> 123 456 789</li>
-        <li><strong>N° ORIAS :</strong> 12345678 (Numéro fictif - Enregistré en tant que Courtier en opérations de banque et en services de paiement)</li>
+        <li><strong>SIRET :</strong> 891 753 295 00016 (Numéro fictif pour démonstration)</li>
+        <li><strong>RCS Paris :</strong> 891 753 295</li>
+        <li><strong>N° ORIAS :</strong> 19004331 (Numéro fictif - Enregistré en tant que Courtier en opérations de banque et en services de paiement)</li>
       </ul>
       <p className="mt-4">VylsCapital agit en tant que courtier et intermédiaire, fournissant des solutions de financement et des services de banque en ligne pour ses clients via son espace client sécurisé.</p>
       <p>Directeur de la publication : Alexandre Martin</p>
