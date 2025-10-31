@@ -4,28 +4,19 @@
 import { z } from "zod";
 
 const formSchema = z.object({
-  loanType: z.string(),
-  loanAmount: z.number(),
-  loanDuration: z.number().min(12).max(360),
-  firstName: z.string(),
-  lastName: z.string(),
-  email: z.string().email(),
-  phone: z.string(),
-  whatsapp: z.string(),
-  birthDate: z.string(),
-  maritalStatus: z.string(),
-  address: z.string(),
-  city: z.string(),
-  country: z.string(),
-  childrenCount: z.number().min(0),
-  employmentStatus: z.string(),
-  monthlyIncome: z.number(),
-  monthlyExpenses: z.number().min(0),
-  housingStatus: z.string(),
-  identityProof: z.string(),
-  residenceProof: z.string(),
-  incomeProof: z.string(),
-  legalConsent: z.boolean(),
+  firstName: z.string().min(2, "Le prénom est requis."),
+  lastName: z.string().min(2, "Le nom est requis."),
+  loanAmount: z.coerce.number().min(1000, "Le montant minimum est de 1000€."),
+  loanDuration: z.coerce.number().min(12, "La durée minimale est de 12 mois."),
+  email: z.string().email("Veuillez entrer une adresse email valide."),
+  phone: z.string().min(10, "Veuillez entrer un numéro de téléphone valide."),
+  country: z.string().min(2, "Le pays de résidence est requis."),
+  employmentStatus: z.string().min(2, "La profession est requise."),
+  monthlyIncome: z.coerce.number().min(500, "Le revenu minimum est de 500€."),
+  loanReason: z.string().min(10, "Veuillez décrire brièvement votre projet."),
+  legalConsent: z.boolean().refine(val => val === true, {
+    message: "Vous devez accepter la politique de confidentialité."
+  }),
 });
 
 export async function submitLoanApplication(values: z.infer<typeof formSchema>) {
@@ -43,6 +34,13 @@ export async function submitLoanApplication(values: z.infer<typeof formSchema>) 
       ...parsed.data,
     };
     
+    // Simuler un succès si l'URL n'est pas définie
+    if (!process.env.GOOGLE_SCRIPT_WEB_APP_URL) {
+      console.log("GOOGLE_SCRIPT_WEB_APP_URL not set. Simulating success.");
+      console.log("Data that would be sent:", dataToSend);
+      return { success: true };
+    }
+
     const response = await fetch(process.env.GOOGLE_SCRIPT_WEB_APP_URL!, {
       method: 'POST',
       headers: {
@@ -65,5 +63,3 @@ export async function submitLoanApplication(values: z.infer<typeof formSchema>) 
 
   return { success: true };
 }
-
-    
