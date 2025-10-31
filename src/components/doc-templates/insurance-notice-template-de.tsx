@@ -42,7 +42,7 @@ export const InsuranceNoticeTemplateDe: React.FC<InsuranceNoticeTemplateDeProps>
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>1. Zweck dieses Informationsblattes</h2>
         <p>
-          Dieses Informationsblatt soll Sie über die Bedingungen, Modalitäten, Garantien und Ausschlüsse des von FLEXFOND bei seinem Versicherungspartner abgeschlossenen Gruppenversicherungsvertrags informieren, dem Sie beitreten möchten. <strong>Wir bitten Sie, es vor der Unterzeichnung Ihres Beitrittsantrags sorgfältig zu lesen und aufzubewahren.</strong> Es ist ein wesentliches Element Ihres finanziellen Schutzes.
+          Dieses Informationsblatt soll Sie über die Bedingungen, Modalitäten, Garantien und Ausschlüsse des von VylsCapital bei seinem Versicherungspartner abgeschlossenen Gruppenversicherungsvertrags informieren, dem Sie beitreten möchten. <strong>Wir bitten Sie, es vor der Unterzeichnung Ihres Beitrittsantrags sorgfältig zu lesen und aufzubewahren.</strong> Es ist ein wesentliches Element Ihres finanziellen Schutzes.
         </p>
       </div>
 

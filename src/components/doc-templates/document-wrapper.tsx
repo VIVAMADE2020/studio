@@ -12,11 +12,11 @@ export const DocumentWrapper: React.FC<DocumentWrapperProps> = ({ title, subHead
     <div style={styles.page}>
       <header style={styles.header}>
         <div style={styles.logoContainer}>
-            <div style={styles.logoText}>FLEXFOND</div>
+            <div style={styles.logoText}>VylsCapital</div>
         </div>
         <div style={styles.headerInfo}>
           <p>123 Rue de la Finance, 75001 Paris</p>
-          <p>contact@flexfond.com | +33 7 51 24 47 10</p>
+          <p>contact@vylscapital.com | +33 7 51 24 47 10</p>
         </div>
       </header>
       
@@ -28,7 +28,7 @@ export const DocumentWrapper: React.FC<DocumentWrapperProps> = ({ title, subHead
       </main>
 
       <footer style={styles.footer}>
-        <p>&copy; {new Date().getFullYear()} FLEXFOND. Tous droits réservés.</p>
+        <p>&copy; {new Date().getFullYear()} VylsCapital. Tous droits réservés.</p>
         <p>Ce document est généré électroniquement et est confidentiel.</p>
       </footer>
     </div>
@@ -40,8 +40,8 @@ export const styles: { [key: string]: React.CSSProperties } = {
     fontFamily: 'Helvetica, Arial, sans-serif',
     fontSize: '12pt',
     lineHeight: 1.6,
-    backgroundColor: 'hsl(0, 0%, 100%)', // background
-    color: 'hsl(224, 71.4%, 4.1%)', // foreground
+    backgroundColor: 'hsl(var(--background))',
+    color: 'hsl(var(--foreground))',
     padding: '40px',
     width: '210mm',
     minHeight: '297mm',
@@ -53,7 +53,7 @@ export const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    borderBottom: '2px solid hsl(220, 13%, 91%)', // border
+    borderBottom: '2px solid hsl(var(--border))',
     paddingBottom: '20px',
     marginBottom: '20px',
   },
@@ -64,17 +64,17 @@ export const styles: { [key: string]: React.CSSProperties } = {
   logoText: {
     fontSize: '24pt',
     fontWeight: 'bold',
-    color: 'hsl(215, 39%, 29%)', // primary
+    color: 'hsl(var(--primary))',
   },
   headerInfo: {
     textAlign: 'right',
     fontSize: '10pt',
-    color: 'hsl(220, 8.9%, 46.1%)', // muted-foreground
+    color: 'hsl(var(--muted-foreground))',
   },
   subHeader: {
     textAlign: 'center',
     fontSize: '9pt',
-    color: 'hsl(220, 8.9%, 46.1%)', // muted-foreground
+    color: 'hsl(var(--muted-foreground))',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
     marginBottom: '20px',
@@ -83,7 +83,7 @@ export const styles: { [key: string]: React.CSSProperties } = {
     fontSize: '20pt',
     fontWeight: 'bold',
     textAlign: 'center',
-    color: 'hsl(215, 39%, 29%)', // primary
+    color: 'hsl(var(--primary))',
     marginBottom: '30px',
   },
   main: {
@@ -95,8 +95,8 @@ export const styles: { [key: string]: React.CSSProperties } = {
   sectionTitle: {
     fontSize: '14pt',
     fontWeight: 'bold',
-    color: 'hsl(215, 39%, 29%)', // primary
-    borderBottom: '1px solid hsl(220, 13%, 91%)', // border
+    color: 'hsl(var(--primary))',
+    borderBottom: '1px solid hsl(var(--border))',
     paddingBottom: '5px',
     marginBottom: '15px',
   },
@@ -105,10 +105,10 @@ export const styles: { [key: string]: React.CSSProperties } = {
   },
   label: {
     fontWeight: 'bold',
-    color: 'hsl(224, 71.4%, 4.1%)', // foreground
+    color: 'hsl(var(--foreground))',
   },
   value: {
-    color: 'hsl(224, 71.4%, 4.1%)', // foreground
+    color: 'hsl(var(--foreground))',
   },
   table: {
     width: '100%',
@@ -117,14 +117,14 @@ export const styles: { [key: string]: React.CSSProperties } = {
     fontSize: '11pt',
   },
   th: {
-    border: '1px solid hsl(220, 13%, 91%)', // border
+    border: '1px solid hsl(var(--border))',
     padding: '10px',
     textAlign: 'left',
-    backgroundColor: 'hsl(240, 4.8%, 95.9%)', // secondary
+    backgroundColor: 'hsl(var(--secondary))',
     fontWeight: 'bold',
   },
   td: {
-    border: '1px solid hsl(220, 13%, 91%)', // border
+    border: '1px solid hsl(var(--border))',
     padding: '10px',
   },
   signatureSection: {
@@ -138,17 +138,17 @@ export const styles: { [key: string]: React.CSSProperties } = {
     textAlign: 'center',
   },
   signatureLine: {
-    borderTop: '1px solid hsl(224, 71.4%, 4.1%)', // foreground
+    borderTop: '1px solid hsl(var(--foreground))',
     marginTop: '10px',
     marginBottom: '10px',
   },
   footer: {
-    borderTop: '1px solid hsl(220, 13%, 91%)', // border
+    borderTop: '1px solid hsl(var(--border))',
     paddingTop: '20px',
     marginTop: '40px',
     textAlign: 'center',
     fontSize: '9pt',
-    color: 'hsl(220, 8.9%, 46.1%)', // muted-foreground
+    color: 'hsl(var(--muted-foreground))',
   },
 };
 

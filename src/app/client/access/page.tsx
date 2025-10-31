@@ -61,7 +61,7 @@ export default function ClientAccessPage() {
                             <Input
                                 id="identificationNumber"
                                 type="text"
-                                placeholder="FLEX-123456"
+                                placeholder="VYLS-123456"
                                 value={identificationNumber}
                                 onChange={(e) => setIdentificationNumber(e.target.value)}
                                 required

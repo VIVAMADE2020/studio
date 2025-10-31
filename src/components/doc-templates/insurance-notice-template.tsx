@@ -42,7 +42,7 @@ export const InsuranceNoticeTemplate: React.FC<InsuranceNoticeTemplateProps> = (
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>1. Objet de la présente notice</h2>
         <p>
-          La présente notice a pour objet de vous informer des conditions, modalités, garanties et exclusions du contrat d'assurance collectif souscrit par FLEXFOND auprès de son partenaire assureur, auquel vous demandez votre adhésion. <strong>Nous vous invitons à la lire attentivement avant de signer votre demande d'adhésion et à la conserver.</strong> Elle constitue un élément essentiel de votre protection financière.
+          La présente notice a pour objet de vous informer des conditions, modalités, garanties et exclusions du contrat d'assurance collectif souscrit par VylsCapital auprès de son partenaire assureur, auquel vous demandez votre adhésion. <strong>Nous vous invitons à la lire attentivement avant de signer votre demande d'adhésion et à la conserver.</strong> Elle constitue un élément essentiel de votre protection financière.
         </p>
       </div>
 

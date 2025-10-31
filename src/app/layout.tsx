@@ -18,8 +18,8 @@ const inter = Inter({
 
 
 export const metadata: Metadata = {
-  title: 'FLEXFOND | Solutions Financières',
-  description: 'FLEXFOND propose des solutions financières sur-mesure pour tous vos projets. Prêts personnels, immobiliers, et plus encore.',
+  title: 'VylsCapital | Solutions Financières',
+  description: 'VylsCapital propose des solutions financières sur-mesure pour tous vos projets. Prêts personnels, immobiliers, et plus encore.',
 };
 
 export default function RootLayout({
@@ -27,7 +27,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const faviconSvg = "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22hsl(215, 39%, 29%)%22 /><text y=%22.9em%22 x=%2250%%22 text-anchor=%22middle%22 font-size=%2260%22 font-family=%22Arial%22 fill=%22hsl(210, 20%, 98%)%22>F</text></svg>";
+  const faviconSvg = "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22hsl(215, 39%, 29%)%22 /><text y=%22.9em%22 x=%2250%%22 text-anchor=%22middle%22 font-size=%2260%22 font-family=%22Arial%22 fill=%22hsl(210, 20%, 98%)%22>V</text></svg>";
   return (
     <html lang="fr" suppressHydrationWarning className={inter.variable}>
       <head>

@@ -8,7 +8,7 @@ import { ArrowRight, Calendar, User } from "lucide-react";
 import { blogPosts } from "@/data/blog-data";
 
 export const metadata: Metadata = {
-  title: "Blog | FLEXFOND",
+  title: "Blog | VylsCapital",
   description: "Conseils, actualités et analyses de nos experts pour vous accompagner dans tous vos projets financiers.",
 };
 

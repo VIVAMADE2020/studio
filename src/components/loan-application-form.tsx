@@ -92,7 +92,7 @@ export function LoanApplicationForm() {
             <CheckCircle className="h-4 w-4 !text-green-600" />
             <AlertTitle className="text-green-900 font-bold">Demande envoyée avec succès !</AlertTitle>
             <AlertDescription className="text-green-800">
-                Merci de votre confiance. Un conseiller FLEXFOND va examiner votre dossier et vous contactera dans les plus brefs délais. Vous recevrez également un e-mail de confirmation.
+                Merci de votre confiance. Un conseiller VylsCapital va examiner votre dossier et vous contactera dans les plus brefs délais. Vous recevrez également un e-mail de confirmation.
             </AlertDescription>
         </Alert>
     )
@@ -171,7 +171,7 @@ export function LoanApplicationForm() {
                         Je reconnais avoir lu et j'accepte la <Link href="/legal/politique-de-confidentialite" target="_blank" className="text-primary underline hover:text-accent">politique de confidentialité</Link>.
                         </FormLabel>
                         <p className="text-xs text-muted-foreground">
-                            En soumettant ce formulaire, je consens à ce que FLEXFOND collecte et traite mes données personnelles pour l'étude de ma demande de financement, conformément à notre Politique de Confidentialité.
+                            En soumettant ce formulaire, je consens à ce que VylsCapital collecte et traite mes données personnelles pour l'étude de ma demande de financement, conformément à notre Politique de Confidentialité.
                         </p>
                         <FormMessage />
                     </div>

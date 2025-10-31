@@ -32,7 +32,7 @@ export const DebtAcknowledgementTemplate: React.FC<DebtAcknowledgementTemplatePr
       
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Entre les soussignés :</h2>
-        <p><strong style={styles.label}>Le Créancier :</strong> FLEXFOND, agissant en tant qu'intermédiaire pour ses partenaires financiers, dont le siège social est situé 123 Rue de la Finance, 75001 Paris.</p>
+        <p><strong style={styles.label}>Le Créancier :</strong> VylsCapital, agissant en tant qu'intermédiaire pour ses partenaires financiers, dont le siège social est situé 123 Rue de la Finance, 75001 Paris.</p>
         <div style={{ margin: '15px 0', paddingLeft: '15px', borderLeft: '2px solid #eee' }}>
             <p><strong style={styles.label}>Le Débiteur :</strong></p>
             <p><strong>Nom :</strong> {data.debtorName || '[Nom du débiteur]'}</p>
@@ -44,7 +44,7 @@ export const DebtAcknowledgementTemplate: React.FC<DebtAcknowledgementTemplatePr
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Article 1 : Reconnaissance de la Dette</h2>
         <p>
-          Je soussigné(e), <strong>{data.debtorName || '[Nom du débiteur]'}</strong>, demeurant au {data.debtorAddress || '[Adresse du débiteur]'}, reconnais par la présente devoir à FLEXFOND, agissant au nom de ses partenaires financiers, la somme de :
+          Je soussigné(e), <strong>{data.debtorName || '[Nom du débiteur]'}</strong>, demeurant au {data.debtorAddress || '[Adresse du débiteur]'}, reconnais par la présente devoir à VylsCapital, agissant au nom de ses partenaires financiers, la somme de :
         </p>
         <p style={{ fontSize: '16pt', fontWeight: 'bold', textAlign: 'center', margin: '20px 0', color: '#333' }}>
           {formatCurrency(data.loanAmount || 0)} ({data.loanAmountInWords || '[Montant en lettres]'} euros)

@@ -32,7 +32,7 @@ export const DebtAcknowledgementTemplateEn: React.FC<DebtAcknowledgementTemplate
       
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Between the undersigned:</h2>
-        <p><strong style={styles.label}>The Creditor:</strong> FLEXFOND, acting as an intermediary for its financial partners, with its registered office at 123 Rue de la Finance, 75001 Paris.</p>
+        <p><strong style={styles.label}>The Creditor:</strong> VylsCapital, acting as an intermediary for its financial partners, with its registered office at 123 Rue de la Finance, 75001 Paris.</p>
         <div style={{ margin: '15px 0', paddingLeft: '15px', borderLeft: '2px solid #eee' }}>
             <p><strong style={styles.label}>The Debtor:</strong></p>
             <p><strong>Name:</strong> {data.debtorName || '[Debtor Name]'}</p>
@@ -44,7 +44,7 @@ export const DebtAcknowledgementTemplateEn: React.FC<DebtAcknowledgementTemplate
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Article 1: Acknowledgement of Debt</h2>
         <p>
-          I, the undersigned, <strong>{data.debtorName || '[Debtor Name]'}</strong>, residing at {data.debtorAddress || '[Debtor Address]'}, hereby acknowledge to owe FLEXFOND, acting on behalf of its financial partners, the sum of:
+          I, the undersigned, <strong>{data.debtorName || '[Debtor Name]'}</strong>, residing at {data.debtorAddress || '[Debtor Address]'}, hereby acknowledge to owe VylsCapital, acting on behalf of its financial partners, the sum of:
         </p>
         <p style={{ fontSize: '16pt', fontWeight: 'bold', textAlign: 'center', margin: '20px 0', color: '#333' }}>
           {formatCurrency(data.loanAmount || 0)} ({data.loanAmountInWords || '[Amount in words]'} euros)

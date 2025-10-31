@@ -42,7 +42,7 @@ export const InsuranceNoticeTemplateIt: React.FC<InsuranceNoticeTemplateItProps>
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>1. Oggetto del presente avviso</h2>
         <p>
-          Il presente avviso ha lo scopo di informarla sulle condizioni, modalità, garanzie ed esclusioni del contratto di assicurazione collettiva sottoscritto da FLEXFOND con il suo partner assicurativo, al quale lei richiede l'adesione. <strong>La invitiamo a leggerlo attentamente prima di firmare la sua domanda di adesione e a conservarlo.</strong> È un elemento essenziale della sua protezione finanziaria.
+          Il presente avviso ha lo scopo di informarla sulle condizioni, modalità, garanzie ed esclusioni del contratto di assicurazione collettiva sottoscritto da VylsCapital con il suo partner assicurativo, al quale lei richiede l'adesione. <strong>La invitiamo a leggerlo attentamente prima di firmare la sua domanda di adesione e a conservarlo.</strong> È un elemento essenziale della sua protezione finanziaria.
         </p>
       </div>
 

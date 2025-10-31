@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,7 +15,7 @@ import Autoplay from "embla-carousel-autoplay";
 import React from "react";
 
 const testimonials = [
-  { name: "Sophie L.", role: "Paris, France", text: "Processus simple et rapide. J'ai pu financer ma startup grâce à FLEXFOND." },
+  { name: "Sophie L.", role: "Paris, France", text: "Processus simple et rapide. J'ai pu financer ma startup grâce à VylsCapital." },
   { name: "Marc D.", role: "Berlin, Allemagne", text: "Prêt immobilier obtenu à des conditions très avantageuses. Conseiller très professionnel." },
   { name: "Giulia R.", role: "Rome, Italie", text: "Nous avons enfin pu acheter notre première voiture familiale. Offre claire et sans surprise." },
   { name: "Liam Smith", role: "Londres, Royaume-Uni", text: "Excellent service client, très réactif. Je recommande vivement pour tout projet personnel." },
@@ -29,7 +30,7 @@ const testimonials = [
   { name: "Isabelle M.", role: "Bruxelles, Belgique", text: "Le regroupement de mes crédits a simplifié ma gestion budgétaire. Un vrai soulagement." },
   { name: "Florian S.", role: "Vienne, Autriche", text: "Conseils avisés et un prêt étudiant avec un taux très intéressant. Je suis ravi." },
   { name: "Heidi L.", role: "Helsinki, Finlande", text: "Financement rapide pour l'achat d'équipement professionnel. Service impeccable." },
-  { name: "Nikolaj Jensen", role: "Copenhague, Danemark", text: "Le prêt immobilier a été une étape clé dans notre vie, et FLEXFOND l'a rendue simple." },
+  { name: "Nikolaj Jensen", role: "Copenhague, Danemark", text: "Le prêt immobilier a été une étape clé dans notre vie, et VylsCapital l'a rendue simple." },
   { name: "Chloé Dubois", role: "Genève, Suisse", text: "Très bonne expérience pour mon premier achat immobilier. Je me suis sentie accompagnée." },
   { name: "Petr N.", role: "Prague, République Tchèque", text: "Le crédit auto a été approuvé en un temps record. Parfait pour ne pas rater l'occasion." },
   { name: "Maria I.", role: "Bucarest, Roumanie", text: "J'ai pu faire les travaux de rénovation que je reportais depuis des années. Merci !" },

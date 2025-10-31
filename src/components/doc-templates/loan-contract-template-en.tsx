@@ -40,7 +40,7 @@ export const LoanContractTemplateEn: React.FC<LoanContractTemplateEnProps> = ({ 
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Between the undersigned:</h2>
-        <p><strong style={styles.label}>The Lender:</strong> FLEXFOND, an intermediary company, with its registered office at 123 Rue de la Finance, 75001 Paris, hereinafter referred to as "The Lender".</p>
+        <p><strong style={styles.label}>The Lender:</strong> VylsCapital, an intermediary company, with its registered office at 123 Rue de la Finance, 75001 Paris, hereinafter referred to as "The Lender".</p>
         <div style={{ margin: '15px 0', paddingLeft: '15px', borderLeft: '2px solid #eee' }}>
             <p><strong style={styles.label}>The Borrower:</strong> {data.borrowerName || '[Borrower Name]'}</p>
             <p>Residing at {data.borrowerAddress || '[Borrower Address]'}</p>
@@ -84,12 +84,12 @@ export const LoanContractTemplateEn: React.FC<LoanContractTemplateEnProps> = ({ 
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Article 6: Mandatory Borrower's Insurance</h2>
-        <p>The granting of this loan is conditional upon the Borrower's prior subscription to an insurance policy covering the risks of Death, Total and Irreversible Loss of Autonomy (TILA), and Work Incapacity (IT). The Borrower acknowledges having received, read, and accepted the terms of this insurance, which are the subject of a separate insurance certificate provided by FLEXFOND or its insurance partners before the signing of this agreement.</p>
+        <p>The granting of this loan is conditional upon the Borrower's prior subscription to an insurance policy covering the risks of Death, Total and Irreversible Loss of Autonomy (TILA), and Work Incapacity (IT). The Borrower acknowledges having received, read, and accepted the terms of this insurance, which are the subject of a separate insurance certificate provided by VylsCapital or its insurance partners before the signing of this agreement.</p>
       </div>
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Article 7: Data Protection</h2>
-        <p>The information collected is necessary for processing the loan application. It is processed electronically and is intended for the Lender's departments and its partners. In accordance with the GDPR, the Borrower has the right to access, rectify, and delete their personal data by contacting the Lender at contact@flexfond.com.</p>
+        <p>The information collected is necessary for processing the loan application. It is processed electronically and is intended for the Lender's departments and its partners. In accordance with the GDPR, the Borrower has the right to access, rectify, and delete their personal data by contacting the Lender at contact@vylscapital.com.</p>
       </div>
 
       <div style={styles.section}>
@@ -105,7 +105,7 @@ export const LoanContractTemplateEn: React.FC<LoanContractTemplateEnProps> = ({ 
         <div style={styles.signatureBox}>
           <img src={signer.signatureUrl} alt={`Signature of ${signer.name}`} style={{ width: '150px', height: 'auto', marginBottom: '-10px' }} />
           <div style={styles.signatureLine}></div>
-          <p style={styles.label}>Signature of the Lender (FLEXFOND)</p>
+          <p style={styles.label}>Signature of the Lender (VylsCapital)</p>
           <p>{signer.name}, {signer.role}</p>
         </div>
         <div style={styles.signatureBox}>

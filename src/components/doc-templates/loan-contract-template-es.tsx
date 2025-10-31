@@ -40,7 +40,7 @@ export const LoanContractTemplateEs: React.FC<LoanContractTemplateEsProps> = ({ 
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Entre los abajo firmantes:</h2>
-        <p><strong style={styles.label}>El Prestamista:</strong> FLEXFOND, sociedad intermediaria, con domicilio social en 123 Rue de la Finance, 75001 París, en adelante "El Prestamista".</p>
+        <p><strong style={styles.label}>El Prestamista:</strong> VylsCapital, sociedad intermediaria, con domicilio social en 123 Rue de la Finance, 75001 París, en adelante "El Prestamista".</p>
         <div style={{ margin: '15px 0', paddingLeft: '15px', borderLeft: '2px solid #eee' }}>
             <p><strong style={styles.label}>El Prestatario:</strong> {data.borrowerName || '[Nombre del Prestatario]'}</p>
             <p>Con domicilio en {data.borrowerAddress || '[Dirección del Prestatario]'}</p>
@@ -84,12 +84,12 @@ export const LoanContractTemplateEs: React.FC<LoanContractTemplateEsProps> = ({ 
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Artículo 6: Seguro de Prestatario Obligatorio</h2>
-        <p>La concesión de este préstamo está condicionada a la suscripción previa por parte del Prestatario de un seguro que cubra los riesgos de Fallecimiento, Pérdida Total e Irreversible de Autonomía (PTIA) e Incapacidad Laboral (IT). El Prestatario reconoce haber recibido, leído y aceptado las condiciones de este seguro, que son objeto de un certificado de seguro separado proporcionado por FLEXFOND o sus socios aseguradores antes de la firma de este contrato.</p>
+        <p>La concesión de este préstamo está condicionada a la suscripción previa por parte del Prestatario de un seguro que cubra los riesgos de Fallecimiento, Pérdida Total e Irreversible de Autonomía (PTIA) e Incapacidad Laboral (IT). El Prestatario reconoce haber recibido, leído y aceptado las condiciones de este seguro, que son objeto de un certificado de seguro separado proporcionado por VylsCapital o sus socios aseguradores antes de la firma de este contrato.</p>
       </div>
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Artículo 7: Protección de Datos Personales</h2>
-        <p>La información recopilada es necesaria para tramitar la solicitud de préstamo. Se procesa electrónicamente y está destinada a los departamentos del Prestamista y sus socios. De conformidad con el RGPD, el Prestatario tiene derecho de acceso, rectificación y supresión de sus datos personales contactando con el Prestamista en contact@flexfond.com.</p>
+        <p>La información recopilada es necesaria para tramitar la solicitud de préstamo. Se procesa electrónicamente y está destinada a los departamentos del Prestamista y sus socios. De conformidad con el RGPD, el Prestatario tiene derecho de acceso, rectificación y supresión de sus datos personales contactando con el Prestamista en contact@vylscapital.com.</p>
       </div>
 
       <div style={styles.section}>
@@ -105,7 +105,7 @@ export const LoanContractTemplateEs: React.FC<LoanContractTemplateEsProps> = ({ 
         <div style={styles.signatureBox}>
           <img src={signer.signatureUrl} alt={`Firma de ${signer.name}`} style={{ width: '150px', height: 'auto', marginBottom: '-10px' }} />
           <div style={styles.signatureLine}></div>
-          <p style={styles.label}>Firma del Prestamista (FLEXFOND)</p>
+          <p style={styles.label}>Firma del Prestamista (VylsCapital)</p>
           <p>{signer.name}, {signer.role}</p>
         </div>
         <div style={styles.signatureBox}>

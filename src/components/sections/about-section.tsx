@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight, Flag, Building, Users } from "lucide-react";
@@ -6,7 +7,7 @@ const timelineEvents = [
   {
     icon: <Flag className="h-5 w-5 text-accent" />,
     year: "2015",
-    title: "FONDATION DE FLEXFOND",
+    title: "FONDATION DE VylsCapital",
     description: "Création avec la mission de simplifier l'accès au financement."
   },
   {
@@ -31,7 +32,7 @@ export function AboutSection() {
           <div>
             <h2 className="text-3xl md:text-4xl font-bold text-primary uppercase">Bâtir l'avenir, ensemble.</h2>
             <p className="mt-4 text-muted-foreground">
-              Depuis 2015, FLEXFOND s'engage à offrir des services financiers transparents et personnalisés. Notre expertise et notre dévouement nous permettent de transformer vos ambitions en réalité.
+              Depuis 2015, VylsCapital s'engage à offrir des services financiers transparents et personnalisés. Notre expertise et notre dévouement nous permettent de transformer vos ambitions en réalité.
             </p>
             <Button asChild variant="link" className="p-0 h-auto mt-6 text-primary font-semibold">
               <Link href="/about">

@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${post.title} | FLEXFOND Blog`,
+    title: `${post.title} | VylsCapital Blog`,
     description: post.summary,
     openGraph: {
       title: post.title,

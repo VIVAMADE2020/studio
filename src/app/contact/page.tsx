@@ -69,7 +69,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                         <h3 className="font-semibold text-primary uppercase">EMAIL</h3>
-                        <p className="text-muted-foreground">contact@flexfond.com</p>
+                        <p className="text-muted-foreground">contact@vylscapital.com</p>
                     </div>
                 </div>
             </div>

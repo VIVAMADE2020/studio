@@ -9,7 +9,7 @@ export function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2">
-              <span className="font-bold text-xl text-white">FLEXFOND</span>
+              <span className="font-bold text-xl text-white">VylsCapital</span>
             </Link>
             <p className="text-sm text-primary-foreground/80">
               Solutions financières sur-mesure pour réaliser vos projets en toute confiance.
@@ -51,16 +51,16 @@ export function Footer() {
             <h3 className="font-semibold text-white">Contact</h3>
             <ul className="mt-4 space-y-2 text-sm text-primary-foreground/80">
               <li>123 Rue de la Finance, 75001 Paris</li>
-              <li>contact@flexfond.com</li>
+              <li>contact@vylscapital.com</li>
               <li>+33 7 51 24 47 10</li>
             </ul>
           </div>
         </div>
         
         <div className="mt-12 border-t border-primary-foreground/20 pt-8 text-center text-xs text-primary-foreground/60 space-y-2">
-            <p>FLEXFOND est un courtier en opérations de banque. N° ORIAS 12345678. SIRET 123 456 789 00010.</p>
+            <p>VylsCapital est un courtier en opérations de banque. N° ORIAS 12345678. SIRET 123 456 789 00010.</p>
             <p>Un crédit vous engage et doit être remboursé. Vérifiez vos capacités de remboursement avant de vous engager. Aucun versement ne peut être exigé d'un particulier avant l'obtention d'un ou plusieurs prêts d'argent.</p>
-            <p className="pt-4">&copy; {new Date().getFullYear()} FLEXFOND. Tous droits réservés.</p>
+            <p className="pt-4">&copy; {new Date().getFullYear()} VylsCapital. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

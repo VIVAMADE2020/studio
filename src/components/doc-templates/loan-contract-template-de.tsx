@@ -40,7 +40,7 @@ export const LoanContractTemplateDe: React.FC<LoanContractTemplateDeProps> = ({ 
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Zwischen den Unterzeichnenden:</h2>
-        <p><strong style={styles.label}>Der Kreditgeber:</strong> FLEXFOND, eine Vermittlungsgesellschaft mit Sitz in 123 Rue de la Finance, 75001 Paris, nachstehend "Der Kreditgeber" genannt.</p>
+        <p><strong style={styles.label}>Der Kreditgeber:</strong> VylsCapital, eine Vermittlungsgesellschaft mit Sitz in 123 Rue de la Finance, 75001 Paris, nachstehend "Der Kreditgeber" genannt.</p>
         <div style={{ margin: '15px 0', paddingLeft: '15px', borderLeft: '2px solid #eee' }}>
             <p><strong style={styles.label}>Der Kreditnehmer:</strong> {data.borrowerName || '[Name des Kreditnehmers]'}</p>
             <p>Wohnhaft in {data.borrowerAddress || '[Anschrift des Kreditnehmers]'}</p>
@@ -84,12 +84,12 @@ export const LoanContractTemplateDe: React.FC<LoanContractTemplateDeProps> = ({ 
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Artikel 6: Obligatorische Kreditnehmerversicherung</h2>
-        <p>Die Gewährung dieses Kredits ist an den vorherigen Abschluss einer Versicherung durch den Kreditnehmer gebunden, die die Risiken Tod, Totaler und unwiderruflicher Autonomieverlust (PTIA) und Arbeitsunfähigkeit (IT) abdeckt. Der Kreditnehmer bestätigt, die Bedingungen dieser Versicherung erhalten, gelesen und akzeptiert zu haben, die Gegenstand einer separaten Versicherungsbescheinigung sind, die von FLEXFOND oder seinen Versicherungspartnern vor Unterzeichnung dieses Vertrags bereitgestellt wird.</p>
+        <p>Die Gewährung dieses Kredits ist an den vorherigen Abschluss einer Versicherung durch den Kreditnehmer gebunden, die die Risiken Tod, Totaler und unwiderruflicher Autonomieverlust (PTIA) und Arbeitsunfähigkeit (IT) abdeckt. Der Kreditnehmer bestätigt, die Bedingungen dieser Versicherung erhalten, gelesen und akzeptiert zu haben, die Gegenstand einer separaten Versicherungsbescheinigung sind, die von VylsCapital oder seinen Versicherungspartnern vor Unterzeichnung dieses Vertrags bereitgestellt wird.</p>
       </div>
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Artikel 7: Datenschutz</h2>
-        <p>Die erhobenen Daten sind für die Bearbeitung des Kreditantrags erforderlich. Sie werden elektronisch verarbeitet und sind für die Abteilungen des Kreditgebers und seiner Partner bestimmt. Gemäß der DSGVO hat der Kreditnehmer das Recht auf Zugang, Berichtigung und Löschung seiner personenbezogenen Daten, indem er sich an den Kreditgeber unter contact@flexfond.com wendet.</p>
+        <p>Die erhobenen Daten sind für die Bearbeitung des Kreditantrags erforderlich. Sie werden elektronisch verarbeitet und sind für die Abteilungen des Kreditgebers und seiner Partner bestimmt. Gemäß der DSGVO hat der Kreditnehmer das Recht auf Zugang, Berichtigung und Löschung seiner personenbezogenen Daten, indem er sich an den Kreditgeber unter contact@vylscapital.com wendet.</p>
       </div>
 
       <div style={styles.section}>
@@ -105,7 +105,7 @@ export const LoanContractTemplateDe: React.FC<LoanContractTemplateDeProps> = ({ 
         <div style={styles.signatureBox}>
           <img src={signer.signatureUrl} alt={`Unterschrift von ${signer.name}`} style={{ width: '150px', height: 'auto', marginBottom: '-10px' }} />
           <div style={styles.signatureLine}></div>
-          <p style={styles.label}>Unterschrift des Kreditgebers (FLEXFOND)</p>
+          <p style={styles.label}>Unterschrift des Kreditgebers (VylsCapital)</p>
           <p>{signer.name}, {signer.role}</p>
         </div>
         <div style={styles.signatureBox}>

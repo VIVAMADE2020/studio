@@ -221,12 +221,12 @@ export async function addClientAction(values: z.infer<typeof addClientSchema>) {
         
         const newClientData = {
             ...parsed.data,
-            identificationNumber: `FLEX-${Math.random().toString(36).substr(2, 6).toUpperCase()}`,
+            identificationNumber: `VYLS-${Math.random().toString(36).substr(2, 6).toUpperCase()}`,
             creationDate: new Date().toISOString(),
             transactions: [],
             accountNumber,
             iban,
-            swiftCode: 'FLEXFRPP',
+            swiftCode: 'VYLSFRPP',
             transferSettings: { duration: 1, unit: 'days' },
             isBlocked: false,
             blockReason: "",

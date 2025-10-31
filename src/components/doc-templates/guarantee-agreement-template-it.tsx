@@ -33,7 +33,7 @@ export const GuaranteeAgreementTemplateIt: React.FC<GuaranteeAgreementTemplateIt
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Tra i sottoscritti:</h2>
-        <p><strong style={styles.label}>Il Creditore:</strong> FLEXFOND, in qualità di intermediario per i suoi partner finanziari, con sede legale in 123 Rue de la Finance, 75001 Parigi.</p>
+        <p><strong style={styles.label}>Il Creditore:</strong> VylsCapital, in qualità di intermediario per i suoi partner finanziari, con sede legale in 123 Rue de la Finance, 75001 Parigi.</p>
         <div style={{ margin: '15px 0', paddingLeft: '15px', borderLeft: '2px solid #eee' }}>
             <p><strong style={styles.label}>Il Debitore (Mutuatario):</strong></p>
             <p><strong>Nome:</strong> {data.borrowerName || '[Nome del mutuatario]'}</p>

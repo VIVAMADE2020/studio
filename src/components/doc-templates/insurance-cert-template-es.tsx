@@ -48,12 +48,12 @@ export const InsuranceCertificateTemplateEs: React.FC<InsuranceCertificateTempla
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>El Beneficiario:</h2>
-        <p>La entidad prestamista socia de FLEXFOND, para el contrato de préstamo N° {data.contractNumber || '[Número de Contrato]'}.</p>
+        <p>La entidad prestamista socia de VylsCapital, para el contrato de préstamo N° {data.contractNumber || '[Número de Contrato]'}.</p>
       </div>
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Objeto del Certificado</h2>
-        <p>Nosotros, los abajo firmantes, actuando en nombre de nuestro socio asegurador, certificamos por la presente que la persona asegurada mencionada anteriormente está cubierta por el contrato de seguro colectivo <strong>N° {data.groupPolicyNumber || '[Número de Póliza]'}</strong>, suscrito por FLEXFOND, en el marco de su préstamo.</p>
+        <p>Nosotros, los abajo firmantes, actuando en nombre de nuestro socio asegurador, certificamos por la presente que la persona asegurada mencionada anteriormente está cubierta por el contrato de seguro colectivo <strong>N° {data.groupPolicyNumber || '[Número de Póliza]'}</strong>, suscrito por VylsCapital, en el marco de su préstamo.</p>
       </div>
       
       <div style={styles.section}>
@@ -91,7 +91,7 @@ export const InsuranceCertificateTemplateEs: React.FC<InsuranceCertificateTempla
             <p style={{marginBottom: '20px'}}>Emitido en París, el {formatDate(data.certDate)}</p>
             <img src={signer.signatureUrl} alt={`Firma de ${signer.name}`} style={{ width: '150px', height: 'auto', marginBottom: '-10px' }} />
             <div style={styles.signatureLine}></div>
-            <p>Por FLEXFOND,</p>
+            <p>Por VylsCapital,</p>
             <p>{signer.name},<br/>{signer.role}</p>
         </div>
       </div>

@@ -42,7 +42,7 @@ export const InsuranceNoticeTemplateEn: React.FC<InsuranceNoticeTemplateEnProps>
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>1. Purpose of this Notice</h2>
         <p>
-          The purpose of this notice is to inform you of the terms, conditions, guarantees, and exclusions of the group insurance contract underwritten by FLEXFOND with its insurance partner, to which you are applying for membership. <strong>We invite you to read it carefully before signing your membership application and to keep it.</strong> It is an essential element of your financial protection.
+          The purpose of this notice is to inform you of the terms, conditions, guarantees, and exclusions of the group insurance contract underwritten by VylsCapital with its insurance partner, to which you are applying for membership. <strong>We invite you to read it carefully before signing your membership application and to keep it.</strong> It is an essential element of your financial protection.
         </p>
       </div>
 

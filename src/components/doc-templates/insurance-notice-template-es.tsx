@@ -42,7 +42,7 @@ export const InsuranceNoticeTemplateEs: React.FC<InsuranceNoticeTemplateEsProps>
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>1. Objeto de la presente noticia</h2>
         <p>
-          La presente noticia tiene por objeto informarle de las condiciones, modalidades, garantías y exclusiones del contrato de seguro colectivo suscrito por FLEXFOND con su socio asegurador, al que usted solicita su adhesión. <strong>Le invitamos a leerla atentamente antes de firmar su solicitud de adhesión y a conservarla.</strong> Es un elemento esencial de su protección financiera.
+          La presente noticia tiene por objeto informarle de las condiciones, modalidades, garantías y exclusiones del contrato de seguro colectivo suscrito por VylsCapital con su socio asegurador, al que usted solicita su adhesión. <strong>Le invitamos a leerla atentamente antes de firmar su solicitud de adhesión y a conservarla.</strong> Es un elemento esencial de su protección financiera.
         </p>
       </div>
 

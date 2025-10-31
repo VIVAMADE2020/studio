@@ -32,7 +32,7 @@ export const DebtAcknowledgementTemplateDe: React.FC<DebtAcknowledgementTemplate
       
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Zwischen den Unterzeichnenden:</h2>
-        <p><strong style={styles.label}>Der Gläubiger:</strong> FLEXFOND, handelnd als Vermittler für seine Finanzpartner, mit Sitz in 123 Rue de la Finance, 75001 Paris.</p>
+        <p><strong style={styles.label}>Der Gläubiger:</strong> VylsCapital, handelnd als Vermittler für seine Finanzpartner, mit Sitz in 123 Rue de la Finance, 75001 Paris.</p>
         <div style={{ margin: '15px 0', paddingLeft: '15px', borderLeft: '2px solid #eee' }}>
             <p><strong style={styles.label}>Der Schuldner:</strong></p>
             <p><strong>Name:</strong> {data.debtorName || '[Name des Schuldners]'}</p>
@@ -44,7 +44,7 @@ export const DebtAcknowledgementTemplateDe: React.FC<DebtAcknowledgementTemplate
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Artikel 1: Schuldanerkenntnis</h2>
         <p>
-          Ich, der Unterzeichnende, <strong>{data.debtorName || '[Name des Schuldners]'}</strong>, wohnhaft in {data.debtorAddress || '[Anschrift des Schuldners]'}, erkenne hiermit an, FLEXFOND, handelnd im Namen seiner Finanzpartner, die Summe von:
+          Ich, der Unterzeichnende, <strong>{data.debtorName || '[Name des Schuldners]'}</strong>, wohnhaft in {data.debtorAddress || '[Anschrift des Schuldners]'}, erkenne hiermit an, VylsCapital, handelnd im Namen seiner Finanzpartner, die Summe von:
         </p>
         <p style={{ fontSize: '16pt', fontWeight: 'bold', textAlign: 'center', margin: '20px 0', color: '#333' }}>
           {formatCurrency(data.loanAmount || 0)} ({data.loanAmountInWords || '[Betrag in Worten]'} Euro)

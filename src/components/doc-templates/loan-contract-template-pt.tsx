@@ -40,7 +40,7 @@ export const LoanContractTemplatePt: React.FC<LoanContractTemplatePtProps> = ({ 
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Entre os abaixo assinados:</h2>
-        <p><strong style={styles.label}>O Mutuante:</strong> FLEXFOND, sociedade intermediária, com sede social em 123 Rue de la Finance, 75001 Paris, doravante designada "O Mutuante".</p>
+        <p><strong style={styles.label}>O Mutuante:</strong> VylsCapital, sociedade intermediária, com sede social em 123 Rue de la Finance, 75001 Paris, doravante designada "O Mutuante".</p>
         <div style={{ margin: '15px 0', paddingLeft: '15px', borderLeft: '2px solid #eee' }}>
             <p><strong style={styles.label}>O Mutuário:</strong> {data.borrowerName || '[Nome do Mutuário]'}</p>
             <p>Residente em {data.borrowerAddress || '[Endereço do Mutuário]'}</p>
@@ -84,12 +84,12 @@ export const LoanContractTemplatePt: React.FC<LoanContractTemplatePtProps> = ({ 
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Artigo 6: Seguro de Mutuário Obrigatório</h2>
-        <p>A concessão deste empréstimo está condicionada à subscrição prévia pelo Mutuário de um seguro que cubra os riscos de Morte, Perda Total e Irreversível de Autonomia (PTIA) e Incapacidade para o Trabalho (IT). O Mutuário reconhece ter recebido, lido e aceite as condições deste seguro, que são objeto de um certificado de seguro separado fornecido pela FLEXFOND ou pelos seus parceiros seguradores antes da assinatura deste contrato.</p>
+        <p>A concessão deste empréstimo está condicionada à subscrição prévia pelo Mutuário de um seguro que cubra os riscos de Morte, Perda Total e Irreversível de Autonomia (PTIA) e Incapacidade para o Trabalho (IT). O Mutuário reconhece ter recebido, lido e aceite as condições deste seguro, que são objeto de um certificado de seguro separado fornecido pela VylsCapital ou pelos seus parceiros seguradores antes da assinatura deste contrato.</p>
       </div>
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Artigo 7: Proteção de Dados Pessoais</h2>
-        <p>As informações recolhidas são necessárias para o processamento do pedido de crédito. São tratadas eletronicamente e destinam-se aos serviços do Mutuante e dos seus parceiros. Em conformidade com o RGPD, o Mutuário tem o direito de aceder, retificar e eliminar os seus dados pessoais contactando o Mutuante através do email contact@flexfond.com.</p>
+        <p>As informações recolhidas são necessárias para o processamento do pedido de crédito. São tratadas eletronicamente e destinam-se aos serviços do Mutuante e dos seus parceiros. Em conformidade com o RGPD, o Mutuário tem o direito de aceder, retificar e eliminar os seus dados pessoais contactando o Mutuante através do email contact@vylscapital.com.</p>
       </div>
 
       <div style={styles.section}>
@@ -105,7 +105,7 @@ export const LoanContractTemplatePt: React.FC<LoanContractTemplatePtProps> = ({ 
         <div style={styles.signatureBox}>
           <img src={signer.signatureUrl} alt={`Assinatura de ${signer.name}`} style={{ width: '150px', height: 'auto', marginBottom: '-10px' }} />
           <div style={styles.signatureLine}></div>
-          <p style={styles.label}>Assinatura do Mutuante (FLEXFOND)</p>
+          <p style={styles.label}>Assinatura do Mutuante (VylsCapital)</p>
           <p>{signer.name}, {signer.role}</p>
         </div>
         <div style={styles.signatureBox}>

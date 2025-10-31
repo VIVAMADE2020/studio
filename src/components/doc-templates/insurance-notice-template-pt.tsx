@@ -42,7 +42,7 @@ export const InsuranceNoticeTemplatePt: React.FC<InsuranceNoticeTemplatePtProps>
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>1. Objeto da presente nota</h2>
         <p>
-          A presente nota tem por objetivo informá-lo sobre as condições, modalidades, garantias e exclusões do contrato de seguro coletivo subscrito pela FLEXFOND junto do seu parceiro segurador, ao qual solicita a sua adesão. <strong>Convidamo-lo a lê-la atentamente antes de assinar a sua proposta de adesão e a conservá-la.</strong> É um elemento essencial da sua proteção financeira.
+          A presente nota tem por objetivo informá-lo sobre as condições, modalidades, garantias e exclusões do contrato de seguro coletivo subscrito pela VylsCapital junto do seu parceiro segurador, ao qual solicita a sua adesão. <strong>Convidamo-lo a lê-la atentamente antes de assinar a sua proposta de adesão e a conservá-la.</strong> É um elemento essencial da sua proteção financeira.
         </p>
       </div>
 

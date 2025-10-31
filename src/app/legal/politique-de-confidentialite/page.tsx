@@ -2,7 +2,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Politique de Confidentialité | FLEXFOND",
+  title: "Politique de Confidentialité | VylsCapital",
 };
 
 export default function PolitiqueDeConfidentialitePage() {
@@ -11,7 +11,7 @@ export default function PolitiqueDeConfidentialitePage() {
       <h1 className="text-4xl font-bold text-primary mb-8">Politique de Confidentialité</h1>
       <p className="text-muted-foreground">Dernière mise à jour : {new Date().toLocaleDateString('fr-FR')}</p>
 
-      <p className="mt-6">FLEXFOND, en tant que responsable de traitement, s'engage à protéger la vie privée de ses utilisateurs conformément au Règlement Général sur la Protection des Données (RGPD). Cette politique explique comment nous collectons, utilisons, sécurisons et partageons vos informations lorsque vous visitez notre site web www.flexfond.com.</p>
+      <p className="mt-6">VylsCapital, en tant que responsable de traitement, s'engage à protéger la vie privée de ses utilisateurs conformément au Règlement Général sur la Protection des Données (RGPD). Cette politique explique comment nous collectons, utilisons, sécurisons et partageons vos informations lorsque vous visitez notre site web www.vylscapital.com.</p>
       
       <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">1. Collecte de vos informations</h2>
       <p>Nous collectons des informations vous concernant lorsque vous utilisez nos services, notamment lorsque vous remplissez nos formulaires.</p>
@@ -46,7 +46,7 @@ export default function PolitiqueDeConfidentialitePage() {
         <li><strong>Droit à l'effacement :</strong> Vous pouvez demander la suppression de vos données, sous réserve de nos obligations légales de conservation.</li>
         <li><strong>Droit à la limitation du traitement et droit d'opposition.</strong></li>
       </ul>
-      <p className="mt-4">Pour exercer ces droits, veuillez nous contacter par email à <a href="mailto:dpo@flexfond.com">dpo@flexfond.com</a> ou par courrier à l'adresse suivante : FLEXFOND, Délégué à la Protection des Données, 123 Rue de la Finance, 75001 Paris, France, en joignant une copie de votre pièce d'identité.</p>
+      <p className="mt-4">Pour exercer ces droits, veuillez nous contacter par email à <a href="mailto:dpo@vylscapital.com">dpo@vylscapital.com</a> ou par courrier à l'adresse suivante : VylsCapital, Délégué à la Protection des Données, 123 Rue de la Finance, 75001 Paris, France, en joignant une copie de votre pièce d'identité.</p>
 
       <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">6. Partage de vos informations</h2>
       <p>Dans le strict cadre de l'étude de votre demande de financement, nous pouvons être amenés à transmettre vos données à nos partenaires (établissements de crédit, compagnies d'assurance). Nous ne vendons ni ne louons vos données personnelles à des tiers à des fins de marketing.</p>

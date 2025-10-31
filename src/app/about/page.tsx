@@ -8,7 +8,7 @@ import Link from 'next/link';
 import React from 'react';
 
 const timelineEvents = [
-    { year: "2015", title: "FONDATION", description: "FLEXFOND est créé avec l'ambition de rendre les services financiers plus accessibles et transparents.", icon: <Flag /> },
+    { year: "2015", title: "FONDATION", description: "VylsCapital est créé avec l'ambition de rendre les services financiers plus accessibles et transparents.", icon: <Flag /> },
     { year: "2017", title: "LANCEMENT EN LIGNE", description: "Notre plateforme numérique est lancée, permettant des demandes de prêt 100% en ligne.", icon: <Sparkles /> },
     { year: "2018", title: "EXPANSION", description: "Élargissement de notre gamme de produits pour inclure les prêts immobiliers et professionnels.", icon: <Building /> },
     { year: "2020", title: "PARTENARIATS STRATÉGIQUES", description: "Nous nouons des partenariats avec des acteurs clés de la finance et de l'immobilier.", icon: <Handshake /> },
@@ -118,7 +118,7 @@ export default function AboutPage() {
             <section className="py-16 md:py-24">
                 <div className="container text-center">
                      <h2 className="text-3xl md:text-4xl font-bold text-primary uppercase">NOTRE ÉQUIPE DIRIGEANTE</h2>
-                     <p className="mt-2 text-muted-foreground max-w-2xl mx-auto">Des experts passionnés qui façonnent l'avenir de FLEXFOND.</p>
+                     <p className="mt-2 text-muted-foreground max-w-2xl mx-auto">Des experts passionnés qui façonnent l'avenir de VylsCapital.</p>
                      <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                          {teamMembers.slice(0,3).map(member => (
                             <div key={member.name} className="p-6 bg-card rounded-lg shadow-md flex flex-col items-center">

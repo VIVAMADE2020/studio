@@ -1,3 +1,4 @@
+
 import {
   Accordion,
   AccordionContent,
@@ -20,7 +21,7 @@ const faqs = [
   },
   {
     question: "COMMENT PUIS-JE CONTACTER LE SERVICE CLIENT ?",
-    answer: "Vous pouvez nous contacter via le formulaire sur notre page de contact, par email à contact@flexfond.com, ou par téléphone au +33 7 51 24 47 10. Nos conseillers sont disponibles du lundi au vendredi de 9h à 18h."
+    answer: "Vous pouvez nous contacter via le formulaire sur notre page de contact, par email à contact@vylscapital.com, ou par téléphone au +33 7 51 24 47 10. Nos conseillers sont disponibles du lundi au vendredi de 9h à 18h."
   },
   {
     question: "QUELS SONT LES TAUX D'INTÉRÊT ACTUELS ?",

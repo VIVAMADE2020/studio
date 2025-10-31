@@ -38,14 +38,14 @@ export const SolvencyCertificateTemplateDe: React.FC<SolvencyCertificateTemplate
             <p><strong>Name:</strong> {data.clientName || '[Name des Empfängers]'}</p>
             <p><strong>Ausweisnummer:</strong> {data.clientIdNumber || '[Ausweisnummer]'}</p>
             <p><strong>Anschrift:</strong> {data.clientAddress || '[Anschrift des Empfängers]'}</p>
-            <p><strong>Inhaber des FLEXFOND-Kontos Nr.:</strong> {data.accountNumber || '[Kontonummer]'}</p>
+            <p><strong>Inhaber des VylsCapital-Kontos Nr.:</strong> {data.accountNumber || '[Kontonummer]'}</p>
         </div>
       </div>
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Artikel 1: Zweck des Zertifikats</h2>
         <p>
-          FLEXFOND, als Finanzintermediär handelnd, bestätigt hiermit, eine gründliche Analyse der finanziellen Situation des oben genannten Empfängers durchgeführt zu haben. Basierend auf den vorgelegten Unterlagen und durchgeführten Überprüfungen wird der Empfänger für eine Finanzierung bis zu einem maximalen Betrag von:
+          VylsCapital, als Finanzintermediär handelnd, bestätigt hiermit, eine gründliche Analyse der finanziellen Situation des oben genannten Empfängers durchgeführt zu haben. Basierend auf den vorgelegten Unterlagen und durchgeführten Überprüfungen wird der Empfänger für eine Finanzierung bis zu einem maximalen Betrag von:
         </p>
          <p style={{ fontSize: '16pt', fontWeight: 'bold', textAlign: 'center', margin: '20px 0', color: '#333' }}>
           {formatCurrency(data.balance || 0)}
@@ -58,10 +58,10 @@ export const SolvencyCertificateTemplateDe: React.FC<SolvencyCertificateTemplate
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Artikel 2: Umfang und Abschluss</h2>
         <p>
-          Dieses Zertifikat bestätigt die Vorabgenehmigung Ihrer Finanzierungsakte durch FLEXFOND und ist ein wesentliches Dokument im Prozess der Kreditvergabe. Es bezeugt die erfolgreiche Analyse Ihrer Bonität.
+          Dieses Zertifikat bestätigt die Vorabgenehmigung Ihrer Finanzierungsakte durch VylsCapital und ist ein wesentliches Dokument im Prozess der Kreditvergabe. Es bezeugt die erfolgreiche Analyse Ihrer Bonität.
         </p>
         <p>
-          Der letzte Schritt zur Auszahlung der Mittel ist die Unterzeichnung des <strong>offiziellen Kreditvertrags</strong>, der alle Bedingungen und den Tilgungsplan formalisiert. FLEXFOND verpflichtet sich, Sie bei diesem letzten Schritt zu begleiten.
+          Der letzte Schritt zur Auszahlung der Mittel ist die Unterzeichnung des <strong>offiziellen Kreditvertrags</strong>, der alle Bedingungen und den Tilgungsplan formalisiert. VylsCapital verpflichtet sich, Sie bei diesem letzten Schritt zu begleiten.
         </p>
       </div>
 
@@ -77,7 +77,7 @@ export const SolvencyCertificateTemplateDe: React.FC<SolvencyCertificateTemplate
             <p style={{marginBottom: '20px'}}>Ausgestellt in Paris, am {formatDate(data.certDate)}</p>
             <img src={signer.signatureUrl} alt={`Unterschrift von ${signer.name}`} style={{ width: '150px', height: 'auto', marginBottom: '-10px' }} />
             <div style={styles.signatureLine}></div>
-            <p>Für FLEXFOND,</p>
+            <p>Für VylsCapital,</p>
             <p>{signer.name},<br/>{signer.role}</p>
         </div>
       </div>

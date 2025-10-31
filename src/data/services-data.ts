@@ -7,7 +7,7 @@ export const servicesData = {
       image: siteConfig.services[0].image,
       title: "Prêt Personnel",
       tagline: "Donnez vie à tous vos projets, sans contraintes.",
-      description: "<p>Le prêt personnel FLEXFOND est une solution de financement polyvalente conçue pour vous aider à concrétiser une grande variété de projets sans avoir à justifier leur nature. Que ce soit pour un voyage, l'achat d'équipement, le financement d'un mariage ou pour faire face à un imprévu, le prêt personnel vous offre la liberté et la flexibilité dont vous avez besoin.</p>",
+      description: "<p>Le prêt personnel VylsCapital est une solution de financement polyvalente conçue pour vous aider à concrétiser une grande variété de projets sans avoir à justifier leur nature. Que ce soit pour un voyage, l'achat d'équipement, le financement d'un mariage ou pour faire face à un imprévu, le prêt personnel vous offre la liberté et la flexibilité dont vous avez besoin.</p>",
       whySubscribe: {
         title: "Pourquoi souscrire un Prêt Personnel ?",
         points: [
@@ -41,7 +41,7 @@ export const servicesData = {
       image: siteConfig.services[1].image,
       title: "Prêt Immobilier",
       tagline: "Devenez propriétaire avec un financement adapté à votre avenir.",
-      description: "<p>Le prêt immobilier FLEXFOND est la clé pour réaliser votre rêve d'accession à la propriété. Que ce soit pour l'achat de votre résidence principale, secondaire ou un investissement locatif, nous structurons une solution de financement sur-mesure. Notre expertise nous permet de négocier les meilleures conditions pour vous, en tenant compte de votre apport, de la durée souhaitée et de votre profil.</p>",
+      description: "<p>Le prêt immobilier VylsCapital est la clé pour réaliser votre rêve d'accession à la propriété. Que ce soit pour l'achat de votre résidence principale, secondaire ou un investissement locatif, nous structurons une solution de financement sur-mesure. Notre expertise nous permet de négocier les meilleures conditions pour vous, en tenant compte de votre apport, de la durée souhaitée et de votre profil.</p>",
       whySubscribe: {
         title: "Pourquoi souscrire un Prêt Immobilier ?",
         points: [
@@ -76,7 +76,7 @@ export const servicesData = {
       image: siteConfig.services[2].image,
       title: "Prêt Auto",
       tagline: "Prenez la route avec le véhicule de vos rêves.",
-      description: "<p>Le prêt auto FLEXFOND vous permet de financer l'achat de votre véhicule, qu'il soit neuf ou d'occasion, thermique, hybride ou électrique. Nous vous proposons une solution simple et rapide pour que vous puissiez prendre le volant sans attendre. Nos offres sont claires, sans frais cachés, et avec des mensualités adaptées à votre budget pour un achat en toute sérénité.</p>",
+      description: "<p>Le prêt auto VylsCapital vous permet de financer l'achat de votre véhicule, qu'il soit neuf ou d'occasion, thermique, hybride ou électrique. Nous vous proposons une solution simple et rapide pour que vous puissiez prendre le volant sans attendre. Nos offres sont claires, sans frais cachés, et avec des mensualités adaptées à votre budget pour un achat en toute sérénité.</p>",
       whySubscribe: {
         title: "Pourquoi souscrire un Prêt Auto ?",
         points: [
@@ -111,7 +111,7 @@ export const servicesData = {
       image: siteConfig.services[3].image,
       title: "Prêt Professionnel",
       tagline: "Investissez dans la croissance de votre entreprise.",
-      description: "<p>Le prêt professionnel FLEXFOND est dédié aux entrepreneurs, artisans, commerçants et professions libérales qui souhaitent investir dans leur activité. Que ce soit pour l'acquisition de matériel, l'achat de locaux, le financement de stocks ou le renforcement de votre fonds de roulement, nous vous apportons une solution adaptée aux défis de votre entreprise.</p>",
+      description: "<p>Le prêt professionnel VylsCapital est dédié aux entrepreneurs, artisans, commerçants et professions libérales qui souhaitent investir dans leur activité. Que ce soit pour l'acquisition de matériel, l'achat de locaux, le financement de stocks ou le renforcement de votre fonds de roulement, nous vous apportons une solution adaptée aux défis de votre entreprise.</p>",
       whySubscribe: {
         title: "Pourquoi souscrire un Prêt Professionnel ?",
         points: [
@@ -180,7 +180,7 @@ export const servicesData = {
       image: siteConfig.services[5].image,
       title: "Prêt Étudiant",
       tagline: "Financez vos études et construisez votre avenir en toute tranquillité.",
-      description: "<p>Le prêt étudiant FLEXFOND est spécialement conçu pour vous aider à financer vos frais de scolarité, votre logement, votre matériel informatique ou un séjour d'études à l'étranger. Avec des conditions avantageuses et un remboursement différé, vous pouvez vous concentrer sur votre réussite sans vous soucier de l'aspect financier. C'est un investissement sur votre avenir, avec un partenaire qui croit en votre potentiel.</p>",
+      description: "<p>Le prêt étudiant VylsCapital est spécialement conçu pour vous aider à financer vos frais de scolarité, votre logement, votre matériel informatique ou un séjour d'études à l'étranger. Avec des conditions avantageuses et un remboursement différé, vous pouvez vous concentrer sur votre réussite sans vous soucier de l'aspect financier. C'est un investissement sur votre avenir, avec un partenaire qui croit en votre potentiel.</p>",
       whySubscribe: {
         title: "Pourquoi choisir un Prêt Étudiant ?",
         points: [

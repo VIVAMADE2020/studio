@@ -28,7 +28,7 @@ export function Header() {
     )}>
       <div className="container flex h-20 max-w-screen-2xl items-center px-4 md:px-8">
         <Link href="/" className="mr-6 flex items-center space-x-2">
-          <span className={cn("font-bold text-xl", "text-primary")}>FLEXFOND</span>
+          <span className={cn("font-bold text-xl", "text-primary")}>VylsCapital</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm">
           {navLinks.map((link) => (
@@ -64,7 +64,7 @@ export function Header() {
               <div className="flex flex-col h-full">
                 <div className="flex items-center p-4 border-b border-border">
                   <Link href="/" className="flex items-center gap-2" onClick={() => setIsOpen(false)}>
-                    <span className="font-bold text-lg text-primary">FLEXFOND</span>
+                    <span className="font-bold text-lg text-primary">VylsCapital</span>
                   </Link>
                 </div>
                 <nav className="flex flex-col gap-4 p-4">
