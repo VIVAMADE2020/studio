@@ -56,9 +56,11 @@ export function Footer() {
             </ul>
           </div>
         </div>
-
-        <div className="mt-12 border-t border-primary-foreground/20 pt-8 text-center text-sm text-primary-foreground/80">
-          <p>&copy; {new Date().getFullYear()} FLEXFOND. Tous droits réservés.</p>
+        
+        <div className="mt-12 border-t border-primary-foreground/20 pt-8 text-center text-xs text-primary-foreground/60 space-y-2">
+            <p>FLEXFOND est un courtier en opérations de banque. N° ORIAS 12345678. SIRET 123 456 789 00010.</p>
+            <p>Un crédit vous engage et doit être remboursé. Vérifiez vos capacités de remboursement avant de vous engager. Aucun versement ne peut être exigé d'un particulier avant l'obtention d'un ou plusieurs prêts d'argent.</p>
+            <p className="pt-4">&copy; {new Date().getFullYear()} FLEXFOND. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

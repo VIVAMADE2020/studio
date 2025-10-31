@@ -183,6 +183,7 @@ export function LoanApplicationForm() {
           {currentStep === 0 && (
             <div className="space-y-6">
               <h3 className="text-xl font-semibold text-center">{steps[0].title}</h3>
+              <p className="text-center text-muted-foreground text-sm">Les simulations sont fournies à titre indicatif et ne constituent pas une offre de prêt.</p>
               <FormField
                 control={form.control}
                 name="loanType"
@@ -294,7 +295,7 @@ export function LoanApplicationForm() {
           {currentStep === 3 && (
             <div className="space-y-6">
                 <h3 className="text-xl font-semibold text-center">{steps[3].title}</h3>
-                <p className="text-center text-muted-foreground">Veuillez téléverser les documents requis. Un conseiller vous contactera pour vérifier les pièces.</p>
+                <p className="text-center text-muted-foreground text-sm">Vos documents seront utilisés uniquement pour l'analyse de votre dossier par nos partenaires financiers.</p>
                 <div className="space-y-4">
                     <FormItem>
                         <FormLabel>Pièce d'identité (Recto/Verso)</FormLabel>
@@ -337,7 +338,7 @@ export function LoanApplicationForm() {
                             </FormControl>
                             <div className="space-y-1 leading-none">
                                 <FormLabel>
-                                    J'ai lu et j'accepte les <Link href="/legal/mentions-legales" className="text-primary underline">mentions légales</Link> et la <Link href="/legal/politique-de-confidentialite" className="text-primary underline">politique de confidentialité</Link>.
+                                    En cochant cette case, je reconnais avoir lu et accepté les <Link href="/legal/conditions-dutilisation" target="_blank" className="text-primary underline">conditions d'utilisation</Link> et la <Link href="/legal/politique-de-confidentialite" target="_blank" className="text-primary underline">politique de confidentialité</Link>. Je consens au traitement de mes données personnelles pour l'étude de ma demande de prêt.
                                 </FormLabel>
                                 <FormMessage />
                             </div>
@@ -350,7 +351,7 @@ export function LoanApplicationForm() {
           {currentStep === 5 && (
             <div className="space-y-6">
                 <h3 className="text-xl font-semibold text-center">{steps[5].title}</h3>
-                <p className="text-center text-muted-foreground">Veuillez vérifier les informations avant de soumettre.</p>
+                <p className="text-center text-muted-foreground">Veuillez vérifier les informations avant de soumettre. Un crédit vous engage et doit être remboursé.</p>
                 <Card>
                     <CardContent className="pt-6 space-y-4 text-sm">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
@@ -425,5 +426,3 @@ const steps = [
   { id: 'legal', title: 'Consentement', fields: ['legalConsent'] },
   { id: 'summary', title: 'Récapitulatif' },
 ];
-
-    

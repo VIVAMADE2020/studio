@@ -37,7 +37,7 @@ const carouselSlides = [
 
 const keyResults = [
     { icon: <Award className="w-6 h-6 text-accent" />, value: "98%", label: "Satisfaction Client" },
-    { icon: <Clock className="w-6 h-6 text-accent" />, value: "24h", label: "Réponse Garantie" },
+    { icon: <Clock className="w-6 h-6 text-accent" />, value: "< 48h", label: "Réponse de principe" },
     { icon: <Users className="w-6 h-6 text-accent" />, value: "+10k", label: "Clients Satisfaits" },
 ];
 

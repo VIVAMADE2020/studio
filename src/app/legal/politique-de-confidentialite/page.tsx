@@ -1,3 +1,4 @@
+
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,32 +11,45 @@ export default function PolitiqueDeConfidentialitePage() {
       <h1 className="text-4xl font-bold text-primary mb-8">Politique de Confidentialité</h1>
       <p className="text-muted-foreground">Dernière mise à jour : {new Date().toLocaleDateString('fr-FR')}</p>
 
-      <p className="mt-6">FLEXFOND s'engage à protéger la vie privée de ses utilisateurs. Cette politique de confidentialité explique comment nous collectons, utilisons, divulguons et protégeons vos informations lorsque vous visitez notre site web www.flexfond.com.</p>
+      <p className="mt-6">FLEXFOND, en tant que responsable de traitement, s'engage à protéger la vie privée de ses utilisateurs conformément au Règlement Général sur la Protection des Données (RGPD). Cette politique explique comment nous collectons, utilisons, sécurisons et partageons vos informations lorsque vous visitez notre site web www.flexfond.com.</p>
       
       <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">1. Collecte de vos informations</h2>
-      <p>Nous pouvons collecter des informations vous concernant de différentes manières. Les informations que nous pouvons collecter sur le site comprennent :</p>
-      <ul>
-        <li><strong>Données personnelles :</strong> Informations d'identification personnelle, telles que votre nom, adresse e-mail, numéro de téléphone, et informations démographiques, que vous nous fournissez volontairement lorsque vous remplissez un formulaire de contact ou de demande de prêt.</li>
-        <li><strong>Données financières :</strong> Informations financières, telles que les données relatives à vos revenus, dépenses et situation professionnelle, que vous fournissez lors d'une demande de financement.</li>
-        <li><strong>Données bancaires et de transaction :</strong> Dans le cadre de notre service de banque en ligne réservé à nos clients, nous pouvons collecter des informations sur vos comptes, soldes, et historique de transactions pour fournir les services demandés.</li>
-        <li><strong>Données de navigation :</strong> Informations que votre navigateur envoie automatiquement lorsque vous visitez le site, comme votre adresse IP, le type de navigateur, les temps d'accès.</li>
+      <p>Nous collectons des informations vous concernant lorsque vous utilisez nos services, notamment lorsque vous remplissez nos formulaires.</p>
+      <ul className="list-disc pl-5 mt-4 space-y-2">
+        <li><strong>Données d'identification :</strong> Nom, prénom, date de naissance, adresse e-mail, numéro de téléphone, adresse postale.</li>
+        <li><strong>Données financières et professionnelles :</strong> Revenus, charges, profession, situation de logement. Ces données sont collectées uniquement dans le cadre d'une demande de prêt pour évaluer votre éligibilité.</li>
+        <li><strong>Documents justificatifs :</strong> Pièce d'identité, justificatif de domicile et de revenus. Ces documents sont nécessaires à l'analyse de votre dossier de financement par nos partenaires prêteurs.</li>
+        <li><strong>Données de connexion :</strong> Adresse IP, type de navigateur, pour la sécurité de notre site et l'amélioration de nos services.</li>
       </ul>
 
-      <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">2. Utilisation de vos informations</h2>
-      <p>Avoir des informations précises sur vous nous permet de vous offrir une expérience fluide, efficace et personnalisée. Spécifiquement, nous pouvons utiliser les informations collectées à votre sujet via le site pour :</p>
-      <ul>
-        <li>Gérer votre compte et votre demande de prêt.</li>
-        <li>Fournir des services de banque en ligne, y compris l'affichage des soldes et l'historique des transactions.</li>
-        <li>Vous envoyer des notifications par e-mail concernant votre dossier ou vos comptes.</li>
-        <li>Augmenter l'efficacité et le fonctionnement du site.</li>
-        <li>Respecter nos obligations légales et réglementaires.</li>
+      <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">2. Finalité du traitement des données</h2>
+      <p>Avoir des informations précises sur vous nous permet de vous offrir une expérience fluide, efficace et personnalisée. Spécifiquement, nous utilisons vos informations pour :</p>
+      <ul className="list-disc pl-5 mt-4 space-y-2">
+        <li>Analyser et transmettre votre demande de prêt à nos partenaires financiers.</li>
+        <li>Vous fournir les services de banque en ligne (consultation de compte, virements).</li>
+        <li>Communiquer avec vous concernant l'avancement de votre dossier.</li>
+        <li>Prévenir et lutter contre la fraude.</li>
+        <li>Respecter nos obligations légales et réglementaires (notamment la lutte contre le blanchiment d'argent et le financement du terrorisme).</li>
       </ul>
 
       <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">3. Sécurité de vos informations</h2>
-      <p>Nous utilisons des mesures de sécurité administratives, techniques et physiques pour aider à protéger vos informations personnelles. Bien que nous ayons pris des mesures raisonnables pour sécuriser les informations personnelles que vous nous fournissez, sachez que malgré nos efforts, aucune mesure de sécurité n'est parfaite ou impénétrable.</p>
+      <p>Nous mettons en œuvre des mesures de sécurité administratives, techniques et physiques robustes pour protéger vos informations personnelles. Les données sensibles sont transmises via des canaux sécurisés (HTTPS). L'accès à vos données est strictement limité au personnel habilité et à nos partenaires financiers impliqués dans votre dossier, qui sont eux-mêmes soumis à des obligations de confidentialité strictes.</p>
 
-      <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">4. Vos droits concernant vos informations</h2>
-      <p>Conformément à la réglementation en vigueur, vous disposez d'un droit d'accès, de rectification, de suppression et de portabilité de vos données personnelles. Vous pouvez également vous opposer à leur traitement. Pour exercer ces droits, veuillez nous contacter à l'adresse suivante : <a href="mailto:contact@flexfond.com">contact@flexfond.com</a>.</p>
+       <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">4. Durée de conservation</h2>
+      <p>Vos données sont conservées pour la durée nécessaire au traitement de votre demande. En cas d'acceptation, elles sont conservées pendant toute la durée de la relation contractuelle, puis archivées conformément aux délais de prescription légaux. En cas de refus, vos données sont conservées pour une durée limitée nous permettant de justifier de nos diligences, puis sont supprimées.</p>
+
+      <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">5. Vos droits concernant vos informations</h2>
+      <p>Conformément à la réglementation, vous disposez des droits suivants :</p>
+       <ul className="list-disc pl-5 mt-4 space-y-2">
+        <li><strong>Droit d'accès :</strong> Vous pouvez demander à consulter les données que nous détenons sur vous.</li>
+        <li><strong>Droit de rectification :</strong> Vous pouvez demander la correction de données inexactes.</li>
+        <li><strong>Droit à l'effacement :</strong> Vous pouvez demander la suppression de vos données, sous réserve de nos obligations légales de conservation.</li>
+        <li><strong>Droit à la limitation du traitement et droit d'opposition.</strong></li>
+      </ul>
+      <p className="mt-4">Pour exercer ces droits, veuillez nous contacter par email à <a href="mailto:dpo@flexfond.com">dpo@flexfond.com</a> ou par courrier à l'adresse suivante : FLEXFOND, Délégué à la Protection des Données, 123 Rue de la Finance, 75001 Paris, France, en joignant une copie de votre pièce d'identité.</p>
+
+      <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">6. Partage de vos informations</h2>
+      <p>Dans le strict cadre de l'étude de votre demande de financement, nous pouvons être amenés à transmettre vos données à nos partenaires (établissements de crédit, compagnies d'assurance). Nous ne vendons ni ne louons vos données personnelles à des tiers à des fins de marketing.</p>
     </article>
   );
 }

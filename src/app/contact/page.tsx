@@ -1,3 +1,4 @@
+
 import { ContactForm } from '@/components/contact-form';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Mail, Phone, MapPin } from 'lucide-react';
@@ -36,7 +37,7 @@ export default function ContactPage() {
             <Card className="shadow-lg">
                 <CardHeader>
                     <CardTitle className="uppercase">ENVOYEZ-NOUS UN MESSAGE</CardTitle>
-                    <CardDescription>Nous vous répondrons dans les plus brefs délais.</CardDescription>
+                    <CardDescription>Nous vous répondrons dans les plus brefs délais (généralement sous 24h ouvrées).</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <ContactForm />
