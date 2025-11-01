@@ -3,11 +3,13 @@
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import fs from 'fs/promises';
-import path from 'path';
 
-// --- Configuration du fichier de base de données ---
-const DB_PATH = path.resolve(process.cwd(), 'src', 'data', 'clients.json');
+// --- In-Memory Database Store ---
+// This is a temporary in-memory store. 
+// Data will be lost when the server restarts.
+// TODO: Replace this with a connection to a real database like PostgreSQL (Supabase, Neon, Vercel Postgres) or MongoDB.
+let clients: Client[] = [];
+
 
 // --- Types ---
 export type AccountType = 'GENERAL' | 'LOAN';
@@ -61,32 +63,20 @@ export interface Transaction {
   };
 }
 
-// --- Fonctions de bas niveau pour interagir avec le fichier JSON ---
+// --- Fonctions de bas niveau pour interagir avec le store en mémoire ---
 
 async function readDb(): Promise<Client[]> {
-    try {
-        const data = await fs.readFile(DB_PATH, 'utf-8');
-        return JSON.parse(data);
-    } catch (error: any) {
-        if (error.code === 'ENOENT') {
-            await writeDb([]);
-            return [];
-        }
-        console.error("Erreur de lecture de la base de données:", error);
-        throw new Error("Impossible de lire la base de données locale.");
-    }
+    // TODO: Replace with your database fetching logic. e.g., `await db.select().from('clients');`
+    return Promise.resolve(clients);
 }
 
 async function writeDb(data: Client[]): Promise<void> {
-    try {
-        const dataDir = path.dirname(DB_PATH);
-        await fs.mkdir(dataDir, { recursive: true });
-        await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
-    } catch (error) {
-        console.error("Erreur d'écriture dans la base de données:", error);
-        throw new Error("Impossible d'écrire dans la base de données locale.");
-    }
+    // TODO: This function will be removed when a real database is used.
+    // Writes will happen through direct DB queries (INSERT, UPDATE).
+    clients = data;
+    return Promise.resolve();
 }
+
 
 // --- Fonctions utilitaires ---
 function generateAccountNumber() {
@@ -215,7 +205,7 @@ export async function addClientAction(values: z.infer<typeof addClientSchema>) {
     }
 
     try {
-        const clients = await readDb();
+        const currentClients = await readDb();
         const accountNumber = generateAccountNumber();
         const iban = generateIban(accountNumber);
         
@@ -245,8 +235,9 @@ export async function addClientAction(values: z.infer<typeof addClientSchema>) {
             }
         }
 
-        clients.push(newClient);
-        await writeDb(clients);
+        // TODO: Replace with your database insertion logic. e.g., `await db.insert('clients').values(newClient);`
+        currentClients.push(newClient);
+        await writeDb(currentClients);
         
         revalidatePath('/admin/dashboard');
         return { success: true, data: newClient };
@@ -280,6 +271,7 @@ export async function verifyClientLoginAction(values: z.infer<typeof clientLogin
 
     try {
         const clients = await readDb();
+        // TODO: Replace with your database fetching logic. e.g., `await db.select().from('clients').where('identificationNumber', '=', identificationNumber);`
         const client = clients.find(c => c.identificationNumber === identificationNumber);
 
         if (!client) {
@@ -309,6 +301,7 @@ export async function getClientByIdentificationNumberAction(identificationNumber
     }
     try {
         const clients = await readDb();
+        // TODO: Replace with your database fetching logic.
         const clientIndex = clients.findIndex(c => c.identificationNumber === identificationNumber);
         
         if (clientIndex === -1) {
@@ -319,6 +312,7 @@ export async function getClientByIdentificationNumberAction(identificationNumber
         const hasChanged = await processPendingTransactions(client);
 
         if (hasChanged) {
+             // TODO: Replace with your database update logic.
             await writeDb(clients);
         }
 
@@ -337,6 +331,7 @@ export async function addTransactionAction(values: z.infer<typeof addTransaction
 
     try {
         const clients = await readDb();
+        // TODO: Replace with your database logic.
         const clientIndex = clients.findIndex(c => c.identificationNumber === parsed.data.identificationNumber);
 
         if (clientIndex === -1) {
@@ -385,6 +380,7 @@ export async function transferFundsAction(values: z.infer<typeof transferFundsSc
 
     try {
         const clients = await readDb();
+        // TODO: Replace with your database logic.
         const senderIndex = clients.findIndex(c => c.identificationNumber === senderIdentificationNumber);
 
         if (senderIndex === -1) {
@@ -446,6 +442,7 @@ export async function updateClientTransferSettingsAction(values: z.infer<typeof 
 
     try {
         const clients = await readDb();
+        // TODO: Replace with your database logic.
         const clientIndex = clients.findIndex(c => c.identificationNumber === parsed.data.identificationNumber);
 
         if (clientIndex === -1) {
@@ -473,6 +470,7 @@ export async function updateClientBlockSettingsAction(values: z.infer<typeof upd
 
     try {
         const clients = await readDb();
+        // TODO: Replace with your database logic.
         const clientIndex = clients.findIndex(c => c.identificationNumber === parsed.data.identificationNumber);
 
         if (clientIndex === -1) {
@@ -490,5 +488,3 @@ export async function updateClientBlockSettingsAction(values: z.infer<typeof upd
         return { success: false, error: error.message };
     }
 }
-
-    
