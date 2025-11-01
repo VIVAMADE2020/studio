@@ -48,6 +48,17 @@ export function LoanApplicationForm() {
   const router = useRouter();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      Prénom: "",
+      Nom: "",
+      "Montant du Prêt": 0,
+      "Durée en mois": 0,
+      Email: "",
+      Téléphone: "",
+      Profession: "",
+      "Revenu mensuel net": 0,
+      "Motif de la demande": "",
+    },
   });
 
   const { formState, control, handleSubmit } = form;
