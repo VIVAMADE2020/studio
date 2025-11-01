@@ -29,7 +29,7 @@ export function AboutSection() {
     <section className="py-16 md:py-24 bg-secondary/50">
       <div className="container px-4">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div>
+          <div className="order-2 md:order-1">
             <h2 className="text-3xl md:text-4xl font-bold text-primary uppercase">Bâtir l'avenir, ensemble.</h2>
             <p className="mt-4 text-muted-foreground">
               Depuis 2015, VylsCapital s'engage à offrir des services financiers transparents et personnalisés. Notre expertise et notre dévouement nous permettent de transformer vos ambitions en réalité.
@@ -40,7 +40,7 @@ export function AboutSection() {
               </Link>
             </Button>
           </div>
-          <div className="space-y-8 relative">
+          <div className="space-y-8 relative order-1 md:order-2">
              <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-border -z-10"></div>
             {timelineEvents.map((event, index) => (
               <div key={index} className="flex items-start gap-4">

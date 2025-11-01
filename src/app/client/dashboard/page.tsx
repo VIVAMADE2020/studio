@@ -167,7 +167,7 @@ export default function ClientDashboardPage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                 {/* Left Column */}
-                <div className="lg:col-span-1 space-y-8">
+                <div className="lg:col-span-1 space-y-8 order-2 lg:order-1">
                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
                         <Card>
                             <CardHeader>
@@ -228,7 +228,7 @@ export default function ClientDashboardPage() {
                 </div>
 
                 {/* Right Column */}
-                <div className="lg:col-span-2 space-y-8">
+                <div className="lg:col-span-2 space-y-8 order-1 lg:order-2">
                      {client.accountType === 'LOAN' && client.loanDetails && (
                          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.35 }}>
                             <Card>

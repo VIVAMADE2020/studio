@@ -36,7 +36,7 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
             <h1 className="text-3xl font-bold mb-6">Détails du Client</h1>
 
             <div className="grid lg:grid-cols-3 gap-8 items-start">
-                <div className="lg:col-span-2 space-y-8">
+                <div className="lg:col-span-2 space-y-8 order-2 lg:order-1">
                     <Card>
                         <CardHeader>
                             <CardTitle>Informations Personnelles</CardTitle>
@@ -115,7 +115,7 @@ export default async function AdminClientDetailPage({ params }: { params: { acco
                     </Card>
                 </div>
 
-                <div className="lg:col-span-1 space-y-8">
+                <div className="lg:col-span-1 space-y-8 order-1 lg:order-2">
                     <Card>
                         <CardHeader>
                             <CardTitle>Solde Actuel</CardTitle>
