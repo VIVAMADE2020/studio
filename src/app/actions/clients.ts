@@ -3,13 +3,7 @@
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-
-// --- In-Memory Database Store ---
-// This is a temporary in-memory store. 
-// Data will be lost when the server restarts.
-// TODO: Replace this with a connection to a real database like PostgreSQL (Supabase, Neon, Vercel Postgres) or MongoDB.
-let clients: Client[] = [];
-
+import { createServerClient } from '@/lib/supabase';
 
 // --- Types ---
 export type AccountType = 'GENERAL' | 'LOAN';
@@ -63,21 +57,6 @@ export interface Transaction {
   };
 }
 
-// --- Fonctions de bas niveau pour interagir avec le store en mémoire ---
-
-async function readDb(): Promise<Client[]> {
-    // TODO: Replace with your database fetching logic. e.g., `await db.select().from('clients');`
-    return Promise.resolve(clients);
-}
-
-async function writeDb(data: Client[]): Promise<void> {
-    // TODO: This function will be removed when a real database is used.
-    // Writes will happen through direct DB queries (INSERT, UPDATE).
-    clients = data;
-    return Promise.resolve();
-}
-
-
 // --- Fonctions utilitaires ---
 function generateAccountNumber() {
     return Math.random().toString().slice(2, 13).padStart(11, '0');
@@ -88,7 +67,6 @@ function generateIban(accountNumber: string) {
     const branchCode = '00550'; // Code guichet fictif
     const bban = `${bankCode}${branchCode}${accountNumber}`;
     
-    // Calcul de la clé RIB
     const bbanForCalc = bban.split('').map(char => {
         const charCode = char.charCodeAt(0);
         if (charCode >= 65 && charCode <= 90) { // is A-Z
@@ -166,21 +144,17 @@ async function processPendingTransactions(client: Client): Promise<boolean> {
     for (const transaction of pendingTransactions) {
         if (transaction.estimatedCompletionDate && new Date(transaction.estimatedCompletionDate) <= now) {
             hasChanged = true;
-            // The transaction is due. Process it now.
             const transactionIndex = client.transactions.findIndex(t => t.id === transaction.id);
             if (transactionIndex === -1) continue;
 
-            // 1. Check for block
             if (client.isBlocked) {
                 client.transactions[transactionIndex].status = 'FAILED';
                 client.transactions[transactionIndex].failureReason = client.blockReason || 'Transaction refusée car le compte est bloqué.';
                 continue;
             }
 
-            // 2. Check for sufficient balance at time of processing
             const completedTransactions = client.transactions.filter(t => t.status === 'COMPLETED' && new Date(t.date) < now);
             const balanceAtProcessing = client.initialBalance + completedTransactions.reduce((acc, t) => acc + t.amount, 0);
-
 
             if (balanceAtProcessing + transaction.amount < 0) {
                 client.transactions[transactionIndex].status = 'FAILED';
@@ -188,24 +162,23 @@ async function processPendingTransactions(client: Client): Promise<boolean> {
                 continue;
             }
             
-            // 3. If all good, complete the transaction
             client.transactions[transactionIndex].status = 'COMPLETED';
         }
     }
     return hasChanged;
 }
 
-
-// --- Actions Serveur ---
+// --- Actions Serveur avec Supabase ---
 
 export async function addClientAction(values: z.infer<typeof addClientSchema>) {
     const parsed = addClientSchema.safeParse(values);
     if (!parsed.success) {
         return { success: false, error: "Données invalides." };
     }
+    
+    const supabase = createServerClient();
 
     try {
-        const currentClients = await readDb();
         const accountNumber = generateAccountNumber();
         const iban = generateIban(accountNumber);
         
@@ -221,35 +194,23 @@ export async function addClientAction(values: z.infer<typeof addClientSchema>) {
             isBlocked: false,
             blockReason: "",
         };
+
+        const { data, error } = await supabase.from('clients').insert([newClientData]).select().single();
         
-        let newClient: Client;
-
-        if(newClientData.accountType === 'LOAN') {
-            newClient = {
-                ...newClientData,
-                loanDetails: newClientData.loanDetails
-            }
-        } else {
-             newClient = {
-                ...newClientData,
-            }
-        }
-
-        // TODO: Replace with your database insertion logic. e.g., `await db.insert('clients').values(newClient);`
-        currentClients.push(newClient);
-        await writeDb(currentClients);
+        if (error) throw error;
         
         revalidatePath('/admin/dashboard');
-        return { success: true, data: newClient };
+        return { success: true, data: data as Client };
     } catch (error: any) {
         return { success: false, error: error.message };
     }
 }
 
-
 export async function getClientsAction(): Promise<{ data: Client[] | null; error: string | null; }> {
+    const supabase = createServerClient();
     try {
-        const clients = await readDb();
+        const { data: clients, error } = await supabase.from('clients').select('*');
+        if (error) throw error;
         return { data: clients, error: null };
     } catch (error: any) {
         return { data: null, error: error.message };
@@ -268,16 +229,19 @@ export async function verifyClientLoginAction(values: z.infer<typeof clientLogin
     }
     
     const { identificationNumber, password } = parsed.data;
+    const supabase = createServerClient();
 
     try {
-        const clients = await readDb();
-        // TODO: Replace with your database fetching logic. e.g., `await db.select().from('clients').where('identificationNumber', '=', identificationNumber);`
-        const client = clients.find(c => c.identificationNumber === identificationNumber);
+        const { data: client, error } = await supabase
+            .from('clients')
+            .select('*')
+            .eq('identificationNumber', identificationNumber)
+            .single();
 
-        if (!client) {
+        if (error || !client) {
             return { success: false, error: "Numéro d'identification ou mot de passe incorrect." };
         }
-
+        
         if (!client.password) {
             return { success: false, error: "Ce compte n'a pas de mot de passe défini. Veuillez contacter le support." };
         }
@@ -286,7 +250,6 @@ export async function verifyClientLoginAction(values: z.infer<typeof clientLogin
             return { success: false, error: "Numéro d'identification ou mot de passe incorrect." };
         }
         
-        // Don't process transactions on login, only on dashboard view
         return { success: true, data: { identificationNumber: client.identificationNumber } };
     } catch (error: any) {
         console.error(`Failed to verify client login for ${identificationNumber}:`, error);
@@ -294,29 +257,35 @@ export async function verifyClientLoginAction(values: z.infer<typeof clientLogin
     }
 }
 
-
 export async function getClientByIdentificationNumberAction(identificationNumber: string): Promise<{ data: Client | null; error: string | null; }> {
     if (!identificationNumber) {
         return { data: null, error: "Numéro d'identification non fourni." };
     }
+    const supabase = createServerClient();
+
     try {
-        const clients = await readDb();
-        // TODO: Replace with your database fetching logic.
-        const clientIndex = clients.findIndex(c => c.identificationNumber === identificationNumber);
+        const { data: client, error } = await supabase
+            .from('clients')
+            .select('*')
+            .eq('identificationNumber', identificationNumber)
+            .single();
         
-        if (clientIndex === -1) {
+        if (error || !client) {
             return { data: null, error: "Client non trouvé." };
         }
 
-        const client = clients[clientIndex];
-        const hasChanged = await processPendingTransactions(client);
+        const clientTyped = client as Client;
+        const hasChanged = await processPendingTransactions(clientTyped);
 
         if (hasChanged) {
-             // TODO: Replace with your database update logic.
-            await writeDb(clients);
+            const { error: updateError } = await supabase
+                .from('clients')
+                .update({ transactions: clientTyped.transactions })
+                .eq('identificationNumber', identificationNumber);
+            if (updateError) throw updateError;
         }
 
-        return { data: clients[clientIndex], error: null };
+        return { data: clientTyped, error: null };
     } catch (error: any) {
         console.error(`Failed to get client ${identificationNumber}:`, error);
         return { data: null, error: `Impossible de récupérer les informations du client: ${error.message}` };
@@ -328,13 +297,16 @@ export async function addTransactionAction(values: z.infer<typeof addTransaction
     if (!parsed.success) {
         return { success: false, error: "Données de transaction invalides." };
     }
+    const supabase = createServerClient();
 
     try {
-        const clients = await readDb();
-        // TODO: Replace with your database logic.
-        const clientIndex = clients.findIndex(c => c.identificationNumber === parsed.data.identificationNumber);
+        const { data: client, error: fetchError } = await supabase
+            .from('clients')
+            .select('transactions')
+            .eq('identificationNumber', parsed.data.identificationNumber)
+            .single();
 
-        if (clientIndex === -1) {
+        if (fetchError || !client) {
             return { success: false, error: "Client non trouvé." };
         }
         
@@ -346,12 +318,14 @@ export async function addTransactionAction(values: z.infer<typeof addTransaction
             status: 'COMPLETED',
         };
 
-        clients[clientIndex].transactions.push(completedTransaction);
+        const updatedTransactions = [...client.transactions, completedTransaction];
         
-        // Also process pending transactions
-        await processPendingTransactions(clients[clientIndex]);
-
-        await writeDb(clients);
+        const { error: updateError } = await supabase
+            .from('clients')
+            .update({ transactions: updatedTransactions })
+            .eq('identificationNumber', parsed.data.identificationNumber);
+        
+        if(updateError) throw updateError;
 
         revalidatePath(`/admin/dashboard/${parsed.data.identificationNumber}`);
         revalidatePath('/client/dashboard');
@@ -378,28 +352,29 @@ export async function transferFundsAction(values: z.infer<typeof transferFundsSc
         beneficiarySwiftCode 
     } = parsed.data;
 
-    try {
-        const clients = await readDb();
-        // TODO: Replace with your database logic.
-        const senderIndex = clients.findIndex(c => c.identificationNumber === senderIdentificationNumber);
+    const supabase = createServerClient();
 
-        if (senderIndex === -1) {
+    try {
+        const { data: sender, error: fetchError } = await supabase
+            .from('clients')
+            .select('*')
+            .eq('identificationNumber', senderIdentificationNumber)
+            .single();
+
+        if (fetchError || !sender) {
             return { success: false, error: "Compte expéditeur non trouvé." };
         }
-
-        const sender = clients[senderIndex];
+        
+        const senderTyped = sender as Client;
         const initiationDate = new Date();
-
-        // 1. Check for sufficient balance for immediate feedback
-        const completedTransactions = sender.transactions.filter(t => t.status === 'COMPLETED');
-        const senderBalance = sender.initialBalance + completedTransactions.reduce((acc, t) => acc + t.amount, 0);
+        const completedTransactions = senderTyped.transactions.filter(t => t.status === 'COMPLETED');
+        const senderBalance = senderTyped.initialBalance + completedTransactions.reduce((acc, t) => acc + t.amount, 0);
 
         if (senderBalance < amount) {
             return { success: false, error: "Solde insuffisant pour effectuer ce virement." };
         }
         
-        // 2. Create a PENDING transaction
-        const { duration = 1, unit = 'days' } = sender.transferSettings || {};
+        const { duration = 1, unit = 'days' } = senderTyped.transferSettings || {};
         const estimatedCompletionDate = new Date(initiationDate);
         if (unit === 'minutes') {
             estimatedCompletionDate.setMinutes(initiationDate.getMinutes() + duration);
@@ -418,9 +393,15 @@ export async function transferFundsAction(values: z.infer<typeof transferFundsSc
             estimatedCompletionDate: estimatedCompletionDate.toISOString(),
             beneficiary: { name: beneficiaryName, accountNumber: beneficiaryAccountNumber, iban: beneficiaryIban, bankName: beneficiaryBankName, swiftCode: beneficiarySwiftCode }
         };
-        clients[senderIndex].transactions.push(pendingTransaction);
         
-        await writeDb(clients);
+        const updatedTransactions = [...senderTyped.transactions, pendingTransaction];
+        
+        const { error: updateError } = await supabase
+            .from('clients')
+            .update({ transactions: updatedTransactions })
+            .eq('identificationNumber', senderIdentificationNumber);
+            
+        if (updateError) throw updateError;
         
         revalidatePath('/client/dashboard');
         revalidatePath(`/client/dashboard/transfer`);
@@ -439,22 +420,14 @@ export async function updateClientTransferSettingsAction(values: z.infer<typeof 
     if (!parsed.success) {
         return { success: false, error: "Données invalides." };
     }
-
+    const supabase = createServerClient();
     try {
-        const clients = await readDb();
-        // TODO: Replace with your database logic.
-        const clientIndex = clients.findIndex(c => c.identificationNumber === parsed.data.identificationNumber);
+        const { error } = await supabase
+            .from('clients')
+            .update({ transferSettings: { duration: parsed.data.duration, unit: parsed.data.unit } })
+            .eq('identificationNumber', parsed.data.identificationNumber);
 
-        if (clientIndex === -1) {
-            return { success: false, error: "Client non trouvé." };
-        }
-
-        clients[clientIndex].transferSettings = {
-            duration: parsed.data.duration,
-            unit: parsed.data.unit,
-        };
-
-        await writeDb(clients);
+        if (error) throw error;
         revalidatePath(`/admin/dashboard/${parsed.data.identificationNumber}`);
         return { success: true };
     } catch (error: any) {
@@ -467,21 +440,17 @@ export async function updateClientBlockSettingsAction(values: z.infer<typeof upd
     if (!parsed.success) {
         return { success: false, error: "Données invalides." };
     }
-
+    const supabase = createServerClient();
     try {
-        const clients = await readDb();
-        // TODO: Replace with your database logic.
-        const clientIndex = clients.findIndex(c => c.identificationNumber === parsed.data.identificationNumber);
+        const { error } = await supabase
+            .from('clients')
+            .update({ 
+                isBlocked: parsed.data.isBlocked, 
+                blockReason: parsed.data.blockReason || (parsed.data.isBlocked ? 'Compte bloqué par l\'administration.' : '') 
+            })
+            .eq('identificationNumber', parsed.data.identificationNumber);
 
-        if (clientIndex === -1) {
-            return { success: false, error: "Client non trouvé." };
-        }
-
-        clients[clientIndex].isBlocked = parsed.data.isBlocked;
-        clients[clientIndex].blockReason = parsed.data.blockReason || (parsed.data.isBlocked ? 'Compte bloqué par l\'administration.' : '');
-
-
-        await writeDb(clients);
+        if (error) throw error;
         revalidatePath(`/admin/dashboard/${parsed.data.identificationNumber}`);
         return { success: true };
     } catch (error: any) {
