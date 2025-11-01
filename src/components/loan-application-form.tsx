@@ -27,14 +27,15 @@ import { sendEmailAction } from "@/app/actions/send-email";
 const formSchema = z.object({
     Prénom: z.string().min(2, "Le prénom est requis."),
     Nom: z.string().min(2, "Le nom est requis."),
-    "Montant du Prêt": z.coerce.number().positive("Le montant doit être positif."),
-    "Durée en mois": z.coerce.number().positive("La durée doit être positive."),
+    "Montant du Prêt": z.coerce.number().min(1, "Le montant du prêt est requis."),
+    "Durée en mois": z.coerce.number().min(1, "La durée est requise."),
     Email: z.string().email("L'adresse email est invalide."),
-    Téléphone: z.string().min(10, "Le numéro de téléphone est invalide."),
-    "Pays de résidence": z.string({ required_error: "Veuillez sélectionner un pays." }),
-    Profession: z.string().min(2, "La profession est requise."),
-    "Revenu mensuel net": z.coerce.number().positive("Le revenu doit être positif."),
-    "Motif de la demande": z.string().min(10, "Le motif est trop court."),
+    Téléphone: z.string().min(1, "Le numéro de téléphone est requis."),
+    "Numéro WhatsApp": z.string().min(1, "Le numéro WhatsApp est requis."),
+    "Pays de résidence": z.string({ required_error: "Veuillez sélectionner un pays." }).min(1, "Le pays de résidence est requis."),
+    Profession: z.string().min(1, "La profession est requise."),
+    "Revenu mensuel net": z.coerce.number().min(1, "Le revenu mensuel est requis."),
+    "Motif de la demande": z.string().min(1, "Le motif de la demande est requis."),
     Consentement: z.literal(true, {
         errorMap: () => ({ message: "Vous devez accepter la politique de confidentialité." }),
     }),
@@ -55,6 +56,7 @@ export function LoanApplicationForm() {
       "Durée en mois": 0,
       Email: "",
       Téléphone: "",
+      "Numéro WhatsApp": "",
       Profession: "",
       "Revenu mensuel net": 0,
       "Motif de la demande": "",
@@ -108,6 +110,8 @@ export function LoanApplicationForm() {
             <FormField control={control} name="Téléphone" render={({ field }) => (<FormItem><Label>Numéro de Téléphone</Label><FormControl><Input type="tel" placeholder="+33 6 12 34 56 78" {...field} /></FormControl><FormMessage /></FormItem>)} />
         </div>
         
+         <FormField control={control} name="Numéro WhatsApp" render={({ field }) => (<FormItem><Label>Numéro WhatsApp</Label><FormControl><Input type="tel" placeholder="+33 6 12 34 56 78" {...field} /></FormControl><FormMessage /></FormItem>)} />
+
         <FormField
             control={control}
             name="Pays de résidence"
