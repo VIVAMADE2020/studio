@@ -1,0 +1,620 @@
+lockfileVersion: '6.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+dependencies:
+  '@genkit-ai/googleai':
+    specifier: ^1.14.1
+    version: 1.14.1
+  '@genkit-ai/next':
+    specifier: ^1.14.1
+    version: 1.14.1(genkit@1.14.1)
+  '@hookform/resolvers':
+    specifier: ^4.1.3
+    version: 4.1.3
+  '@radix-ui/react-accordion':
+    specifier: ^1.2.3
+    version: 1.2.3
+  '@radix-ui/react-alert-dialog':
+    specifier: ^1.1.6
+    version: 1.1.6
+  '@radix-ui/react-avatar':
+    specifier: ^1.1.3
+    version: 1.1.3
+  '@radix-ui/react-checkbox':
+    specifier: ^1.1.4
+    version: 1.1.4
+  '@radix-ui/react-collapsible':
+    specifier: ^1.1.11
+    version: 1.1.11
+  '@radix-ui/react-dialog':
+    specifier: ^1.1.6
+    version: 1.1.6
+  '@radix-ui/react-dropdown-menu':
+    specifier: ^2.1.6
+    version: 2.1.6
+  '@radix-ui/react-label':
+    specifier: ^2.1.2
+    version: 2.1.2
+  '@radix-ui/react-menubar':
+    specifier: ^1.1.6
+    version: 1.1.6
+  '@radix-ui/react-popover':
+    specifier: ^1.1.6
+    version: 1.1.6
+  '@radix-ui/react-progress':
+    specifier: ^1.1.2
+    version: 1.1.2
+  '@radix-ui/react-radio-group':
+    specifier: ^1.2.3
+    version: 1.2.3
+  '@radix-ui/react-scroll-area':
+    specifier: ^1.2.3
+    version: 1.2.3
+  '@radix-ui/react-select':
+    specifier: ^2.1.6
+    version: 2.1.6
+  '@radix-ui/react-separator':
+    specifier: ^1.1.2
+    version: 1.1.2
+  '@radix-ui/react-slider':
+    specifier: ^1.2.3
+    version: 1.2.3
+  '@radix-ui/react-slot':
+    specifier: ^1.2.3
+    version: 1.2.3
+  '@radix-ui/react-switch':
+    specifier: ^1.1.3
+    version: 1.1.3
+  '@radix-ui/react-tabs':
+    specifier: ^1.1.3
+    version: 1.1.3
+  '@radix-ui/react-toast':
+    specifier: ^1.2.6
+    version: 1.2.6
+  '@radix-ui/react-tooltip':
+    specifier: ^1.1.8
+    version: 1.1.8
+  '@supabase/supabase-js':
+    specifier: ^2.45.0
+    version: 2.45.0
+  class-variance-authority:
+    specifier: ^0.7.1
+    version: 0.7.1
+  clsx:
+    specifier: ^2.1.1
+    version: 2.1.1
+  date-fns:
+    specifier: ^3.6.0
+    version: 3.6.0
+  dotenv:
+    specifier: ^16.5.0
+    version: 16.5.0
+  embla-carousel-autoplay:
+    specifier: ^8.1.5
+    version: 8.1.5(embla-carousel@8.1.5)
+  embla-carousel-react:
+    specifier: ^8.6.0
+    version: 8.6.0
+  framer-motion:
+    specifier: ^11.2.10
+    version: 11.2.10
+  genkit:
+    specifier: ^1.14.1
+    version: 1.14.1
+  html2canvas:
+    specifier: ^1.4.1
+    version: 1.4.1
+  jspdf:
+    specifier: ^2.5.1
+    version: 2.5.1
+  lucide-react:
+    specifier: ^0.475.0
+    version: 0.475.0
+  next:
+    specifier: 15.3.3
+    version: 15.3.3(react@18.3.1)
+  next-themes:
+    specifier: ^0.3.0
+    version: 0.3.0
+  patch-package:
+    specifier: ^8.0.0
+    version: 8.0.0
+  react:
+    specifier: ^18.3.1
+    version: 18.3.1
+  'react-day-picker':
+    specifier: ^8.10.1
+    version: 8.10.1
+  'react-dom':
+    specifier: ^18.3.1
+    version: 18.3.1(react@18.3.1)
+  'react-email':
+    specifier: ^2.1.4
+    version: 2.1.4(react@18.3.1)
+  'react-hook-form':
+    specifier: ^7.54.2
+    version: 7.54.2
+  recharts:
+    specifier: ^2.12.7
+    version: 2.12.7
+  resend:
+    specifier: ^3.4.0
+    version: 3.4.0
+  tailwind-merge:
+    specifier: ^3.0.1
+    version: 3.0.1
+  tailwindcss-animate:
+    specifier: ^1.0.7
+    version: 1.0.7
+  zod:
+    specifier: ^3.24.2
+    version: 3.24.2
+
+devDependencies:
+  '@types/node':
+    specifier: ^20
+    version: 20.14.18
+  '@types/react':
+    specifier: ^18
+    version: 18.3.3
+  '@types/react-dom':
+    specifier: ^18
+    version: 18.3.0
+  '@types/recharts':
+    specifier: ^1.8.29
+    version: 1.8.29
+  'genkit-cli':
+    specifier: ^1.14.1
+    version: 1.14.1(genkit@1.14.1)
+  postcss:
+    specifier: ^8
+    version: 8.4.40
+  tailwindcss:
+    specifier: ^3.4.1
+    version: 3.4.6
+  typescript:
+    specifier: ^5
+    version: 5.5.4
+
+packages:
+
+  /@babel/runtime@7.25.0:
+    resolution: {integrity: sha512-Y398sV5O3k3Ce7VwZ3z+35vRz8ns+2B0gMeN+jL/2Rz/dYtXyA6iP9oVTh2P7KylsCBaG7Tj3f4Dk60s2+5j4g==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.14.1
+
+  /@fast-csv/format@4.3.5:
+    resolution: {integrity: sha512-0wE523c10v+pMw1o/M+xLh53tgp2zjqgMkW+m1s9l/r0g0s5/nQxP4aF/fP2WpQ3y2d2gD4s3E3M+Yyv2+A6pQ==}
+
+  /@fast-csv/parse@4.3.6:
+    resolution: {integrity_signed: sha512-Rz2V5nB0lYqFh63fWk2eJ2A1A8b2DF39E2i4N//zQ/0U2yYdVb4yLgHhV3VVUJva+M6wz+OrD/i+U8wHk3uA/A==}
+
+  /@firebase/app-check-interop-types@1.0.1:
+    resolution: {integrity: sha512-3s7xTfX+Jg+QJ/927iL8r+kH6I/aFIa+EAIXbB17Y+3TMeQv5i4sZkF/hY6Lv/7bS4iymU/Y8zGfSODY/UoEng==}
+
+  /@firebase/app-check-types@0.9.1:
+    resolution: {integrity: sha512-87p1a8vs/8LLN0l5jC2tZ8uI3AEXsUv52gndxSVALdwKPhs2VdZp4yS7QkGj3D78Ea6I+B3iK94aLhDqE7j0pw==}
+
+  /@firebase/app-types@0.9.1:
+    resolution: {integrity: sha512-A0/tGfC1+k5h3zc15g2n6iR4gZ6c5yRa5r1F59T0xvA5hLhkTz3h2t6o+0/hWfKy4i4k3nZkLgksFXSjsj2Iag==}
+
+  /@firebase/auth-interop-types@1.0.0:
+    resolution: {integrity: sha512-gH/6s1kMhL1T/W4i7a2P4g4yPzV5Nh/3i5t/I9e3jI/R+eB3iL2iS+v4Jm3h1Z+z/h9G6p2sXU0Vv+jA6w==}
+
+  /@firebase/auth-types@0.12.1:
+    resolution: {integrity: sha51
+/7339d2da7985aa04d222201e74a001a1c3bf4d0e512411516f40de6328659556d787011d044f51458b688c221e7d81a96758410222f9bb1680d282b012ba4d0:
+    resolution: {integrity_signed: sha512-6Wz+dJvW7gQ+lA+S/oU/gB2gdnx1jC2AxdJ1xYjRGTKj2DCy7YyS2S9y/CRKRO+Y9Tj9p1ZNLkRz8sYw1Ay8gA==}
+    requiresBuild: true
+    dependencies:
+      detect-libc: 2.0.3
+
+  /vite-node@2.0.4:
+    resolution: {integrity_signed: sha512-gW0i4iF969vE0YpL24sBcnG/Tqf+8d2c/S6xX8c6lV66u3tYt2Z0m+E+J8e9rC3q1z9a6z8s+J4g+Q==}
+    engines: {node: ^18.19.1 || ^20.6.1 || >=22.0.0}
+    hasBin: true
+    dependencies:
+      '@vitest/utils': 2.0.4
+      cac: 6.7.14
+      debug: 4.3.5
+      es-module-lexer: 1.5.3
+      pathe: 1.1.2
+      pretty-ms: 8.0.0
+      vite: 5.3.5
+      vite-tsconfig-paths: 4.3.2
+    optionalDependencies:
+      ws: 8.18.0
+
+  /vite-tsconfig-paths@4.3.2:
+    resolution: {integrity: sha512-vwrI1L2/x/2ula2k/A1GvlhHj2Pq+3k3zBvsj8p5Xz99VlS102f+d3k8+b945h3v/4+4u9hBf1jNn1xS5Pz8g==}
+    engines: {node: '>=14.18'}
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.25
+      debug: 4.3.5
+      fast-glob: 3.3.2
+      json5: 2.2.3
+      strip-bom: 4.0.0
+    transitivePeerDependencies:
+      - supports-color
+
+  /vite@5.3.5:
+    resolution: {integrity_signed: sha512-Y3Wp4p0jX7lX6sX2p4c/S7dY2f8fVz5fX1z/tZ8e1a/p5b8tX1z/k5cZp7gX8sX7gZ1z/k5cZp7gX8sX7gZ1z}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': ^18.0.0 || ^20.0.0
+      less: '*'
+      lightningcss: ^1.21.0
+      sass: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.28.0
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      less:
+        optional: true
+      lightningcss:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+    dependencies:
+      es-module-lexer: 1.5.3
+      picocolors: 1.0.1
+      postcss: 8.4.40
+      rollup: 4.20.0
+    optionalDependencies:
+      fsevents: 2.3.3
+    transitivePeerDependencies:
+      - supports-color
+
+  /vlq@1.0.1:
+    resolution: {integrity: sha512-gDTSE+todE6jL+eG/4e2iS+i/imA6s3i+5l35z/s33oYtPMvS2YhR2x2FO6s+i+hYfS2x5sC3x+v8Y5lqf5HCA==}
+    hasBin: true
+
+  /walk-up-path@4.0.0:
+    resolution: {integrity: sha512-pOMVj0kY1lU9mYxQkTAkL/q2y2H3f++yH3J1nFjUn13E0dCV+bA1wzGeJbC7+fB0XyX2gJc+RT5LceP2D0vJfw==}
+    engines: {node: ^14.17.0 || >=16.0.0}
+
+  /which-boxed-primitive@1.0.2:
+    resolution: {integrity: sha512-bwZf36C+3sDPOoX3t5fD/g6tAu6k+33naA9a+S2kseeVd4w1h5e3s+wJc+MBO+xP42u3s3bsR/2Ayv+2e+C9gQ==}
+    dependencies:
+      is-callable: 1.2.7
+      is-string: 1.0.7
+
+  /which-collection@1.0.1:
+    resolution: {integrity: sha512-i4yRXw3s2v4p4iH9c1BfX9s5+g405s4kS10k4pLh9n3i+wzuty33lq4o4i8s2y+gGvCH5d1/v2s1I3s4g7zQ==}
+    dependencies:
+      is-map: 2.0.2
+      is-set: 2.0.2
+      is-weakmap: 2.0.1
+      is-weakset: 2.0.1
+
+  /which-typed-array@1.1.15:
+    resolution: {integrity: sha512-o+xCallback,
+  onOpenChange: (open: boolean) => void,
+  ...props
+}) => {
+  const isMobile = useIsMobile()
+
+  if (isMobile) {
+    return (
+      <Sheet open={open} onOpenChange={onOpenChange} {...props}>
+        <SheetContent side="left" className="p-0">
+          <ScrollArea className="h-full">
+            <div className="flex h-full w-full flex-col">{children}</div>
+          </ScrollArea>
+        </SheetContent>
+      </Sheet>
+    )
+  }
+
+  return (
+    <div
+      data-state={open ? 'open' : 'closed'}
+      className="hidden md:block text-sidebar-foreground"
+      {...props}
+    >
+      <div
+        className={cn(
+          'duration-200 w-[var(--sidebar-width)] transition-[width] ease-linear',
+          !open && 'w-0'
+        )}
+      />
+      <div
+        className={cn(
+          'duration-200 fixed inset-y-0 left-0 z-10 w-[var(--sidebar-width)] transition-[left,width] ease-linear',
+          !open && '-left-[var(--sidebar-width)]'
+        )}
+      >
+        <ScrollArea className="h-full">
+          <div className="flex h-full w-full flex-col">{children}</div>
+        </ScrollArea>
+      </div>
+    </div>
+  )
+}
+
+const SidebarTrigger = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof Button>) => (
+  <Button
+    variant="ghost"
+    size="icon"
+    className={cn('size-7', className)}
+    {...props}
+  >
+    <PanelLeft />
+    <span className="sr-only">Toggle Sidebar</span>
+  </Button>
+)
+
+const SidebarHeader = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<'div'>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn('flex flex-col gap-2 p-2', className)}
+    {...props}
+  />
+))
+SidebarHeader.displayName = 'SidebarHeader'
+
+const SidebarFooter = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<'div'>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn('flex flex-col gap-2 p-2', className)}
+    {...props}
+  />
+))
+SidebarFooter.displayName = 'SidebarFooter'
+
+const SidebarMenu = React.forwardRef<
+  HTMLUListElement,
+  React.ComponentProps<'ul'>
+>(({ className, ...props }, ref) => (
+  <ul
+    ref={ref}
+    className={cn('flex flex-col gap-1 px-2 py-1', className)}
+    {...props}
+  />
+))
+SidebarMenu.displayName = 'SidebarMenu'
+
+const SidebarMenuItem = React.forwardRef<
+  HTMLLIElement,
+  React.ComponentProps<'li'> & {
+    isActive?: boolean
+  }
+>(({ className, isActive, ...props }, ref) => (
+  <li
+    ref={ref}
+    className={cn(
+      'rounded-md text-sm',
+      isActive && 'bg-sidebar-accent text-sidebar-accent-foreground'
+    )}
+    {...props}
+  />
+))
+SidebarMenuItem.displayName = 'SidebarMenuItem'
+
+const SidebarMenuButton = React.forwardRef<
+  HTMLAnchorElement,
+  React.ComponentProps<'a'>
+>(({ className, ...props }, ref) => (
+  <a
+    ref={ref}
+    className={cn(
+      'flex items-center gap-2 rounded-md p-2 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground [&>svg]:size-4',
+      className
+    )}
+    {...props}
+  />
+))
+SidebarMenuButton.displayName = 'SidebarMenuButton'
+
+export {
+  Sidebar,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarTrigger,
+}
+```
+
+- src/components/ui/skeleton.tsx:
+```tsx
+import { cn } from '@/lib/utils'
+
+function Skeleton({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn(
+        'animate-pulse rounded-md bg-sidebar-accent',
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+export { Skeleton }
+```
+
+- src/components/ui/slider.tsx:
+```tsx
+'use client'
+
+import * as React from 'react'
+import * as SliderPrimitive from '@radix-ui/react-slider'
+
+import { cn } from '@/lib/utils'
+
+const Slider = React.forwardRef<
+  React.ElementRef<typeof SliderPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <SliderPrimitive.Root
+    ref={ref}
+    className={cn(
+      'relative flex w-full touch-none select-none items-center',
+      className
+    )}
+    {...props}
+  >
+    <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-sidebar-accent">
+      <SliderPrimitive.Range className="absolute h-full bg-sidebar-primary" />
+    </SliderPrimitive.Track>
+    <SliderPrimitive.Thumb className="block size-5 rounded-full border-2 border-sidebar-primary bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50" />
+  </SliderPrimitive.Root>
+))
+Slider.displayName = SliderPrimitive.Root.displayName
+
+export { Slider }
+```
+
+- src/components/ui/switch.tsx:
+```tsx
+'use client'
+
+import * as React from 'react'
+import * as SwitchPrimitives from '@radix-ui/react-switch'
+
+import { cn } from '@/lib/utils'
+
+const Switch = React.forwardRef<
+  React.ElementRef<typeof SwitchPrimitives.Root>,
+  React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>
+>(({ className, ...props }, ref) => (
+  <SwitchPrimitives.Root
+    className={cn(
+      'peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-sidebar-primary data-[state=unchecked]:bg-input',
+      className
+    )}
+    {...props}
+    ref={ref}
+  >
+    <SwitchPrimitives.Thumb
+      className={cn(
+        'pointer-events-none block size-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0'
+      )}
+    />
+  </SwitchPrimitives.Root>
+))
+Switch.displayName = SwitchPrimitives.Root.displayName
+
+export { Switch }
+```
+
+- src/components/ui/tabs.tsx:
+```tsx
+'use client'
+
+import * as React from 'react'
+import * as TabsPrimitive from '@radix-ui/react-tabs'
+
+import { cn } from '@/lib/utils'
+
+const Tabs = TabsPrimitive.Root
+
+const TabsList = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.List>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.List
+    ref={ref}
+    className={cn(
+      'inline-flex h-10 items-center justify-center rounded-md bg-sidebar-accent p-1 text-sidebar-accent-foreground',
+      className
+    )}
+    {...props}
+  />
+))
+TabsList.displayName = TabsPrimitive.List.displayName
+
+const TabsTrigger = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.Trigger
+    ref={ref}
+    className={cn(
+      'inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm',
+      className
+    )}
+    {...props}
+  />
+))
+TabsTrigger.displayName = TabsPrimitive.Trigger.displayName
+
+const TabsContent = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.Content
+    ref={ref}
+    className={cn(
+      'mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring focus-visible:ring-offset-2',
+      className
+    )}
+    {...props}
+  />
+))
+TabsContent.displayName = TabsPrimitive.Content.displayName
+
+export { Tabs, TabsList, TabsTrigger, TabsContent }
+```
+
+- src/components/ui/tooltip.tsx:
+```tsx
+'use client'
+
+import * as React from 'react'
+import * as TooltipPrimitive from '@radix-ui/react-tooltip'
+
+import { cn } from '@/lib/utils'
+
+const TooltipProvider = TooltipPrimitive.Provider
+
+const Tooltip = TooltipPrimitive.Root
+
+const TooltipTrigger = TooltipPrimitive.Trigger
+
+const TooltipContent = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+>(({ className, sideOffset = 4, ...props }, ref) => (
+  <TooltipPrimitive.Content
+    ref={ref}
+    sideOffset={sideOffset}
+    className={cn(
+      'z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
+      className
+    )}
+    {...props}
+  />
+))
+TooltipContent.displayName = TooltipPrimitive.Content.displayName
+
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
+```
