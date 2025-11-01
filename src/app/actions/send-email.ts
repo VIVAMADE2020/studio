@@ -5,8 +5,6 @@ import { z } from 'zod';
 import { Resend } from 'resend';
 import { EmailTemplate } from '@/components/emails/template';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const sendEmailSchema = z.object({
   to: z.string().email(),
   subject: z.string(),
@@ -19,6 +17,12 @@ export async function sendEmailAction(values: z.infer<typeof sendEmailSchema>) {
         return { success: false, error: "Données invalides." };
     }
 
+    if (!process.env.RESEND_API_KEY) {
+        console.error("La clé API Resend est manquante. Assurez-vous que RESEND_API_KEY est défini dans vos variables d'environnement.");
+        return { success: false, error: "La configuration du service d'email est incomplète." };
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const { to, subject, data } = parsed.data;
 
     try {
