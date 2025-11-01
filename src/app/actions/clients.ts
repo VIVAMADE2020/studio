@@ -446,7 +446,7 @@ export async function updateClientBlockSettingsAction(values: z.infer<typeof upd
             .from('clients')
             .update({ 
                 isBlocked: parsed.data.isBlocked, 
-                blockReason: parsed.data.blockReason || (parsed.data.isBlocked ? 'Compte bloqué par l\\'administration.' : '') 
+                blockReason: parsed.data.blockReason || (parsed.data.isBlocked ? 'Compte bloqué par l\'administration.' : '') 
             })
             .eq('identificationNumber', parsed.data.identificationNumber);
 
@@ -458,4 +458,6 @@ export async function updateClientBlockSettingsAction(values: z.infer<typeof upd
     }
 }
     
+    
+
     
