@@ -1,6 +1,0 @@
-# App Hosting backend settings.
-
-runConfig:
-  # Increase this value to automatically spin up
-  # more instances in response to increased traffic.
-  maxInstances: 1
