@@ -7,7 +7,7 @@ import { createClient } from '@supabase/supabase-js'
 // The SERVICE_ROLE_KEY has admin privileges and can bypass any Row Level Security policies.
 let supabaseAdmin: ReturnType<typeof createClient> | null = null;
 
-export const createServerClient = () => {
+export const createServerClient = async () => {
     if (supabaseAdmin) {
         return supabaseAdmin;
     }
