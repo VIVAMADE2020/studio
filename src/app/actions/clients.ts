@@ -3,7 +3,7 @@
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { createServerClient } from '@/lib/supabase';
+import { createServerClient } from '@/lib/supabase/server';
 
 // --- Types ---
 export type AccountType = 'GENERAL' | 'LOAN';
@@ -457,3 +457,5 @@ export async function updateClientBlockSettingsAction(values: z.infer<typeof upd
         return { success: false, error: error.message };
     }
 }
+
+    
