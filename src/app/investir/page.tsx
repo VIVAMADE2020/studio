@@ -46,7 +46,7 @@ export default function InvestirPage() {
                         </div>
                         <div className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl">
                             <Image
-                                src="https://i.postimg.cc/9M4dTR9g/pexels-g-tandasky-1710795.jpg"
+                                src="https://i.postimg.cc/4y8czLv2/pexels-pixabay-210607.jpg"
                                 alt="VylsCapital Courtier"
                                 fill
                                 className="object-cover"
