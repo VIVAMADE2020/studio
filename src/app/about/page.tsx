@@ -95,21 +95,27 @@ export default function AboutPage() {
                     </div>
                     <div className="relative max-w-4xl mx-auto">
                         <div className="absolute left-1/2 -translate-x-1/2 h-full w-0.5 bg-border hidden md:block"></div>
-                        {timelineEvents.map((event, index) => (
-                            <div key={index} className={`flex items-center w-full mb-8 md:space-x-8 ${index % 2 === 0 ? 'md:flex-row-reverse md:text-right' : 'md:text-left'}`}>
-                                <div className="hidden md:block w-1/2"></div>
-                                <div className="md:w-1/2 w-full">
-                                    <div className="p-6 bg-card rounded-lg shadow-md">
-                                        <p className="font-bold text-accent text-lg">{event.year}</p>
-                                        <h4 className="font-semibold text-primary mt-1 uppercase">{event.title}</h4>
-                                        <p className="text-sm text-muted-foreground mt-1">{event.description}</p>
+                        <div className="space-y-10">
+                            {timelineEvents.map((event, index) => (
+                                <div key={index} className="flex md:items-center w-full flex-col md:flex-row md:space-x-8">
+                                    {/* --- For large screens --- */}
+                                    <div className={`hidden md:flex w-1/2 ${index % 2 === 0 ? 'order-2' : 'order-1'}`}></div>
+                                    <div className={`flex items-center gap-4 w-full md:w-1/2 ${index % 2 === 0 ? 'order-1 md:text-right' : 'order-2 md:text-left'}`}>
+                                        <div className="md:hidden flex-shrink-0 w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center p-2">
+                                           {event.icon}
+                                        </div>
+                                        <div className="p-4 md:p-6 bg-card rounded-lg shadow-md w-full">
+                                            <p className="font-bold text-accent text-lg">{event.year}</p>
+                                            <h4 className="font-semibold text-primary mt-1 uppercase">{event.title}</h4>
+                                            <p className="text-sm text-muted-foreground mt-1">{event.description}</p>
+                                        </div>
+                                    </div>
+                                    <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-accent text-accent-foreground items-center justify-center z-10 p-2">
+                                       {event.icon}
                                     </div>
                                 </div>
-                                <div className="absolute left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-accent text-accent-foreground flex items-center justify-center z-10 p-2">
-                                   {event.icon}
-                                </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
             </section>
