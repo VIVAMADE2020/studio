@@ -97,21 +97,18 @@ export default function AboutPage() {
                         <div className="absolute left-1/2 -translate-x-1/2 h-full w-0.5 bg-border hidden md:block"></div>
                         <div className="space-y-10">
                             {timelineEvents.map((event, index) => (
-                                <div key={index} className="flex md:items-center w-full flex-col md:flex-row md:space-x-8">
-                                    {/* --- For large screens --- */}
-                                    <div className={`hidden md:flex w-1/2 ${index % 2 === 0 ? 'order-2' : 'order-1'}`}></div>
-                                    <div className={`flex items-center gap-4 w-full md:w-1/2 ${index % 2 === 0 ? 'order-1 md:text-right' : 'order-2 md:text-left'}`}>
-                                        <div className="md:hidden flex-shrink-0 w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center p-2">
-                                           {event.icon}
+                                <div key={index} className="relative flex justify-center">
+                                    <div className={`w-full md:w-1/2 flex ${index % 2 === 0 ? 'md:justify-end' : 'md:justify-start'}`}>
+                                        <div className={`w-full md:w-11/12 p-4 flex items-start gap-4 ${index % 2 === 0 ? 'md:text-right md:flex-row-reverse' : 'md:text-left'}`}>
+                                             <div className="flex-shrink-0 w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center p-2">
+                                                {event.icon}
+                                             </div>
+                                             <div className="p-4 md:p-6 bg-card rounded-lg shadow-md w-full">
+                                                <p className="font-bold text-accent text-lg">{event.year}</p>
+                                                <h4 className="font-semibold text-primary mt-1 uppercase">{event.title}</h4>
+                                                <p className="text-sm text-muted-foreground mt-1">{event.description}</p>
+                                             </div>
                                         </div>
-                                        <div className="p-4 md:p-6 bg-card rounded-lg shadow-md w-full">
-                                            <p className="font-bold text-accent text-lg">{event.year}</p>
-                                            <h4 className="font-semibold text-primary mt-1 uppercase">{event.title}</h4>
-                                            <p className="text-sm text-muted-foreground mt-1">{event.description}</p>
-                                        </div>
-                                    </div>
-                                    <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-accent text-accent-foreground items-center justify-center z-10 p-2">
-                                       {event.icon}
                                     </div>
                                 </div>
                             ))}
@@ -217,3 +214,5 @@ export default function AboutPage() {
         </div>
     );
 }
+
+    
