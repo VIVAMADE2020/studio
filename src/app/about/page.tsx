@@ -1,6 +1,6 @@
 
 import { teamMembers } from '@/data/team-data';
-import { Flag, Building, Award, Handshake, Sparkles, Target, Eye, HandHeart, Calendar, BarChart, Users, Star } from 'lucide-react';
+import { Flag, Building, Award, Handshake, Sparkles, Target, Eye, HandHeart, Calendar, BarChart, Users, Star, Briefcase } from 'lucide-react';
 import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -114,8 +114,53 @@ export default function AboutPage() {
                 </div>
             </section>
 
+             {/* Expertise Section */}
+             <section className="py-16 md:py-24">
+                <div className="container">
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl md:text-4xl font-bold text-primary uppercase">Notre Expertise de Courtier</h2>
+                        <p className="mt-4 max-w-3xl mx-auto text-muted-foreground">
+                            En tant que courtier en opérations de banque, VylsCapital est votre intermédiaire de confiance. Nous négocions pour vous auprès de nos partenaires financiers afin de vous garantir les meilleures conditions de prêt possibles.
+                        </p>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-8 items-center">
+                        <div className="relative w-full h-80 rounded-xl overflow-hidden shadow-lg">
+                            <Image
+                                src="https://i.postimg.cc/y8x5wYBr/courtier.jpg"
+                                alt="Expertise de courtier"
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
+                        <div className="space-y-6">
+                            <div className="flex items-start gap-4">
+                                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                                    <Briefcase className="h-6 w-6"/>
+                                </div>
+                                <div>
+                                    <h4 className="font-semibold text-primary text-lg">Un Gain de Temps et d'Argent</h4>
+                                    <p className="text-muted-foreground text-sm">Un seul dossier, un seul interlocuteur. Nous nous chargeons de tout et mettons les banques en concurrence pour vous.</p>
+                                </div>
+                            </div>
+                             <div className="flex items-start gap-4">
+                                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                                    <Star className="h-6 w-6"/>
+                                </div>
+                                <div>
+                                    <h4 className="font-semibold text-primary text-lg">Un Accès aux Meilleures Offres</h4>
+                                    <p className="text-muted-foreground text-sm">Grâce à notre volume d'affaires, nous obtenons des conditions préférentielles que vous n'auriez pas en direct.</p>
+                                </div>
+                            </div>
+                            <Button asChild variant="link" className="p-0 text-lg">
+                                <Link href="/investir">Découvrir nos services de courtage</Link>
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
              {/* Team Section */}
-            <section className="py-16 md:py-24">
+            <section className="py-16 md:py-24 bg-secondary/50">
                 <div className="container text-center">
                      <h2 className="text-3xl md:text-4xl font-bold text-primary uppercase">NOTRE ÉQUIPE DIRIGEANTE</h2>
                      <p className="mt-2 text-muted-foreground max-w-2xl mx-auto">Des experts passionnés qui façonnent l'avenir de VylsCapital.</p>
@@ -166,5 +211,3 @@ export default function AboutPage() {
         </div>
     );
 }
-
-    
