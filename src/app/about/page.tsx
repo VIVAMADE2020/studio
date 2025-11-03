@@ -1,6 +1,6 @@
 
 import { teamMembers } from '@/data/team-data';
-import { Flag, Building, Award, Handshake, Sparkles, Target, Eye, HandHeart, Calendar, BarChart, Users, Star, Briefcase } from 'lucide-react';
+import { Flag, Building, Award, Handshake, Sparkles, Target, Eye, HandHeart, Calendar, BarChart, Users, Star, Briefcase, TrendingUp } from 'lucide-react';
 import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -11,12 +11,12 @@ const timelineEvents = [
     { year: "2015", title: "FONDATION", description: "VylsCapital est créé avec l'ambition de rendre les services financiers plus accessibles et transparents.", icon: <Flag /> },
     { year: "2017", title: "LANCEMENT EN LIGNE", description: "Notre plateforme numérique est lancée, permettant des demandes de prêt 100% en ligne.", icon: <Sparkles /> },
     { year: "2018", title: "EXPANSION", description: "Élargissement de notre gamme de produits pour inclure les prêts immobiliers et professionnels.", icon: <Building /> },
-    { year: "2020", title: "PARTENARIATS STRATÉGIQUES", description: "Nous nouons des partenariats avec des acteurs clés de la finance et de l'immobilier.", icon: <Handshake /> },
+    { year: "2020", title: "LANCEMENT DE L'OFFRE D'INVESTISSEMENT", description: "Ouverture de notre service de courtage en investissement pour permettre à nos clients de faire fructifier leur épargne.", icon: <TrendingUp /> },
     { year: "2024", title: "10 000 CLIENTS", description: "Nous franchissons le cap symbolique des 10 000 clients satisfaits à travers la France.", icon: <Award /> },
 ];
 
 const values = [
-    { icon: <Target className="h-8 w-8 text-accent" />, title: "MISSION", description: "Simplifier le financement pour permettre à chacun de réaliser ses projets de vie en toute confiance." },
+    { icon: <Target className="h-8 w-8 text-accent" />, title: "MISSION", description: "Simplifier la finance pour permettre à chacun de réaliser ses projets de vie et de faire fructifier son capital en toute confiance." },
     { icon: <Eye className="h-8 w-8 text-accent" />, title: "VISION", description: "Devenir le partenaire financier de référence, reconnu pour notre innovation, notre transparence et notre excellence de service." },
     { icon: <HandHeart className="h-8 w-8 text-accent" />, title: "VALEURS", description: "Confiance, intégrité, proximité, et engagement. Ces piliers guident chacune de nos actions au quotidien." },
 ];
@@ -118,9 +118,9 @@ export default function AboutPage() {
              <section className="py-16 md:py-24">
                 <div className="container">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-bold text-primary uppercase">Notre Expertise de Courtier</h2>
+                        <h2 className="text-3xl md:text-4xl font-bold text-primary uppercase">Notre Double Expertise</h2>
                         <p className="mt-4 max-w-3xl mx-auto text-muted-foreground">
-                            En tant que courtier en opérations de banque, VylsCapital est votre intermédiaire de confiance. Nous négocions pour vous auprès de nos partenaires financiers afin de vous garantir les meilleures conditions de prêt possibles.
+                           VylsCapital est votre intermédiaire de confiance pour le financement de vos projets, mais aussi votre partenaire pour faire fructifier votre épargne via des solutions d'investissement performantes.
                         </p>
                     </div>
                     <div className="grid md:grid-cols-2 gap-8 items-center">
@@ -138,21 +138,21 @@ export default function AboutPage() {
                                     <Briefcase className="h-6 w-6"/>
                                 </div>
                                 <div>
-                                    <h4 className="font-semibold text-primary text-lg">Un Gain de Temps et d'Argent</h4>
-                                    <p className="text-muted-foreground text-sm">Un seul dossier, un seul interlocuteur. Nous nous chargeons de tout et mettons les banques en concurrence pour vous.</p>
+                                    <h4 className="font-semibold text-primary text-lg">Courtage en Financement</h4>
+                                    <p className="text-muted-foreground text-sm">Un seul dossier, un seul interlocuteur. Nous mettons les banques en concurrence pour vous obtenir les meilleures offres de prêt.</p>
                                 </div>
                             </div>
                              <div className="flex items-start gap-4">
                                 <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
-                                    <Star className="h-6 w-6"/>
+                                    <TrendingUp className="h-6 w-6"/>
                                 </div>
                                 <div>
-                                    <h4 className="font-semibold text-primary text-lg">Un Accès aux Meilleures Offres</h4>
-                                    <p className="text-muted-foreground text-sm">Grâce à notre volume d'affaires, nous obtenons des conditions préférentielles que vous n'auriez pas en direct.</p>
+                                    <h4 className="font-semibold text-primary text-lg">Courtage en Investissement</h4>
+                                    <p className="text-muted-foreground text-sm">Accédez à des opportunités d'investissement exclusives pour dynamiser votre épargne avec un objectif de rendement attractif.</p>
                                 </div>
                             </div>
                             <Button asChild variant="link" className="p-0 text-lg">
-                                <Link href="/investir">Découvrir nos services de courtage</Link>
+                                <Link href="/investir">Découvrir nos services d'investissement</Link>
                             </Button>
                         </div>
                     </div>
