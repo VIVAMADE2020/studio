@@ -28,6 +28,7 @@ const formSchema = z.object({
     Nom: z.string().min(2, "Le nom est requis."),
     Email: z.string().email("L'adresse email est invalide."),
     Téléphone: z.string().min(1, "Le numéro de téléphone est requis."),
+    "Numéro WhatsApp": z.string().min(1, "Le numéro WhatsApp est requis."),
     "Pays de résidence": z.string({ required_error: "Veuillez sélectionner un pays." }).min(1, "Le pays de résidence est requis."),
     "Montant de l'investissement initial": z.coerce.number().min(1000, "L'investissement minimum est de 1000€."),
     Consentement: z.literal(true, {
@@ -47,6 +48,7 @@ export function InvestmentAccountForm() {
       Nom: "",
       Email: "",
       Téléphone: "",
+      "Numéro WhatsApp": "",
       "Montant de l'investissement initial": 1000,
     },
   });
@@ -92,6 +94,8 @@ export function InvestmentAccountForm() {
             <FormField control={control} name="Email" render={({ field }) => (<FormItem><Label>Adresse Email</Label><FormControl><Input type="email" placeholder="vous@exemple.com" {...field} /></FormControl><FormMessage /></FormItem>)} />
             <FormField control={control} name="Téléphone" render={({ field }) => (<FormItem><Label>Numéro de Téléphone</Label><FormControl><Input type="tel" placeholder="+33 6 12 34 56 78" {...field} /></FormControl><FormMessage /></FormItem>)} />
         </div>
+
+        <FormField control={control} name="Numéro WhatsApp" render={({ field }) => (<FormItem><Label>Numéro WhatsApp</Label><FormControl><Input type="tel" placeholder="+33 6 12 34 56 78" {...field} /></FormControl><FormMessage /></FormItem>)} />
         
         <FormField
             control={control}
