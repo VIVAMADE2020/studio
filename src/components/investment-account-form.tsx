@@ -147,7 +147,7 @@ export function InvestmentAccountForm() {
         <div className="space-y-4 pt-4">
           <Button type="submit" className="w-full" size="lg" disabled={formState.isSubmitting}>
             {formState.isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
-            {formState.isSubmitting ? "Envoi en cours..." : "Créer mon compte"}
+            {formState.isSubmitting ? "Envoi en cours..." : "Envoyer ma demande"}
           </Button>
           <p className="text-xs text-center text-muted-foreground flex items-center justify-center gap-2">
             <Lock className="h-3 w-3" /> Vos informations sont chiffrées et sécurisées.

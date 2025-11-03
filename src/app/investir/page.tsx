@@ -41,7 +41,7 @@ export default function InvestirPage() {
                                 Ouvrez les portes de l'investissement à haut rendement. VylsCapital vous donne accès à des opportunités exclusives pour faire fructifier votre capital.
                             </p>
                             <Button asChild size="lg" className="mt-8">
-                                <Link href="/investir/ouvrir-un-compte">Ouvrir un compte d'investissement</Link>
+                                <Link href="/investir/ouvrir-un-compte">Demander une ouverture de compte</Link>
                             </Button>
                         </div>
                         <div className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl">
@@ -107,13 +107,13 @@ export default function InvestirPage() {
                         <div className="absolute top-1/2 left-0 w-full h-0.5 bg-border hidden md:block"></div>
                          <div className="flex flex-col items-center relative">
                             <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold border-4 border-background z-10">1</div>
-                            <h3 className="mt-4 text-xl font-semibold text-primary">Créez votre compte</h3>
+                            <h3 className="mt-4 text-xl font-semibold text-primary">Faites votre demande</h3>
                             <p className="mt-2 text-muted-foreground">Remplissez notre formulaire en ligne en moins de 5 minutes. C'est simple, rapide et sécurisé.</p>
                         </div>
                          <div className="flex flex-col items-center relative">
                              <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold border-4 border-background z-10">2</div>
                             <h3 className="mt-4 text-xl font-semibold text-primary">Alimentez votre portefeuille</h3>
-                            <p className="mt-2 text-muted-foreground">Effectuez votre premier virement à partir de 1000€ pour activer votre compte et commencer à investir.</p>
+                            <p className="mt-2 text-muted-foreground">Après validation de votre compte par nos équipes, effectuez votre premier virement à partir de 1000€ pour commencer à investir.</p>
                         </div>
                          <div className="flex flex-col items-center relative">
                              <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold border-4 border-background z-10">3</div>

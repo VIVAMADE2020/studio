@@ -13,7 +13,7 @@ export default function OpenInvestmentAccountPage() {
           <div className="lg:col-span-2">
               <Card className="shadow-lg">
                   <CardHeader className="text-center">
-                      <CardTitle className="text-3xl font-bold text-primary uppercase">Ouvrir votre Compte d'Investissement</CardTitle>
+                      <CardTitle className="text-3xl font-bold text-primary uppercase">Demande d'Ouverture de Compte d'Investissement</CardTitle>
                       <CardDescription className="text-lg">Rejoignez-nous en quelques minutes. C'est simple, rapide et 100% sécurisé.</CardDescription>
                   </CardHeader>
                   <CardContent>
