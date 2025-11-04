@@ -9,20 +9,20 @@ import React from "react";
 import { PartnersSection } from "@/components/sections/partners-section";
 
 const keyFigures = [
-    { icon: <Percent className="w-8 h-8 text-accent" />, value: "14%", label: "RETOURS ANNUELS" },
+    { icon: <Percent className="w-8 h-8 text-accent" />, value: "6%", label: "RETOURS ANNUELS" },
     { icon: <Users className="w-8 h-8 text-accent" />, value: "1,200+", label: "INVESTISSEURS ACTIFS" },
     { icon: <BarChart className="w-8 h-8 text-accent" />, value: "25M+", label: "D'EUROS SOUS GESTION" },
     { icon: <DollarSign className="w-8 h-8 text-accent" />, value: "1000€", label: "INVESTISSEMENT MINIMUM" },
 ];
 
 const expertisePoints = [
-    { icon: <TrendingUp className="h-6 w-6 text-primary" />, title: "Haut Rendement", description: "Visez une performance cible de 14% par an grâce à nos stratégies d'investissement diversifiées." },
+    { icon: <TrendingUp className="h-6 w-6 text-primary" />, title: "Haut Rendement", description: "Visez une performance cible de 6% par an grâce à nos stratégies d'investissement diversifiées." },
     { icon: <ShieldCheck className="h-6 w-6 text-primary" />, title: "Sécurité et Transparence", description: "Nous investissons dans des actifs tangibles et vous offrons une visibilité totale sur votre portefeuille." },
     { icon: <Zap className="h-6 w-6 text-primary" />, title: "Simplicité d'Accès", description: "Ouvrez votre compte en quelques minutes et commencez à investir avec seulement 1000€." },
 ];
 
 const testimonials = [
-  { name: "Sophie L.", role: "Investisseuse Particulière", text: "Processus simple et transparent. J'ai vu mon capital croître régulièrement. Très satisfaite du rendement de 14%." },
+  { name: "Sophie L.", role: "Investisseuse Particulière", text: "Processus simple et transparent. J'ai vu mon capital croître régulièrement. Très satisfaite du rendement de 6%." },
   { name: "Marc D.", role: "Chef d'entreprise", text: "Une excellente alternative aux placements traditionnels. L'équipe est professionnelle et réactive." },
   { name: "Giulia R.", role: "Préparation Retraite", text: "Enfin une solution d'investissement accessible qui tient ses promesses. Je recommande pour faire fructifier son épargne." },
 ];
@@ -36,7 +36,7 @@ export default function InvestirPage() {
                     <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
                         <div>
                             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-primary uppercase">
-                                INVESTISSEZ ET VISEZ 14% DE RETOUR ANNUEL
+                                INVESTISSEZ ET VISEZ 6% DE RETOUR ANNUEL
                             </h1>
                             <p className="mt-4 max-w-xl text-lg text-muted-foreground">
                                 Ouvrez les portes de l'investissement à haut rendement. VylsCapital vous donne accès à des opportunités exclusives pour faire fructifier votre capital.

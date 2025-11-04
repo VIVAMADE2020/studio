@@ -46,7 +46,7 @@ export default function OpenInvestmentAccountPage() {
                      <div className="flex items-start gap-3">
                         <Zap className="h-5 w-5 text-accent flex-shrink-0 mt-1" />
                         <p className="text-sm text-muted-foreground">
-                            <strong>Haut rendement :</strong> Visez 14% de performance annuelle.
+                            <strong>Haut rendement :</strong> Visez 6% de performance annuelle.
                         </p>
                      </div>
                      <div className="flex items-start gap-3">

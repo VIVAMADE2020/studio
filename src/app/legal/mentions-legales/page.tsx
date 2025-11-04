@@ -22,7 +22,7 @@ export default function MentionsLegalesPage() {
       <p>Contact : <a href="mailto:contact@vylscapital.com">contact@vylscapital.com</a> | +33 7 51 24 47 10</p>
       
       <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">2. Avertissement sur les Risques</h2>
-      <p>L'investissement comporte des risques, y compris un risque de perte en capital. Les performances passées ne préjugent pas des performances futures. Le rendement de 14% mentionné sur notre site est un objectif de performance et non une garantie. VylsCapital recommande à chaque investisseur de prendre connaissance de la documentation relative aux produits d'investissement et de s'assurer de leur adéquation avec son profil de risque avant toute décision.</p>
+      <p>L'investissement comporte des risques, y compris un risque de perte en capital. Les performances passées ne préjugent pas des performances futures. Le rendement de 6% mentionné sur notre site est un objectif de performance et non une garantie. VylsCapital recommande à chaque investisseur de prendre connaissance de la documentation relative aux produits d'investissement et de s'assurer de leur adéquation avec son profil de risque avant toute décision.</p>
       <p className="text-sm text-muted-foreground mt-4">Un crédit vous engage et doit être remboursé. Vérifiez vos capacités de remboursement avant de vous engager.</p>
 
       <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">3. Propriété intellectuelle</h2>
