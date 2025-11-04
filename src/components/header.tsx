@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Menu, User } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -62,12 +62,16 @@ export function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="p-0 bg-background">
+              <SheetHeader className="p-4 border-b">
+                <SheetTitle className="sr-only">Menu de navigation</SheetTitle>
+                <SheetDescription className="sr-only">
+                  Menu principal de navigation pour VylsCapital.
+                </SheetDescription>
+                <Link href="/" className="flex items-center gap-2" onClick={() => setIsOpen(false)}>
+                  <span className="font-bold text-lg text-primary">VylsCapital</span>
+                </Link>
+              </SheetHeader>
               <div className="flex flex-col h-full">
-                <div className="flex items-center p-4 border-b border-border">
-                  <Link href="/" className="flex items-center gap-2" onClick={() => setIsOpen(false)}>
-                    <span className="font-bold text-lg text-primary">VylsCapital</span>
-                  </Link>
-                </div>
                 <nav className="flex flex-col gap-4 p-4">
                   {navLinks.map((link) => (
                     <Link
