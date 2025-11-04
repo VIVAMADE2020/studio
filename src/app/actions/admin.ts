@@ -7,8 +7,8 @@ const loginSchema = z.object({
   password: z.string().min(1, "Le mot de passe est requis."),
 });
 
-// Mot de passe simple pour l'environnement de test
-const ADMIN_PASSWORD = "password";
+// Le mot de passe est maintenant défini dans les variables d'environnement (.env)
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "password";
 
 export async function verifyAdminPassword(values: z.infer<typeof loginSchema>) {
     const parsed = loginSchema.safeParse(values);
