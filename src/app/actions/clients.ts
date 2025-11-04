@@ -8,7 +8,7 @@
 import { z } from "zod";
 
 // --- Types (kept for type-safety in components) ---
-export type AccountType = 'GENERAL' | 'LOAN';
+export type AccountType = 'GENERAL' | 'LOAN' | 'INVESTMENT';
 export type TransactionStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
 export type TransferDurationUnit = 'minutes' | 'hours' | 'days';
 
@@ -19,6 +19,12 @@ export interface LoanDetails {
     repaymentStartDate: string;
     monthlyPayment: number;
 }
+
+export interface InvestmentDetails {
+    investedAmount: number;
+    returnRate: number;
+}
+
 
 export interface Client {
   identificationNumber: string;
@@ -34,6 +40,7 @@ export interface Client {
   swiftCode: string;
   accountType: AccountType;
   loanDetails?: LoanDetails;
+  investmentDetails?: InvestmentDetails;
   transferSettings?: {
     duration: number;
     unit: TransferDurationUnit;

@@ -13,7 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatCurrency } from "@/lib/utils";
-import { PlusCircle, RefreshCw, User, Eye, Banknote, Building } from "lucide-react";
+import { PlusCircle, RefreshCw, User, Eye, Banknote, Building, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import {
   Dialog,
@@ -28,6 +28,17 @@ import { Badge } from "./ui/badge";
 
 interface AdminClientListProps {
   initialClients: Client[];
+}
+
+const getAccountTypeBadge = (accountType: Client['accountType']) => {
+    switch (accountType) {
+        case 'LOAN':
+            return <Badge variant="default" className="text-xs"><Banknote className="mr-1 h-3 w-3"/>Prêt</Badge>;
+        case 'INVESTMENT':
+            return <Badge variant="secondary" className="text-xs bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200"><TrendingUp className="mr-1 h-3 w-3"/>Investissement</Badge>;
+        default:
+            return <Badge variant="secondary" className="text-xs"><Building className="mr-1 h-3 w-3"/>Général</Badge>;
+    }
 }
 
 export function AdminClientList({ initialClients }: AdminClientListProps) {
@@ -99,10 +110,7 @@ export function AdminClientList({ initialClients }: AdminClientListProps) {
                         <div className="sm:hidden text-xs text-muted-foreground">{client.email}</div>
                       </TableCell>
                       <TableCell className="hidden md:table-cell">
-                        <Badge variant={client.accountType === 'LOAN' ? "default" : "secondary"} className="text-xs">
-                          {client.accountType === 'LOAN' ? <Banknote className="mr-1 h-3 w-3"/> : <Building className="mr-1 h-3 w-3"/>}
-                          {client.accountType === 'LOAN' ? 'Prêt' : 'Général'}
-                        </Badge>
+                        {getAccountTypeBadge(client.accountType)}
                       </TableCell>
                       <TableCell className="hidden sm:table-cell">{client.email}</TableCell>
                       <TableCell className="text-right whitespace-nowrap">{formatCurrency(balance)}</TableCell>

@@ -27,7 +27,7 @@ const baseClientSchema = z.object({
   email: z.string().email("Email invalide."),
   password: z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères."),
   initialBalance: z.coerce.number().min(0, "Le solde initial doit être positif ou nul."),
-  accountType: z.enum(['GENERAL', 'LOAN'], { required_error: "Vous devez sélectionner un type de compte."}),
+  accountType: z.enum(['GENERAL', 'LOAN', 'INVESTMENT'], { required_error: "Vous devez sélectionner un type de compte."}),
 });
 
 const loanDetailsSchema = z.object({
@@ -38,9 +38,16 @@ const loanDetailsSchema = z.object({
     monthlyPayment: z.coerce.number().positive("La mensualité doit être positive."),
 });
 
+const investmentDetailsSchema = z.object({
+    investedAmount: z.coerce.number().positive("Le montant investi doit être positif."),
+    returnRate: z.coerce.number().positive("Le taux de rendement doit être positif."),
+});
+
+
 const formSchema = z.discriminatedUnion("accountType", [
     baseClientSchema.extend({ accountType: z.literal("GENERAL") }),
-    baseClientSchema.extend({ accountType: z.literal("LOAN"), loanDetails: loanDetailsSchema })
+    baseClientSchema.extend({ accountType: z.literal("LOAN"), loanDetails: loanDetailsSchema }),
+    baseClientSchema.extend({ accountType: z.literal("INVESTMENT"), investmentDetails: investmentDetailsSchema })
 ]);
 
 
@@ -67,6 +74,10 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
   const accountType = form.watch("accountType");
 
   async function onSubmit(values: FormValues) {
+    if (values.accountType === 'INVESTMENT') {
+        values.initialBalance = values.investmentDetails.investedAmount;
+    }
+    
     const result = await addClientAction(values);
     if (result.success && result.data) {
       toast({
@@ -107,6 +118,10 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
                     <FormControl><RadioGroupItem value="LOAN" /></FormControl>
                     <FormLabel className="font-normal">Compte de Prêt</FormLabel>
                   </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl><RadioGroupItem value="INVESTMENT" /></FormControl>
+                    <FormLabel className="font-normal">Compte d'Investissement</FormLabel>
+                  </FormItem>
                 </RadioGroup>
               </FormControl>
               <FormMessage />
@@ -120,7 +135,18 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
         </div>
         <FormField control={form.control} name="email" render={({ field }) => (<FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" placeholder="john.doe@email.com" {...field} /></FormControl><FormMessage /></FormItem>)} />
         <FormField control={form.control} name="password" render={({ field }) => (<FormItem><FormLabel>Mot de passe</FormLabel><FormControl><Input type="password" placeholder="••••••••" {...field} /></FormControl><FormMessage /></FormItem>)} />
-        <FormField control={form.control} name="initialBalance" render={({ field }) => (<FormItem><FormLabel>Solde initial d'ouverture (€)</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
+        
+        <AnimatePresence>
+            {accountType !== 'INVESTMENT' && (
+                <motion.div
+                    initial={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    <FormField control={form.control} name="initialBalance" render={({ field }) => (<FormItem><FormLabel>Solde initial d'ouverture (€)</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                </motion.div>
+            )}
+        </AnimatePresence>
         
          <AnimatePresence>
           {accountType === 'LOAN' && (
@@ -137,6 +163,22 @@ export function AddClientForm({ onClientAdded }: AddClientFormProps) {
                 <FormField control={form.control} name="loanDetails.loanTerm" render={({ field }) => (<FormItem><FormLabel>Durée (mois)</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
                 <FormField control={form.control} name="loanDetails.monthlyPayment" render={({ field }) => (<FormItem><FormLabel>Mensualité (€)</FormLabel><FormControl><Input type="number" step="0.01" {...field} /></FormControl><FormMessage /></FormItem>)} />
                 <FormField control={form.control} name="loanDetails.repaymentStartDate" render={({ field }) => (<FormItem><FormLabel>Date de début</FormLabel><FormControl><Input type="date" {...field} /></FormControl><FormMessage /></FormItem>)} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+        
+         <AnimatePresence>
+          {accountType === 'INVESTMENT' && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-4 overflow-hidden pt-4 border-t"
+            >
+                <h3 className="font-medium text-center">Détails de l'Investissement</h3>
+                <FormField control={form.control} name="investmentDetails.investedAmount" render={({ field }) => (<FormItem><FormLabel>Montant investi (€)</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormDescription>Ce montant sera le solde initial du compte.</FormDescription><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="investmentDetails.returnRate" defaultValue={6} render={({ field }) => (<FormItem><FormLabel>Taux de rendement annuel (%)</FormLabel><FormControl><Input type="number" step="0.01" {...field} /></FormControl><FormMessage /></FormItem>)} />
             </motion.div>
           )}
         </AnimatePresence>
