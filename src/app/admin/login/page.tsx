@@ -6,12 +6,15 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, ShieldCheck } from "lucide-react";
+import { Loader2, ShieldCheck, Fingerprint } from "lucide-react";
 import { verifyAdminPassword } from "@/app/actions/admin";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 
 export default function AdminLoginPage() {
     const [isLoading, setIsLoading] = useState(false);
+    const [password, setPassword] = useState("");
     const router = useRouter();
     const { toast } = useToast();
 
@@ -20,8 +23,7 @@ export default function AdminLoginPage() {
         setIsLoading(true);
 
         try {
-            // Le mot de passe n'est plus envoyé, l'action serveur le validera toujours.
-            const result = await verifyAdminPassword({});
+            const result = await verifyAdminPassword({ password });
 
             if (result.success) {
                 sessionStorage.setItem('adminLoggedIn', 'true');
@@ -45,13 +47,28 @@ export default function AdminLoginPage() {
                         <ShieldCheck className="h-8 w-8"/>
                     </div>
                     <CardTitle className="text-2xl mt-4">Accès Administrateur</CardTitle>
-                    <CardDescription>Cliquez sur le bouton pour accéder au tableau de bord.</CardDescription>
+                    <CardDescription>Veuillez entrer le mot de passe pour accéder au tableau de bord.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="space-y-2">
+                             <Label htmlFor="password">Mot de passe</Label>
+                             <div className="relative">
+                                <Fingerprint className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                <Input 
+                                    id="password" 
+                                    type="password" 
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="••••••••"
+                                    required
+                                    className="pl-10"
+                                />
+                             </div>
+                        </div>
                         <Button type="submit" className="w-full" disabled={isLoading}>
                             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Accéder au tableau de bord
+                            Se connecter
                         </Button>
                     </form>
                 </CardContent>

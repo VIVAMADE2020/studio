@@ -4,11 +4,21 @@
 import { z } from "zod";
 
 const loginSchema = z.object({
-  // Le mot de passe n'est plus nécessaire, mais nous gardons le schéma pour la structure
-  password: z.string().optional(),
+  password: z.string().min(1, "Le mot de passe est requis."),
 });
 
+// Mot de passe simple pour l'environnement de test
+const ADMIN_PASSWORD = "password";
+
 export async function verifyAdminPassword(values: z.infer<typeof loginSchema>) {
-    // Le contrôle du mot de passe est supprimé pour simplifier l'accès
-    return { success: true };
+    const parsed = loginSchema.safeParse(values);
+    if (!parsed.success) {
+        return { success: false, error: "Veuillez fournir un mot de passe." };
+    }
+
+    if (parsed.data.password === ADMIN_PASSWORD) {
+        return { success: true };
+    } else {
+        return { success: false, error: "Mot de passe incorrect." };
+    }
 }
