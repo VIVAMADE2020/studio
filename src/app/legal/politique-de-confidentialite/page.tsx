@@ -17,8 +17,8 @@ export default function PolitiqueDeConfidentialitePage() {
       <p>Nous collectons des informations vous concernant lorsque vous utilisez nos services, notamment lorsque vous remplissez nos formulaires.</p>
       <ul className="list-disc pl-5 mt-4 space-y-2">
         <li><strong>Données d'identification :</strong> Nom, prénom, date de naissance, adresse e-mail, numéro de téléphone, adresse postale.</li>
-        <li><strong>Données financières et professionnelles :</strong> Revenus, charges, profession, situation de logement. Ces données sont collectées uniquement dans le cadre d'une demande de prêt pour évaluer votre éligibilité.</li>
-        <li><strong>Documents justificatifs :</strong> Pièce d'identité, justificatif de domicile et de revenus. Ces documents sont nécessaires à l'analyse de votre dossier de financement par nos partenaires prêteurs.</li>
+        <li><strong>Données financières et professionnelles :</strong> Revenus, charges, profession, situation de logement, montant d'investissement souhaité. Ces données sont collectées uniquement dans le cadre d'une demande de prêt ou d'une demande d'ouverture de compte d'investissement pour évaluer votre éligibilité.</li>
+        <li><strong>Documents justificatifs :</strong> Pièce d'identité, justificatif de domicile et de revenus. Ces documents sont nécessaires à l'analyse de votre dossier par nos partenaires.</li>
         <li><strong>Données de connexion :</strong> Adresse IP, type de navigateur, pour la sécurité de notre site et l'amélioration de nos services.</li>
       </ul>
 
@@ -26,6 +26,7 @@ export default function PolitiqueDeConfidentialitePage() {
       <p>Avoir des informations précises sur vous nous permet de vous offrir une expérience fluide, efficace et personnalisée. Spécifiquement, nous utilisons vos informations pour :</p>
       <ul className="list-disc pl-5 mt-4 space-y-2">
         <li>Analyser et transmettre votre demande de prêt à nos partenaires financiers.</li>
+        <li>Analyser votre demande d'ouverture de compte d'investissement et vérifier votre adéquation avec nos offres.</li>
         <li>Vous fournir les services de banque en ligne (consultation de compte, virements).</li>
         <li>Communiquer avec vous concernant l'avancement de votre dossier.</li>
         <li>Prévenir et lutter contre la fraude.</li>
@@ -33,7 +34,7 @@ export default function PolitiqueDeConfidentialitePage() {
       </ul>
 
       <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">3. Sécurité de vos informations</h2>
-      <p>Nous mettons en œuvre des mesures de sécurité administratives, techniques et physiques robustes pour protéger vos informations personnelles. Les données sensibles sont transmises via des canaux sécurisés (HTTPS). L'accès à vos données est strictement limité au personnel habilité et à nos partenaires financiers impliqués dans votre dossier, qui sont eux-mêmes soumis à des obligations de confidentialité strictes.</p>
+      <p>Nous mettons en œuvre des mesures de sécurité administratives, techniques et physiques robustes pour protéger vos informations personnelles. Les données sensibles sont transmises via des canaux sécurisés (HTTPS). L'accès à vos données est strictement limité au personnel habilité et à nos partenaires (financiers ou d'investissement) impliqués dans votre dossier, qui sont eux-mêmes soumis à des obligations de confidentialité strictes.</p>
 
        <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">4. Durée de conservation</h2>
       <p>Vos données sont conservées pour la durée nécessaire au traitement de votre demande. En cas d'acceptation, elles sont conservées pendant toute la durée de la relation contractuelle, puis archivées conformément aux délais de prescription légaux. En cas de refus, vos données sont conservées pour une durée limitée nous permettant de justifier de nos diligences, puis sont supprimées.</p>
@@ -49,7 +50,7 @@ export default function PolitiqueDeConfidentialitePage() {
       <p className="mt-4">Pour exercer ces droits, veuillez nous contacter par email à <a href="mailto:dpo@vylscapital.com">dpo@vylscapital.com</a> ou par courrier à l'adresse suivante : VylsCapital, Délégué à la Protection des Données, 123 Rue de la Finance, 75001 Paris, France, en joignant une copie de votre pièce d'identité.</p>
 
       <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">6. Partage de vos informations</h2>
-      <p>Dans le strict cadre de l'étude de votre demande de financement, nous pouvons être amenés à transmettre vos données à nos partenaires (établissements de crédit, compagnies d'assurance). Nous ne vendons ni ne louons vos données personnelles à des tiers à des fins de marketing.</p>
+      <p>Dans le strict cadre de l'étude de votre demande (financement ou investissement), nous pouvons être amenés à transmettre vos données à nos partenaires (établissements de crédit, compagnies d'assurance, sociétés de gestion). Nous ne vendons ni ne louons vos données personnelles à des tiers à des fins de marketing.</p>
     </article>
   );
 }

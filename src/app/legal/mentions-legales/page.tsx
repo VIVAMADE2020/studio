@@ -15,22 +15,24 @@ export default function MentionsLegalesPage() {
       <ul className="list-disc pl-5 mt-4 space-y-1">
         <li><strong>SIRET :</strong> 891 753 295 00016 (Numéro fictif pour démonstration)</li>
         <li><strong>RCS Paris :</strong> 891 753 295</li>
-        <li><strong>N° ORIAS :</strong> 19004331 (Numéro fictif - Enregistré en tant que Courtier en opérations de banque et en services de paiement)</li>
+        <li><strong>N° ORIAS :</strong> 19004331 (Numéro fictif - Enregistré en tant que Courtier en opérations de banque et en services de paiement, et Conseiller en Investissements Financiers)</li>
       </ul>
-      <p className="mt-4">VylsCapital agit en tant que courtier et intermédiaire, fournissant des solutions de financement et des services de banque en ligne pour ses clients via son espace client sécurisé.</p>
+      <p className="mt-4">VylsCapital agit en tant que courtier et intermédiaire, fournissant des solutions de financement, des services de banque en ligne, ainsi que des services de courtage en investissement pour ses clients.</p>
       <p>Directeur de la publication : Alexandre Martin</p>
       <p>Contact : <a href="mailto:contact@vylscapital.com">contact@vylscapital.com</a> | +33 7 51 24 47 10</p>
+      
+      <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">2. Avertissement sur les Risques</h2>
+      <p>L'investissement comporte des risques, y compris un risque de perte en capital. Les performances passées ne préjugent pas des performances futures. Le rendement de 14% mentionné sur notre site est un objectif de performance et non une garantie. VylsCapital recommande à chaque investisseur de prendre connaissance de la documentation relative aux produits d'investissement et de s'assurer de leur adéquation avec son profil de risque avant toute décision.</p>
       <p className="text-sm text-muted-foreground mt-4">Un crédit vous engage et doit être remboursé. Vérifiez vos capacités de remboursement avant de vous engager.</p>
 
-
-      <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">2. Propriété intellectuelle</h2>
+      <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">3. Propriété intellectuelle</h2>
       <p>L'ensemble de ce site (contenu, textes, images, vidéos, logos) constitue une œuvre protégée par la législation en vigueur sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés. La reproduction de tout ou partie de ce site sur un support quel qu'il soit est formellement interdite sauf autorisation expresse du directeur de la publication.</p>
       
-      <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">3. Données personnelles</h2>
+      <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">4. Données personnelles</h2>
       <p>La collecte et le traitement de vos données personnelles sont régis par notre <a href="/legal/politique-de-confidentialite">Politique de Confidentialité</a>, conformément au Règlement Général sur la Protection des Données (RGPD).</p>
       
-      <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">4. Limitation de responsabilité</h2>
-      <p>Les informations et simulations présentées sur ce site sont fournies à titre indicatif et ne constituent pas une offre de contrat. Seule l'offre de prêt qui vous sera éventuellement remise après étude de votre dossier a une valeur contractuelle. VylsCapital s'efforce d'assurer l'exactitude des informations mais ne peut être tenu pour responsable des erreurs ou omissions.</p>
+      <h2 className="text-2xl font-semibold text-primary mt-8 mb-4">5. Limitation de responsabilité</h2>
+      <p>Les informations et simulations présentées sur ce site sont fournies à titre indicatif et ne constituent ni une offre de contrat de prêt, ni un conseil en investissement. Seule l'offre de prêt ou le contrat d'investissement qui vous sera éventuellement remis après étude de votre dossier a une valeur contractuelle. VylsCapital s'efforce d'assurer l'exactitude des informations mais ne peut être tenu pour responsable des erreurs ou omissions.</p>
     </article>
   );
 }
