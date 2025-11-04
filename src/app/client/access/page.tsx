@@ -32,7 +32,7 @@ export default function ClientLoginPage() {
                 });
                 router.push('/client/dashboard');
             } else {
-                toast({ variant: "destructive", title: "Accès refusé", description: result.error || "Aucun compte client trouvé pour la connexion de test." });
+                toast({ variant: "destructive", title: "Accès refusé", description: result.error || "Aucun compte client trouvé pour la connexion simplifiée." });
             }
         } catch(e) {
             toast({ variant: "destructive", title: "Erreur", description: "Une erreur de communication est survenue." });
@@ -49,13 +49,13 @@ export default function ClientLoginPage() {
                         <LogIn className="h-8 w-8"/>
                     </div>
                     <CardTitle className="text-2xl mt-4">Espace Client</CardTitle>
-                    <CardDescription>Cliquez sur le bouton pour vous connecter avec un compte de test.</CardDescription>
+                    <CardDescription>Cliquez sur le bouton pour vous connecter.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <Button type="submit" className="w-full" disabled={isLoading}>
                             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Se connecter (Compte de Test)
+                            Se connecter
                         </Button>
                     </form>
                 </CardContent>
