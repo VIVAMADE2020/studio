@@ -1,30 +1,73 @@
 
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertTriangle } from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { getClientByIdentificationNumberAction, Client } from '@/app/actions/clients';
+import { ClientDashboard } from '@/components/client-dashboard';
+import { Loader2 } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
 
-export default function ClientDashboardDisabledPage() {
-    return (
-        <div className="flex items-center justify-center min-h-[60vh]">
-            <Card className="w-full max-w-md shadow-xl text-center">
-                <CardHeader>
-                     <div className="mx-auto bg-yellow-100 text-yellow-700 p-3 rounded-full w-fit">
-                        <AlertTriangle className="h-8 w-8"/>
-                    </div>
-                    <CardTitle className="text-2xl mt-4">Tableau de Bord Indisponible</CardTitle>
-                    <CardDescription>
-                        Cette fonctionnalité est actuellement désactivée car l'application n'est pas connectée à une base de données pour gérer les informations des clients.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Button asChild>
-                        <Link href="/">Retour à l'accueil</Link>
-                    </Button>
-                </CardContent>
-            </Card>
-        </div>
-    );
+export default function ClientDashboardPage() {
+    const [client, setClient] = useState<Client | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const router = useRouter();
+
+    useEffect(() => {
+        const fetchClientData = async () => {
+            const identificationNumber = sessionStorage.getItem('identificationNumber');
+            if (!identificationNumber) {
+                router.replace('/client/access');
+                return;
+            }
+
+            try {
+                const result = await getClientByIdentificationNumberAction(identificationNumber);
+                if (result.success && result.data) {
+                    setClient(result.data);
+                } else {
+                    setError(result.error || "Impossible de récupérer les informations du client.");
+                    // Clear session if client not found
+                    sessionStorage.removeItem('identificationNumber');
+                }
+            } catch (e) {
+                setError("Une erreur de communication est survenue.");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchClientData();
+    }, [router]);
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-[60vh]">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+        );
+    }
+    
+    if (error) {
+        return (
+             <div className="flex items-center justify-center min-h-[60vh]">
+                 <Alert variant="destructive" className="max-w-md">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Erreur</AlertTitle>
+                    <AlertDescription>
+                        {error} Veuillez vous <a href="/client/access" className="underline">reconnecter</a>.
+                    </AlertDescription>
+                </Alert>
+             </div>
+        );
+    }
+
+    if (!client) {
+         router.replace('/client/access');
+         return null;
+    }
+
+    return <ClientDashboard client={client} />;
 }
