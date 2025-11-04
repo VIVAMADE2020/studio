@@ -129,25 +129,21 @@ export async function getClientsAction(): Promise<{ data: Client[] | null; error
     return { data, error: null };
 }
 
-export async function verifyClientLoginAction(values: any) {
+export async function verifyClientLoginAction() {
     const supabase = createClient();
-    const { email, password } = values;
 
+    // Pour simplifier, on prend le premier client de la base de données
     const { data, error } = await supabase
         .from('clients')
         .select('*')
-        .eq('email', email)
+        .limit(1)
         .single();
 
     if (error || !data) {
-        return { success: false, error: "Email ou mot de passe incorrect." };
+        return { success: false, error: "Aucun client trouvé dans la base de données pour la connexion simplifiée." };
     }
 
-    if (data.password === password) {
-        return { success: true, data: data };
-    } else {
-        return { success: false, error: "Email ou mot de passe incorrect." };
-    }
+    return { success: true, data: data };
 }
 
 export async function getClientByIdentificationNumberAction(identificationNumber: string): Promise<{ data: Client | null; error: string | null; }> {
