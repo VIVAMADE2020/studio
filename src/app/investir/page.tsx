@@ -6,6 +6,7 @@ import { TrendingUp, ShieldCheck, Zap, DollarSign, Quote, Percent, Users, BarCha
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { PartnersSection } from "@/components/sections/partners-section";
 
 const keyFigures = [
     { icon: <Percent className="w-8 h-8 text-accent" />, value: "14%", label: "RETOURS ANNUELS" },
@@ -149,6 +150,8 @@ export default function InvestirPage() {
                      </div>
                 </div>
             </section>
+
+            <PartnersSection />
 
              {/* CTA Section */}
             <section className="py-16 md:py-24 bg-primary/5">
