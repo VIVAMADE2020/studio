@@ -129,21 +129,35 @@ export async function getClientsAction(): Promise<{ data: Client[] | null; error
     return { data, error: null };
 }
 
-export async function verifyClientLoginAction() {
+const clientLoginSchema = z.object({
+  identificationNumber: z.string().min(1, "Le numéro d'identification est requis."),
+  password: z.string().min(1, "Le mot de passe est requis."),
+});
+
+
+export async function verifyClientLoginAction(values: z.infer<typeof clientLoginSchema>) {
+    const parsed = clientLoginSchema.safeParse(values);
+    if (!parsed.success) {
+        return { success: false, error: "Veuillez fournir un numéro d'identification et un mot de passe." };
+    }
+    
     const supabase = createClient();
 
-    // Pour simplifier, on prend le premier client de la base de données
-    const { data, error } = await supabase
+    const { data: client, error } = await supabase
         .from('clients')
         .select('*')
-        .limit(1)
+        .eq('identificationNumber', parsed.data.identificationNumber)
         .single();
 
-    if (error || !data) {
-        return { success: false, error: "Aucun client trouvé dans la base de données pour la connexion simplifiée." };
+    if (error || !client) {
+        return { success: false, error: "Numéro d'identification ou mot de passe incorrect." };
     }
 
-    return { success: true, data: data };
+    if (client.password === parsed.data.password) {
+        return { success: true, data: client };
+    }
+
+    return { success: false, error: "Numéro d'identification ou mot de passe incorrect." };
 }
 
 export async function getClientByIdentificationNumberAction(identificationNumber: string): Promise<{ data: Client | null; error: string | null; }> {

@@ -6,12 +6,16 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, LogIn } from "lucide-react";
+import { Loader2, LogIn, Fingerprint } from "lucide-react";
 import { verifyClientLoginAction } from "@/app/actions/clients";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 
 export default function ClientLoginPage() {
     const [isLoading, setIsLoading] = useState(false);
+    const [identificationNumber, setIdentificationNumber] = useState("");
+    const [password, setPassword] = useState("");
     const router = useRouter();
     const { toast } = useToast();
 
@@ -20,19 +24,18 @@ export default function ClientLoginPage() {
         setIsLoading(true);
 
         try {
-            // L'action ne prend plus de paramètres, elle connecte le premier client trouvé
-            const result = await verifyClientLoginAction();
+            const result = await verifyClientLoginAction({ identificationNumber, password });
 
             if (result.success && result.data) {
                 // Store minimal info, but NOT the full client object for security
                 sessionStorage.setItem('identificationNumber', result.data.identificationNumber);
                 toast({
                   title: "Connexion réussie",
-                  description: `Connecté en tant que ${result.data.firstName} ${result.data.lastName}.`,
+                  description: `Bienvenue, ${result.data.firstName} ${result.data.lastName}.`,
                 });
                 router.push('/client/dashboard');
             } else {
-                toast({ variant: "destructive", title: "Accès refusé", description: result.error || "Aucun compte client trouvé pour la connexion simplifiée." });
+                toast({ variant: "destructive", title: "Accès refusé", description: result.error || "Les informations de connexion sont incorrectes." });
             }
         } catch(e) {
             toast({ variant: "destructive", title: "Erreur", description: "Une erreur de communication est survenue." });
@@ -49,10 +52,40 @@ export default function ClientLoginPage() {
                         <LogIn className="h-8 w-8"/>
                     </div>
                     <CardTitle className="text-2xl mt-4">Espace Client</CardTitle>
-                    <CardDescription>Cliquez sur le bouton pour vous connecter.</CardDescription>
+                    <CardDescription>Connectez-vous à votre espace personnel.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="space-y-2">
+                             <Label htmlFor="identificationNumber">Numéro d'identification</Label>
+                             <div className="relative">
+                                <Fingerprint className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                <Input 
+                                    id="identificationNumber" 
+                                    type="text" 
+                                    value={identificationNumber}
+                                    onChange={(e) => setIdentificationNumber(e.target.value)}
+                                    placeholder="VC-123456789"
+                                    required
+                                    className="pl-10"
+                                />
+                             </div>
+                        </div>
+                        <div className="space-y-2">
+                             <Label htmlFor="password">Mot de passe</Label>
+                             <div className="relative">
+                                <Fingerprint className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                <Input 
+                                    id="password" 
+                                    type="password" 
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="••••••••"
+                                    required
+                                    className="pl-10"
+                                />
+                             </div>
+                        </div>
                         <Button type="submit" className="w-full" disabled={isLoading}>
                             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             Se connecter
